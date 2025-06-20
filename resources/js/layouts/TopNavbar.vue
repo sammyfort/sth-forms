@@ -1,9 +1,17 @@
 <script setup lang="ts">
 
-import { Search } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
+import { computed } from 'vue';
+import { User2 } from 'lucide-vue-next';
+
+const page = usePage()
+const user = computed(() => page.props.auth.user)
+
+const logout = ()=>{
+    router.post(route('logout'))
+}
 </script>
 
 <template>
@@ -25,24 +33,23 @@ import { router } from '@inertiajs/vue3'
                 <div class="flex items-center gap-3">
                     <div class="flex items-center gap-4">
                         <div class="hidden gap-1 sm:flex">
-                            <div>
-                                <div class="relative">
-                                    <button
-                                        data-slot="button"
-                                        class="inline-flex size-9 items-center justify-center gap-2 transition-all outline-none"
-                                    >
-                                        <Search />
-                                    </button>
-                                </div>
-                            </div>
-                            <Link :href="route('login')" class="inline-flex items-center justify-center">Login</Link>
-                        </div>
-                        <div class="ms-4 flex items-center space-x-1">
-                            <Button @click="router.visit(route('register'))">
+                            <Button  @click="router.visit(route('login'))" class="bg-secondary">
                                 Join
                             </Button>
                         </div>
-                        <button>
+                        <div v-if="!user" class="ms-4 flex flex-col items-center space-x-1">
+                            <Button  @click="router.visit(route('register'))">
+                                Join
+                            </Button>
+                        </div>
+                        <div v-else class="ms-4 flex gap-4 items-center space-x-1">
+                            <div class="lex flex flex-col items-center justify-center cursor-pointer">
+                                <User2 />
+                                <div>{{ user?.lastname }}</div>
+                            </div>
+                            <Button class="bg-destructive hover:bg-red-700" @click="logout">Logout</Button>
+                        </div>
+                        <button class="md:hidden">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"

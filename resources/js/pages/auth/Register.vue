@@ -47,6 +47,7 @@ const submit = () => {
                         required
                         autofocus
                         placeholder="John"
+                        :errors="form.errors"
                     />
                     <InputText
                         :form="form"

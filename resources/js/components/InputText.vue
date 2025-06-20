@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { useAttrs } from 'vue';
 
 type Props = {
-    errors?: { [key: string]: [value: string[]] };
     form: Record<string, any>;
     model: string;
     label?: string;
@@ -24,7 +23,7 @@ const attrs = useAttrs()
             v-model="props.form[props.model]"
             v-bind="attrs"
         />
-        <InputError :message="errors?.name as unknown as string" />
+        <InputError :message="form.errors[model]" />
     </div>
 </template>
 
