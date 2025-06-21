@@ -51,7 +51,7 @@ const submit = () => {
             <CardContent>
                 <form @submit.prevent="submit" class="space-y-4">
 
-                    <Alert v-if="form.recentlySuccessful" class="border-green-200 bg-green-50">
+                    <Alert v-if="status" class="border-green-200 bg-green-50">
                         <CheckCircle class="h-4 w-4 text-green-600" />
                         <AlertDescription class="text-green-800">
                             {{status}}
