@@ -11,7 +11,7 @@ trait BootModelTrait
     public static function bootModels(): void
     {
         parent::boot();
-        static::created(function ($model) {
+        static::creating(function ($model) {
             $model->uuid = Str::uuid();
         });
     }
