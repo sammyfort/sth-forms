@@ -5,6 +5,9 @@ import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
 import Layout from '@/layouts/Layout.vue';
 import InputText from '@/components/InputText.vue';
+import { onMounted, ref } from 'vue';
+import TypeIt from 'typeit';
+import { getRandomAuthImage } from '@/lib/helpers';
 
 const form = useForm({
     firstname: '',
@@ -20,6 +23,23 @@ const submit = () => {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const descriptionRef = ref<HTMLElement | null>(null)
+
+onMounted(()=>{
+    if (descriptionRef.value){
+        new TypeIt(descriptionRef.value, {
+            strings: [
+                "Upload your signboard, reach more customers, or discover great businesses near you—it all starts with your account.",
+                "Create your Signboard profile, showcase your location and reviews, and start attracting local customers who are ready to connect.",
+                "Whether you're a customer looking for reliable businesses, or a business owner wanting more visibility—Signboard is your space."
+            ],
+            speed: 100,
+            breakLines: false,
+            loop: true
+        }).go()
+    }
+})
 </script>
 
 <template>
@@ -27,16 +47,14 @@ const submit = () => {
         <Head title="Register" />
         <div class="flex w-full max-w-[1400px] mx-auto">
             <div class="md:w-2/3 md:flex hidden">
-                <div>
-                    <img src="/images/signup.png" alt="Signup" class="w-[70%]">
+                <div class="flex border w-full">
+                    <img :src="getRandomAuthImage()" alt="Signup" class="w-[70%]">
                 </div>
             </div>
             <form @submit.prevent="submit" class="flex flex-col gap-6 w-full justify-center md:w-1/3">
                 <div>
                     <div class="text-3xl font-bold text-fade">Join Signboard</div>
-                    <div class="text-fade">
-                        Join now to discover local businesses or guide customers straight to your doorstep!
-                    </div>
+                    <div class="text-fade" ref="descriptionRef"></div>
                 </div>
                 <div class="grid gap-6">
                     <InputText

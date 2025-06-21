@@ -26,6 +26,6 @@ class RegisteredUserController extends Controller
         $user = User::query()->create($request->validated());
         event(new Registered($user));
         Auth::login($user);
-        return to_route('home');
+        return to_route('verification.notice');
     }
 }

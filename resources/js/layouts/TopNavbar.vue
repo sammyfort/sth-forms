@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
 import { Button } from '@/components/ui/button';
-import { Link, usePage } from '@inertiajs/vue3';
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { User2 } from 'lucide-vue-next';
+import { LogInIcon, UserPlus2 } from 'lucide-vue-next';
 
 const page = usePage()
 const user = computed(() => page.props.auth.user)
@@ -25,21 +25,24 @@ const logout = ()=>{
                             <h2 class="text-md font-bold">Signboard Ghana</h2></a
                         >
                         <div class="hidden items-center gap-5 text-sm font-medium text-muted-foreground lg:flex">
-                            <a target="" class="hover:text-foreground" href="/blocks">Blocks</a>
-                            <a target="" class="hover:text-foreground" href="/templates">Templates</a>
+                            <a target="" class="hover:text-foreground" href="/blocks">Home</a>
+                            <a target="" class="hover:text-foreground" href="/templates">Signboards</a>
+                            <a target="" class="hover:text-foreground" href="/templates">Businesses</a>
                         </div>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
                     <div class="flex items-center gap-4">
-                        <div class="hidden gap-1 sm:flex">
-                            <Button  @click="router.visit(route('login'))" class="bg-secondary">
-                                Join
+                        <div v-if="!user" class="hidden gap-1 sm:flex">
+                            <Button  @click="router.visit(route('login'))" variant="secondary" class="px-[3.5rem]">
+                                <div><LogInIcon /></div>
+                                Login
                             </Button>
                         </div>
                         <div v-if="!user" class="ms-4 flex flex-col items-center space-x-1">
-                            <Button  @click="router.visit(route('register'))">
-                                Join
+                            <Button  @click="router.visit(route('register'))" class="px-[3.5rem]">
+                                <div><UserPlus2 /></div>
+                                Join Now
                             </Button>
                         </div>
                         <div v-else class="ms-4 flex gap-4 items-center space-x-1">

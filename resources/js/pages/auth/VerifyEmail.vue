@@ -1,36 +1,62 @@
 <script setup lang="ts">
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
-import AuthLayout from '@/layouts/AuthLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import Layout from '@/layouts/Layout.vue';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toastSuccess } from '@/lib/helpers';
 
 defineProps<{
     status?: string;
 }>();
 
+if (status){
+    toastSuccess("A new verification link has been sent to the email address you provided during registration.")
+}
+
 const form = useForm({});
+const page = usePage()
+const user = page.props.auth.user
+
+const openInbox = ()=>{
+    window.open("https://mail.google.com/mail/u/0/#inbox", '_blank')
+}
 
 const submit = () => {
-    form.post(route('verification.send'));
+    form.post(route('verification.send'), {
+        onFinish: ()=>{
+            toastSuccess("A new verification link has been sent to the email address you provided during registration.")
+        }
+    });
 };
 </script>
 
 <template>
-    <AuthLayout title="Verify email" description="Please verify your email address by clicking on the link we just emailed to you.">
+    <Layout :center-x="true">
         <Head title="Email verification" />
-
-        <div v-if="status === 'verification-link-sent'" class="mb-4 text-center text-sm font-medium text-green-600">
-            A new verification link has been sent to the email address you provided during registration.
-        </div>
-
-        <form @submit.prevent="submit" class="space-y-6 text-center">
-            <Button :disabled="form.processing" variant="secondary">
-                <LoaderCircle v-if="form.processing" class="h-4 w-4 animate-spin" />
-                Resend verification email
-            </Button>
-
-            <TextLink :href="route('logout')" method="post" as="button" class="mx-auto block text-sm"> Log out </TextLink>
-        </form>
-    </AuthLayout>
+        <Card class="border-primary" :class="{'border-green-500': status}">
+            <CardHeader class="text-center">
+                <CardTitle class="text-2xl">Verify Your Account</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <div class="text-center">
+                    Hey {{ user.lastname }}, let's get you set up! <br/>
+                    Before we move forward, please verify your account. 🚀 <br/>
+                    We've sent a verification link to your email! 📩 <br/>
+                    <span class="underline underline-offset-4 cursor-pointer" @click="openInbox">
+                            Check your inbox
+                        </span> and click the link to verify your account. 🚀
+                </div>
+                <div class="text-center mt-3 mb-1">
+                    If you did not receive it, no worries! Click the link below to request a new one. 🔄📩
+                </div>
+                <form @submit.prevent="submit" class="text-center">
+                    <Button :disabled="form.processing" variant="secondary" :processing="form.processing">
+                        Resend verification email
+                    </Button>
+                </form>
+            </CardContent>
+        </Card>
+    </Layout>
 </template>

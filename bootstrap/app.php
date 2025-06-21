@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
         $middleware->redirectUsersTo('/');
+        $middleware->redirectTo('/');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
