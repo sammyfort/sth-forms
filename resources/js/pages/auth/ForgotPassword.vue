@@ -4,9 +4,9 @@ import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import Layout from '@/layouts/Layout.vue';
 
 defineProps<{
     status?: string;
@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
+    <Layout title="Forgot password" description="Enter your email to receive a password reset link">
         <Head title="Forgot password" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">
@@ -50,5 +50,5 @@ const submit = () => {
                 <TextLink :href="route('login')">log in</TextLink>
             </div>
         </div>
-    </AuthLayout>
+    </Layout>
 </template>

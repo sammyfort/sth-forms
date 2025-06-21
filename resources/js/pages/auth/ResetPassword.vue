@@ -3,9 +3,9 @@ import InputError from '@/components/InputError.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import AuthLayout from '@/layouts/AuthLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { LoaderCircle } from 'lucide-vue-next';
+import Layout from '@/layouts/Layout.vue';
 
 interface Props {
     token: string;
@@ -31,7 +31,7 @@ const submit = () => {
 </script>
 
 <template>
-    <AuthLayout title="Reset password" description="Please enter your new password below">
+    <Layout title="Reset password" description="Please enter your new password below">
         <Head title="Reset password" />
 
         <form @submit.prevent="submit">
@@ -77,5 +77,5 @@ const submit = () => {
                 </Button>
             </div>
         </form>
-    </AuthLayout>
+    </Layout>
 </template>
