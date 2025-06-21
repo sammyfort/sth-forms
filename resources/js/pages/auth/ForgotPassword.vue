@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Layout title="Forgot password" description="Enter your email to receive a password reset link">
+    <Layout title="Forgot password" description="Enter your email to receive a password reset link" :center-x="true" :center-y="true">
         <Head title="Forgot password" />
 
         <div v-if="status" class="mb-4 text-center text-sm font-medium text-green-600">

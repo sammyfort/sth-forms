@@ -1,0 +1,13 @@
+<?php
+
+namespace {{ namespace }};
+
+{{ factoryImport }}
+use Illuminate\Database\Eloquent\Model;
+use App\Traits\BootModelTrait
+
+class {{ class }} extends Model
+{
+    {{ factory }}
+    use BootModelTrait;
+}

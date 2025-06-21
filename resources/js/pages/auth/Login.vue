@@ -24,6 +24,8 @@ const form = useForm({
     remember: false,
 });
 
+const bgImages = getRandomAuthImage()
+
 const submit = () => {
     form.post(route('login'), {
         onFinish: () => form.reset('password'),
@@ -54,7 +56,7 @@ onMounted(()=>{
         <div class="flex w-full max-w-[1400px] mx-auto">
             <div class="md:w-2/3 md:flex hidden">
                 <div>
-                    <img :src="getRandomAuthImage()" alt="Signup" class="w-[70%]">
+                    <img :src="bgImages" alt="Signup" class="w-[70%]">
                 </div>
             </div>
             <form @submit.prevent="submit" class="flex flex-col gap-6 w-full md:w-1/3 justify-center">
