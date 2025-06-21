@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Notifications\PasswordResetNotification;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -32,10 +35,16 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
-        Password::sendResetLink(
-            $request->only('email')
-        );
+        $user = User::query()->where('email', $request->email)->first();
 
-        return back()->with('status', __('A reset link will be sent if the account exists.'));
+        if ($user) {
+            $token = Password::broker()->createToken($user);
+            $user->notify(new PasswordResetNotification($token));
+            return back()->with('status', __('A reset link will be sent if the account exists.'));
+
+        }else{
+            return back()->with('status', __('A reset link will be sent if the account exists.'));
+        }
+
     }
 }
