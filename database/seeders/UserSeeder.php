@@ -16,10 +16,11 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
+            'uuid' => Str::uuid(),
             'firstname' => 'Admin',
             'lastname' => 'User',
-            'email'=> 'admin@signboard.com',
-            'mobile' => '0205550368',
+            'email'=> 'thesamuelfort@gmail.com',
+            'mobile' => '0248297302',
             'password' => Hash::make('123'),
             'email_verified_at' => now(),
         ]);
