@@ -52,18 +52,19 @@ const logout = ()=>{
                         <div v-else class="ms-4 flex gap-4 items-center space-x-1">
                             <Popover>
                                 <PopoverTrigger as-child>
-                                    <div class="lex flex flex-col items-center justify-center cursor-pointer">
-                                        <Avatar class="h-12 w-12">
+                                    <div class="lex flex items-center cursor-pointer gap-3">
+                                        <Avatar class="h-12 w-12 border">
                                             <AvatarImage :src="user.avatar?.original_url ?? ''" />
                                             <AvatarFallback class="bg-gray-300">{{ user.initials }}</AvatarFallback>
                                         </Avatar>
+                                        <div class="text-fade" style="line-height: 16px">
+                                            <div class="font-bold">{{ user?.fullname }}</div>
+                                            <div class="text-sm">{{ user.email }}</div>
+                                        </div>
                                     </div>
                                 </PopoverTrigger>
                                 <PopoverContent class="w-60">
                                     <div class="grid">
-                                        <div class="p-1.5 text-fade font-bold">
-                                            {{ user?.fullname }}
-                                        </div>
                                         <Link href="#" class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2">
                                             <span>Dashboard Area</span>
                                             <LayoutDashboard class="ms-auto" :size="16"/>
