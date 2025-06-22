@@ -8,11 +8,11 @@ use Illuminate\Support\Str;
 
 trait BootModelTrait
 {
-    public static function bootModels(): void
+    protected static function bootBootModelTrait(): void
     {
-        parent::boot();
-        static::creating(function ($model) {
-            $model->uuid = Str::uuid();
+        static::creating(function (self $model){
+            $model->created_by_id = auth()->check() ? auth()->id() : null;
+            $model->uuid = Str::uuid()->toString();
         });
     }
 }

@@ -168,5 +168,9 @@
 }
 
 .text-fade{
-    color: var(--color-gray-700);
+    color: var(--color-gray-600);
+}
+
+.page{
+    background-color: var(--color-gray-50);
 }

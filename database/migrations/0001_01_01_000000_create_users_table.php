@@ -18,11 +18,16 @@ return new class extends Migration
             $table->string('lastname');
             $table->string('mobile')->unique();
             $table->string('email')->unique();
+            $table->string('facebook')->nullable();
+            $table->string('x')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_active')->default(true);
-            $table->foreignId('created_by')->nullable();
-            $table->foreignId('deleted_by')->nullable();
+            $table->foreignId('created_by_id')->nullable();
+            $table->foreignId('deleted_by_id')->nullable();
+            $table->timestamp('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
