@@ -47,7 +47,7 @@ onMounted(()=>{
         <Head title="Register" />
         <div class="flex w-full max-w-[1400px] mx-auto">
             <div class="md:w-2/3 md:flex hidden">
-                <div class="flex border w-full">
+                <div class="flex w-full">
                     <img :src="getRandomAuthImage()" alt="Signup" class="w-[70%]">
                 </div>
             </div>

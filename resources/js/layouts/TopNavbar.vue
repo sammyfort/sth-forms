@@ -1,10 +1,13 @@
 <script setup lang="ts">
 
 import { Button } from '@/components/ui/button';
-import { router, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { User2 } from 'lucide-vue-next';
 import { LogInIcon, UserPlus2 } from 'lucide-vue-next';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
+
 
 const page = usePage()
 const user = computed(() => page.props.auth.user)
@@ -46,10 +49,30 @@ const logout = ()=>{
                             </Button>
                         </div>
                         <div v-else class="ms-4 flex gap-4 items-center space-x-1">
-                            <div class="lex flex flex-col items-center justify-center cursor-pointer">
-                                <User2 />
-                                <div>{{ user?.lastname }}</div>
-                            </div>
+                            <Popover>
+                                <PopoverTrigger as-child>
+                                    <div class="lex flex flex-col items-center justify-center cursor-pointer">
+                                        <User2 />
+                                        <div>{{ user?.lastname }}</div>
+                                    </div>
+                                </PopoverTrigger>
+                                <PopoverContent class="w-60">
+                                    <div class="grid">
+                                        <Link href="#" class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2">
+                                            <span>Dashboard Area</span>
+                                            <LayoutDashboard class="ms-auto" :size="16"/>
+                                        </Link>
+                                        <Link :href="route('profile.show')" class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2">
+                                            <span>Account Settings</span>
+                                            <UserRoundCog class="ms-auto" :size="16"/>
+                                        </Link>
+                                        <Link href="#" class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2">
+                                            <span>Help</span>
+                                            <HandHelping class="ms-auto" :size="16"/>
+                                        </Link>
+                                    </div>
+                                </PopoverContent>
+                            </Popover>
                             <Button class="bg-destructive hover:bg-red-700" @click="logout">Logout</Button>
                         </div>
                         <button class="md:hidden">
