@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->uuid();
             $table->string('firstname');
-            $table->string('lastname');
-            $table->string('mobile')->unique();
+            $table->string('lastname')->nullable();
+            $table->string('mobile')->unique()->nullable();
             $table->string('email')->unique();
             $table->string('facebook')->nullable();
             $table->string('x')->nullable();
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('linkedin')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('google_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('created_by_id')->nullable();
             $table->foreignId('deleted_by_id')->nullable();
