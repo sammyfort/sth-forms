@@ -33,6 +33,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $created_at
  * @property string $updated_at
  * @property string $initials
+ * @property string $google_id
  */
 
  class User extends Authenticatable implements MustVerifyEmail, HasMedia

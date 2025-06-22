@@ -19,42 +19,42 @@ const user = computed(()=> page.props.auth.user)
                 <div>
                     <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-7 2xl:gap-x-32">
                         <div>
-                            <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            <p class="mb-2 text-xs leading-normal text-gray-500 ">
                                 First Name
                             </p>
-                            <p class="text-sm font-medium text-gray-800 dark:text-white/90">
+                            <p class="text-sm font-medium text-gray-800">
                                 {{ user.firstname }}
                             </p>
                         </div>
                         <div>
-                            <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            <p class="mb-2 text-xs leading-normal text-gray-500">
                                 Last Name
                             </p>
-                            <p class="text-sm font-medium text-gray-800 dark:text-white/90">
+                            <p class="text-sm font-medium text-gray-800">
                                 {{ user.lastname }}
                             </p>
                         </div>
                         <div>
-                            <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            <p class="mb-2 text-xs leading-normal text-gray-500">
                                 Email
                             </p>
-                            <p class="text-sm font-medium text-gray-800 dark:text-white/90">
+                            <p class="text-sm font-medium text-gray-800">
                                 {{ user.email }}
                             </p>
                         </div>
                         <div>
-                            <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            <p class="mb-2 text-xs leading-normal text-gray-500">
                                 Mobile Number
                             </p>
-                            <p class="text-sm font-medium text-gray-800 dark:text-white/90">
+                            <p class="text-sm font-medium text-gray-800">
                                 {{ user.mobile }}
                             </p>
                         </div>
                         <div>
-                            <p class="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                            <p class="mb-2 text-xs leading-normal text-gray-500">
                                 Last Login
                             </p>
-                            <p class="text-sm font-medium text-gray-800 dark:text-white/90">
+                            <p class="text-sm font-medium text-gray-800">
                                 {{ user.last_login }}
                             </p>
                         </div>

@@ -3,10 +3,11 @@
 import { Button } from '@/components/ui/button';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { User2 } from 'lucide-vue-next';
+import { LogOut } from 'lucide-vue-next';
 import { LogInIcon, UserPlus2 } from 'lucide-vue-next';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 
 const page = usePage()
@@ -23,10 +24,10 @@ const logout = ()=>{
             <div class="flex items-center justify-between gap-2 bg-background/50 py-4 backdrop-blur-md lg:mt-4 lg:rounded-2xl lg:border lg:px-4">
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-12">
-                        <a class="flex items-center gap-2.5" href="/"
-                        ><img src="/images/logo.png" class="size-12 rounded-md" alt="Signboard Logo" />
-                            <h2 class="text-md font-bold">Signboard Ghana</h2></a
-                        >
+                        <Link class="flex items-center gap-2.5" :href="route('home')">
+                            <img src="/images/logo.png" class="size-12 rounded-md" alt="Signboard Logo" />
+                            <h2 class="text-md font-bold">Signboard Ghana</h2>
+                        </Link>
                         <div class="hidden items-center gap-5 text-sm font-medium text-muted-foreground lg:flex">
                             <a target="" class="hover:text-foreground" href="/blocks">Home</a>
                             <a target="" class="hover:text-foreground" href="/templates">Signboards</a>
@@ -37,13 +38,13 @@ const logout = ()=>{
                 <div class="flex items-center gap-3">
                     <div class="flex items-center gap-4">
                         <div v-if="!user" class="hidden gap-1 sm:flex">
-                            <Button  @click="router.visit(route('login'))" variant="secondary" class="px-[3.5rem]">
+                            <Button  @click="router.visit(route('login'))" variant="secondary" class="px-[1rem]">
                                 <div><LogInIcon /></div>
                                 Login
                             </Button>
                         </div>
                         <div v-if="!user" class="ms-4 flex flex-col items-center space-x-1">
-                            <Button  @click="router.visit(route('register'))" class="px-[3.5rem]">
+                            <Button  @click="router.visit(route('register'))" class="px-[1rem]">
                                 <div><UserPlus2 /></div>
                                 Join Now
                             </Button>
@@ -52,12 +53,17 @@ const logout = ()=>{
                             <Popover>
                                 <PopoverTrigger as-child>
                                     <div class="lex flex flex-col items-center justify-center cursor-pointer">
-                                        <User2 />
-                                        <div>{{ user?.lastname }}</div>
+                                        <Avatar class="h-12 w-12">
+                                            <AvatarImage :src="user.avatar?.original_url ?? ''" />
+                                            <AvatarFallback class="bg-gray-300">{{ user.initials }}</AvatarFallback>
+                                        </Avatar>
                                     </div>
                                 </PopoverTrigger>
                                 <PopoverContent class="w-60">
                                     <div class="grid">
+                                        <div class="p-1.5 text-fade font-bold">
+                                            {{ user?.fullname }}
+                                        </div>
                                         <Link href="#" class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2">
                                             <span>Dashboard Area</span>
                                             <LayoutDashboard class="ms-auto" :size="16"/>
@@ -70,10 +76,13 @@ const logout = ()=>{
                                             <span>Help</span>
                                             <HandHelping class="ms-auto" :size="16"/>
                                         </Link>
+                                        <Link :href="route('logout')" method="post" class="p-1.5 border-0 text-destructive cursor-pointer hover:bg-destructive items-center hover:text-white flex gap-2">
+                                            <span>Logout</span>
+                                            <LogOut class="ms-auto" :size="16"/>
+                                        </Link>
                                     </div>
                                 </PopoverContent>
                             </Popover>
-                            <Button class="bg-destructive hover:bg-red-700" @click="logout">Logout</Button>
                         </div>
                         <button class="md:hidden">
                             <svg
