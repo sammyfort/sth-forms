@@ -1,24 +1,20 @@
 <script setup lang="ts">
 
 import Layout from '@/layouts/Layout.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head } from '@inertiajs/vue3';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Facebook, Instagram, Linkedin, UserPen } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import InputText from '@/components/InputText.vue';
 import PersonalDetailsCard from '@/components/profile/PersonalDetailsCard.vue';
-import { computed } from 'vue';
 import SocialsCard from '@/components/profile/SocialsCard.vue';
-
-const page = usePage()
-const user = computed(()=> page.props.auth.user)
 </script>
 
 <template>
     <Layout>
         <Head title="Profile"/>
-        <div class="flex w-full py-6 lg:justify-center lg:p-8">
-            <div class="container">
+        <div class="flex w-full py-6 lg:justify-center">
+            <div class="w-full">
                 <div class="mb-3 font-black text-xl">
                     Profile Details
                 </div>

@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+
 import Layout from '@/layouts/Layout.vue';
+import Home from '@/pages/Home.vue';
 </script>
 
 <template>
-    <Head title="Home" />
+    <Home title="Business Details"/>
     <Layout>
-        <div>
-            Home
-        </div>
+        My Business Details
     </Layout>
 </template>
+
+<style scoped>
+
+</style>

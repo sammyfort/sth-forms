@@ -174,3 +174,8 @@
 .page{
     background-color: var(--color-gray-50);
 }
+
+.active-nav{
+    border-bottom: 3px solid var(--primary);
+    color: var(--secondary);
+}
