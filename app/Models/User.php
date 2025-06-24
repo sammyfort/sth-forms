@@ -28,8 +28,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $password
  * @property bool $is_active
  * @property string $last_login
- * @property string $created_by_id
- * @property string $deleted_by_id
+ * @property int $created_by_id
  * @property string $created_at
  * @property string $updated_at
  * @property string $initials
