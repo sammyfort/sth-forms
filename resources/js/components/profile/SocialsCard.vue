@@ -29,7 +29,7 @@ const goToSocial = (url: string | null) => {
             <div class="flex w-full flex-col items-center gap-4 lg:flex-row">
                 <ProfileAvatar />
                 <div>
-                    <div class="text-lg font-semibold">{{ user.fullname }}</div>
+                    <div class="text-lg font-semibold lg:text-start text-center">{{ user.fullname }}</div>
                     <div class="text-fade flex h-5 items-center space-x-2 text-sm">
                         <div>{{ user.email }}</div>
                         <Separator orientation="vertical" />
