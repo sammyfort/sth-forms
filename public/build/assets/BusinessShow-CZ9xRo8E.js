@@ -1,0 +1,1 @@
+import{_ as t}from"./Layout.vue_vue_type_script_setup_true_lang-U_LttWOM.js";import{d as a,c as n,o,a as s,u as r,g as i,w as l,b as u,F as _}from"./app-BSZcX6W-.js";const d=a({__name:"BusinessShow",setup(m){return(c,e)=>(o(),n(_,null,[s(r(i),{title:"Business Details"}),s(t,null,{default:l(()=>e[0]||(e[0]=[u(" Business Details ")])),_:1,__:[0]})],64))}});export{d as default};

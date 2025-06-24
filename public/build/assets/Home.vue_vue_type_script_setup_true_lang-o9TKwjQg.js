@@ -1,0 +1,1 @@
+import{d as t,c as o,o as s,a,u as n,g as r,w as m,e as _,F as l}from"./app-BSZcX6W-.js";import{_ as u}from"./Layout.vue_vue_type_script_setup_true_lang-U_LttWOM.js";const d=t({__name:"Home",setup(c){return(i,e)=>(s(),o(l,null,[a(n(r),{title:"Home"}),a(u,null,{default:m(()=>e[0]||(e[0]=[_("div",null," Home ",-1)])),_:1,__:[0]})],64))}});export{d as _};
