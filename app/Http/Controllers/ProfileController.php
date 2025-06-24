@@ -86,7 +86,6 @@ class ProfileController extends Controller
             return back()->with(successRes("Your password has been changed successfully"));
         }
         catch (\Exception $exception){
-            dd($exception->getMessage());
             return back()->with(errorRes());
         }
     }
