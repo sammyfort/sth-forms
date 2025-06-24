@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\SocialAuth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\SocialRegistrationPasswordNotification;
 use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthController extends Controller
@@ -30,27 +34,31 @@ class GoogleAuthController extends Controller
                 ->first();
             // register user
             if (!$user) {
+                $password = Str::random(8);
                 $user = User::query()->create([
                     'google_id' => $googleId,
                     'firstname' => $nameParts[0],
                     'lastname' => $nameParts[1] ?? "",
-                    'password' => "google-user-{$googleId}",
+                    'password' => $password,
                     'email' => $googleUser->getEmail(),
                     'email_verified_at' => now(),
                 ]);
                 event(new Registered($user));
                 $user->notify(new WelcomeNotification());
+                $user->notify(new SocialRegistrationPasswordNotification($password, SocialAuth::Google));
                 try {
                     $user->addMediaFromUrl($googleUser->getAvatar())->toMediaCollection('avatar');
                 } catch (\Exception $exception) {
-                    dd($exception->getMessage());
+                    Log::error($exception->getMessage());
                 };
             }
 
             // log user in
             Auth::login($user);
             $user->touch('last_login');
-        } catch (\Exception $exception) {}
+        } catch (\Exception $exception) {
+            Log::error($exception);
+        }
 
         // finally
         return to_route('home');

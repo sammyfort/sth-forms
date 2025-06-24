@@ -25,7 +25,7 @@ class WelcomeNotification extends Notification
     public function toMail(User $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("Welcome to " . env('APP_NAME'))
+            ->subject("Welcome" . env('APP_NAME'))
             ->markdown('mails.welcome', ['user' => $notifiable]);
     }
 
