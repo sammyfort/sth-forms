@@ -11,7 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import InputText from '@/components/InputText.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
-import { toastError, toastSuccess } from '@/lib/helpers';
+import { toastError, toastSuccess, alertResponse } from '@/lib/helpers';
 import { computed, onMounted, ref } from 'vue';
 
 const page = usePage()
@@ -35,10 +35,7 @@ onMounted(()=>{
 const updateDetails = ()=>{
     form.patch(route('profile.edit-socials'), {
         onSuccess: (res) => {
-            const message = res.props.message
-            if (res.props.success) toastSuccess(message)
-            else toastError(message)
-            isOpen.value = false
+            alertResponse(res, () => isOpen.value = false)
         },
         preserveScroll: true
     })

@@ -3,11 +3,9 @@
 import Layout from '@/layouts/Layout.vue';
 import { Head } from '@inertiajs/vue3';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Facebook, Instagram, Linkedin, UserPen } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
-import InputText from '@/components/InputText.vue';
 import PersonalDetailsCard from '@/components/profile/PersonalDetailsCard.vue';
 import SocialsCard from '@/components/profile/SocialsCard.vue';
+import ChangePasswordCard from '@/components/profile/ChangePasswordCard.vue';
 </script>
 
 <template>
@@ -24,22 +22,7 @@ import SocialsCard from '@/components/profile/SocialsCard.vue';
                         <CardContent>
                             <SocialsCard />
                             <PersonalDetailsCard />
-                            <Card class="mt-8 border shadow-none border-gray-200 rounded-2xl">
-                                <CardHeader class="text-lg font-black">Password</CardHeader>
-                                <CardContent>
-                                    <div class="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                                        <div class="md:w-1/3">
-                                            <InputText placeholder="****************************" disabled/>
-                                        </div>
-                                        <Button variant="destructive" class="flex items-center justify-center gap-2 rounded-full border px-8 h-11 py-3">
-                                            <div>
-                                                <UserPen />
-                                            </div>
-                                            <div>Change Password</div>
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <ChangePasswordCard />
                         </CardContent>
                     </Card>
                     <div class="w-full lg:w-1/4 mt-8 lg:mt-0 lg:ps-8">

@@ -20,7 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('edit/personal', [ProfileController::class, 'editPersonalDetails'])->name('edit-personal');
         Route::patch('edit/socials', [ProfileController::class, 'editSocials'])->name('edit-socials');
         Route::post('edit/avatar', [ProfileController::class, 'uploadAvatar'])->name('edit-avatar');
-        Route::put('password', [ProfileController::class, 'updatePassword'])->name('password.update');
+        Route::put('password', [ProfileController::class, 'updatePassword'])->name('password');
     });
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
