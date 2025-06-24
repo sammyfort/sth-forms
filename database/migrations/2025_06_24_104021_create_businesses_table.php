@@ -11,9 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('{{ table }}', function (Blueprint $table) {
+        Schema::create('businesses', function (Blueprint $table) {
              $table->id();
              $table->uuid();
+
+             $table->string('name');
+             $table->string('email')->unique();
+             $table->string('description');
+             $table->string('mobile')->unique();
+             $table->string('facebook')->nullable();
+             $table->string('x')->nullable();
+             $table->string('linkedin')->nullable();
+             $table->string('instagram')->nullable();
 
              $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
@@ -25,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('{{ table }}');
+        Schema::dropIfExists('businesses');
     }
 };

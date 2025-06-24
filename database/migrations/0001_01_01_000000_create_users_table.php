@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->boolean('is_active')->default(true);
             $table->foreignId('created_by_id')->nullable();
-            $table->foreignId('deleted_by_id')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();

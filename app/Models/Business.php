@@ -1,8 +1,7 @@
 <?php
 
-namespace {{ namespace }};
+namespace App\Models;
 
-{{ factoryImport }}
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\BootModelTrait;
 
@@ -14,8 +13,8 @@ use App\Traits\BootModelTrait;
 * @property string $updated_at
 */
 
-class {{ class }} extends Model
+class Business extends Model
 {
-    {{ factory }}
+    //
     use BootModelTrait;
 }
