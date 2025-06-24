@@ -1,4 +1,5 @@
 @component('mail::message')
+
     <p>
         Hi {{$user->firstname}},
         Welcome to Signboard, the platform where businesses go digital! <br>
@@ -13,8 +14,9 @@
         🏪 As a business, manage your listings with ease <br>
         🚀 Ready to get started? @component('mail::button', ['url' => url('/login')]) Login Now @endcomponent
     </p>
-    Cheers, <br>
-    The Signboard Team <br>
-    {{ config('app.name') }} <br>
+
+    Cheers,
+    The Signboard Team
+    {{ config('app.name') }}
     {{ env('APP_URL') }}
 @endcomponent

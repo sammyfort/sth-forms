@@ -1,4 +1,5 @@
 import { toast } from 'vue-sonner'
+import { Page, PageProps } from '@inertiajs/core'
 
 export const toastSuccess = (message: string, description?: string, options? : typeof toast) => {
     toast.success(message, {
@@ -34,4 +35,16 @@ export const getRandomAuthImage = ()=>{
         "/images/auth/9.png",
     ]
     return files[Math.floor(Math.random() * files.length)]
+}
+
+export const alertResponse = (res: Page, sCallback?: CallableFunction, eCallback?: CallableFunction) => {
+    const message = res.props.message
+    if (res.props.success) {
+        toastSuccess(message);
+        if (sCallback) sCallback()
+    }
+    else {
+        toastError(message);
+        if (eCallback) eCallback()
+    }
 }

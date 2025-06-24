@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\UpdatePersonalDetailsRequest;
 use App\Http\Requests\Profile\UpdateSocialsRequest;
+use App\Notifications\PasswordChangedNotification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -76,9 +77,17 @@ class ProfileController extends Controller
             'current_password' => ['required', 'current_password'],
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
-        $request->user()->update([
-            'password' => Hash::make($validated['password']),
-        ]);
-        return back();
+        try {
+            $user = $request->user();
+            $user->update([
+                'password' => Hash::make($validated['password']),
+            ]);
+            $user->notify(new PasswordChangedNotification());
+            return back()->with(successRes("Your password has been changed successfully"));
+        }
+        catch (\Exception $exception){
+            dd($exception->getMessage());
+            return back()->with(errorRes());
+        }
     }
 }
