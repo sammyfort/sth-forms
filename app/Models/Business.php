@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\BootModelTrait;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $id
@@ -17,4 +18,9 @@ class Business extends Model
 {
     //
     use BootModelTrait;
+
+    public function signboards(): HasMany
+    {
+        return $this->hasMany(Signboard::class);
+    }
 }
