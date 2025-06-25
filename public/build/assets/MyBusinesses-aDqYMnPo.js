@@ -1,1 +1,0 @@
-import{_ as t}from"./Layout.vue_vue_type_script_setup_true_lang-U_LttWOM.js";import{d as a,c as n,o,a as s,u as r,g as u,w as _,b as i,F as l}from"./app-BSZcX6W-.js";const d=a({__name:"MyBusinesses",setup(m){return(c,e)=>(o(),n(l,null,[s(r(u),{title:"My Businesses"}),s(t,null,{default:_(()=>e[0]||(e[0]=[i(" My Businesses ")])),_:1,__:[0]})],64))}});export{d as default};
