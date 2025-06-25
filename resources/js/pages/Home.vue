@@ -64,11 +64,9 @@ import Layout from '@/layouts/Layout.vue';
                             </div>
                         </div>
                     </div>
-                    <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative"><img data-aos="fade-up"
-                        data-aos-once="true"
-                        src="/images/tmp/girl.png"
-                        class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate"
-                    >
+                    <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative">
+                        <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/girl.png"
+                        class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate">
                         <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true"
                              class="absolute top-20 -left-6 sm:top-32 sm:left-10 md:top-40 md:left-16 lg:-left-0 lg:top-52 floating-4 aos-init aos-animate">
                             <img src="/images/tmp/calendar.svg" class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16">
