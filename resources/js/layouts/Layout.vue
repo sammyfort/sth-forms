@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import TopNavbar from '@/layouts/TopNavbar.vue';
 import { Toaster } from '@/components/ui/sonner'
-import { onMounted } from 'vue';
+import { HTMLAttributes, onMounted } from 'vue';
 import GLightbox from 'glightbox';
+import { cn } from '@/lib/utils';
+import Footer from '@/layouts/Footer.vue';
 
 type Props = {
     centerX?: boolean,
     centerY?: boolean,
+    class?: HTMLAttributes['class'],
+    style?: HTMLAttributes['style'],
+    isFullWidth?: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
     centerX: false,
     centerY: false,
+    isFullWidth: false,
 })
 
 onMounted(() => {
@@ -23,15 +29,15 @@ onMounted(() => {
 
 <template>
     <Toaster position="top-right" richColors/>
-    <div class="flex min-h-screen flex-col items-center p-3  lg:justify-center lg:p-8 page">
+    <div :class="cn(props.class, 'flex min-h-screen flex-col items-center p-3  lg:justify-center lg:p-8 page')" :style="props.style">
         <a class="hidden bg-gradient-to-b from-blue-500 to-blue-600 px-2 py-3 text-center text-sm text-white md:block lg:font-[500] w-full"
            href="/pricing"
         >
             Notice Board
         </a>
-        <TopNavbar class="max-w-[1900px]"/>
-        <div class="flex w-full opacity-100 mt-5 transition-opacity duration-750 lg:grow starting:opacity-0 max-w-[1900px]"
-             :class="{'justify-center': props.centerX, 'items-center': props.centerY}"
+        <TopNavbar :class="{'max-w-[1700px]': props.isFullWidth, 'max-w-[1900px]': !props.isFullWidth}"/>
+        <div class="flex w-full opacity-100 mt-5 transition-opacity duration-750 lg:grow starting:opacity-0"
+             :class="{'justify-center': props.centerX, 'items-center': props.centerY, 'max-w-[1900px]': !props.isFullWidth}"
         >
             <main v-if="props.centerX">
                 <slot />
@@ -39,6 +45,7 @@ onMounted(() => {
             <slot v-else/>
         </div>
     </div>
+    <Footer />
 </template>
 
 <style scoped>
