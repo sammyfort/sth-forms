@@ -1,1 +1,0 @@
-import{_ as e}from"./Layout.vue_vue_type_script_setup_true_lang-DsiQj03Q.js";import{d as s,f as o,o as t,w as r,a as n,e as _,u as d,g as f}from"./app-dxqvLQFJ.js";const p=s({__name:"Dashboard",setup(l){return(u,a)=>(t(),o(e,null,{default:r(()=>[n(d(f),{title:"Dashboard"}),a[0]||(a[0]=_("div",null," Dashboard ",-1))]),_:1,__:[0]}))}});export{p as default};
