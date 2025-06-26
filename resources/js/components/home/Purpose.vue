@@ -15,13 +15,13 @@
 
             <!-- For Business Owners -->
             <div class="relative md:w-5/12">
-                <img src="/images/tmp/Rectangle 19.png" alt="" class="rounded-2xl">
+                <img src="/images/tmp/business1.jpg" alt="" class="rounded-2xl">
                 <div class="absolute bg-black/20 bottom-0 left-0 right-0 w-full h-full rounded-2xl">
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <h1 class="uppercase text-white font-bold text-center text-sm lg:text-xl mb-3">
                             FOR BUSINESS OWNERS</h1>
                         <button
-                            class="rounded-full text-white border text-xs lg:text-md px-6 py-3 w-full font-medium btn-zoom">
+                            class="rounded-full text-white bg-secondary/50 border border-primary text-xs lg:text-md px-6 py-3 w-full font-medium btn-zoom">
                             List Your Signboard
                         </button>
                     </div>
@@ -30,14 +30,13 @@
 
             <!-- For Customers -->
             <div class="relative md:w-5/12">
-                <img src="/images/tmp/Rectangle 21.png" alt="" class="rounded-2xl">
+                <img src="/images/tmp/business2.jpg" alt="" class="rounded-2xl">
                 <div class="absolute bg-black/20 bottom-0 left-0 right-0 w-full h-full rounded-2xl">
                     <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                         <h1 class="uppercase text-white font-bold text-center text-sm lg:text-xl mb-3">
                             FOR CUSTOMERS</h1>
                         <button
-                            class="rounded-full text-white text-xs lg:text-md px-6 py-3 w-full font-medium btn-zoom"
-                            style="background: rgba(35, 189, 238, 0.9);">
+                            class="rounded-full text-white bg-black/50 border border-white text-xs lg:text-md px-6 py-3 w-full font-medium btn-zoom">
                             Discover Nearby Businesses
                         </button>
                     </div>

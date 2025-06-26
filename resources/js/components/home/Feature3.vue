@@ -8,7 +8,7 @@
         <div data-aos="fade-down" class="md:w-7/12 relative aos-init aos-animate">
             <div class="w-32 h-32 rounded-full absolute z-0 left-4 -top-12 animate-pulse" style="background: rgb(51, 239, 160);"></div>
             <div class="w-5 h-5 rounded-full absolute z-0 left-36 -top-12 animate-ping" style="background: rgb(51, 217, 239);"></div>
-            <img src="/images/tmp/vcall.png" alt="Signboard UI" class="relative z-50 floating">
+            <img src="/images/tmp/interface.png" alt="Signboard UI" class="relative z-50 floating">
             <div class="w-36 h-36 rounded-full absolute z-0 right-16 -bottom-1 animate-pulse" style="background: rgb(91, 97, 235);"></div>
             <div class="w-5 h-5 rounded-full absolute z-0 right-52 bottom-1 animate-ping" style="background: rgb(245, 102, 102);"></div>
         </div>

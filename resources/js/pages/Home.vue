@@ -9,9 +9,8 @@ import Feature1 from '@/components/home/Feature1.vue';
 import Feature2 from '@/components/home/Feature2.vue';
 import Feature3 from '@/components/home/Feature3.vue';
 import Feature4 from '@/components/home/Feature4.vue';
-import Feature5 from '@/components/home/Feature5.vue';
-import Feature6 from '@/components/home/Feature6.vue';
-import Feature7 from '@/components/home/Feature7.vue';
+import Ratings from '@/components/home/Ratings.vue';
+import CustomerEngagement from '@/components/home/CustomerEngagement.vue';
 </script>
 
 <template>
@@ -29,9 +28,8 @@ import Feature7 from '@/components/home/Feature7.vue';
                 <Feature2 />
                 <Feature3 />
                 <Feature4 />
-                <Feature5 />
-                <Feature6 />
-                <Feature7 />
+                <Ratings />
+                <CustomerEngagement />
 
                 <div class="mt-24 flex flex-col-reverse md:flex-row items-start md:gap-x-10">
                     <div data-aos="zoom-in-right" class="md:w-5/12 aos-init aos-animate">
