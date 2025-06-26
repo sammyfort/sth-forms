@@ -12,7 +12,7 @@
                 The platform provides intuitive tools for businesses to manage their signboards, track views, and respond to customer reviews. Users can search, filter, and explore signboards with ease using interactive maps and smart discovery features.
             </p>
         </div>
-        <img data-aos="fade-left" src="/images/tmp/girl-with-books.png" class="md:w-1/2 aos-init aos-animate" alt="Business tools illustration">
+        <img data-aos="fade-left" src="/images/tmp/illustration-2.png" class="md:w-1/2 aos-init aos-animate" alt="Business tools illustration">
     </div>
 </template>
 

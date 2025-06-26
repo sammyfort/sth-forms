@@ -20,7 +20,7 @@
         <!-- Right Image & Play Button -->
         <div data-aos="fade-left" class="sm:w-1/2 relative mt-10 sm:mt-0 aos-init aos-animate">
             <div class="floating w-24 h-24 absolute rounded-lg z-0 -top-3 -left-3" style="background: rgb(35, 189, 238);"></div>
-            <img src="/images/tmp/teacher-explaining.png" alt="Signboard Demo" class="rounded-xl z-40 relative">
+            <img src="/images/tmp/image112.jpeg" alt="Signboard Demo" class="rounded-xl z-40 relative">
             <!-- Play Button -->
             <button
                 class="bg-white w-14 h-14 rounded-full flex items-center justify-center absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 btn-zoom z-50">

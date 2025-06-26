@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import { router } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -59,11 +60,11 @@
                 </div>
             </div>
             <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative">
-                <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/girl.png"
+                <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/girl2.png"
                      class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate">
                 <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true"
                      class="absolute top-20 -left-6 sm:top-32 sm:left-10 md:top-40 md:left-16 lg:-left-0 lg:top-52 floating-4 aos-init aos-animate">
-                    <img src="/images/tmp/calendar.svg" class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16">
+                    <img src="/images/tmp/calendar.png" class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16">
                 </div>
                 <div data-aos="fade-up" data-aos-delay="400" data-aos-once="true"
                      class="absolute top-20 right-10 sm:right-24 sm:top-28 md:top-36 md:right-32 lg:top-32 lg:right-16 floating aos-init aos-animate">
@@ -97,13 +98,13 @@
                         </defs>
                     </svg>
                 </div>
-                <div data-aos="fade-up" data-aos-delay="500" data-aos-once="true"
-                     class="absolute bottom-14 -left-4 sm:left-2 sm:bottom-20 lg:bottom-24 lg:-left-4 floating aos-init aos-animate">
-                    <img src="/images/tmp/ux-class.svg" alt=""
-                         class="bg-white bg-opacity-80 rounded-lg h-20 sm:h-28"></div>
+                <div @click="router.get(route('login'))" data-aos="fade-up" data-aos-delay="500" data-aos-once="true"
+                     class="absolute z-50 bottom-14 -left-4 sm:left-2 sm:bottom-20 lg:bottom-24 lg:-left-4 floating aos-init aos-animate">
+                    <img src="/images/tmp/ux-class.png" alt="" class="bg-white bg-opacity-80 rounded-lg h-20 sm:h-28 cursor-pointer">
+                </div>
                 <div data-aos="fade-up" data-aos-delay="600" data-aos-once="true"
                      class="absolute bottom-20 md:bottom-48 lg:bottom-52 -right-6 lg:right-8 floating-4 aos-init aos-animate">
-                    <img src="/images/tmp/congrat.svg" alt=""
+                    <img src="/images/tmp/congrat.png" alt=""
                          class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16"></div>
             </div>
         </div>

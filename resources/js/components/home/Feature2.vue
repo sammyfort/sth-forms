@@ -19,7 +19,7 @@
             </button>
         </div>
         <div data-aos="fade-left" class="md:w-7/12 aos-init aos-animate">
-            <img src="/images/tmp/girl-with-books.png" alt="Advertise on Signboard" class="md:w-11/12 mx-auto rounded-xl">
+            <img src="/images/tmp/illustration-3.png" alt="Advertise on Signboard" class="md:w-11/12 mx-auto rounded-xl">
         </div>
     </div>
 </template>
