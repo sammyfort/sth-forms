@@ -94,10 +94,7 @@ const props = defineProps<{
                 </Link>
             </div>
 
-            <div
-                v-else
-                class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4"
-            >
+            <div v-else class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4">
                 <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
 
                 <h3 class="text-2xl font-semibold mb-2 text-gray-700">No businesses yet</h3>
