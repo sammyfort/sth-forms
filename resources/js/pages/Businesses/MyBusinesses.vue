@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
 import Layout from '@/layouts/Layout.vue';
-import { Head } from '@inertiajs/vue3';
-import { PlusIcon } from 'lucide-vue-next';
+import { Head, Link } from '@inertiajs/vue3';
+import { PlusIcon, Briefcase} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import CreateBusiness from '@/pages/Businesses/CreateBusiness.vue';
 import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
@@ -10,6 +9,7 @@ import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
 const props = defineProps<{
     businesses: Array<{
         id: number;
+        slug: string;
         name: string;
         email: string;
         mobile: string;
@@ -27,10 +27,12 @@ const props = defineProps<{
     <Head title="My Businesses" />
 
     <Layout>
-        <div class="px-4">
-            <div class="flex justify-end mb-3">
+        <div class="relative min-h-screen px-4 pt-8">
+            <div class="flex justify-end">
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
-                    <Button class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2">
+                    <Button
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
+                    >
                         <PlusIcon class="w-4 h-4" />
                         <span>Add Business</span>
                     </Button>
@@ -38,11 +40,12 @@ const props = defineProps<{
             </div>
 
 
-            <div class="flex flex-wrap items-center justify-center">
-                <div
+            <div v-if="businesses.length" class="mt-4 flex flex-wrap items-center justify-center">
+                <Link
                     v-for="business in businesses"
                     :key="business.id"
-                    class="flex-shrink-0 m-6 relative overflow-hidden bg-orange-500 rounded-lg max-w-xs shadow-lg group"
+                    :href="route('my-businesses.show', business.slug)"
+                    class="flex-shrink-0 m-6 relative overflow-hidden bg-orange-500 rounded-lg max-w-xs shadow-lg group transition-transform hover:scale-105"
                 >
                     <svg
                         class="absolute bottom-0 left-0 mb-8 scale-150 group-hover:scale-[1.65] transition-transform"
@@ -69,9 +72,7 @@ const props = defineProps<{
                         />
                     </svg>
 
-                    <div
-                        class="relative pt-10 px-10 flex items-center justify-center group-hover:scale-110 transition-transform"
-                    >
+                    <div class="relative pt-10 px-10 flex items-center justify-center">
                         <div
                             class="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3"
                             style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;"
@@ -81,25 +82,38 @@ const props = defineProps<{
                             src="/images/business-icon.png"
                             alt="Business Briefcase"
                         />
-
                     </div>
 
                     <div class="relative text-white px-6 pb-6 mt-6">
                         <span class="block opacity-75 -mb-1">{{ business.mobile }}</span>
                         <div class="flex justify-between">
-                            <span class="block font-semibold text-xl">{{business.name}}</span>
-                            <VerifiedBadge   :size="24" color="#1D9BF0" />
-
+                            <span class="block font-semibold text-xl">{{ business.name }}</span>
+                            <VerifiedBadge :size="24" color="#1D9BF0" />
                         </div>
                     </div>
-                </div>
+                </Link>
             </div>
+
+            <div
+                v-else
+                class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4"
+            >
+                <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
+
+                <h3 class="text-2xl font-semibold mb-2 text-gray-700">No businesses yet</h3>
+                <p class="text-base text-gray-500 mb-6">
+                    You haven’t added any businesses yet. Click below to get started.
+                </p>
+                <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
+                    <Button
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2">
+                        <PlusIcon class="w-4 h-4" />
+                        <span>Add First Business</span>
+                    </Button>
+                </CreateBusiness>
+            </div>
+
         </div>
     </Layout>
 </template>
 
-
-
-<style scoped>
-
-</style>

@@ -28,6 +28,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('my-businesses')->name('my-businesses.')->group(function () {
         Route::get('/', [BusinessController::class, 'index'])->name('index');
         Route::post('/create', [BusinessController::class, 'create'])->name('create');
+        Route::get('/{business:slug}', [BusinessController::class, 'show'])->name('show');
+        Route::put('/{business}', [BusinessController::class, 'update'])->name('update');
+        Route::delete('/{business}', [BusinessController::class, 'delete'])->name('delete');
+
     });
 });
 
