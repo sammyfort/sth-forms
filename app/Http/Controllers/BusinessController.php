@@ -32,15 +32,14 @@ class BusinessController extends Controller
     {
 
         $data = $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'mobile' => ['required',],
+            'mobile' => ['required', 'digits:10'],
             'description' => ['required'],
             'facebook' => ['nullable', 'url'],
-            'instagram' => ['required', 'url'],
-            'x' => ['required', 'url'],
-            'linkedin' => ['required', 'url'],
-
+            'instagram' => ['nullable', 'url'],
+            'x' => ['nullable', 'url'],
+            'linkedin' => ['nullable', 'url'],
         ]);
 
         $request->user()->businesses()->create($data);
@@ -62,14 +61,14 @@ class BusinessController extends Controller
         Gate::authorize('update', [$business, request()->user()]);
 
         $data = $request->validate([
-            'name' => ['required'],
+            'name' => ['required', 'string'],
             'email' => ['required', 'email'],
-            'mobile' => ['required',],
-            'facebook' => ['required'],
-            'instagram' => ['required'],
-            'x' => ['required'],
-            'linkedin' => ['required'],
+            'mobile' => ['required', 'digits:10'],
             'description' => ['required'],
+            'facebook' => ['nullable', 'url'],
+            'instagram' => ['nullable', 'url'],
+            'x' => ['nullable', 'url'],
+            'linkedin' => ['nullable', 'url'],
         ]);
 
         $business->update($data);

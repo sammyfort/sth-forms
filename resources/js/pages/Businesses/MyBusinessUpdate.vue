@@ -69,9 +69,9 @@ const updateBusiness = () => {
             </DialogHeader>
             <form @submit.prevent="updateBusiness" id="edit-business-form" class="grid gap-4 py-4">
                 <InputText :form="form" model="name" label="Business Name" required />
-                <InputText :form="form" model="email" label="Email" required />
-                <InputText :form="form" model="mobile" label="Mobile Number" required />
-                <InputText :form="form" model="description" label="Description" required />
+                <InputText :form="form" model="email" label="Email" type="email" required />
+                <InputText :form="form" model="mobile" label="Mobile Number" type="tel" required />
+                <InputText :form="form" model="description" label="Description" textarea required />
                 <InputText :form="form" model="facebook" label="Facebook Link" />
                 <InputText :form="form" model="x" label="X (Twitter) Link" />
                 <InputText :form="form" model="linkedin" label="LinkedIn Link" />

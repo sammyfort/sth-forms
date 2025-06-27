@@ -44,18 +44,18 @@ const createBusiness = ()=>{
             <DialogTrigger as-child>
                 <slot />
             </DialogTrigger>
-            <DialogContent class="sm:max-w-[425px] grid-rows-[auto_minmax(0,1fr)_auto] p-0 max-h-[90dvh]">
+            <DialogContent class="sm:max-w-[600px] max-h-[90dvh] overflow-y-auto">
                 <DialogHeader class="p-6 pb-0">
                     <DialogTitle>Add New Business</DialogTitle>
                     <DialogDescription>
                         Add New Business on Signboard
                     </DialogDescription>
                 </DialogHeader>
-                <form @submit.prevent="createBusiness" id="add-business" class="grid gap-4 py-4 overflow-y-auto px-6">
+                <form @submit.prevent="createBusiness" id="add-business" class="grid gap-4 py-4">
                     <InputText :form="form" label="Business Name" model="name" required />
-                    <InputText :form="form" label="Email Address" model="email" required />
-                    <InputText :form="form" label="Mobile Number" model="mobile" required />
-                    <InputText :form="form" label="Description" model="description" textarea required rows="5" />
+                    <InputText :form="form" label="Email Address" model="email" type="email" required />
+                    <InputText :form="form" label="Mobile Number" model="mobile" type="tel" required />
+                    <InputText :form="form" label="Description" model="description" textarea required/>
                     <InputText :form="form" label="Facebook" model="facebook" />
                     <InputText :form="form" label="Instagram" model="instagram" />
                     <InputText :form="form" label="X (Twitter)" model="x" />
