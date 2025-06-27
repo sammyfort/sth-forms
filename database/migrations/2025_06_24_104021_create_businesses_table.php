@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('businesses', function (Blueprint $table) {
              $table->id();
              $table->uuid();
+             $table->foreignId('user_id')->constrained();
              $table->string('name');
-             $table->string('email')->unique();
+             $table->string('email');
              $table->string('description');
-             $table->string('mobile')->unique();
+             $table->string('mobile');
              $table->string('facebook')->nullable();
              $table->string('x')->nullable();
              $table->string('linkedin')->nullable();

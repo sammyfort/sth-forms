@@ -25,13 +25,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::prefix('businesses')->name('businesses.')->group(function () {
-        Route::get('mine', [BusinessController::class, 'myBusinesses'])->name('mine');
+    Route::prefix('my-businesses')->name('my-businesses.')->group(function () {
+        Route::get('/', [BusinessController::class, 'index'])->name('index');
+        Route::post('/create', [BusinessController::class, 'create'])->name('create');
     });
 });
 
 Route::prefix('businesses')->name('businesses.')->group(function () {
-    Route::get('/', [BusinessController::class, 'index'])->name('index');
+    Route::get('/', [BusinessController::class, 'publicIndex'])->name('index');
 });
 
 require __DIR__.'/auth.php';

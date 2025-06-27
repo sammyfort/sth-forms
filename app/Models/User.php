@@ -7,7 +7,8 @@ namespace App\Models;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
  use Illuminate\Database\Eloquent\Casts\Attribute;
  use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+ use Illuminate\Database\Eloquent\Relations\HasMany;
+ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
  use Illuminate\Support\Carbon;
  use Spatie\MediaLibrary\HasMedia;
@@ -67,6 +68,7 @@ use Illuminate\Notifications\Notifiable;
         return Attribute::make(fn () => $this->lastname[0] . $this->firstname[0]);
     }
 
+
     public function lastLogin(): Attribute
     {
         return Attribute::make(fn ($value) => Carbon::parse($value)->format(dateFormat(true)));
@@ -75,5 +77,10 @@ use Illuminate\Notifications\Notifiable;
     public function avatar(): Attribute
     {
         return Attribute::make(fn () => $this->getFirstMedia('avatar'));
+    }
+
+    public function businesses(): HasMany
+    {
+        return $this->hasMany(Business::class);
     }
 }
