@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head } from '@inertiajs/vue3';
+import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
 
 const props = defineProps<{
     businesses: Array<{
@@ -40,7 +41,17 @@ const props = defineProps<{
                                 >
                                 <div class="ml-2 text-xs font-semibold tracking-wide text-gray-600 uppercase">3 beds &bull; 2 baths</div>
                             </div>
-                            <h4 class="mt-2 truncate text-lg leading-tight font-semibold">{{ business.name }}</h4>
+                            <div class="flex items-center gap-1 mt-2">
+                                <h4 class="truncate text-lg leading-tight font-semibold">
+                                    {{ business.name }}
+                                </h4>
+                                <div class="relative top-[1px]">
+                                    <VerifiedBadge :size="20" color="#f78509" />
+                                </div>
+                            </div>
+
+
+
 
                             <div class="mt-1">
                                 <span>$1,900.00</span>
