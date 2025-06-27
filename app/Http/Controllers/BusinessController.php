@@ -22,7 +22,10 @@ class BusinessController extends Controller
 
     public function publicIndex(): Response
     {
-        return Inertia::render('Businesses/Businesses');
+        $businesses = Business::all();
+        return Inertia::render('Businesses/Businesses', [
+            'businesses' => $businesses,
+        ]);
     }
 
     public function create(Request $request): RedirectResponse

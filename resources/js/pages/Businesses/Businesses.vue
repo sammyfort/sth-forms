@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head } from '@inertiajs/vue3';
+
+const props = defineProps<{
+    businesses: Array<{
+        id: number;
+        slug: string;
+        name: string;
+        email: string;
+        mobile: string;
+        description: string;
+        facebook?: string;
+        x?: string;
+        linkedin?: string;
+        instagram?: string;
+        verified?: boolean,
+    }>;
+}>();
 </script>
 
 <template>
@@ -10,7 +26,7 @@ import { Head } from '@inertiajs/vue3';
             <div class="text-gray-900 antialiased">
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 items-center md:justify-center gap-7">
 
-                    <div v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9]" :key="i" class="overflow-hidden rounded-lg bg-white shadow-2xl">
+                    <div v-for="business in businesses" :key="business.id" class="overflow-hidden rounded-lg bg-white shadow-2xl">
                         <img
                             class="object-end h-48 w-full object-cover"
                             src="https://images.unsplash.com/photo-1570797197190-8e003a00c846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
@@ -24,7 +40,7 @@ import { Head } from '@inertiajs/vue3';
                                 >
                                 <div class="ml-2 text-xs font-semibold tracking-wide text-gray-600 uppercase">3 beds &bull; 2 baths</div>
                             </div>
-                            <h4 class="mt-2 truncate text-lg leading-tight font-semibold">Beautiful Home in the countryside</h4>
+                            <h4 class="mt-2 truncate text-lg leading-tight font-semibold">{{ business.name }}</h4>
 
                             <div class="mt-1">
                                 <span>$1,900.00</span>
