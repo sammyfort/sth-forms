@@ -61,7 +61,7 @@ const createBusiness = ()=>{
                     <InputText :form="form" label="X (Twitter)" model="x" />
                     <InputText :form="form" label="Linkedin" model="linkedin" />
 
-                    />
+
 
                 </form>
                 <DialogFooter class="p-3">
