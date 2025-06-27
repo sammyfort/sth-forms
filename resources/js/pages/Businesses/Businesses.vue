@@ -49,7 +49,7 @@ const props = defineProps<{
                                     {{ business.name }}
                                 </h4>
                                 <div class="relative top-[1px]">
-                                    <VerifiedBadge :size="20" color="#f78509" />
+<!--                                    <VerifiedBadge :size="20" color="#f78509" />-->
                                 </div>
                             </div>
 
