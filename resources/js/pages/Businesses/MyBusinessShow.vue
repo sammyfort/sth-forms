@@ -8,6 +8,7 @@ import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
 import { router } from '@inertiajs/vue3'
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref } from 'vue'
+import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 const props = defineProps<{
     business: {
         id: number;
@@ -25,11 +26,10 @@ const props = defineProps<{
 }>();
 
 
+const showDialog = ref(false)
 const isDeleting = ref(false)
 
 const closeBusiness = () => {
-    if (!confirm('Are you sure you want to close this business?')) return
-
     isDeleting.value = true
 
     router.delete(route('my-businesses.delete', props.business.id), {
@@ -40,6 +40,7 @@ const closeBusiness = () => {
         },
         onFinish: () => {
             isDeleting.value = false
+            showDialog.value = false
         },
         preserveScroll: true,
     })
@@ -62,7 +63,7 @@ const closeBusiness = () => {
                 <div class="text-center">
                     <div class="flex justify-center items-center gap-2">
                         <h1 class="text-3xl font-bold text-gray-800">{{ business.name }}</h1>
-                        <VerifiedBadge :size="28" color="#1D9BF0" />
+<!--                        <VerifiedBadge :size="28" color="#1D9BF0" />-->
                     </div>
                     <p class="text-orange-600 font-medium text-lg">{{ business.email }}</p>
                     <p class="text-gray-500">{{ business.mobile }}</p>
@@ -100,14 +101,22 @@ const closeBusiness = () => {
                             Edit Business
                         </Button>
                     </MyBusinessUpdate>
-                    <Button
-                        :disabled="isDeleting"
-                        @click="closeBusiness"
+                    <Button variant="destructive" @click="showDialog = true"
                         class="bg-red-500 text-white hover:bg-red-600 px-6 py-2 rounded-lg font-semibold transition"
                     >
                         <span v-if="!isDeleting">Close Business</span>
                         <span v-else>Closing...</span>
                     </Button>
+
+                    <ConfirmDialogue
+                        v-model:open="showDialog"
+                        :loading="isDeleting"
+                        title="Close this business?"
+                        description="This will permanently remove the business. Are you sure?"
+                        confirmText="Yes, Close it"
+                        cancelText="Cancel"
+                        @confirm="closeBusiness"
+                    />
 
 
                 </div>

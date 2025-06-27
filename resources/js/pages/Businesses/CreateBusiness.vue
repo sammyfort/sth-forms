@@ -59,7 +59,9 @@ const createBusiness = ()=>{
                     <InputText :form="form" label="Instagram" model="instagram" required/>
                     <InputText :form="form" label="X (Twitter)" model="x" required/>
                     <InputText :form="form" label="Linkedin" model="linkedin" required/>
-                    <InputText :form="form" type="textarea" label="Business Description" model="description" required/>
+                    <InputText label="Description" model="description" textarea required rows="5" :form="form"
+                    />
+
                 </form>
                 <DialogFooter class="p-3">
                     <Button :disabled="form.processing" type="submit" form="add-business">

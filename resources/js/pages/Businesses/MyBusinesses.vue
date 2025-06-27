@@ -28,7 +28,7 @@ const props = defineProps<{
 
     <Layout>
         <div class="relative min-h-screen px-4 pt-8">
-            <div class="flex justify-end">
+            <div class="fixed top-50 right-6 z-50">
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
                         class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
@@ -38,7 +38,6 @@ const props = defineProps<{
                     </Button>
                 </CreateBusiness>
             </div>
-
 
             <div v-if="businesses.length" class="mt-4 flex flex-wrap items-center justify-center">
                 <Link
@@ -88,7 +87,7 @@ const props = defineProps<{
                         <span class="block opacity-75 -mb-1">{{ business.mobile }}</span>
                         <div class="flex justify-between">
                             <span class="block font-semibold text-xl">{{ business.name }}</span>
-                            <VerifiedBadge :size="24" color="#1D9BF0" />
+<!--                            <VerifiedBadge :size="24" color="#1D9BF0" />-->
                         </div>
                     </div>
                 </Link>
