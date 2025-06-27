@@ -52,14 +52,15 @@ const createBusiness = ()=>{
                     </DialogDescription>
                 </DialogHeader>
                 <form @submit.prevent="createBusiness" id="add-business" class="grid gap-4 py-4 overflow-y-auto px-6">
-                    <InputText :form="form" label="Business Name" model="name" required/>
-                    <InputText :form="form" label="Email Address" model="email" required/>
-                    <InputText :form="form" label="Mobile Number" model="mobile" required/>
-                    <InputText :form="form" label="Facebook" model="facebook" required/>
-                    <InputText :form="form" label="Instagram" model="instagram" required/>
-                    <InputText :form="form" label="X (Twitter)" model="x" required/>
-                    <InputText :form="form" label="Linkedin" model="linkedin" required/>
-                    <InputText label="Description" model="description" textarea required rows="5" :form="form"
+                    <InputText :form="form" label="Business Name" model="name" required />
+                    <InputText :form="form" label="Email Address" model="email" required />
+                    <InputText :form="form" label="Mobile Number" model="mobile" required />
+                    <InputText :form="form" label="Description" model="description" textarea required rows="5" />
+                    <InputText :form="form" label="Facebook" model="facebook" />
+                    <InputText :form="form" label="Instagram" model="instagram" />
+                    <InputText :form="form" label="X (Twitter)" model="x" />
+                    <InputText :form="form" label="Linkedin" model="linkedin" />
+
                     />
 
                 </form>

@@ -117,8 +117,6 @@ const closeBusiness = () => {
                         cancelText="Cancel"
                         @confirm="closeBusiness"
                     />
-
-
                 </div>
                 <div class="flex justify-center gap-6 mt-8 text-gray-500 text-xl">
                     <a v-if="business.x" :href="business.x" target="_blank" class="hover:text-black">
