@@ -19,9 +19,9 @@ class UserSeeder extends Seeder
             'uuid' => Str::uuid(),
             'firstname' => 'Admin',
             'lastname' => 'User',
-            'email'=> 'thesamuelfort@gmail.com',
+            'email'=> 'test@app.com',
             'mobile' => '0248297302',
-            'password' => Hash::make('123'),
+            'password' => "123",
             'email_verified_at' => now(),
         ]);
     }

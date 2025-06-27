@@ -31,10 +31,10 @@ class BusinessController extends Controller
     public function create(Request $request): RedirectResponse
     {
 
-      $data =  $request->validate([
-           'name' => ['required'],
+        $data = $request->validate([
+            'name' => ['required'],
             'email' => ['required', 'email'],
-            'mobile' => ['required', ],
+            'mobile' => ['required',],
             'facebook' => ['required'],
             'instagram' => ['required'],
             'x' => ['required'],
@@ -50,7 +50,6 @@ class BusinessController extends Controller
     public function show(Business $business): Response
     {
         Gate::authorize('view', [$business, request()->user()]);
-
         return inertia('Businesses/MyBusinessShow', [
             'business' => $business,
         ]);
@@ -60,10 +59,10 @@ class BusinessController extends Controller
     {
         Gate::authorize('update', [$business, request()->user()]);
 
-        $data =  $request->validate([
+        $data = $request->validate([
             'name' => ['required'],
             'email' => ['required', 'email'],
-            'mobile' => ['required', ],
+            'mobile' => ['required',],
             'facebook' => ['required'],
             'instagram' => ['required'],
             'x' => ['required'],
@@ -71,7 +70,7 @@ class BusinessController extends Controller
             'description' => ['required'],
         ]);
 
-       $business->update($data);
+        $business->update($data);
         return back()->with(successRes("Business updated successfully."));
     }
 
@@ -83,7 +82,6 @@ class BusinessController extends Controller
         return redirect()->route('my-businesses.index')
             ->with(successRes("Business deleted successfully."));
     }
-
 
 
 }
