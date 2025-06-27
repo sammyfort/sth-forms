@@ -1,6 +1,26 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head } from '@inertiajs/vue3';
+import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
+import CreateBusiness from '@/pages/Businesses/CreateBusiness.vue';
+import { Briefcase, PlusIcon } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+
+const props = defineProps<{
+    businesses: Array<{
+        id: number;
+        slug: string;
+        name: string;
+        email: string;
+        mobile: string;
+        description: string;
+        facebook?: string;
+        x?: string;
+        linkedin?: string;
+        instagram?: string;
+        verified?: boolean,
+    }>;
+}>();
 </script>
 
 <template>
@@ -8,9 +28,9 @@ import { Head } from '@inertiajs/vue3';
     <Layout>
         <div class="w-full">
             <div class="text-gray-900 antialiased">
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 items-center md:justify-center gap-7">
+                <div  v-if="businesses.length"  class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 items-center md:justify-center gap-7">
 
-                    <div v-for="i in [1, 2, 3, 4, 5, 6, 7, 8, 9]" :key="i" class="overflow-hidden rounded-lg bg-white shadow-2xl">
+                    <div v-for="business in businesses" :key="business.id" class="overflow-hidden rounded-lg bg-white shadow-2xl" >
                         <img
                             class="object-end h-48 w-full object-cover"
                             src="https://images.unsplash.com/photo-1570797197190-8e003a00c846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
@@ -24,7 +44,14 @@ import { Head } from '@inertiajs/vue3';
                                 >
                                 <div class="ml-2 text-xs font-semibold tracking-wide text-gray-600 uppercase">3 beds &bull; 2 baths</div>
                             </div>
-                            <h4 class="mt-2 truncate text-lg leading-tight font-semibold">Beautiful Home in the countryside</h4>
+                            <div class="flex items-center gap-1 mt-2">
+                                <h4 class="truncate text-lg leading-tight font-semibold">
+                                    {{ business.name }}
+                                </h4>
+                                <div class="relative top-[1px]">
+                                    <VerifiedBadge :size="20" color="#f78509" />
+                                </div>
+                            </div>
 
                             <div class="mt-1">
                                 <span>$1,900.00</span>
@@ -44,6 +71,16 @@ import { Head } from '@inertiajs/vue3';
                             </div>
                         </div>
                     </div>
+
+                </div>
+
+                <div v-else class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4">
+                    <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
+
+                    <h3 class="text-2xl font-semibold mb-2 text-gray-700">No businesses yet</h3>
+                    <p class="text-base text-gray-500 mb-6">
+                        No Businesses Available Yet.
+                    </p>
 
                 </div>
             </div>
