@@ -24,9 +24,9 @@ import ToolsForBusiness from '@/components/home/ToolsForBusiness.vue';
                 <TrustedBusinessesSection />
                 <FeaturesIntro />
                 <Purpose />
-                <EverythingYouNeed />
                 <BoostVisibility />
                 <UserInterfaceForBusinesses />
+                <EverythingYouNeed />
                 <ToolsForBusiness />
                 <Ratings />
                 <CustomerEngagement />

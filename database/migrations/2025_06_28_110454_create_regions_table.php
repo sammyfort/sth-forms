@@ -10,10 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('signboard_signboard_categories', function (Blueprint $table) {
+        Schema::create('regions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('signboard_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->constrained('signboard_categories')->cascadeOnDelete();
+            $table->uuid();
+            $table->string('name');
+            $table->string('slug')->unique();
+            $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('signboard_signboard_categories');
+        Schema::dropIfExists('regions');
     }
 };

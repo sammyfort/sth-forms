@@ -1,20 +1,18 @@
 import type { LucideIcon } from 'lucide-vue-next';
 import type { Config } from 'ziggy-js';
 
+
+export interface ModelI {
+    id: number;
+    uuid: string;
+    createdBy?: User;
+    created_by_id?: number;
+    created_at: string;
+    updated_at: string;
+}
+
 export interface Auth {
     user: User;
-}
-
-export interface BreadcrumbItem {
-    title: string;
-    href: string;
-}
-
-export interface NavItem {
-    title: string;
-    href: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
 }
 
 export type AppPageProps<T extends Record<string, unknown> = Record<string, unknown>> = T & {
@@ -27,9 +25,7 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     message: string
 };
 
-export interface User {
-    id: number;
-    uuid: string;
+export interface User extends ModelI{
     firstname: string;
     lastname: string;
     fullname: string;
@@ -37,12 +33,8 @@ export interface User {
     mobile: string;
     email: string;
     email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
     password: string;
     is_active: boolean;
-    created_by: string;
-    deleted_by: string;
     facebook: string;
     x: string;
     instagram: string;
@@ -51,7 +43,7 @@ export interface User {
     avatar?: MediaI,
 }
 
-export interface MediaI {
+export interface MediaI{
     "id": number,
     "model_type": string,
     "model_id": number,
@@ -69,4 +61,62 @@ export interface MediaI {
     "original_url": string,
 }
 
-export type BreadcrumbItemType = BreadcrumbItem;
+export interface BusinessI extends ModelI{
+    slug: string;
+    name: string;
+    email: string;
+    mobile: string;
+    description: string;
+    facebook?: string;
+    x?: string;
+    linkedin?: string;
+    instagram?: string;
+    verified?: boolean,
+}
+
+export interface SignboardCategory extends ModelI{
+    slug: string
+    name: string
+    description: string
+}
+
+export interface Region extends ModelI{
+    name: string
+    slug: string
+}
+
+export interface SignboardI extends ModelI{
+    business_id: number;
+    business: BusinessI;
+    categories: SignboardCategory[],
+    region: Region;
+    region_id: number;
+    town: string;
+    landmark: string;
+    street: string;
+    blk_number: string;
+    gps: string;
+}
+
+export interface PaginationLinkI {
+    active: boolean
+    label: string
+    url?: string|null
+}
+
+export interface PaginatedDataI<DT> {
+    current_page: number,
+    data?: DT[],
+    first_page_url: string,
+    from: number,
+    last_page: number,
+    last_page_url: string,
+    links: PaginationLinkI[],
+    next_page_url: string,
+    path: string,
+    per_page: number,
+    prev_page_url: string,
+    to: number,
+    total: number,
+}
+

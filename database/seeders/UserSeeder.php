@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Business;
+use App\Models\Region;
+use App\Models\Signboard;
+use App\Models\SignboardCategory;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,7 +19,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        $user = User::query()->create([
             'uuid' => Str::uuid(),
             'firstname' => 'Admin',
             'lastname' => 'User',
@@ -24,5 +28,22 @@ class UserSeeder extends Seeder
             'password' => "123",
             'email_verified_at' => now(),
         ]);
+        $signboardCategory = SignboardCategory::query()->pluck('id');
+        $regions = Region::query()->pluck('id');
+
+        Business::factory(30)
+            ->for($user)
+            ->create()
+            ->each(function ($business) use ($signboardCategory, $regions) {
+                Signboard::factory(20)
+                    ->for($business)
+                    ->create([
+                        'region_id' => $regions->random(),
+                    ])
+                    ->each(function (Signboard $signboard) use ($signboardCategory) {
+                        $signboard->categories()
+                            ->attach($signboardCategory->take(rand(3, 10))->toArray());
+                    });
+            });
     }
 }

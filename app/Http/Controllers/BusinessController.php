@@ -11,19 +11,18 @@ use Inertia\Response;
 
 class BusinessController extends Controller
 {
-
     public function index(): Response
     {
-        $businesses = request()->user()->businesses()->latest()->get();
-        return Inertia::render('Businesses/MyBusinesses', [
+        $businesses = Business::all();
+        return Inertia::render('Businesses/Businesses', [
             'businesses' => $businesses,
         ]);
     }
 
-    public function publicIndex(): Response
+    public function myBusinesses(): Response
     {
-        $businesses = Business::all();
-        return Inertia::render('Businesses/Businesses', [
+        $businesses = request()->user()->businesses()->latest()->get();
+        return Inertia::render('Businesses/MyBusinesses', [
             'businesses' => $businesses,
         ]);
     }

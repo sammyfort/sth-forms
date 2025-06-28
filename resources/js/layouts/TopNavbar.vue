@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { LogOut } from 'lucide-vue-next';
-import { LogInIcon, UserPlus2, Milestone, Building2, Menu } from 'lucide-vue-next';
+import { UserPlus2, Milestone, Building2, Menu } from 'lucide-vue-next';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -32,17 +32,17 @@ const user = computed(() => page.props.auth.user)
                                 :href="route('home')"
                             >Home</Link>
                             <Link
-                                :class="{ 'active-nav': $page.component === 'Businesses/Businesses' }"
-                                class="hover:text-primary py-4"
-                                :href="route('businesses.index')"
-                            >Browse Businesses</Link>
-                            <Link
                                 :class="{ 'active-nav': $page.component === 'Signboards/Signboards' }"
+                                class="hover:text-primary py-4"
+                                :href="route('signboards.index')"
+                            >Browse Signboards</Link>
+                            <Link
+                                :class="{ 'active-nav': $page.component === 'Signboards/Signboard' }"
                                 class="hover:text-primary"
                                 href="/templates"
-                            >Find A Business</Link>
+                            >Locate A Signboard</Link>
                             <Link
-                                :class="{ 'active-nav': $page.component === 'Signboards/Signboards' }"
+                                :class="{ 'active-nav': $page.component === 'Signboards/Signboard' }"
                                 class="hover:text-primary"
                                 href="/templates"
                             >Company</Link>
