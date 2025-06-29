@@ -5,7 +5,6 @@ import { Input } from '@/components/ui/input';
 import { HTMLAttributes, useAttrs } from 'vue';
 import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea'
-import { useAttrs } from 'vue';
 
 type Props = {
     form?: Record<string, any>;
