@@ -40,12 +40,9 @@ class BusinessController extends Controller
             'x' => ['nullable', 'url'],
             'linkedin' => ['nullable', 'url'],
         ]);
-
         $request->user()->businesses()->create($data);
         return back()->with(successRes("Business created successfully."));
-
     }
-
     public function show(Business $business): Response
     {
         Gate::authorize('view', [$business, request()->user()]);
@@ -57,7 +54,6 @@ class BusinessController extends Controller
     public function update(Request $request, Business $business): RedirectResponse
     {
         Gate::authorize('update', [$business, request()->user()]);
-
         $data = $request->validate([
             'name' => ['required', 'string'],
             'email' => ['required', 'email'],
@@ -68,10 +64,10 @@ class BusinessController extends Controller
             'x' => ['nullable', 'url'],
             'linkedin' => ['nullable', 'url'],
         ]);
-
         $business->update($data);
         return back()->with(successRes("Business updated successfully."));
     }
+
 
     public function delete(Business $business): RedirectResponse
     {
