@@ -1,4 +1,3 @@
-import type { LucideIcon } from 'lucide-vue-next';
 import type { Config } from 'ziggy-js';
 
 
@@ -74,13 +73,13 @@ export interface BusinessI extends ModelI{
     verified?: boolean,
 }
 
-export interface SignboardCategory extends ModelI{
+export interface SignboardCategoryI extends ModelI{
     slug: string
     name: string
     description: string
 }
 
-export interface Region extends ModelI{
+export interface RegionI extends ModelI{
     name: string
     slug: string
 }
@@ -88,8 +87,8 @@ export interface Region extends ModelI{
 export interface SignboardI extends ModelI{
     business_id: number;
     business: BusinessI;
-    categories: SignboardCategory[],
-    region: Region;
+    categories: SignboardCategoryI[],
+    region: RegionI;
     region_id: number;
     town: string;
     landmark: string;

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
 use App\Models\Signboard;
+use App\Models\SignboardCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
@@ -18,8 +20,14 @@ class SignboardController extends Controller
             })
             ->inRandomOrder()
             ->paginate(8);
+
+        $regions = Region::query()->select(['id', 'name'])->get();
+        $categories = SignboardCategory::query()->select(['id', 'name'])->get();
+
         return Inertia::render('Signboards/Signboards', [
-            'signboards' => $signboards
+            'signboardsData' => $signboards,
+            'regions' =>  $regions,
+            'categories' =>  $categories,
         ]);
     }
 
