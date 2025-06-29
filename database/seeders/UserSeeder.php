@@ -29,6 +29,7 @@ class UserSeeder extends Seeder
                 'password' => "123",
                 'email_verified_at' => now(),
             ],
+
             [
                 'uuid' => Str::uuid(),
                 'firstname' => 'Emmanuel',

@@ -20,7 +20,7 @@ const props = defineProps<{
 const signboards = ref<SignboardI[]>([])
 
 onMounted(async ()=>{
-    signboards.value = (await getPromotedSignboards()).signboards
+    signboards.value = (await getApi('promotedSignboards')).metadata.signboards
 })
 </script>
 
