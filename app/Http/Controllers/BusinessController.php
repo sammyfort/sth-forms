@@ -30,16 +30,7 @@ class BusinessController extends Controller
     public function create(Request $request): RedirectResponse
     {
 
-        $data = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'mobile' => ['required', 'digits:10'],
-            'description' => ['required'],
-            'facebook' => ['nullable', 'url'],
-            'instagram' => ['nullable', 'url'],
-            'x' => ['nullable', 'url'],
-            'linkedin' => ['nullable', 'url'],
-        ]);
+        $data = $request->validate( $data = $request->validate($this->rules()));
         $request->user()->businesses()->create($data);
         return back()->with(successRes("Business created successfully."));
     }
@@ -54,16 +45,7 @@ class BusinessController extends Controller
     public function update(Request $request, Business $business): RedirectResponse
     {
         Gate::authorize('update', [$business, request()->user()]);
-        $data = $request->validate([
-            'name' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'mobile' => ['required', 'digits:10'],
-            'description' => ['required'],
-            'facebook' => ['nullable', 'url'],
-            'instagram' => ['nullable', 'url'],
-            'x' => ['nullable', 'url'],
-            'linkedin' => ['nullable', 'url'],
-        ]);
+        $data = $request->validate($this->rules());
         $business->update($data);
         return back()->with(successRes("Business updated successfully."));
     }
@@ -76,6 +58,20 @@ class BusinessController extends Controller
         $business->delete();
         return redirect()->route('my-businesses.index')
             ->with(successRes("Business deleted successfully."));
+    }
+
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email'],
+            'mobile' => ['required', 'digits:10'],
+            'description' => ['required'],
+            'facebook' => ['nullable', 'url'],
+            'instagram' => ['nullable', 'url'],
+            'x' => ['nullable', 'url'],
+            'linkedin' => ['nullable', 'url'],
+        ];
     }
 
 
