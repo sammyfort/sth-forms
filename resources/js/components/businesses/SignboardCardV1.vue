@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
 import { cn } from '@/lib/utils';
 import { HTMLAttributes } from 'vue';
 import { SignboardI } from '@/types';
@@ -40,13 +39,7 @@ const props = withDefaults(
             src="https://images.unsplash.com/photo-1570797197190-8e003a00c846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
             alt="Home in Countryside"
         />
-        <div class="p-4 h-[250px] flex flex-col gap-2">
-<!--            <div class="flex items-baseline">-->
-<!--                <span class="inline-block rounded-full bg-teal-200 px-4 py-1 text-xs font-semibold tracking-wide text-teal-800 uppercase">-->
-<!--                    New-->
-<!--                </span>-->
-<!--                <div class="ml-2 text-xs font-semibold tracking-wide text-gray-600 uppercase">3 beds &bull; 2 baths</div>-->
-<!--            </div>-->
+        <div class="p-4 h-[270px] flex flex-col gap-2">
             <div class="flex flex-wrap gap-x-2 gap-y-0 text-xs">
                 <div class="flex items-center truncate" v-for="category in signboard.categories" :key="category.id">
                     <Dot class="text-primary h-5 w-5" :size="35"/>
