@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BootModelTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,17 +20,22 @@ use Spatie\Tags\HasTags;
 class Signboard extends Model
 {
     //
-    use BootModelTrait,HasTags;
+    use BootModelTrait, HasTags, HasFactory;
 
     public function business(): BelongsTo
     {
         return $this->belongsTo(Business::class);
     }
 
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+    }
+
     public function categories(): BelongsToMany
     {
         return $this->belongsToMany(
-            SignboardCategories::class,
+            SignboardCategory::class,
             'signboard_signboard_categories',
             'signboard_id',
             'category_id'

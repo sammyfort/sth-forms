@@ -12,10 +12,8 @@ return new class extends Migration {
     {
         Schema::create('signboard_signboard_categories', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
             $table->foreignId('signboard_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('signboard_categories')->cascadeOnDelete();
-            $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
         });
     }

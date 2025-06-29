@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use App\Traits\BootModelTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Spatie\Tags\HasSlug;
 
 /**
  * @property string $id
@@ -16,10 +17,10 @@ use Spatie\Tags\HasSlug;
 * @property string $updated_at
 */
 
-class SignboardCategories extends Model
+class SignboardCategory extends Model
 {
     //
-    use BootModelTrait, HasSlug;
+    use BootModelTrait, HasSlug, HasFactory;
 
     public function getSlugOptions() : SlugOptions
     {
@@ -31,7 +32,7 @@ class SignboardCategories extends Model
     public function signboards(): BelongsToMany
     {
         return $this->belongsToMany(
-            SignboardCategories::class,
+            SignboardCategory::class,
             'signboard_signboard_categories',
             'category_id',
             'signboard_id'

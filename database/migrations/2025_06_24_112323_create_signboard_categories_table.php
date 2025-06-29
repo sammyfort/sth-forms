@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('signboard_categories', function (Blueprint $table) {
              $table->id();
              $table->uuid();
-             $table->string('slug');
+             $table->string('slug')->unique();
              $table->string('name');
              $table->string('description')->nullable();
              $table->foreignId('created_by_id')->nullable();

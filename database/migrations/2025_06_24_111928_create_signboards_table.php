@@ -14,10 +14,10 @@ return new class extends Migration {
             $table->id();
             $table->uuid();
             $table->foreignId('business_id')->constrained()->cascadeOnDelete();
-            $table->string('region');
+            $table->string('region_id');
             $table->string('town');
-            $table->string('landmark');
             $table->string('street')->nullable();
+            $table->string('landmark');
             $table->string('blk_number')->nullable();
             $table->string('gps');
             $table->foreignId('created_by_id')->nullable();
