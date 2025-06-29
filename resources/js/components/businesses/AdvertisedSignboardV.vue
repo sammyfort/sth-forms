@@ -5,7 +5,7 @@ import { Carousel, CarouselItem, CarouselContent } from '@/components/ui/carouse
 import { cn } from '@/lib/utils';
 import { HTMLAttributes, onMounted, ref } from 'vue';
 import { SignboardI } from '@/types';
-import { getPromotedSignboards } from '@/lib/api';
+import { getApi } from '@/lib/api';
 
 const plugin = Autoplay({
     delay: 3000,
@@ -20,7 +20,7 @@ const props = defineProps<{
 const signboards = ref<SignboardI[]>([])
 
 onMounted(async ()=>{
-    signboards.value = (await getPromotedSignboards()).signboards
+    signboards.value = (await getApi('promotedSignboards')).metadata.signboards
 })
 </script>
 
