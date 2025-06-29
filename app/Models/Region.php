@@ -35,6 +35,5 @@ class Region extends Model
     public function signboards(): HasMany
     {
         return $this->hasMany(Signboard::class);
-
     }
 }

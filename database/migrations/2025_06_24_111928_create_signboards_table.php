@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('signboards', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->foreignId('business_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('business_id')->constrained();
             $table->string('region_id');
             $table->string('town');
             $table->string('street')->nullable();

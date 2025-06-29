@@ -32,16 +32,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{business:slug}', [BusinessController::class, 'show'])->name('show');
         Route::put('/{business}', [BusinessController::class, 'update'])->name('update');
         Route::delete('/{business}', [BusinessController::class, 'delete'])->name('delete');
-
     });
 
-    Route::prefix('signboards')->name('signboards.')->group(function () {
+    Route::prefix('signboard')->as('signboard.')->group(function () {
+        Route::get('/', [SignboardController::class, 'signboards'])->name('index');
+        Route::post('/create', [SignboardController::class, 'create'])->name('create');
+        Route::get('/{signboard:slug}', [SignboardController::class, 'show'])->name('show');
+        Route::put('/{signboard}', [SignboardController::class, 'update'])->name('update');
+        Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
     });
+
+
 });
+
+
 
 Route::prefix('businesses')->name('businesses.')->group(function () {
     Route::get('/', [BusinessController::class, 'index'])->name('index');
 });
+
+
 
 Route::prefix('signboards')->name('signboards.')->group(function () {
     Route::get('/', [SignboardController::class, 'index'])->name('index');
