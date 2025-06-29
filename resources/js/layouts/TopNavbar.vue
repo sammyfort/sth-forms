@@ -64,16 +64,16 @@ const user = computed(() => page.props.auth.user)
                                 <LayoutDashboard  :size="15" class="text-secondary"/> Dashboard
                             </Link>
                             <Link
-                                :class="{ 'active-nav': $page.component === 'Businesses/MyBusinesses' }"
+                                :class="{ 'active-nav': $page.component === 'Businesses/MyBusinesses' || $page.component === 'Businesses/MyBusinessShow'}"
                                 class="hover:text-primary flex items-center gap-1 py-4"
                                 :href="route('my-businesses.index')"
                             >
                                 <Building2 :size="15" class="text-secondary"/> My Business
                             </Link>
                             <Link
-                                :class="{ 'active-nav': $page.component === 'Signboards/MySignboard' }"
+                                :class="{ 'active-nav': $page.component === 'Signboards/MySignboards'|| $page.component === 'Signboards/SignboardShow'}"
                                 class="hover:text-primary flex items-center gap-1 py-4"
-                                href="/templates"
+                                :href="route('my-signboards.index')"
                             >
                                 <Milestone :size="15" class="text-secondary"/> My Signboards
                             </Link>
