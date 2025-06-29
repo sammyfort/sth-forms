@@ -8,7 +8,7 @@ import { SignboardI } from '@/types';
 import { getPromotedSignboards } from '@/lib/api';
 
 const plugin = Autoplay({
-    delay: 3000,
+    delay: 5000,
     stopOnMouseEnter: true,
     stopOnInteraction: false,
 })
@@ -36,7 +36,7 @@ onMounted(async ()=>{
     >
         <CarouselContent :class="cn('mb-5 h-[450px]', props.itemsClass)">
             <CarouselItem class="md:basis-1/2 lg:basis-1/3" v-for="signboard in signboards" :key="signboard.id">
-                <SignboardCardV1 :signboard="signboard"/>
+                <SignboardCardV1 class="border border-secondary" :signboard="signboard"/>
             </CarouselItem>
         </CarouselContent>
     </Carousel>
