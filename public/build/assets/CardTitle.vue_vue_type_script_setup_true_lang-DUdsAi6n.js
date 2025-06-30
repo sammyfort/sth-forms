@@ -1,0 +1,1 @@
+import{j as o}from"./index-n-hAekuF.js";import{d as t,c as n,o as r,r as l,p as c,u as p}from"./app-Ci9WoS2_.js";const f=t({__name:"CardTitle",props:{class:{}},setup(s){const e=s;return(a,m)=>(r(),n("h3",{"data-slot":"card-title",class:c(p(o)("leading-none font-semibold",e.class))},[l(a.$slots,"default")],2))}});export{f as _};
