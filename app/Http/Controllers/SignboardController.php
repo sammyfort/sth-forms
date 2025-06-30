@@ -7,15 +7,9 @@ use App\Http\Requests\Signboard\RateRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
-use Codebyray\ReviewRateable\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Models\Business;
-use App\Models\Region;
-use App\Models\Signboard;
-use App\Models\SignboardCategory;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -83,7 +77,7 @@ class SignboardController extends Controller
             'signboards' => $signboards
         ]);
     }
-  
+
     public function rate(Signboard $signboard, RateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validated();
@@ -117,7 +111,7 @@ class SignboardController extends Controller
             return back()->with(errorRes());
         }
     }
-  
+
     public function mySignboards(): Response
     {
         $user = auth()->user();
