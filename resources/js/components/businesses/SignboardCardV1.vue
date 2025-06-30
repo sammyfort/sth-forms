@@ -6,23 +6,27 @@ import { MapPin, MapPinned, Pin, Dot, Handshake } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/vue3';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui/tooltip'
+import SignboardRating from '@/components/businesses/SignboardRating.vue';
+import StarRating from 'vue-star-rating'
+
 
 const props = withDefaults(
     defineProps<{
         class?: HTMLAttributes['class'],
         imageHeight? : string,
-        signboard: SignboardI
+        signboard: SignboardI,
+        isAdvertised?: boolean,
     }>(),
     {
-        imageHeight: "48"
+        imageHeight: "48",
+        isAdvertised: false,
     }
 )
-
 </script>
 
 <template>
-    <div :class="cn('overflow-hidden relative rounded-lg bg-white shadow hover:border hover:border-primary cursor-pointer transform transition-transform duration-300 hover:scale-98', props.class)">
-        <TooltipProvider>
+    <div :class="cn('overflow-hidden relative  rounded-lg bg-white shadow hover:border hover:border-primary cursor-pointer transform transition-transform duration-300 hover:scale-98', props.class)">
+        <TooltipProvider v-if="isAdvertised">
             <Tooltip>
                 <TooltipTrigger as-child>
                     <div class="absolute top-3 p-1 rounded-[50%] bg-secondary right-3 text-white">
@@ -39,7 +43,7 @@ const props = withDefaults(
             src="https://images.unsplash.com/photo-1570797197190-8e003a00c846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
             alt="Home in Countryside"
         />
-        <div class="p-4 h-[270px] flex flex-col gap-2">
+        <div class="p-4 flex flex-col gap-3">
             <div class="flex flex-wrap gap-x-2 gap-y-0 text-xs">
                 <div class="flex items-center truncate" v-for="category in signboard.categories" :key="category.id">
                     <Dot class="text-primary h-5 w-5" :size="35"/>
@@ -67,22 +71,28 @@ const props = withDefaults(
                 </div>
             </div>
 
-            <div class="flex items-center">
-                <span class="font-semibold text-teal-600">
-                    <span>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="far fa-star"></i>
-                    </span>
+            <div class="flex flex-wrap items-center">
+                <span>
+                    <StarRating
+                        :star-size="17"
+                        :show-rating="false"
+                        :rating="signboard.total_average_rating"
+                        read-only
+                        active-color="#009689"
+                        :rounded-corners="true"
+                        :padding="3"
+                        class="md:w-1/3 w-full"
+                    />
                 </span>
-                <span class="ml-2 text-sm text-gray-600">34 reviews</span>
+                <span class="w-1/3 mx-auto text-center text-sm text-gray-600">{{ signboard.reviews_count }} reviews</span>
+                <SignboardRating :signboard="signboard" :id="`rating-pop-${signboard.id}`">
+                    <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
+                </SignboardRating>
             </div>
 
             <div class="mt-auto ms-auto w-full flex items-baseline">
                 <Link href="" class="underline text-primary hover:text-secondary" size="sm">View Business</Link>
-                <Button size="sm" variant="secondary" class="ms-auto">Contact</Button>
+                <Button size="sm" variant="secondary" class="ms-auto mt-auto">Contact</Button>
             </div>
         </div>
     </div>

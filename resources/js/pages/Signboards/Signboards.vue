@@ -208,13 +208,13 @@ onUnmounted(() => {
                             v-for="signboard in signboardsChunk"
                             :key="signboard.id"
                             class="shadow-2xl"
-                            image-height="30"
+                            image-height="45"
                         />
                         <AdvertisedSignboardsH
-                            containerClass="md:col-span-2 lg:col-span-3 xl:col-span-4 sm:col-span-2 lg:hidden"
+                            containerClass="md:col-span-3 lg:col-span-3 xl:col-span-4 sm:col-span-2 lg:hidden"
                             v-show="signboardsChunk.length > 14"
                         >
-                            <div class="flex items-center gap-2 text-2xl font-bold">
+                            <div class="flex items-center gap-2 lg:text-2xl text-lg font-bold">
                                 <BriefcaseBusiness :size="25" class="text-primary"/>
                                 <span>Trusted Business</span>
                                 <Star :size="25" class="text-primary"/>

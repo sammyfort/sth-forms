@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('signboards')->name('signboards.')->group(function () {
+        Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
     });
 });
 

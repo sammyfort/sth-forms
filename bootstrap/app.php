@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->redirectUsersTo('/');
         $middleware->redirectTo('/');
+        $middleware->redirectGuestsTo('/login');
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

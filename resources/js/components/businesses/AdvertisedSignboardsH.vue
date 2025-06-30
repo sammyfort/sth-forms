@@ -40,7 +40,11 @@ onMounted(async ()=>{
         </div>
         <CarouselContent class="mb-5 shadow-none">
             <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="signboard in signboards" :key="signboard.id">
-                <SignboardCardV1 :class="cn('border border-secondary', props.class)" :signboard="signboard"/>
+                <SignboardCardV1
+                    :is-advertised="true"
+                    :class="cn('border border-secondary', props.class)"
+                    :signboard="signboard"
+                />
             </CarouselItem>
         </CarouselContent>
     </Carousel>

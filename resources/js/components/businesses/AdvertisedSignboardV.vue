@@ -34,9 +34,13 @@ onMounted(async ()=>{
         }"
         orientation="vertical"
     >
-        <CarouselContent :class="cn('mb-5 h-[450px]', props.itemsClass)">
-            <CarouselItem class="md:basis-1/2 lg:basis-1/3" v-for="signboard in signboards" :key="signboard.id">
-                <SignboardCardV1 class="border border-secondary" :signboard="signboard"/>
+        <CarouselContent :class="cn('mb-5', props.itemsClass)">
+            <CarouselItem class="basis-1/3" v-for="signboard in signboards" :key="signboard.id">
+                <SignboardCardV1
+                    :is-advertised="true"
+                    class="border border-secondary"
+                    :signboard="signboard"
+                />
             </CarouselItem>
         </CarouselContent>
     </Carousel>

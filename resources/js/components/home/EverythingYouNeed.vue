@@ -20,7 +20,7 @@ import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.v
         </div>
 
         <div data-aos="fade-left" class="sm:w-1/3 relative mt-10 sm:mt-0 aos-init aos-animate">
-            <AdvertisedSignboardV />
+            <AdvertisedSignboardV items-class="h-[550px]"/>
         </div>
     </div>
 </template>

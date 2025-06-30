@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Traits\BootModelTrait;
+use Codebyray\ReviewRateable\Traits\ReviewRateable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,8 +21,12 @@ use Spatie\Tags\HasTags;
 
 class Signboard extends Model
 {
-    //
-    use BootModelTrait, HasTags, HasFactory;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable;
+
+    protected $appends = [
+        "total_average_rating",
+        "reviews_count"
+    ];
 
     public function business(): BelongsTo
     {
@@ -39,6 +45,20 @@ class Signboard extends Model
             'signboard_signboard_categories',
             'signboard_id',
             'category_id'
+        );
+    }
+
+    public function totalAverageRating(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->overallAverageRating()
+        );
+    }
+
+    public function reviewsCount(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->totalReviews() ?? 0
         );
     }
 }
