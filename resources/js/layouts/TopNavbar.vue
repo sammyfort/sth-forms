@@ -70,7 +70,6 @@ const user = computed(() => page.props.auth.user)
                                 :class="{ 'active-nav': $page.component === 'Businesses/MyBusinesses' || $page.component === 'Businesses/MyBusinessShow'}"
                                 class="hover:text-primary flex items-center gap-1 py-4"
                                 :href="route('my-businesses.index')"
-                                class="hover:text-primary flex items-center gap-1 py-4 text-center"
                             >
                                 <Building2 :size="15" class="text-secondary"/> My Businesses
                             </Link>
