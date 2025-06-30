@@ -54,6 +54,7 @@ Route::prefix('businesses')->name('businesses.')->group(function () {
 
 Route::prefix('signboards')->name('signboards.')->group(function () {
     Route::get('/', [SignboardController::class, 'index'])->name('index');
+    Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
 });
 
 require __DIR__.'/auth.php';

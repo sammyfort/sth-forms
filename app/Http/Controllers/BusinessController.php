@@ -21,7 +21,7 @@ class BusinessController extends Controller
 
     public function myBusinesses(): Response
     {
-        $businesses = request()->user()->businesses()->latest()->get();
+        $businesses = request()->user()->businesses()->latest()->paginate(12);
         return Inertia::render('Businesses/MyBusinesses', [
             'businesses' => $businesses,
         ]);

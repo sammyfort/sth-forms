@@ -21,7 +21,6 @@ class ApiController extends Controller implements HasMiddleware
     {
         return match ($path) {
             'regions' => $this->getRegions(),
-            'promotedSignboards' => $this->getPromotedSignboards(),
             'authBusinesses' => $this->getAuthBusinesses($request),
             default => response()->error('Invalid route path')
         };
@@ -41,20 +40,7 @@ class ApiController extends Controller implements HasMiddleware
             'regions' => $regions
         ]);
     }
-    public function getPromotedSignboards(): JsonResponse
-    {
-        $signboards = Signboard::query()
-            ->with(['business', 'region'])
-            ->with('categories', function ($categoriesQuery) {
-                $categoriesQuery->take(3);
-            })
-            ->inRandomOrder()
-            ->take(10)
-            ->get();
-        return response()->success([
-            'signboards' => $signboards
-        ]);
-    }
+
 
     public function getAuthBusinesses(Request $request): JsonResponse
     {
