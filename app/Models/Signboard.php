@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
+use Codebyray\ReviewRateable\Traits\ReviewRateable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,8 +24,12 @@ use Spatie\Tags\HasTags;
 #[ObservedBy(SignboardObserver::class)]
 class Signboard extends Model
 {
-    //
-    use BootModelTrait, HasTags, HasFactory;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable;
+
+    protected $appends = [
+        "total_average_rating",
+        "reviews_count"
+    ];
 
     public function business(): BelongsTo
     {
@@ -45,4 +51,17 @@ class Signboard extends Model
         );
     }
 
+    public function totalAverageRating(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->overallAverageRating()
+        );
+    }
+
+    public function reviewsCount(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->totalReviews() ?? 0
+        );
+    }
 }

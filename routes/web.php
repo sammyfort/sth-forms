@@ -41,6 +41,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{signboard:slug}', [SignboardController::class, 'show'])->name('show');
         Route::put('/{signboard}', [SignboardController::class, 'update'])->name('update');
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
+        Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
     });
 });
 

@@ -26,6 +26,9 @@
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
 
+    --color-deem: #009689;
+    --color-deem-foreground: hsl(0 0% 98%);
+
     --color-secondary: var(--secondary);
     --color-secondary-foreground: var(--secondary-foreground);
 
@@ -111,6 +114,8 @@
     --popover-foreground: hsl(0 0% 3.9%);
     --primary: #fb8509;
     --primary-foreground: hsl(0 0% 98%);
+    --deem: #009689;
+    --deem-foreground: hsl(0 0% 98%);
     --secondary: #004576;
     --secondary-foreground: hsl(0 0% 96.1%);
     --muted: hsl(0 0% 96.1%);
@@ -148,6 +153,8 @@
     --popover-foreground: hsl(0 0% 3.9%);
     --primary: #fb8509;
     --primary-foreground: hsl(0 0% 98%);
+    --deem: #009689;
+    --deem-foreground: hsl(0 0% 98%);
     --secondary: #004576;
     --secondary-foreground: hsl(0 0% 96.1%);
     --muted: hsl(0 0% 96.1%);
@@ -240,4 +247,13 @@
 .active-nav{
     border-bottom: 3px solid var(--primary);
     color: var(--secondary);
+}
+
+.mobile-active-nav{
+    color: var(--secondary);
+    background-color: var(--primary);
+}
+
+.text-deem{
+    color: #009689;
 }

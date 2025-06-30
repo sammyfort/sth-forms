@@ -95,6 +95,26 @@ export interface SignboardI extends ModelI{
     street: string;
     blk_number: string;
     gps: string;
+    total_average_rating: number,
+    reviews_count: number,
+    reviews: [];
+}
+
+export interface RatingI extends ModelI{
+    key: 'overall' | 'customer_service' | 'quality' | 'price' | 'communication' | 'speed'
+    review_id: number
+    value: number
+}
+
+export interface ReviewI extends ModelI {
+    approved: boolean
+    department: string
+    ratings: RatingI[]
+    recommend: boolean
+    review: string
+    reviewable_id: string
+    reviewable_type: string
+    user_id: number
 }
 
 export interface PaginationLinkI {

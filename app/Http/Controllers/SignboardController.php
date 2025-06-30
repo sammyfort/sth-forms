@@ -2,11 +2,19 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Http\Requests\Signboard\RateRequest;
+use App\Models\Region;
+use App\Models\Signboard;
+use App\Models\SignboardCategory;
+use Codebyray\ReviewRateable\Models\Review;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Models\Business;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,10 +27,11 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class SignboardController extends Controller
 {
-    public function index(): Response{
+    public function index(): Response
+    {
         $signboards = QueryBuilder::for(Signboard::class)
             ->allowedFilters([
-                AllowedFilter::callback('q', function (Builder $query, $input){
+                AllowedFilter::callback('q', function (Builder $query, $input) {
                     $query->where("town", "LIKE", "%$input%")
                         ->orWhere("street", "LIKE", "%$input%")
                         ->orWhere("landmark", "LIKE", "%$input%")
@@ -41,8 +50,12 @@ class SignboardController extends Controller
             ->with('categories', function ($categoriesQuery) {
                 $categoriesQuery->take(3);
             })
+            ->with('reviews', function ($reviewsQuery) {
+                $reviewsQuery->where('user_id', auth()->id())
+                    ->with(['ratings']);
+            })
             ->with(['business', 'region'])
-            ->inRandomOrder()
+//            ->inRandomOrder()
             ->paginate(8);
 
 
@@ -51,8 +64,8 @@ class SignboardController extends Controller
 
         return Inertia::render('Signboards/Signboards', [
             'signboardsData' => $signboards,
-            'regions' =>  $regions,
-            'categories' =>  $categories,
+            'regions' => $regions,
+            'categories' => $categories,
         ]);
     }
 
@@ -70,7 +83,41 @@ class SignboardController extends Controller
             'signboards' => $signboards
         ]);
     }
-
+  
+    public function rate(Signboard $signboard, RateRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        $validatedData = $request->validated();
+        DB::beginTransaction();
+        try {
+            $reviewData = [
+                'review' => $validatedData['review'],
+//                'recommend'  => true,      // Whether the user would recommend the product being reviewed
+                'approved' => true,      // Optionally override default (false) approval by providing 'approved'
+                'ratings' => [
+                    'overall' => $validatedData['overall'],
+                    'customer_service' => $validatedData['customer_service'],
+                    'quality' => $validatedData['quality'],
+                    'price' => $validatedData['price'],
+                    'communication' => $validatedData['communication'],
+                    'speed' => $validatedData['speed'],
+                ],
+            ];
+            // check if user has already rated
+            $review = $signboard->reviews()->where('user_id', auth()->id())->first();
+            if ($review) {
+                $signboard->updateReview($review->id, $reviewData);
+            }
+            else{
+                $signboard->addReview([$reviewData], auth()->id());
+            }
+            DB::commit();
+            return back()->with(successRes('Signboard Rated Successfully'));
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            return back()->with(errorRes());
+        }
+    }
+  
     public function mySignboards(): Response
     {
         $user = auth()->user();
@@ -123,6 +170,4 @@ class SignboardController extends Controller
 
         ];
     }
-
-
 }
