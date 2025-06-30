@@ -48,3 +48,11 @@ export const alertResponse = (res: Page, sCallback?: CallableFunction, eCallback
         if (eCallback) eCallback()
     }
 }
+
+export const chunkArray = <T>(array: T[], size: number): [T[]] => {
+    const result: [] = []
+    for (let i = 0; i < array.length; i += size) {
+        result.push(array.slice(i, i + size) as never)
+    }
+    return result as unknown as [T[]]
+}

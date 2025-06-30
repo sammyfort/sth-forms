@@ -14,18 +14,37 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SignboardController extends Controller
 {
-    public function index(): Response
-    {
-        $signboards = Signboard::query()
-            ->with(['business', 'region'])
+    public function index(): Response{
+        $signboards = QueryBuilder::for(Signboard::class)
+            ->allowedFilters([
+                AllowedFilter::callback('q', function (Builder $query, $input){
+                    $query->where("town", "LIKE", "%$input%")
+                        ->orWhere("street", "LIKE", "%$input%")
+                        ->orWhere("landmark", "LIKE", "%$input%")
+                        ->orWhere("blk_number", "LIKE", "%$input%")
+                        ->orWhere("gps", "LIKE", "%$input%")
+                        ->orWhereRelation('business', 'name', "LIKE", "%$input%");
+                }),
+                AllowedFilter::callback('categories', function ($query, $value) {
+                    $ids = is_array($value) ? $value : explode(',', $value);
+                    $query->whereHas('categories', function ($q) use ($ids) {
+                        $q->whereIn('signboard_categories.id', $ids);
+                    });
+                }),
+                AllowedFilter::exact('region', 'region_id'),
+            ])
             ->with('categories', function ($categoriesQuery) {
                 $categoriesQuery->take(3);
             })
+            ->with(['business', 'region'])
             ->inRandomOrder()
             ->paginate(8);
+
 
         $regions = Region::query()->select(['id', 'name'])->get();
         $categories = SignboardCategory::query()->select(['id', 'name'])->get();

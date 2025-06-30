@@ -6,6 +6,9 @@ import { HTMLAttributes, onMounted, ref } from 'vue';
 import { SignboardI } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { getPromotedSignboards } from '@/lib/api';
+ 
+import { cn } from '@/lib/utils';
+ 
 
 const plugin = Autoplay({
     delay: 3000,
@@ -14,6 +17,7 @@ const plugin = Autoplay({
 })
 const props = defineProps<{
     class?: HTMLAttributes['class'],
+    containerClass?: HTMLAttributes['class'],
 }>()
 const signboards = ref<SignboardI[]>([])
 
@@ -28,12 +32,17 @@ onMounted(async ()=>{
         @mouseenter="plugin.stop"
         @mouseleave="[plugin.reset(), plugin.play(),];"
         :opts="{
-            loop: true,
+            loop: true
         }"
+        :class="cn('', props.containerClass)"
+        class=" overflow-hidden"
     >
+        <div class="mb-5">
+            <slot />
+        </div>
         <CarouselContent class="mb-5 shadow-none">
-            <CarouselItem class="md:basis-1/2 lg:basis-1/4" v-for="signboard in signboards" :key="signboard.id">
-                <SignboardCardV1 :class="props.class" :signboard="signboard"/>
+            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="signboard in signboards" :key="signboard.id">
+                <SignboardCardV1 :class="cn('border border-secondary', props.class)" :signboard="signboard"/>
             </CarouselItem>
         </CarouselContent>
     </Carousel>
