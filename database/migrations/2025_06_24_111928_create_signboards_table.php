@@ -6,15 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     /**
-     * Run the migrations.
+     * Run the migrations.to
      */
     public function up(): void
     {
         Schema::create('signboards', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->foreignId('business_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('business_id')->constrained();
             $table->string('region_id');
+            $table->string('slug')->unique();
             $table->string('town');
             $table->string('street')->nullable();
             $table->string('landmark');

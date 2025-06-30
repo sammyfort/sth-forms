@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -32,13 +33,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{business:slug}', [BusinessController::class, 'show'])->name('show');
         Route::put('/{business}', [BusinessController::class, 'update'])->name('update');
         Route::delete('/{business}', [BusinessController::class, 'delete'])->name('delete');
-
     });
 
-    Route::prefix('signboards')->name('signboards.')->group(function () {
+    Route::prefix('my-signboards')->as('my-signboards.')->group(function () {
+        Route::get('/', [SignboardController::class, 'mySignboards'])->name('index');
+        Route::post('/create', [SignboardController::class, 'create'])->name('create');
+        Route::get('/{signboard:slug}', [SignboardController::class, 'show'])->name('show');
+        Route::put('/{signboard}', [SignboardController::class, 'update'])->name('update');
+        Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
         Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
     });
 });
+
+Route::get('api/{path}', ApiController::class)->name('api');
+
+
 
 Route::prefix('businesses')->name('businesses.')->group(function () {
     Route::get('/', [BusinessController::class, 'index'])->name('index');
@@ -46,7 +55,7 @@ Route::prefix('businesses')->name('businesses.')->group(function () {
 
 Route::prefix('signboards')->name('signboards.')->group(function () {
     Route::get('/', [SignboardController::class, 'index'])->name('index');
-    Route::get('/promoted', [SignboardController::class, 'promoted'])->name('promoted');
+    Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
 });
 
 require __DIR__.'/auth.php';

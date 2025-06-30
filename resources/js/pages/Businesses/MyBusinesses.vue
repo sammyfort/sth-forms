@@ -1,26 +1,42 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { PlusIcon, Briefcase} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import CreateBusiness from '@/pages/Businesses/CreateBusiness.vue';
 import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
+import Paginator from '@/components/helpers/Paginator.vue';
+
 
 const props = defineProps<{
-    businesses: Array<{
-        id: number;
-        slug: string;
-        name: string;
-        email: string;
-        mobile: string;
-        description: string;
-        facebook?: string;
-        x?: string;
-        linkedin?: string;
-        instagram?: string;
-        verified?: boolean,
-    }>;
+    businesses: {
+        data: Array<{
+            id: number;
+            slug: string;
+            name: string;
+            email: string;
+            mobile: string;
+            description: string;
+            facebook?: string;
+            x?: string;
+            linkedin?: string;
+            instagram?: string;
+            verified?: boolean;
+        }>;
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+    };
 }>();
+
+const goToPage = (page: number) => {
+    router.get(route('my-businesses.index'), { page }, {
+        preserveScroll: true,
+        preserveState: true,
+    });
+};
+
 </script>
 
 <template>
@@ -28,7 +44,7 @@ const props = defineProps<{
 
     <Layout>
         <div class="relative min-h-screen px-4 pt-8">
-            <div class="fixed top-50 right-6 z-50">
+            <div class="flex justify-center mb-5">
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
                         class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
@@ -38,13 +54,12 @@ const props = defineProps<{
                     </Button>
                 </CreateBusiness>
             </div>
-
-            <div v-if="businesses.length" class="mt-4 flex flex-wrap items-center justify-center">
+            <div v-if="businesses.data.length" class="mt-4 flex flex-wrap items-center justify-center">
                 <Link
-                    v-for="business in businesses"
+                    v-for="business in businesses.data"
                     :key="business.id"
                     :href="route('my-businesses.show', business.slug)"
-                    class="flex-shrink-0 m-6 relative overflow-hidden bg-orange-500 rounded-lg max-w-xs shadow-lg group transition-transform hover:scale-105"
+                    class="w-64 h-80 flex-shrink-0 m-6 relative overflow-hidden bg-orange-500 rounded-lg shadow-lg group transition-transform hover:scale-105"
                 >
                     <svg
                         class="absolute bottom-0 left-0 mb-8 scale-150 group-hover:scale-[1.65] transition-transform"
@@ -77,39 +92,49 @@ const props = defineProps<{
                             style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;"
                         ></div>
                         <img
-                            class="relative w-40 object-contain"
+                            class="relative w-32 h-32 object-contain"
                             src="/images/business-icon.png"
                             alt="Business Briefcase"
                         />
                     </div>
 
-                    <div class="relative text-white px-6 pb-6 mt-6">
-                        <span class="block opacity-75 -mb-1">{{ business.mobile }}</span>
-                        <div class="flex justify-between">
-                            <span class="block font-semibold text-xl">{{ business.name }}</span>
-<!--                            <VerifiedBadge :size="24" color="#1D9BF0" />-->
+                    <div class="relative text-white px-6 pb-6 mt-6 text-center">
+                        <span class="block opacity-75 -mb-1 text-sm truncate">{{ business.mobile }}</span>
+                        <div class="flex justify-center">
+                            <span class="block font-semibold text-lg truncate w-full">{{ business.name }}</span>
                         </div>
                     </div>
                 </Link>
+
+                <div class="mt-8 flex justify-center w-full">
+                    <Paginator
+                        :total="props.businesses.total"
+                        :per-page="props.businesses.per_page"
+                        :current-page="props.businesses.current_page"
+                        @page-change="goToPage"
+                    />
+                </div>
             </div>
+
+
 
             <div v-else class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4">
                 <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
-
                 <h3 class="text-2xl font-semibold mb-2 text-gray-700">No businesses yet</h3>
                 <p class="text-base text-gray-500 mb-6">
                     You haven’t added any businesses yet. Click below to get started.
                 </p>
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2">
+                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2"
+                    >
                         <PlusIcon class="w-4 h-4" />
                         <span>Add First Business</span>
                     </Button>
                 </CreateBusiness>
             </div>
-
         </div>
+
     </Layout>
 </template>
 

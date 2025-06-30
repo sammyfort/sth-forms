@@ -6,7 +6,9 @@ import { HTMLAttributes, onMounted, ref } from 'vue';
 import { SignboardI } from '@/types';
 import { router } from '@inertiajs/vue3';
 import { getPromotedSignboards } from '@/lib/api';
+ 
 import { cn } from '@/lib/utils';
+ 
 
 const plugin = Autoplay({
     delay: 3000,
