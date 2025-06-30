@@ -1,18 +1,12 @@
-export const getApi = async (path: string) => {
+
+export const getPromotedSignboards = async ()=>{
     const data = {
-        metadata: {}
-    };
-
-    try {
-        const request = await fetch(route('api', path));
-        const response = await request.json();
-
-        if (response.success) {
-            data.metadata = response.data;
-        }
-    } catch (e) {
-        console.error(e);
+        signboards: []
     }
-
-    return data;
-};
+    const request = await fetch(route('signboards.promoted'))
+    const response = await request.json()
+    if (response.success){
+        data.signboards = response.data.signboards
+    }
+    return data
+}

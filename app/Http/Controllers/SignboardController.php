@@ -7,6 +7,7 @@ use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -36,23 +37,28 @@ class SignboardController extends Controller
         ]);
     }
 
+    public function getPromotedSignboards(): JsonResponse
+    {
+        $signboards = Signboard::query()
+            ->with(['business', 'region'])
+            ->with('categories', function ($categoriesQuery) {
+                $categoriesQuery->take(3);
+            })
+            ->inRandomOrder()
+            ->take(10)
+            ->get();
+        return response()->success([
+            'signboards' => $signboards
+        ]);
+    }
 
     public function mySignboards(): Response
     {
         $user = auth()->user();
         return Inertia::render('Signboards/MySignboards', [
-           'signboards' => $user->signboards()->with(['region', 'business'])->latest()->get(),
-            'businesses' => $user->businesses()
-                ->select('id', 'name')
-                ->get()
-                ->map(fn($business) => [
-                    'label' => $business->name,
-                    'value' => (string) $business->id,
-                ]),
+            'signboards' => $user->signboards()->with(['region', 'business'])->latest()->paginate(10),
         ]);
     }
-
-
     public function create(Request $request): RedirectResponse
     {
         $data = $request->validate($this->rules());

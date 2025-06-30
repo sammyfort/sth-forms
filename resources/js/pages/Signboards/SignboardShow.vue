@@ -8,7 +8,7 @@ import { toastError, toastSuccess } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 import SignboardEdit from '@/pages/Signboards/SignboardEdit.vue';
-import { getApi } from '@/lib/api';
+import { getApi } from '@/lib/meta';
 const props = defineProps<{
     signboard: {
         id: number;
@@ -32,11 +32,8 @@ onMounted(async () => {
         getApi('regions'),
         getApi('authBusinesses')
     ])
-
     regions.value = regRes.metadata?.regions ?? []
     businesses.value = busRes.metadata?.businesses ?? []
-
-   // console.log(props.signboard)
 })
 
 const showDialog = ref(false)

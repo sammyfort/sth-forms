@@ -35,7 +35,7 @@ const props = defineProps<{
 }>();
 
 const form = useForm({
-    business_id: props.signboard.business_id,
+    business_id: String(props.signboard.business_id),
     region_id: props.signboard.region_id,
     town: props.signboard.town,
     street: props.signboard.street,

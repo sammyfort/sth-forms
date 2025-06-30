@@ -1,36 +1,50 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { PlusIcon, Briefcase} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import SignboardCreate from '@/pages/Signboards/SignboardCreate.vue';
 import { onMounted, ref } from 'vue';
-import { getApi } from '@/lib/api';
-
-
+import { getApi } from '@/lib/meta';
+import Paginator from '@/components/helpers/Paginator.vue';
 const props = defineProps<{
-    signboards: Array<{
-        id: number;
-        slug: string;
-        town: string;
-        street: string;
-        landmark: string;
-        blk_number: string;
-        gps: string;
-    }>;
+    signboards: {
+        data: Array<{
+            id: number;
+            slug: string;
+            town: string;
+            street: string;
+            landmark: string;
+            blk_number: string;
+            gps: string;
+            region?: { name: string };
+            business?: { name: string };
+        }>;
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+    };
 }>();
 
-const regions = ref([])
-const businesses = ref([])
+const regions = ref([]);
+const businesses = ref([]);
 
 onMounted(async () => {
     const [regRes, busRes] = await Promise.all([
         getApi('regions'),
-        getApi('authBusinesses')
-    ])
-    regions.value = regRes.metadata?.regions ?? []
-    businesses.value = busRes.metadata?.businesses ?? []
-})
+        getApi('authBusinesses'),
+    ]);
+    regions.value = regRes.metadata?.regions ?? [];
+    businesses.value = busRes.metadata?.businesses ?? [];
+});
+
+const goToPage = (page: number) => {
+    router.get(route('my-signboards.index'), { page }, {
+        preserveScroll: true,
+        preserveState: true,
+    });
+};
 
 </script>
 
@@ -39,7 +53,7 @@ onMounted(async () => {
 
     <Layout>
         <div class="relative min-h-screen px-4 pt-8">
-            <div class="flex justify-end mb-4">
+            <div class="flex justify-center mb-5">
                 <SignboardCreate
                     :businesses="businesses"
                     :regions="regions"
@@ -53,13 +67,14 @@ onMounted(async () => {
                 </SignboardCreate>
             </div>
 
-            <div v-if="signboards.length" class="mt-4 flex flex-wrap items-center justify-center">
-                <div class="mx-auto max-w-full">
-                    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div v-if="signboards.data.length" class="mt-4 w-full">
+                <div class="w-full mx-auto px-2">
+                    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 
-                        <Link  v-for="signboard in signboards"
-                            :key="signboard.id"
-                            :href="route('my-signboards.show', signboard.slug)">
+                        <Link  v-for="signboard in signboards.data"
+                               :key="signboard.id"
+                               :href="route('my-signboards.show', signboard.slug)"
+                               class="w-full">
                             <div
                                 class="relative rounded-2xl bg-gradient-to-t from-blue-300 to-white p-0.5 shadow-[0_0px_20px_0px_rgba(0,0,0,0.1)] transition-all duration-300 ease-in-out hover:shadow-[0_0px_25px_0px_rgba(0,0,0,0.2)]">
                                 <div class="relative rounded-2xl p-6 bg-white text-center h-full flex flex-col justify-between hover:translate-y-[-5px] transition duration-300 ease-in-out overflow-hidden">
@@ -105,7 +120,15 @@ onMounted(async () => {
                                 </div>
                             </div>
                         </Link >
+                    </div>
 
+                    <div class="mt-8 flex justify-center w-full">
+                        <Paginator
+                            :total="props.signboards.total"
+                            :per-page="props.signboards.per_page"
+                            :current-page="props.signboards.current_page"
+                            @page-change="goToPage"
+                        />
                     </div>
                 </div>
             </div>
@@ -114,7 +137,7 @@ onMounted(async () => {
                 <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
                 <h3 class="text-2xl font-semibold mb-2 text-gray-700">No Signboards yet</h3>
                 <p class="text-base text-gray-500 mb-6">
-                    You haven’t added any businesses yet. Click below to get started.
+                    You haven't added any businesses yet. Click below to get started.
                 </p>
                 <SignboardCreate
                     :businesses="businesses"
@@ -132,4 +155,3 @@ onMounted(async () => {
 
     </Layout>
 </template>
-
