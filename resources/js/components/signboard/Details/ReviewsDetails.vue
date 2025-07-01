@@ -11,11 +11,6 @@ type Props = {
 }
 const props = defineProps<Props>()
 
-// const overall
-console.log(props.ratings)
-
-
-
 </script>
 
 <template>
@@ -23,7 +18,7 @@ console.log(props.ratings)
         <div class="font-medium text-lg">Reviews</div>
         <div class="my-5 flex flex-col items-start gap-4">
             <div class="flex items-start gap-2 lg:gap-4">
-                <div class="text-5xl">{{ signboard.total_average_rating }}</div>
+                <div class="text-5xl">{{ number_format(signboard.total_average_rating, 1) }}</div>
                 <StarRating
                     :star-size="37"
                     :show-rating="false"
