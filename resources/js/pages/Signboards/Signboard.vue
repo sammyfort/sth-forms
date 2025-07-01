@@ -19,7 +19,7 @@ type Props = {
 }
 const props = defineProps<Props>()
 const business = props.signboard.business
-console.log(props.distributions)
+
 </script>
 
 <template>
