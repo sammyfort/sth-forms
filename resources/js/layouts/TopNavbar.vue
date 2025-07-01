@@ -100,16 +100,15 @@ const user = computed(() => page.props.auth.user)
                                             <AvatarImage :src="user.avatar?.original_url ?? ''" />
                                             <AvatarFallback class="bg-gray-300">{{ user.initials }}</AvatarFallback>
                                         </Avatar>
-                                        <div class="text-fade hidden md:block" style="line-height: 16px">
-                                            <div class="font-bold flex gap-1 flex-wrap">
-                                                <span>{{ user?.firstname }}</span>
-                                                <span class="hidden lg:block">{{ user?.lastname }}</span>
-                                            </div>
-                                            <div class="text-sm break-all">{{ user.email }}</div>
-                                        </div>
                                     </div>
                                 </PopoverTrigger>
                                 <PopoverContent class="w-60" align="end">
+                                    <div class="text-fade mb-3" style="line-height: 16px">
+                                        <div class="font-bold flex gap-1 flex-wrap">
+                                            {{ user?.fullname }}
+                                        </div>
+                                        <div class="text-sm break-all">{{ user.email }}</div>
+                                    </div>
                                     <div class="grid">
                                         <Link
                                             :href="route('profile.show')"

@@ -19,7 +19,7 @@ const user = computed(() => page.props.auth.user)
             <SheetDescription />
             <SheetTitle v-if="!user"></SheetTitle>
             <div class="w-full px-4">
-                <div v-if="user" class="flex items-center justify-between">
+                <div v-if="user" class="flex items-center justify-between mt-10">
                     <div class="text-fade" style="line-height: 16px">
                         <SheetTitle>{{ user.fullname }}</SheetTitle>
                         <div class="text-sm break-all">{{ user.email }}</div>
