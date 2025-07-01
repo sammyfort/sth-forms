@@ -63,6 +63,37 @@ class SignboardController extends Controller
         ]);
     }
 
+    public function show(Signboard $signboard): Response
+    {
+        $signboard->loadMissing(['reviews.ratings', 'business', 'region', 'categories']);
+        $averageRatings = $signboard->averageRatings();
+
+        // find ratings distributions
+        $totalReviews = $signboard->totalReviews();
+        $distributions = [
+            5 => 0,
+            4 => 0,
+            3 => 0,
+            2 => 0,
+            1 => 0,
+        ];
+
+        foreach ($signboard->reviews as $review) {
+            $reviewRating = $review->ratings->avg('value');
+            $reviewRating = ratingFormat($reviewRating, 0);
+            $distributions[(int)$reviewRating] += 1;
+        }
+        foreach ($distributions as $key => $value) {
+            $distributions[$key] = ((int)$value / (int)$totalReviews) * 100;
+        }
+
+        return Inertia::render('Signboards/Signboard', [
+            'signboard' => $signboard,
+            'ratings' => $averageRatings,
+            'distributions' => $distributions,
+        ]);
+    }
+
     public function getPromotedSignboards(): JsonResponse
     {
         $signboards = Signboard::query()
@@ -139,7 +170,8 @@ class SignboardController extends Controller
         $business->signboards()->create($data);
         return back()->with(successRes("Signboard created successfully."));
     }
-    public function show(Signboard $signboard): Response
+
+    public function showMySignboards(Signboard $signboard): Response
     {
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->load(['business', 'region']),
