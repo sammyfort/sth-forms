@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Signboard;
 
+use App\Models\Signboard;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RateRequest extends FormRequest
 {

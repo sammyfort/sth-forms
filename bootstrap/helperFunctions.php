@@ -5,10 +5,11 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 if (!function_exists("successRes")) {
-    function successRes(string $message): array{
+    function successRes(string $message, array $data = []): array{
         return [
             'success' => true,
-            'message' => $message
+            'message' => $message,
+            'data' => $data
         ];
     }
 }

@@ -68,15 +68,14 @@ const user = computed(() => page.props.auth.user)
                             </Link>
                             <Link
                                 :class="{ 'active-nav': $page.component === 'Businesses/MyBusinesses' || $page.component === 'Businesses/MyBusinessShow'}"
-                                class="hover:text-primary flex items-center gap-1 py-4"
-                                :href="route('my-businesses.index')"
                                 class="hover:text-primary flex items-center gap-1 py-4 text-center"
+                                :href="route('my-businesses.index')"
                             >
                                 <Building2 :size="15" class="text-secondary"/> My Businesses
                             </Link>
                             <Link
+                                class="hover:text-primary flex items-center gap-1 py-4 text-center"
                                 :class="{ 'active-nav': $page.component === 'Signboards/MySignboards'|| $page.component === 'Signboards/SignboardShow'}"
-                                class="hover:text-primary flex items-center gap-1 py-4"
                                 :href="route('my-signboards.index')"
                             >
                                 <Milestone :size="15" class="text-secondary"/> My Signboards
@@ -101,16 +100,15 @@ const user = computed(() => page.props.auth.user)
                                             <AvatarImage :src="user.avatar?.original_url ?? ''" />
                                             <AvatarFallback class="bg-gray-300">{{ user.initials }}</AvatarFallback>
                                         </Avatar>
-                                        <div class="text-fade hidden md:block" style="line-height: 16px">
-                                            <div class="font-bold flex gap-1 flex-wrap">
-                                                <span>{{ user?.firstname }}</span>
-                                                <span class="hidden lg:block">{{ user?.lastname }}</span>
-                                            </div>
-                                            <div class="text-sm break-all">{{ user.email }}</div>
-                                        </div>
                                     </div>
                                 </PopoverTrigger>
                                 <PopoverContent class="w-60" align="end">
+                                    <div class="text-fade mb-3" style="line-height: 16px">
+                                        <div class="font-bold flex gap-1 flex-wrap">
+                                            {{ user?.fullname }}
+                                        </div>
+                                        <div class="text-sm break-all">{{ user.email }}</div>
+                                    </div>
                                     <div class="grid">
                                         <Link
                                             :href="route('profile.show')"

@@ -7,15 +7,9 @@ use App\Http\Requests\Signboard\RateRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
-use Codebyray\ReviewRateable\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use App\Models\Business;
-use App\Models\Region;
-use App\Models\Signboard;
-use App\Models\SignboardCategory;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -76,6 +70,10 @@ class SignboardController extends Controller
             ->with('categories', function ($categoriesQuery) {
                 $categoriesQuery->take(3);
             })
+            ->with('reviews', function ($reviewsQuery) {
+                $reviewsQuery->where('user_id', auth()->id())
+                    ->with(['ratings']);
+            })
             ->inRandomOrder()
             ->take(10)
             ->get();
@@ -83,7 +81,7 @@ class SignboardController extends Controller
             'signboards' => $signboards
         ]);
     }
-  
+
     public function rate(Signboard $signboard, RateRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validated();
@@ -91,8 +89,7 @@ class SignboardController extends Controller
         try {
             $reviewData = [
                 'review' => $validatedData['review'],
-//                'recommend'  => true,      // Whether the user would recommend the product being reviewed
-                'approved' => true,      // Optionally override default (false) approval by providing 'approved'
+                // 'recommend'  => true,
                 'ratings' => [
                     'overall' => $validatedData['overall'],
                     'customer_service' => $validatedData['customer_service'],
@@ -108,16 +105,26 @@ class SignboardController extends Controller
                 $signboard->updateReview($review->id, $reviewData);
             }
             else{
-                $signboard->addReview([$reviewData], auth()->id());
+                $review = $signboard->addReview($reviewData, auth()->id());
             }
             DB::commit();
-            return back()->with(successRes('Signboard Rated Successfully'));
+            $signboard->refresh();
+            $signboard->loadMissing([
+                'business',
+                'region',
+                'reviews' => function ($reviewsQuery) {
+                    $reviewsQuery->where('user_id', auth()->id())
+                        ->with(['ratings']);
+                },
+            ]);
+            $data['signboard'] = $signboard;
+            return back()->with(successRes('Signboard Rated Successfully', $data));
         } catch (\Exception $exception) {
             DB::rollBack();
             return back()->with(errorRes());
         }
     }
-  
+
     public function mySignboards(): Response
     {
         $user = auth()->user();

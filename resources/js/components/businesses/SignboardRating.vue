@@ -8,7 +8,14 @@ import { RatingI, ReviewI, SignboardI } from '@/types';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
 import { PopoverClose } from 'reka-ui';
+import { AutoplayType } from 'embla-carousel-autoplay';
 
+
+type Props = {
+    signboard: SignboardI,
+    carouselPlugin?: AutoplayType
+}
+const props = defineProps<Props>()
 
 const form = useForm<{
     overall: number,
@@ -30,12 +37,19 @@ const form = useForm<{
 const review = ref<RatingI|unknown>(null)
 const closeBtn = ref(null)
 
+const emit = defineEmits<{
+    (e: 'popoverOpen', value: boolean): void,
+    (e: 'rated', value: SignboardI): void,
+}>()
+
 const submit = async ()=> {
     form.post(route('signboards.ratings', props.signboard.id), {
         onSuccess: (response) => {
             if (response.props.success){
                 toastSuccess(response.props.message)
                 closeBtn?.value?.$el?.click()
+                emit('rated', response.props.data.signboard as SignboardI)
+                form.reset()
             }
             else {
                 toastError(response.props.message)
@@ -51,11 +65,6 @@ const submit = async ()=> {
     })
 }
 
-type Props = {
-    signboard: SignboardI
-}
-const props = defineProps<Props>()
-
 onMounted(()=>{
     review.value = props.signboard.reviews?.length ? props.signboard.reviews[0] as unknown as ReviewI : null
     if (review.value){
@@ -68,12 +77,19 @@ onMounted(()=>{
         form.communication = ratings.find((rt: RatingI) => rt.key === 'communication')?.value ?? 0
         form.speed = ratings.find((rt: RatingI) => rt.key === 'speed')?.value ?? 0
     }
+
 })
+
+const handleCarousel = (isOpen: boolean) =>{
+    emit('popoverOpen', isOpen)
+}
 </script>
 
 <template>
     <div>
-        <Popover>
+        <Popover
+            @update:open="handleCarousel"
+        >
             <PopoverTrigger>
                 <slot />
             </PopoverTrigger>

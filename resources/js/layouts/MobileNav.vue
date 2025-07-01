@@ -19,7 +19,7 @@ const user = computed(() => page.props.auth.user)
             <SheetDescription />
             <SheetTitle v-if="!user"></SheetTitle>
             <div class="w-full px-4">
-                <div v-if="user" class="flex items-center justify-between">
+                <div v-if="user" class="flex items-center justify-between mt-10">
                     <div class="text-fade" style="line-height: 16px">
                         <SheetTitle>{{ user.fullname }}</SheetTitle>
                         <div class="text-sm break-all">{{ user.email }}</div>
@@ -84,8 +84,8 @@ const user = computed(() => page.props.auth.user)
                     <div class="flex items-center">
                         <TextLink
                             class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/MySignboard' }"
-                            href="/templates"
+                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/MySignboards'|| $page.component === 'Signboards/SignboardShow'}"
+                            :href="route('my-signboards.index')"
                         >My Signboards</TextLink>
                     </div>
                     <div class="flex items-center">
