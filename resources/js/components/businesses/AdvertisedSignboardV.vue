@@ -22,13 +22,30 @@ const signboards = ref<SignboardI[]>([])
 onMounted(async ()=>{
     signboards.value = (await getPromotedSignboards()).signboards
 })
+
+const popoverIsOpen = ref(false)
+
+const onPopoverStateChanged = (isOpen: boolean) => {
+    popoverIsOpen.value = isOpen
+}
+
+const resumeCarouselPlay = ()=>{
+    if (popoverIsOpen.value){
+        plugin.stop()
+    }
+    else {
+        plugin.reset()
+        plugin.play()
+    }
+}
+
 </script>
 
 <template>
     <Carousel
         :plugins="[plugin]"
         @mouseenter="plugin.stop"
-        @mouseleave="[plugin.reset(), plugin.play(),];"
+        @mouseleave="resumeCarouselPlay"
         :opts="{
             loop: true,
         }"
@@ -40,6 +57,8 @@ onMounted(async ()=>{
                     :is-advertised="true"
                     class="border border-secondary"
                     :signboard="signboard"
+                    :carousel-plugin="plugin"
+                    @popover-open="onPopoverStateChanged"
                 />
             </CarouselItem>
         </CarouselContent>

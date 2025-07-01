@@ -23,7 +23,7 @@ return [
     | or requires manual approval.
     |
     */
-    'approved_review' => false,
+    'approved_review' => true,
 
     /*
     |--------------------------------------------------------------------------

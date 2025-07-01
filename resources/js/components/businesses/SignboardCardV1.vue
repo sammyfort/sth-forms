@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { cn } from '@/lib/utils';
-import { HTMLAttributes } from 'vue';
+import { HTMLAttributes, ref } from 'vue';
 import { SignboardI } from '@/types';
 import { MapPin, MapPinned, Pin, Dot, Handshake } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,16 @@ import { Link } from '@inertiajs/vue3';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui/tooltip'
 import SignboardRating from '@/components/businesses/SignboardRating.vue';
 import StarRating from 'vue-star-rating'
+import { AutoplayType } from 'embla-carousel-autoplay';
 
+
+const emit = defineEmits<{
+    (e: 'popoverOpen', value: boolean): void
+}>()
+
+const onPopoverStateChanged = (isOpen: boolean) => {
+    emit('popoverOpen', isOpen)
+}
 
 const props = withDefaults(
     defineProps<{
@@ -16,12 +25,19 @@ const props = withDefaults(
         imageHeight? : string,
         signboard: SignboardI,
         isAdvertised?: boolean,
+        carouselPlugin?: AutoplayType
     }>(),
     {
         imageHeight: "48",
         isAdvertised: false,
     }
 )
+
+const signboardC = ref(props.signboard)
+
+const ratedHandler = (sb: SignboardI)=>{
+    signboardC.value = sb
+}
 </script>
 
 <template>
@@ -76,16 +92,22 @@ const props = withDefaults(
                     <StarRating
                         :star-size="17"
                         :show-rating="false"
-                        :rating="signboard.total_average_rating"
+                        :rating="signboardC.total_average_rating"
                         read-only
                         active-color="#009689"
                         :rounded-corners="true"
                         :padding="3"
                         class="md:w-1/3 w-full"
+                        :key="`rating-card-${signboard.id}`"
                     />
                 </span>
-                <span class="w-1/3 mx-auto text-center text-sm text-gray-600">{{ signboard.reviews_count }} reviews</span>
-                <SignboardRating :signboard="signboard" :id="`rating-pop-${signboard.id}`">
+                <span class="w-1/3 mx-auto text-center text-sm text-gray-600">{{ signboardC.reviews_count }} reviews</span>
+                <SignboardRating
+                    :signboard="signboardC" :id="`rating-pop-${signboard.id}`"
+                    :carousel-plugin="carouselPlugin"
+                    @popover-open="onPopoverStateChanged"
+                    @rated="ratedHandler"
+                >
                     <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
                 </SignboardRating>
             </div>

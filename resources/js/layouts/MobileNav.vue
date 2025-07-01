@@ -84,8 +84,8 @@ const user = computed(() => page.props.auth.user)
                     <div class="flex items-center">
                         <TextLink
                             class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/MySignboard' }"
-                            href="/templates"
+                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/MySignboards'|| $page.component === 'Signboards/SignboardShow'}"
+                            :href="route('my-signboards.index')"
                         >My Signboards</TextLink>
                     </div>
                     <div class="flex items-center">

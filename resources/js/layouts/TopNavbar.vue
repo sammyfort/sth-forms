@@ -68,14 +68,14 @@ const user = computed(() => page.props.auth.user)
                             </Link>
                             <Link
                                 :class="{ 'active-nav': $page.component === 'Businesses/MyBusinesses' || $page.component === 'Businesses/MyBusinessShow'}"
-                                class="hover:text-primary flex items-center gap-1 py-4"
+                                class="hover:text-primary flex items-center gap-1 py-4 text-center"
                                 :href="route('my-businesses.index')"
                             >
                                 <Building2 :size="15" class="text-secondary"/> My Businesses
                             </Link>
                             <Link
+                                class="hover:text-primary flex items-center gap-1 py-4 text-center"
                                 :class="{ 'active-nav': $page.component === 'Signboards/MySignboards'|| $page.component === 'Signboards/SignboardShow'}"
-                                class="hover:text-primary flex items-center gap-1 py-4"
                                 :href="route('my-signboards.index')"
                             >
                                 <Milestone :size="15" class="text-secondary"/> My Signboards
