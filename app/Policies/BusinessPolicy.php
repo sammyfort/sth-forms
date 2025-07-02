@@ -23,7 +23,7 @@ class BusinessPolicy
     {
         return $user->id === $business->user_id
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::denyWithStatus(404, "Business not found");
     }
 
     /**
@@ -41,7 +41,7 @@ class BusinessPolicy
     {
         return $user->id === $business->user_id
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::denyWithStatus(404, "Business not found");
     }
 
     /**
@@ -51,7 +51,7 @@ class BusinessPolicy
     {
         return $user->id === $business->user_id
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::denyWithStatus(404, "Business not Found");
     }
 
     /**
