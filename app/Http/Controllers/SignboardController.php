@@ -9,8 +9,10 @@ use App\Http\Requests\Signboard\UpdateSignboardRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
@@ -68,26 +70,34 @@ class SignboardController extends Controller
 
     public function show(Signboard $signboard): Response
     {
-        $signboard->loadMissing(['reviews.ratings', 'business', 'region', 'categories']);
+        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories']);
         $averageRatings = $signboard->averageRatings();
 
         // find ratings distributions
         $totalReviews = $signboard->totalReviews();
         $distributions = [
-            5 => 0,
-            4 => 0,
-            3 => 0,
-            2 => 0,
-            1 => 0,
+            5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0,
         ];
 
-        foreach ($signboard->reviews as $review) {
-            $reviewRating = $review->ratings->avg('value');
-            $reviewRating = ratingFormat($reviewRating, 0);
+        $reviews = $signboard->reviews;
+        $reviewers = User::query()->whereIn('id', $reviews->pluck('user_id')->toArray())->get(['id', 'firstname', 'lastname']);
+        $reviews->map(function ($review) use (&$distributions, $reviewers) {
+            $ar = $review->ratings->avg('value');
+            $reviewRating = ratingFormat($ar, 0);
             $distributions[(int)$reviewRating] += 1;
-        }
+
+            $review->user = $reviewers->where('id', $review->user_id)->first();
+            $review->average_rating = ratingFormat($ar);
+            $review->created_at_str = Carbon::parse($review->created_at)->diffForHumans();
+        });
+
         foreach ($distributions as $key => $value) {
-            $distributions[$key] = ((int)$value / (int)$totalReviews) * 100;
+            if($totalReviews == 0){
+                $distributions[$key] = 0;
+            }
+            else{
+                $distributions[$key] = ((int)$value / (int)$totalReviews) * 100;
+            }
         }
 
         return Inertia::render('Signboards/Signboard', [

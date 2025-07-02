@@ -21,7 +21,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 * @property int $created_by_id
 * @property string $created_at
 * @property string $updated_at
-*/
+ * @property string $name
+ */
 
 #[ObservedBy(BusinessObserver::class)]
 #[UsePolicy(BusinessPolicy::class)]
@@ -29,6 +30,11 @@ class Business extends Model
 {
     //
     use BootModelTrait, HasFactory;
+
+    protected $appends = [
+        "created_at_str",
+        "initials"
+    ];
 
     public function user(): BelongsTo
     {
@@ -40,6 +46,11 @@ class Business extends Model
         return $this->hasMany(Signboard::class);
     }
 
-
+    public function initials(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => strtoupper($this->name[0]). strtoupper($this->name[1])
+        );
+    }
 
 }
