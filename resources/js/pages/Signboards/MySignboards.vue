@@ -3,7 +3,6 @@ import Layout from '@/layouts/Layout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { PlusIcon, Briefcase} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
-import SignboardCreate from '@/pages/Signboards/SignboardCreate.vue';
 import { onMounted, ref } from 'vue';
 import { getApi } from '@/lib/meta';
 import Paginator from '@/components/helpers/Paginator.vue';
@@ -47,24 +46,21 @@ const goToPage = (page: number) => {
 };
 
 </script>
-
 <template>
     <Head title="My Signboard" />
 
     <Layout>
         <div class="relative min-h-screen px-4 pt-8">
             <div class="flex justify-center mb-5">
-                <SignboardCreate
-                    :businesses="businesses"
-                    :regions="regions"
-                    @created="$inertia.reload({ only: ['signboards'] })">
+                <Link
+                    :href="route('my-signboards.create')">
                     <Button
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
+                        class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
                     >
                         <PlusIcon class="w-4 h-4" />
                         <span>Add Signboard</span>
                     </Button>
-                </SignboardCreate>
+                </Link>
             </div>
 
             <div v-if="signboards.data.length" class="mt-4 w-full">
@@ -97,7 +93,7 @@ const goToPage = (page: number) => {
                                             {{ signboard.region?.name  }}
                                         </p>
 
-                                        <p class="text-xl font-semibold text-orange-500">
+                                        <p class="text-xl font-semibold text-primary">
                                             {{ signboard.landmark }}
                                         </p>
                                         <div class="mt-4 text-sm text-gray-700 space-y-1">
@@ -109,7 +105,7 @@ const goToPage = (page: number) => {
                                     </div>
 
                                     <a :href="`https://maps.google.com/?q=${signboard.gps}`" target="_blank"
-                                       class="relative z-10 mt-6 inline-flex items-center justify-center bg-orange-500 text-white py-2.5 px-4 text-sm rounded-md w-full hover:bg-orange-500 transition">
+                                       class="relative z-10 mt-6 inline-flex items-center justify-center bg-primary text-white py-2.5 px-4 text-sm rounded-md w-full hover:bg-primary transition">
                                         <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
                                             <path
                                                 d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"
@@ -134,22 +130,21 @@ const goToPage = (page: number) => {
             </div>
 
             <div v-else class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4">
-                <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
+                <Briefcase class="w-20 h-20 mb-6 text-primary opacity-80" />
                 <h3 class="text-2xl font-semibold mb-2 text-gray-700">No Signboards yet</h3>
                 <p class="text-base text-gray-500 mb-6">
                     You haven't added any businesses yet. Click below to get started.
                 </p>
-                <SignboardCreate
-                    :businesses="businesses"
-                    :regions="regions"
+                <Link
+                   :href="route('my-businesses.create')"
                     @created="$inertia.reload({ only: ['signboards'] })">
                     <Button
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2"
+                        class="bg-primary hover:bg-primary text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2"
                     >
                         <PlusIcon class="w-4 h-4" />
                         <span>Add First Signboard</span>
                     </Button>
-                </SignboardCreate>
+                </Link>
             </div>
         </div>
 

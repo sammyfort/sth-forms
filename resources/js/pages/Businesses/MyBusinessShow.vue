@@ -51,10 +51,10 @@ const closeBusiness = () => {
     <Head :title="business.name" />
     <Layout>
         <div class="bg-gray-100 min-h-screen w-full">
-            <div class="h-60 bg-gradient-to-r from-orange-500 to-orange-500 relative">
+            <div class="h-60 bg-gradient-to-r from-primary to-primary relative">
                 <div class="absolute left-1/2 transform -translate-x-1/2 bottom-0 translate-y-1/2">
                     <div class="h-32 w-32 rounded-full border-4 border-white bg-white shadow-lg flex items-center justify-center">
-                        <Briefcase class="w-14 h-14 text-orange-500" />
+                        <Briefcase class="w-14 h-14 text-primary" />
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@ const closeBusiness = () => {
                 </div>
                 <div class="flex flex-wrap justify-center gap-4 mt-10">
                     <MyBusinessUpdate :business="business" @updated="$inertia.reload()">
-                        <Button class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow">
+                        <Button class="bg-primary hover:bg-orange-600 text-white px-4 py-2 rounded shadow">
                             Edit Business
                         </Button>
                     </MyBusinessUpdate>

@@ -21,6 +21,7 @@ const emit = defineEmits(['page-change']);
 
 const totalPages = computed(() => Math.ceil(props.total / props.perPage));
 const maxVisible = computed(() => props.max ?? 5);
+
 const visiblePages = computed(() => {
     const pages = [];
     const half = Math.floor(maxVisible.value / 2);
@@ -31,6 +32,7 @@ const visiblePages = computed(() => {
     if (end - start < maxVisible.value - 1) {
         start = Math.max(end - maxVisible.value + 1, 1);
     }
+
     for (let i = start; i <= end; i++) {
         pages.push(i);
     }
@@ -39,41 +41,44 @@ const visiblePages = computed(() => {
 });
 
 const goToPage = (page: number) => {
-    if (page !== props.currentPage) {
+    if (page !== props.currentPage && page >= 1 && page <= totalPages.value) {
         emit('page-change', page);
     }
 };
 </script>
 
 <template>
-    <Pagination>
+    <Pagination
+        :items-per-page="props.perPage"
+        :value="props.currentPage"
+        @update:page="goToPage"
+    >
         <PaginationContent class="flex flex-wrap gap-2 items-center">
-            <PaginationItem>
+            <PaginationItem :value="props.currentPage - 1">
                 <PaginationPrevious class="me-8"
                     :disabled="props.currentPage === 1"
                     @click="goToPage(props.currentPage - 1)"
                 />
             </PaginationItem>
 
-            <PaginationItem v-if="visiblePages[0] > 1" class="me-2">
+            <PaginationItem v-if="visiblePages[0] > 1" :value="1">
                 <button
-                    class="px-2 py-2 rounded hover:bg-gray-100 transition-colors"
+                    class="px-3 py-1 rounded hover:bg-gray-100"
                     @click="goToPage(1)"
-                >
-                    1
-                </button>
+                >1</button>
             </PaginationItem>
 
-            <PaginationEllipsis v-if="visiblePages[0] > 2" class="mx-1" />
+            <PaginationEllipsis v-if="visiblePages[0] > 2" />
 
             <PaginationItem
                 v-for="page in visiblePages"
                 :key="page"
+                :value="page"
                 :is-active="page === props.currentPage"
             >
                 <button
-                    class="px-3 py-1 rounded transition-colors"
                     @click="goToPage(page)"
+                    class="px-3 py-1 rounded transition-colors"
                     :class="{
                         'bg-orange-500 text-white hover:bg-orange-600': page === props.currentPage,
                         'hover:bg-gray-100': page !== props.currentPage
@@ -83,23 +88,26 @@ const goToPage = (page: number) => {
                 </button>
             </PaginationItem>
 
-            <PaginationEllipsis v-if="visiblePages.at(-1)! < totalPages - 1" class="mx-1" />
+            <PaginationEllipsis v-if="visiblePages.at(-1)! < totalPages - 1" />
 
-            <PaginationItem v-if="visiblePages.at(-1)! < totalPages" class="mr-2">
+            <PaginationItem
+                v-if="visiblePages.at(-1)! < totalPages"
+                :value="totalPages"
+            >
                 <button
-                    class="px-3 py-1 rounded hover:bg-gray-100 transition-colors"
+                    class="px-3 py-1 rounded hover:bg-gray-100"
                     @click="goToPage(totalPages)"
                 >
                     {{ totalPages }}
                 </button>
             </PaginationItem>
-
-            <PaginationItem>
+            <PaginationItem :value="props.currentPage + 1">
                 <PaginationNext
                     :disabled="props.currentPage === totalPages"
                     @click="goToPage(props.currentPage + 1)"
                 />
             </PaginationItem>
+
         </PaginationContent>
     </Pagination>
 </template>

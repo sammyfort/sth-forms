@@ -47,7 +47,7 @@ const goToPage = (page: number) => {
             <div class="flex justify-center mb-5">
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
+                        class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
                     >
                         <PlusIcon class="w-4 h-4" />
                         <span>Add Business</span>
@@ -59,7 +59,7 @@ const goToPage = (page: number) => {
                     v-for="business in businesses.data"
                     :key="business.id"
                     :href="route('my-businesses.show', business.slug)"
-                    class="w-64 h-80 flex-shrink-0 m-6 relative overflow-hidden bg-orange-500 rounded-lg shadow-lg group transition-transform hover:scale-105"
+                    class="w-64 h-80 flex-shrink-0 m-6 relative overflow-hidden bg-primary rounded-lg shadow-lg group transition-transform hover:scale-105"
                 >
                     <svg
                         class="absolute bottom-0 left-0 mb-8 scale-150 group-hover:scale-[1.65] transition-transform"
@@ -119,14 +119,14 @@ const goToPage = (page: number) => {
 
 
             <div v-else class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4">
-                <Briefcase class="w-20 h-20 mb-6 text-orange-500 opacity-80" />
+                <Briefcase class="w-20 h-20 mb-6 text-primary opacity-80" />
                 <h3 class="text-2xl font-semibold mb-2 text-gray-700">No businesses yet</h3>
                 <p class="text-base text-gray-500 mb-6">
                     You haven’t added any businesses yet. Click below to get started.
                 </p>
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
-                        class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2"
+                        class="bg-primary hover:bg-orange-600 text-white font-semibold px-6 py-2 rounded shadow flex items-center gap-2"
                     >
                         <PlusIcon class="w-4 h-4" />
                         <span>Add First Business</span>
