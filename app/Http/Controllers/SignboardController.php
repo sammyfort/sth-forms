@@ -199,13 +199,11 @@ class SignboardController extends Controller
                     $signboard->addMedia($file)->toMediaCollection('gallery');
                 }
             }
+
         });
 
         return back()->with(successRes("Signboard created successfully."));
     }
-
-
-
 
 
     public function showMySignboards(Signboard $signboard): Response
