@@ -12,7 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Tags\HasTags;
-
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * @property string $id
  * @property string $uuid
@@ -22,10 +24,17 @@ use Spatie\Tags\HasTags;
 */
 
 #[ObservedBy(SignboardObserver::class)]
-class Signboard extends Model
+class Signboard extends Model implements  HasMedia
 {
-    use BootModelTrait, HasTags, HasFactory, ReviewRateable;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia;
 
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(200)
+            ->height(200)
+            ->sharpen(10);
+    }
     protected $appends = [
         "total_average_rating",
         "reviews_count"
@@ -63,5 +72,17 @@ class Signboard extends Model
         return Attribute::make(
             get: fn() => $this->totalReviews() ?? 0
         );
+    }
+
+    public function toArrayWithMedia(): array
+    {
+        $data = $this->toArray();
+        $featuredMedia = $this->getFirstMedia('featured');
+        $data['featured_url'] = $featuredMedia ? $featuredMedia->getUrl() : null;
+
+        $galleryMedia = $this->getMedia('gallery');
+        $data['gallery_urls'] = $galleryMedia->map(fn($media) => $media->getUrl())->toArray();
+
+        return $data;
     }
 }

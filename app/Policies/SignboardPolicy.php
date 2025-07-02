@@ -23,7 +23,7 @@ class SignboardPolicy
     {
         return $user->id === $signboard->business->user_id
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::denyWithStatus(404, "Signboard not Found");
     }
 
     /**
@@ -41,7 +41,7 @@ class SignboardPolicy
     {
         return $user->id === $signboard->business->user_id
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::denyWithStatus(404, "Signboard not Found");
     }
 
     /**
@@ -51,7 +51,7 @@ class SignboardPolicy
     {
         return $user->id === $signboard->business->user_id
             ? Response::allow()
-            : Response::denyAsNotFound();
+            : Response::denyWithStatus(404, "Signboard not Found");
     }
 
     /**
