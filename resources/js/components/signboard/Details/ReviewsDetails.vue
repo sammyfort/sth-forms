@@ -2,6 +2,8 @@
 import { AverageRatingsI, RatingsDistributionI, SignboardI } from '@/types';
 import StarRating from 'vue-star-rating'
 import { number_format } from '@/lib/helpers';
+import { Button } from '@/components/ui/button';
+import SignboardRating from '@/components/businesses/SignboardRating.vue';
 
 
 type Props = {
@@ -15,7 +17,14 @@ const props = defineProps<Props>()
 
 <template>
     <div class="p-4 border-t text-fade">
-        <div class="font-medium text-lg">Reviews</div>
+        <div class="flex items-center">
+            <div class="font-medium text-lg">Reviews</div>
+            <div class="lg:ms-auto">
+                <SignboardRating :signboard="signboard">
+                    <Button size="sm">Add Review</Button>
+                </SignboardRating>
+            </div>
+        </div>
         <div class="my-5 flex flex-col items-start gap-4">
             <div class="flex items-start gap-2 lg:gap-4">
                 <div class="text-5xl">{{ number_format(signboard.total_average_rating, 1) }}</div>

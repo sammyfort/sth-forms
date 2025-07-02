@@ -50,7 +50,7 @@ use Illuminate\Notifications\Notifiable;
         'password' => 'hashed',
     ];
     protected $appends = [
-        'initials', 'fullname', 'avatar',
+        'initials', 'fullname', 'avatar', 'created_at_str',
     ];
 
      public function registerMediaCollections(): void

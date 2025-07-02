@@ -22,6 +22,10 @@ class SignboardCategory extends Model
     //
     use BootModelTrait, HasSlug, HasFactory;
 
+    protected $appends = [
+        "created_at_str"
+    ];
+
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()

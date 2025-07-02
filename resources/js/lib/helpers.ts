@@ -57,6 +57,10 @@ export const chunkArray = <T>(array: T[], size: number): [T[]] => {
     return result as unknown as [T[]]
 }
 
-export const number_format = (val: number, decimal=2)=>{
-    return (Math.ceil(val * Math.pow(10, decimal)) / Math.pow(10, decimal)).toFixed(decimal)
+export const number_format = (val: number, decimal=2)=> {
+    const num = (Math.ceil(val * Math.pow(10, decimal)) / Math.pow(10, decimal));
+    if (Number.isNaN(num)) {
+        return "0.0";
+    }
+    return num.toFixed(decimal);
 }

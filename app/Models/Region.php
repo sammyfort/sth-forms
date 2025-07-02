@@ -24,6 +24,9 @@ class Region extends Model
     //
     use BootModelTrait, HasFactory, HasSlug;
 
+    protected $appends = [
+        "created_at_str"
+    ];
 
     public function getSlugOptions(): SlugOptions
     {

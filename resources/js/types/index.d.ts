@@ -72,6 +72,8 @@ export interface BusinessI extends ModelI{
     linkedin?: string;
     instagram?: string;
     verified?: boolean,
+    user: User,
+    initials: string,
 }
 
 export interface SignboardCategoryI extends ModelI{
@@ -99,7 +101,7 @@ export interface SignboardI extends ModelI{
     total_average_rating: number,
     reviews_count: number,
     slug: string,
-    reviews: [];
+    reviews: ReviewI[];
 }
 
 export interface RatingI extends ModelI{
@@ -116,7 +118,9 @@ export interface ReviewI extends ModelI {
     review: string
     reviewable_id: string
     reviewable_type: string
-    user_id: number
+    user_id: number,
+    average_rating: number,
+    user: User,
 }
 
 export interface PaginationLinkI {
