@@ -41,3 +41,14 @@ if (!function_exists('uploadToGallery')){
             ->toMediaCollection($collection);
     }
 }
+
+if (!function_exists('ratingFormat')){
+    function ratingFormat(float|int|null $value, int $decimals=1): float
+    {
+        if (is_null($value)) {
+            return 0;
+        }
+        $tarCeil = ceil($value * 100) / 100;
+        return (float) number_format($tarCeil, $decimals);
+    }
+}

@@ -8,6 +8,7 @@ export interface ModelI {
     created_by_id?: number;
     created_at: string;
     updated_at: string;
+    created_at_str: string;
 }
 
 export interface Auth {
@@ -97,6 +98,7 @@ export interface SignboardI extends ModelI{
     gps: string;
     total_average_rating: number,
     reviews_count: number,
+    slug: string,
     reviews: [];
 }
 
@@ -108,7 +110,7 @@ export interface RatingI extends ModelI{
 
 export interface ReviewI extends ModelI {
     approved: boolean
-    department: string
+    department: stringn
     ratings: RatingI[]
     recommend: boolean
     review: string
@@ -139,3 +141,19 @@ export interface PaginatedDataI<DT> {
     total: number,
 }
 
+export interface AverageRatingsI{
+    communication: number
+    customer_service: number
+    overall: number
+    price: number
+    quality: number
+    speed: number
+}
+
+export interface RatingsDistributionI{
+    1: number
+    2:number
+    3: number
+    4: number
+    5: number
+}

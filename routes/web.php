@@ -37,11 +37,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::prefix('my-signboards')->as('my-signboards.')->group(function () {
         Route::get('/', [SignboardController::class, 'mySignboards'])->name('index');
+ 
         Route::get('/create', [SignboardController::class, 'create'])->name('create');
         Route::post('/store', [SignboardController::class, 'store'])->name('store');
         Route::get('/{signboard:slug}', [SignboardController::class, 'show'])->name('show');
         Route::get('/edit/{signboard:slug}', [SignboardController::class, 'edit'])->name('edit');
         Route::post('/{signboard}', [SignboardController::class, 'update'])->name('update');
+ 
+        Route::post('/create', [SignboardController::class, 'create'])->name('create');
+        Route::get('/{signboard:slug}', [SignboardController::class, 'showMySignboards'])->name('show');
+        Route::put('/{signboard}', [SignboardController::class, 'update'])->name('update');
+ 
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
     });
 
@@ -58,8 +64,9 @@ Route::prefix('businesses')->name('businesses.')->group(function () {
     Route::get('/', [BusinessController::class, 'index'])->name('index');
 });
 
-Route::prefix('signboards')->name('signboards.')->group(function () {
+Route::prefix('signboards')->as('signboards.')->group(function () {
     Route::get('/', [SignboardController::class, 'index'])->name('index');
+    Route::get('/{signboard:slug}/details', [SignboardController::class, 'show'])->name('show');
     Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
 });
 

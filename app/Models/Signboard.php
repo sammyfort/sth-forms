@@ -37,7 +37,8 @@ class Signboard extends Model implements  HasMedia
     }
     protected $appends = [
         "total_average_rating",
-        "reviews_count"
+        "reviews_count",
+        "created_at_str"
     ];
 
     public function business(): BelongsTo
@@ -63,7 +64,7 @@ class Signboard extends Model implements  HasMedia
     public function totalAverageRating(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->overallAverageRating()
+            get: fn() => ratingFormat($this->overallAverageRating())
         );
     }
 

@@ -49,7 +49,7 @@ const submit = async ()=> {
                 toastSuccess(response.props.message)
                 closeBtn?.value?.$el?.click()
                 emit('rated', response.props.data.signboard as SignboardI)
-                form.reset()
+                // form.reset()
             }
             else {
                 toastError(response.props.message)

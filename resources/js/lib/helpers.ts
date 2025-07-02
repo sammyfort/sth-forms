@@ -56,3 +56,7 @@ export const chunkArray = <T>(array: T[], size: number): [T[]] => {
     }
     return result as unknown as [T[]]
 }
+
+export const number_format = (val: number, decimal=2)=>{
+    return (Math.ceil(val * Math.pow(10, decimal)) / Math.pow(10, decimal)).toFixed(decimal)
+}
