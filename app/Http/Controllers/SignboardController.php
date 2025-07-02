@@ -193,11 +193,13 @@ class SignboardController extends Controller
 
         return back()->with(successRes("Signboard created successfully."));
     }
- 
-    public function show(Signboard $signboard): Response
- 
+
+
+
+
+
     public function showMySignboards(Signboard $signboard): Response
- 
+
     {
         Gate::authorize('view', [$signboard, request()->user()]);
 
