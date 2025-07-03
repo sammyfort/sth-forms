@@ -101,6 +101,8 @@ export interface SignboardI extends ModelI{
     total_average_rating: number,
     reviews_count: number,
     slug: string,
+    featured_url: string,
+    gallery_urls: [],
     reviews: ReviewI[];
 }
 
