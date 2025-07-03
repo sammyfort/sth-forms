@@ -9,8 +9,9 @@ import SocialsDetails from '@/components/signboard/Details/SocialsDetails.vue';
 import LocationDetails from '@/components/signboard/Details/LocationDetails.vue';
 import { Badge } from '@/components/ui/badge';
 import ReviewsDetails from '@/components/signboard/Details/ReviewsDetails.vue';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import StarRating from 'vue-star-rating';
+import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
+import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
+import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.vue';
 
 type Props = {
     signboard: SignboardI;
@@ -74,41 +75,16 @@ const reviews = props.signboard.reviews;
                     </div>
                     <ReviewsDetails :signboard="signboard" :ratings="ratings" :distributions="distributions" />
                     <div class="p-4">
-                        <Card v-for="review in reviews" :key="`review-${review.id}`" class="gap-4 shadow-none">
-                            <CardHeader class="flex items-center">
-                                <CardTitle class="text-fade">{{ review.user.fullname }}</CardTitle>
-                                <Avatar class="h-12 w-12 lg:ms-auto">
-                                    <AvatarImage :src="review.user.avatar?.original_url ?? ''" />
-                                    <AvatarFallback>{{ review.user.initials }}</AvatarFallback>
-                                </Avatar>
-                            </CardHeader>
-                            <CardContent>
-                                <div class="w-full text-sm">
-                                    {{ review.review }}
-                                </div>
-                                <div class="text-fade mt-3 flex w-full items-center">
-                                    <div class="text-xs">{{ review.created_at_str }}</div>
-                                    <div class="ms-auto">
-                                        <StarRating
-                                            :star-size="15"
-                                            :show-rating="false"
-                                            :rating="review.average_rating"
-                                            read-only
-                                            active-color="#009689"
-                                            :padding="3"
-                                            class="w-full md:w-1/3"
-                                            :key="`rating-card-${signboard.id}`"
-                                            :increment="0.01"
-                                        />
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <ReviewsList :signboard="signboard" :reviews="reviews" />
                     </div>
                 </div>
             </div>
-            <div class="order-2 p-3 lg:order-1 lg:col-span-2">rating details</div>
-            <div class="order-3 p-3 lg:order-3 lg:col-span-2">advertised signboards</div>
+            <div class="order-2 p-3 lg:order-1 lg:col-span-2">
+                <SignboardGallery :signboard="signboard" class="rounded-none bg-transparent shadow-none border-2"/>
+            </div>
+            <div class="order-3 p-3 lg:order-3 lg:col-span-2">
+                <AdvertisedSignboardV containerClass="w-full"/>
+            </div>
         </div>
     </Layout>
 </template>
