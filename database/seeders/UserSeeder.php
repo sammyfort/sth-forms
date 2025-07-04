@@ -50,15 +50,15 @@ class UserSeeder extends Seeder
                 ->for($user)
                 ->create()
                 ->each(function ($business) use ($signboardCategory, $regions) {
-//                    Signboard::factory(20)
-//                        ->for($business)
-//                        ->create([
-//                            'region_id' => $regions->random(),
-//                        ])
-//                        ->each(function (Signboard $signboard) use ($signboardCategory) {
-//                            $signboard->categories()
-//                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
-//                        });
+                    Signboard::factory(20)
+                        ->for($business)
+                        ->create([
+                            'region_id' => $regions->random(),
+                        ])
+                        ->each(function (Signboard $signboard) use ($signboardCategory) {
+                            $signboard->categories()
+                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
+                        });
                 });
         }
     }
