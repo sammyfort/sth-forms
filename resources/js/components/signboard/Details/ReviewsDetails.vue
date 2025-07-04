@@ -19,7 +19,7 @@ const props = defineProps<Props>()
     <div class="p-4 border-t text-fade">
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
-            <div class="lg:ms-auto">
+            <div class="ms-auto">
                 <SignboardRating :signboard="signboard">
                     <Button size="sm">Add Review</Button>
                 </SignboardRating>

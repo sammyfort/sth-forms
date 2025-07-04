@@ -20,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
     isFullWidth: false,
 })
 
+const showNotice = false;
+
 onMounted(() => {
     GLightbox({
         selector: '.glightbox',
@@ -32,6 +34,7 @@ onMounted(() => {
     <div :class="cn(props.class, 'flex min-h-screen flex-col items-center p-3  lg:justify-center lg:p-8 page')" :style="props.style">
         <a class="hidden bg-gradient-to-b from-blue-500 to-blue-600 px-2 py-3 text-center text-sm text-white md:block lg:font-[500] w-full"
            href="/pricing"
+           v-if="showNotice"
         >
             Notice Board
         </a>
