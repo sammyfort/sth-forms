@@ -13,6 +13,7 @@ import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
 import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
 import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.vue';
 import AdvertisedSignboardsH from '@/components/businesses/AdvertisedSignboardsH.vue';
+import { Eye } from 'lucide-vue-next';
 
 type Props = {
     signboard: SignboardI;
@@ -49,7 +50,13 @@ const reviews = props.signboard.reviews;
                                     <span>Trusted</span>
                                     <TrustedBadge :size="20" />
                                 </div>
-                                <div class="text-sm text-gray-300 lg:ms-auto">{{ signboard.created_at_str }}</div>
+                                <div class="flex">
+                                    <div class="flex gap-2 text-gray-300">
+                                        <Eye :size="20"/>
+                                        <div class="text-sm">{{ signboard.views_count }}</div>
+                                    </div>
+                                    <div class="text-sm text-gray-300 ms-auto">{{ signboard.created_at_str }}</div>
+                                </div>
                             </div>
                         </div>
                         <div class="text-fade p-4">

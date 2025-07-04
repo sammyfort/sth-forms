@@ -4,6 +4,7 @@ import StarRating from 'vue-star-rating'
 import { number_format } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import SignboardRating from '@/components/businesses/SignboardRating.vue';
+import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
 
 
 type Props = {
@@ -19,10 +20,15 @@ const props = defineProps<Props>()
     <div class="p-4 border-t text-fade">
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
-            <div class="ms-auto">
+            <div class="ms-auto md:block hidden">
                 <SignboardRating :signboard="signboard">
                     <Button size="sm">Add Review</Button>
                 </SignboardRating>
+            </div>
+            <div class="ms-auto md:hidden">
+                <SignboardRatingModal :signboard="signboard">
+                    <Button size="sm">Add Review</Button>
+                </SignboardRatingModal>
             </div>
         </div>
         <div class="my-5 flex flex-col items-start gap-4">
