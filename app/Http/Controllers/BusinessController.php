@@ -21,7 +21,7 @@ class BusinessController extends Controller
 
     public function myBusinesses(): Response
     {
-        $businesses = request()->user()->businesses()->latest()->paginate(12);
+        $businesses = request()->user()->businesses()->latest()->paginate(10);
         return Inertia::render('Businesses/MyBusinesses', [
             'businesses' => $businesses,
         ]);
@@ -37,7 +37,7 @@ class BusinessController extends Controller
     {
         Gate::authorize('view', [$business, request()->user()]);
         return inertia('Businesses/MyBusinessShow', [
-            'business' => $business,
+            'business' => $business->load('signboards.region'),
         ]);
     }
 

@@ -10,6 +10,7 @@ use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 use App\Models\User;
+use App\Services\HelperService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Carbon;
@@ -26,6 +27,12 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class SignboardController extends Controller
 {
+
+    public function __construct(protected HelperService $helperService)
+    {
+
+    }
+
     public function index(): Response
     {
         $signboards = QueryBuilder::for(Signboard::class)
@@ -178,7 +185,12 @@ class SignboardController extends Controller
 
     public function create(Request $request): Response
     {
-        return Inertia::render('Signboards/SignboardCreate');
+        return Inertia::render('Signboards/SignboardCreate',[
+            'business' => $request->business,
+            'categories' => $this->helperService->getCategories(),
+            'regions' => $this->helperService->getRegions(),
+            'businesses' => $this->helperService->getAuthBusinesses()
+        ]);
     }
 
     public function store(SignboardRequest $request): RedirectResponse
@@ -187,8 +199,8 @@ class SignboardController extends Controller
         $business = $request->user()->businesses()->findOrFail($data['business_id']);
 
         DB::transaction(function () use ($business, $data, $request) {
-            $signboardData = Arr::except($data, ['featured_image', 'gallery_images']);
-            $signboard = $business->signboards()->create($signboardData);
+            $signboard = $business->signboards()->create(Arr::except($data, ['featured_image', 'gallery_images', 'categories']));
+            $signboard->categories()->sync($data['categories']);
 
             if ($request->hasFile('featured_image')) {
                 $signboard->addMediaFromRequest('featured_image')->toMediaCollection('featured');
@@ -212,7 +224,7 @@ class SignboardController extends Controller
         Gate::authorize('view', [$signboard, request()->user()]);
 
         return Inertia::render('Signboards/SignboardShow', [
-            'signboard' => $signboard->load(['business', 'region', 'reviews'])->toArrayWithMedia(),
+            'signboard' => $signboard->load(['business', 'region', 'reviews', 'categories'])->toArrayWithMedia(),
         ]);
     }
 
@@ -221,9 +233,13 @@ class SignboardController extends Controller
         Gate::authorize('update', [$signboard, request()->user()]);
 
         return Inertia::render('Signboards/SignboardEdit', [
-            'signboard' => $signboard->load(['business', 'region'])->toArrayWithMedia(),
+            'signboard' => $signboard->load(['business', 'region', 'categories'])->toArrayWithMedia(),
+            'categories' => $this->helperService->getCategories(),
+            'regions' => $this->helperService->getRegions(),
+            'businesses' => $this->helperService->getAuthBusinesses()
         ]);
     }
+
 
     public function update(UpdateSignboardRequest $request, Signboard $signboard): RedirectResponse
     {
@@ -233,8 +249,8 @@ class SignboardController extends Controller
 
         //dd($data);
         DB::transaction(function () use ($signboard, $data, $request) {
-            $signboardData = Arr::except($data, ['featured_image', 'gallery_images', 'removed_gallery_urls']);
-            $signboard->update($signboardData);
+            $signboard->update(Arr::except($data, ['featured_image', 'gallery_images', 'removed_gallery_urls', 'categories']));
+            $signboard->categories()->sync($data['categories']);
 
             if ($request->hasFile('featured_image')) {
                 $signboard->clearMediaCollection('featured');
@@ -269,6 +285,8 @@ class SignboardController extends Controller
         return redirect()->route('my-signboards.index')
             ->with(successRes("Signboard deleted successfully."));
     }
+
+
 
 
 }
