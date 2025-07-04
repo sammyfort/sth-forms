@@ -25,6 +25,8 @@ class SignboardRequest extends FormRequest
         return [
             'business_id' => ['required', Rule::exists('businesses', 'id')->where('user_id', request()->user()->id)],
             'region_id' => ['required', Rule::exists('regions', 'id')],
+            'categories' => ['required', 'array'],
+            'categories.*' => ['int'],
             'town' => ['required', 'string'],
             'street' => ['nullable', 'string'],
             'landmark' => ['required', 'string'],
@@ -33,6 +35,13 @@ class SignboardRequest extends FormRequest
             'featured_image' => ['nullable', 'image', 'max:2048'],
             'gallery_images' => ['nullable', 'array'],
             'gallery_images.*' => ['image', 'max:2048'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return  [
+          'categories.required' => 'Please select at least one category'
         ];
     }
 }

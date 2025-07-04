@@ -16,17 +16,14 @@ import {
     Maximize2,
     Zap,
     Star,
-    StarOff
+
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
-import { onMounted, ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
-import SignboardEdit from '@/pages/Signboards/SignboardEdit.vue';
-import { getApi } from '@/lib/meta';
-import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
-import { SignboardI } from '@/types';
+ 
 
 type Signboard = {
     id: number;
@@ -42,22 +39,16 @@ type Signboard = {
     gallery_urls: string[];
     region: { id: number; name: string };
     business: { id: number; name: string };
+    categories: Array<{ id: number; name: string }>;
 };
 
 const props = defineProps<{
     signboard: Signboard
 }>();
 
-const regions = ref([]);
-const businesses = ref([]);
-onMounted(async () => {
-    const [regRes, busRes] = await Promise.all([
-        getApi('regions'),
-        getApi('authBusinesses'),
-    ]);
-    regions.value = regRes.metadata?.regions ?? [];
-    businesses.value = busRes.metadata?.businesses ?? [];
-});
+onMounted( () => {
+   // console.log(props.signboard)
+})
 
 const showDialog = ref(false);
 const isDeleting = ref(false);
@@ -77,7 +68,6 @@ const deleteSignboard = () => {
         },
     });
 };
-
 const reviewData = [
     { label: 'Overall', rating: 4 },
     { label: 'Customer Service', rating: 5 },
@@ -86,15 +76,14 @@ const reviewData = [
     { label: 'Communication', rating: 5 },
     { label: 'Speed', rating: 4 },
 ];
+
 </script>
-
-
 <template>
     <Head :title="props.signboard.landmark" />
     <Layout>
         <div class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen w-full">
             <div class="relative overflow-hidden">
-                <div  class="absolute inset-0 bg-gradient-to-r from-primary via-orange-400 to-primary">
+                <div  class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
                     <div class="absolute inset-0 bg-black/20"></div>
                     <div class="absolute inset-0 hero-pattern"></div>
                 </div>
@@ -144,6 +133,7 @@ const reviewData = [
 
                             <div class="flex gap-3">
                                 <Link :href="route('my-signboards.create')"
+                                      :data="{ business: props.signboard.business.id }"
                                     class="flex items-center gap-x-2 bg-primary hover:bg-primary/30 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105">
                                     <PlusIcon class="w-5 h-5" />
                                     <span>Add Signboard</span>
@@ -210,9 +200,28 @@ const reviewData = [
                             </div>
 
 
+                            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-3">
+                                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <Zap class="w-5 h-5 text-primary" />
+                                    Category
+                                </h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span v-if="props.signboard.categories.length"
+                                          v-for="category in props.signboard.categories"
+                                          :key="category.id"
+                                          class="bg-primary text-white px-3 py-1
+                                          rounded-full text-sm font-medium">{{ category.name }}</span>
+
+                                    <span v-else
+                                          class="text-red px-3 py-1
+                                          rounded-full text-sm font-medium">No Category</span>
+                                </div>
+                            </div>
+
+
                             <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
                                 <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <Zap class="w-5 h-5 text-yellow-600" />
+                                    <Zap class="w-5 h-5 text-primary" />
                                     Quick Actions
                                 </h3>
                                 <div class="space-y-3">
