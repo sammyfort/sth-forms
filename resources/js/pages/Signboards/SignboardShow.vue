@@ -23,6 +23,7 @@ import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref, onMounted } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
+ 
 
 type Signboard = {
     id: number;
@@ -250,62 +251,8 @@ const reviewData = [
                             </div>
                         </div>
 
-
                         <div class="lg:col-span-2">
-                            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-                                <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                                    <Camera class="w-5 h-5 text-primary" />
-                                    Signboard Gallery
-                                </h3>
-
-                                <div v-if="props.signboard.featured_url" class="mb-8">
-                                    <div class="relative group">
-                                        <img
-                                            :src="props.signboard.featured_url"
-                                            alt="Featured Signboard"
-                                            class="w-full h-80 object-cover rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
-                                        />
-                                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-2xl"></div>
-                                        <div class="absolute top-4 left-4">
-                                            <span class="bg-gradient-to-r from-yellow-400 to-primary text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                                                Featured
-                                            </span>
-                                        </div>
-                                        <button class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200">
-                                            <Maximize2 class="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </div>
-
-
-                                <div v-if="props.signboard.gallery_urls?.length" class="space-y-4">
-                                    <h4 class="text-lg font-semibold text-gray-800">Additional Photos</h4>
-                                    <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                                        <div
-                                            v-for="(url, idx) in props.signboard.gallery_urls"
-                                            :key="idx"
-                                            class="relative group cursor-pointer"
-                                        >
-                                            <img
-                                                :src="url"
-                                                alt="Signboard Gallery"
-                                                class="w-full h-32 object-cover rounded-xl shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:scale-105"
-                                            />
-                                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-xl flex items-center justify-center">
-                                                <Maximize2 class="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div v-if="!props.signboard.featured_url && !props.signboard.gallery_urls?.length" class="text-center py-12">
-                                    <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                        <Camera class="w-8 h-8 text-gray-400" />
-                                    </div>
-                                    <h4 class="text-lg font-medium text-gray-600 mb-2">No Images Available</h4>
-                                    <p class="text-gray-500">Upload photos to showcase this signboard location.</p>
-                                </div>
-                            </div>
+                            <SignboardGallery :signboard="signboard as unknown as SignboardI" />
                         </div>
                     </div>
                 </div>

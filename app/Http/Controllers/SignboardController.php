@@ -77,7 +77,8 @@ class SignboardController extends Controller
 
     public function show(Signboard $signboard): Response
     {
-        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories']);
+        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories', 'media']);
+        $featuredImage = $signboard->getMedia('featured_image');
         $averageRatings = $signboard->averageRatings();
 
         // find ratings distributions
@@ -108,7 +109,7 @@ class SignboardController extends Controller
         }
 
         return Inertia::render('Signboards/Signboard', [
-            'signboard' => $signboard,
+            'signboard' => $signboard->toArrayWithMedia(),
             'ratings' => $averageRatings,
             'distributions' => $distributions,
         ]);
