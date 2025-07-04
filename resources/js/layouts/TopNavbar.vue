@@ -18,7 +18,7 @@ const user = computed(() => page.props.auth.user)
 <template>
     <nav class="sticky top-0 z-50 w-full flex justify-center">
         <div class="w-full">
-            <div class="flex items-center justify-between gap-2 bg-background/50 lg:py-4 backdrop-blur-md lg:mt-4 lg:rounded-2xl lg:border lg:px-4">
+            <div class="flex items-center justify-between gap-2 bg-background/50 lg:py-4 backdrop-blur-md lg:mt-4 lg:rounded-2xl lg:border lg:px-4 px-3">
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-12">
                         <Link class="hidden lg:flex items-center gap-2.5" :href="route('home')">

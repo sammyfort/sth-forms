@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import StarRating from 'vue-star-rating'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import InputText from '@/components/InputText.vue';
+import {
+    Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { useForm } from '@inertiajs/vue3';
+import InputText from '@/components/InputText.vue';
 import { RatingI, ReviewI, SignboardI } from '@/types';
-import { toastError, toastSuccess } from '@/lib/helpers';
-import { onMounted, ref } from 'vue';
-import { PopoverClose } from 'reka-ui';
 import { AutoplayType } from 'embla-carousel-autoplay';
+import { useForm } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
 import { rateSignboard } from '@/lib/api';
 import { Errors, Page, PageProps } from '@inertiajs/core';
-
+import { toastError, toastSuccess } from '@/lib/helpers';
+import StarRating from 'vue-star-rating'
 
 type Props = {
     signboard: SignboardI,
@@ -38,6 +38,7 @@ const form = useForm<Form>({
     speed: 0,
     review: ""
 })
+
 const review = ref<RatingI|unknown>(null)
 const closeBtn = ref(null)
 
@@ -80,15 +81,18 @@ const handleCarousel = (isOpen: boolean) =>{
 </script>
 
 <template>
-    <div>
-        <Popover
-            @update:open="handleCarousel"
-        >
-            <PopoverTrigger>
-                <slot />
-            </PopoverTrigger>
-            <PopoverContent class="w-[20rem]">
-                <form @submit.prevent="submit" class="grid grid-cols-1">
+    <Dialog
+        @update:open="handleCarousel"
+    >
+        <DialogTrigger>
+            <slot />
+        </DialogTrigger>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Write Review</DialogTitle>
+            </DialogHeader>
+            <div>
+                <form @submit.prevent="submit" class="grid grid-cols-1" id="form">
                     <div class="flex flex-wrap items-center border-b py-1.5 text-sm font-medium text-fade">
                         <div class="w-1/2">Overall</div>
                         <div class="w-1/2 flex items-center">
@@ -179,7 +183,7 @@ const handleCarousel = (isOpen: boolean) =>{
                             />
                         </div>
                     </div>
-                    <div class="flex items-center border-b py-1.5 text-sm font-medium text-fade">
+                    <div class="flex items-center py-1.5 text-sm font-medium text-fade">
                         <InputText
                             textarea
                             container-class="w-full"
@@ -189,16 +193,18 @@ const handleCarousel = (isOpen: boolean) =>{
                             model="review"
                         />
                     </div>
-                    <div class="pt-3 flex justify-between">
-                        <PopoverClose as-child ref="closeBtn">
-                            <Button type="button" size="sm" variant="secondary">Close</Button>
-                        </PopoverClose>
-                        <Button type="submit" size="sm" :processing="form.processing">Submit Review</Button>
-                    </div>
                 </form>
-            </PopoverContent>
-        </Popover>
-    </div>
+            </div>
+            <DialogFooter class="flex">
+                <div class="flex gap-3 justify-between w-full">
+                    <DialogClose as-child ref="closeBtn">
+                        <Button type="button" size="sm" variant="destructive">Close</Button>
+                    </DialogClose>
+                    <Button type="submit" form="form" size="sm" :processing="form.processing">Submit Review</Button>
+                </div>
+            </DialogFooter>
+        </DialogContent>
+    </Dialog>
 </template>
 
 <style scoped>

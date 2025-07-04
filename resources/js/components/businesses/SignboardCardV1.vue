@@ -10,6 +10,7 @@ import SignboardRating from '@/components/businesses/SignboardRating.vue';
 import StarRating from 'vue-star-rating'
 import { AutoplayType } from 'embla-carousel-autoplay';
 import { router } from '@inertiajs/vue3';
+import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
 
 
 const emit = defineEmits<{
@@ -111,15 +112,27 @@ const ratedHandler = (sb: SignboardI)=>{
             </div>
 
             <div class="mt-auto ms-auto w-full flex items-baseline">
-                <div class="flex flex-wrap items-center">
+                <div class="md:flex hidden flex-wrap items-center">
                     <SignboardRating
-                        :signboard="signboardC" :id="`rating-pop-${signboard.id}`"
+                        :signboard="signboardC"
+                        :id="`rating-pop-${signboard.id}`"
                         :carousel-plugin="carouselPlugin"
                         @popover-open="onPopoverStateChanged"
                         @rated="ratedHandler"
                     >
                         <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
                     </SignboardRating>
+                </div>
+                <div class="md:hidden">
+                    <SignboardRatingModal
+                        :signboard="signboardC"
+                        :id="`rating-modal-${signboard.id}`"
+                        :carousel-plugin="carouselPlugin"
+                        @popover-open="onPopoverStateChanged"
+                        @rated="ratedHandler"
+                    >
+                        <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
+                    </SignboardRatingModal>
                 </div>
                 <Button size="sm" variant="secondary" as-child class="ms-auto mt-auto">
                     <Link :href="route('signboards.show', signboard.slug)" class=" text-primary" size="sm">View Signboard</Link>

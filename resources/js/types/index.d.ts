@@ -102,6 +102,7 @@ export interface SignboardI extends ModelI{
     reviews_count: number,
     slug: string,
     featured_url: string,
+    views_count: number|null,
     gallery_urls: [],
     reviews: ReviewI[];
 }

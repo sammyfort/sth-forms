@@ -107,7 +107,9 @@ class SignboardController extends Controller
                 $distributions[$key] = ((int)$value / (int)$totalReviews) * 100;
             }
         }
-
+        $viewCooldown = now()->addHours(3);
+        views($signboard)->cooldown($viewCooldown)->record();
+        $signboard->views_count = views($signboard)->count();
         return Inertia::render('Signboards/Signboard', [
             'signboard' => $signboard->toArrayWithMedia(),
             'ratings' => $averageRatings,

@@ -4,9 +4,13 @@ namespace App\Models;
 
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
+use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,12 +25,14 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 * @property int $created_by_id
 * @property string $created_at
 * @property string $updated_at
-*/
+ * @property Collection<Review> $reviews
+ * @property int|null $views_count
+ */
 
 #[ObservedBy(SignboardObserver::class)]
-class Signboard extends Model implements  HasMedia
+class Signboard extends Model implements  HasMedia, Viewable
 {
-    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews;
 
     public function registerMediaConversions(Media $media = null): void
     {
