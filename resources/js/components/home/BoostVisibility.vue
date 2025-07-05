@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import { router } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -17,7 +18,7 @@
             <p class="text-gray-500 my-5 lg:pr-10">
                 Whether you're launching a new product, offering a promotion, or simply want more eyes on your signboard — our advertising tools make it easy to stand out.
             </p>
-            <button class="px-5 py-3 border border-primary text-primary font-medium my-4 btn-zoom rounded-full">
+            <button @click="router.visit(route('my-signboards.index'))" class="px-5 py-3 border border-primary text-primary font-medium my-4 btn-zoom rounded-full">
                 Start Advertising
             </button>
         </div>

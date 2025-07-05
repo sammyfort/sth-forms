@@ -58,7 +58,7 @@ const ratedHandler = (sb: SignboardI)=>{
         </TooltipProvider>
         <img
             class="object-end w-full object-cover" :class="'h-'+imageHeight"
-            src="https://images.unsplash.com/photo-1570797197190-8e003a00c846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
+            :src="signboard.featured_url"
             alt="Home in Countryside"
             @click="router.visit(route('signboards.show', signboard.slug))"
         />

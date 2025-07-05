@@ -1,5 +1,6 @@
 <script setup lang="ts">
 
+import { router } from '@inertiajs/vue3';
 </script>
 
 <template>
@@ -21,6 +22,7 @@
                         <h1 class="uppercase text-white font-bold text-center text-sm lg:text-xl mb-3">
                             FOR BUSINESS OWNERS</h1>
                         <button
+                            @click="router.visit(route('my-signboards.create'))"
                             class="rounded-full text-white bg-secondary/50 border border-primary text-xs lg:text-md px-6 py-3 w-full font-medium btn-zoom">
                             List Your Signboard
                         </button>
@@ -36,6 +38,7 @@
                         <h1 class="uppercase text-white font-bold text-center text-sm lg:text-xl mb-3">
                             FOR CUSTOMERS</h1>
                         <button
+                            @click="router.visit(route('signboards.index'))"
                             class="rounded-full text-white bg-black/50 border border-white text-xs lg:text-md px-6 py-3 w-full font-medium btn-zoom">
                             Discover Nearby Businesses
                         </button>

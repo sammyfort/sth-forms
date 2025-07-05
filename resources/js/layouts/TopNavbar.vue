@@ -9,6 +9,7 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MobileNav from '@/layouts/MobileNav.vue';
+import CompanyNavPopover from '@/components/CompanyNavPopover.vue';
 
 
 const page = usePage()
@@ -42,13 +43,14 @@ const user = computed(() => page.props.auth.user)
                             <Link
                                 :class="{ 'active-nav': $page.component === 'Signboards/Signboard' }"
                                 href="/templates"
-                                class="hover:text-primary text-center"
+                                class="hover:text-primary py-4 text-center"
                             >Locate A Signboard</Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Signboards/Signboard' }"
-                                class="hover:text-primary text-center"
-                                href="/templates"
-                            >Company</Link>
+                            <CompanyNavPopover>
+                                <span
+                                    :class="{ 'active-nav': $page.component === 'FAQ' || $page.component === 'AboutUs' }"
+                                    class="hover:text-primary py-4 text-center"
+                                >Company</span>
+                            </CompanyNavPopover>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { router } from '@inertiajs/vue3';
 </script>
 
@@ -43,6 +42,7 @@ import { router } from '@inertiajs/vue3';
                 <div data-aos="fade-up" data-aos-once="true" data-aos-delay="700"
                      class="w-full md:flex items-center justify-center lg:justify-start md:gap-x-5 aos-init aos-animate">
                     <button
+                        @click="router.visit(route('my-signboards.create'))"
                         class="lg:mx-0 bg-primary text-white text-xl font-bold rounded-full py-4 px-9 btn-zoom">
                         List your business
                     </button>
