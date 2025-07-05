@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { Link, usePage } from '@inertiajs/vue3';
+import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
+import ContactUsSheet from '@/components/ContactUsSheet.vue';
 
 const page = usePage()
 const user = computed(() => page.props.auth.user)
@@ -54,9 +55,32 @@ const user = computed(() => page.props.auth.user)
                     <div class="flex items-center">
                         <TextLink
                             class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboard' }"
-                            href="/templates"
-                        >Company</TextLink>
+                            :class="{ 'mobile-active-nav': $page.component === 'AboutUs' }"
+                            :href="route('about-us')"
+                        >About Us</TextLink>
+                    </div>
+                    <div class="flex items-center">
+                        <TextLink
+                            class="font-bold py-1.5 no-underline ps-2 w-full"
+                            :class="{ 'mobile-active-nav': $page.component === 'FAQ' }"
+                            :href="route('faq.index')"
+                        >FAQs</TextLink>
+                    </div>
+                    <div class="flex items-center">
+                        <ContactUsSheet>
+                            <div
+                                class="font-bold py-1.5 no-underline ps-2 w-full cursor-pointer"
+                                :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboard' }"
+                            >Contact Us</div>
+                        </ContactUsSheet>
+                    </div>
+                    <div class="flex items-center">
+                        <ContactUsSheet>
+                            <div
+                                class="font-bold py-1.5 no-underline ps-2 w-full cursor-pointer"
+                                :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboard' }"
+                            >Career</div>
+                        </ContactUsSheet>
                     </div>
                     <div class="flex items-center">
                         <TextLink

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 
 import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.vue';
+import { router, usePage } from '@inertiajs/vue3';
+
+const page = usePage()
+const user = page.props.auth.user
 </script>
 
 <template>
@@ -13,8 +17,11 @@ import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.v
             <p class="py-5 lg:pr-32">
                 Signboard helps local businesses in Ghana take their visibility online by letting them upload, manage, and promote their physical signboards digitally — searchable by location, category, and reviews.
             </p>
-            <button data-aos="flip-up"
-                    class="px-5 py-3 border border-primary text-primary font-medium my-14 btn-zoom bg-secondary rounded-full aos-init aos-animate">
+            <button
+                v-show="!user"
+                @click="router.visit(route('login'))"
+                data-aos="flip-up"
+                class="px-5 py-3 border border-primary text-primary font-medium my-14 btn-zoom bg-secondary rounded-full aos-init aos-animate">
                 Get Started
             </button>
         </div>

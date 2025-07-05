@@ -64,6 +64,10 @@ class SignboardController extends Controller
 //            ->inRandomOrder()
             ->paginate(8);
 
+        $signboards->map(function (Signboard $signboard) {
+            $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
+            return $signboard;
+        });
 
         $regions = Region::query()->select(['id', 'name'])->get();
         $categories = SignboardCategory::query()->select(['id', 'name'])->get();
@@ -78,7 +82,6 @@ class SignboardController extends Controller
     public function show(Signboard $signboard): Response
     {
         $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories', 'media']);
-        $featuredImage = $signboard->getMedia('featured_image');
         $averageRatings = $signboard->averageRatings();
 
         // find ratings distributions
@@ -131,6 +134,9 @@ class SignboardController extends Controller
             ->inRandomOrder()
             ->take(10)
             ->get();
+        $signboards->map(function (Signboard $signboard) {
+            $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
+        });
         return response()->success([
             'signboards' => $signboards
         ]);
@@ -222,7 +228,6 @@ class SignboardController extends Controller
 
 
     public function showMySignboards(Signboard $signboard): Response
-
     {
         Gate::authorize('view', [$signboard, request()->user()]);
 
@@ -256,7 +261,6 @@ class SignboardController extends Controller
             $signboard->categories()->sync($data['categories']);
 
             if ($request->hasFile('featured_image')) {
-                $signboard->clearMediaCollection('featured');
                 $signboard->addMediaFromRequest('featured_image')->toMediaCollection('featured');
             }
 
@@ -288,8 +292,5 @@ class SignboardController extends Controller
         return redirect()->route('my-signboards.index')
             ->with(successRes("Signboard deleted successfully."));
     }
-
-
-
 
 }

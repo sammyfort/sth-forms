@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BusinessController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FAQController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SignboardController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{signboard}', [SignboardController::class, 'update'])->name('update');
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
     });
-    
+
     Route::prefix('signboards')->as('signboards.')->group(function () {
         Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
     });
@@ -63,5 +66,9 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
     Route::get('/{signboard:slug}/details', [SignboardController::class, 'show'])->name('show');
     Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
 });
+
+Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
+Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
+Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
 
 require __DIR__.'/auth.php';

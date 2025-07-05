@@ -15,22 +15,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 /**
  * @property string $id
  * @property string $uuid
-* @property int $created_by_id
-* @property string $created_at
-* @property string $updated_at
+ * @property int $created_by_id
+ * @property string $created_at
+ * @property string $updated_at
  * @property Collection<Review> $reviews
  * @property int|null $views_count
+ * @property string|null $featured_url
  */
-
 #[ObservedBy(SignboardObserver::class)]
-class Signboard extends Model implements  HasMedia, Viewable
+class Signboard extends Model implements HasMedia, Viewable
 {
     use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews;
 
@@ -41,6 +43,14 @@ class Signboard extends Model implements  HasMedia, Viewable
             ->height(200)
             ->sharpen(10);
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('featured')
+            ->singleFile();
+        $this->addMediaCollection('gallery');
+    }
+
     protected $appends = [
         "total_average_rating",
         "reviews_count",
@@ -55,6 +65,11 @@ class Signboard extends Model implements  HasMedia, Viewable
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(SignboardSubscription::class, 'signboard_id');
     }
 
     public function categories(): BelongsToMany
