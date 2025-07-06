@@ -30,6 +30,9 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Collection<Review> $reviews
  * @property int|null $views_count
  * @property string|null $featured_url
+ * @property string $gps
+ * @property string $gps_lat
+ * @property string $gps_lon
  */
 #[ObservedBy(SignboardObserver::class)]
 class Signboard extends Model implements HasMedia, Viewable

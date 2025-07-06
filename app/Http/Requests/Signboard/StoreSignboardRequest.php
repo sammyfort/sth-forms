@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests\Signboard;
 
+use App\Rules\GPSRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class SignboardRequest extends FormRequest
+class StoreSignboardRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +32,7 @@ class SignboardRequest extends FormRequest
             'street' => ['nullable', 'string'],
             'landmark' => ['required', 'string'],
             'blk_number' => ['nullable', 'string'],
-            'gps' => ['required', 'string'],
+            'gps' => ['required', 'string', new GPSRule()],
             'featured_image' => ['nullable', 'image', 'max:2048'],
             'gallery_images' => ['nullable', 'array'],
             'gallery_images.*' => ['image', 'max:2048'],

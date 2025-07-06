@@ -114,6 +114,8 @@ export interface SignboardI extends ModelI{
     street: string;
     blk_number: string;
     gps: string;
+    gps_lat: string,
+    gps_lon: string,
     total_average_rating: number,
     reviews_count: number,
     slug: string,
