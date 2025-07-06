@@ -14,6 +14,7 @@ import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vu
 import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.vue';
 import AdvertisedSignboardsH from '@/components/businesses/AdvertisedSignboardsH.vue';
 import { Eye } from 'lucide-vue-next';
+import TextLink from '@/components/TextLink.vue';
 
 type Props = {
     signboard: SignboardI;
@@ -44,9 +45,16 @@ const reviews = props.signboard.reviews;
                                 <AvatarFallback class="text-2xl font-bold text-black">{{ business.initials }}</AvatarFallback>
                             </Avatar>
                             <div class="flex w-full flex-col">
-                                <div class="text-2xl font-black">{{ business.name }}</div>
+                                <div class="flex items-center">
+                                    <div class="text-2xl font-black">{{ business.name }}</div>
+                                    <TextLink
+                                        :href="route('my-signboards.show', signboard.slug)"
+                                        class="ms-auto text-white text-sm hover:text-primary"
+                                        v-if="$page.props.auth.user?.id === signboard.business.user_id"
+                                    >View on dashboard</TextLink>
+                                </div>
                                 <div class="font-semibold">{{ signboard.landmark }}</div>
-                                <div class="flex items-center gap-2 font-semibold">
+                                <div class="flex items-center gap-2 font-bold text-primary" v-if="signboard.active_subscription">
                                     <span>Trusted</span>
                                     <TrustedBadge :size="20" />
                                 </div>

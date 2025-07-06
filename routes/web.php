@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SignboardController;
+use App\Http\Controllers\SignboardSubscriptionPaymentController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -42,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [SignboardController::class, 'mySignboards'])->name('index');
         Route::get('/create', [SignboardController::class, 'create'])->name('create');
         Route::post('/store', [SignboardController::class, 'store'])->name('store');
-        Route::get('/{signboard:slug}', [SignboardController::class, 'showMySignboards'])->name('show');
+        Route::get('/{signboard:slug}', [SignboardController::class, 'showMySignboard'])->name('show');
         Route::get('/edit/{signboard:slug}', [SignboardController::class, 'edit'])->name('edit');
         Route::post('/{signboard}', [SignboardController::class, 'update'])->name('update');
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
@@ -70,5 +71,12 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
+
+Route::prefix('payments')->as('payments.')->group(function () {
+    Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initialize'])
+        ->middleware(['auth', 'verified'])->name('signboard-subscription');
+    Route::get('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verify'])
+        ->name('signboard-subscription.verify');
+});
 
 require __DIR__.'/auth.php';

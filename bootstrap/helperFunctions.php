@@ -52,3 +52,13 @@ if (!function_exists('ratingFormat')){
         return (float) number_format($tarCeil, $decimals);
     }
 }
+
+if (!function_exists('arrayAndSubToObject')){
+    function arrayAndSubToObject($array): mixed
+    {
+        if (!is_array($array)) {
+            return $array;
+        }
+        return (object) array_map(__FUNCTION__, $array);
+    }
+}

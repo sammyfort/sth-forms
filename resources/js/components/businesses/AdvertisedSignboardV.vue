@@ -50,6 +50,7 @@ const resumeCarouselPlay = ()=>{
             loop: true,
         }"
         orientation="vertical"
+        v-if="signboards.length"
     >
         <CarouselContent :class="cn('mb-5', props.itemsClass)">
             <CarouselItem class="basis-1/3" v-for="signboard in signboards" :key="signboard.id">
