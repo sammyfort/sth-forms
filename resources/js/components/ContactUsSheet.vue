@@ -45,8 +45,8 @@ const submitForm = ()=>{
                         <div class="grid md:grid-cols-2">
                             <div class="h-full pr-6">
                                 <p class="mt-3 mb-12 text-lg">
-                                    Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Duis nec ipsum orci.
-                                    Ut scelerisque sagittis ante, ac tincidunt sem venenatis ut.
+                                    We’d love to hear from you! Whether you have a question, feedback, or need support,
+                                    feel free to reach out. Our team is always ready to assist.
                                 </p>
                                 <ul class="mb-6 md:mb-0">
                                     <li class="flex">
@@ -55,8 +55,9 @@ const submitForm = ()=>{
                                         </div>
                                         <div class="mb-4 ml-4">
                                             <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">Our Address</h3>
-                                            <p class="text-gray-600">1230 Maecenas Street Donec Road</p>
-                                            <p class="text-gray-600">New York, EEUU</p>
+                                            <p class="text-gray-600">Plot 18 Block KK, Kodua Junction, <br>Pankrono, Old Tafo Municipality</p>
+                                            <p class="text-gray-600">Ashanti Ghana</p>
+                                            <p class="text-gray-600">GPS: AO-T265-5061</p>
                                         </div>
                                     </li>
                                     <li class="flex">
@@ -65,8 +66,8 @@ const submitForm = ()=>{
                                         </div>
                                         <div class="mb-4 ml-4">
                                             <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">Contact</h3>
-                                            <p class="text-gray-600">Mobile: +1 (123) 456-7890</p>
-                                            <p class="text-gray-600">Mail: tailnext@gmail.com</p>
+                                            <p class="text-gray-600">Mobile: +233 200 990 004</p>
+                                            <p class="text-gray-600">Mail: support@signboardgh.com</p>
                                         </div>
                                     </li>
                                     <li class="flex">
@@ -75,14 +76,13 @@ const submitForm = ()=>{
                                         </div>
                                         <div class="mb-4 ml-4">
                                             <h3 class="mb-2 text-lg leading-6 font-medium text-gray-900">Working hours</h3>
-                                            <p class="text-gray-600">Monday - Friday: 08:00 - 17:00</p>
-                                            <p class="text-gray-600">Saturday &amp; Sunday: 08:00 - 12:00</p>
+                                            <p class="text-gray-600">Sunday - Friday: 08:00 - 17:00</p>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                             <div class="card h-fit max-w-6xl p-5 md:p-12" id="form">
-                                <h2 class="mb-4 text-2xl font-bold">Reach out Now !!</h2>
+                                <h2 class="mb-4 text-2xl font-semibold text-gray-800">We’d Love to Hear from You</h2>
                                 <form @submit.prevent="submitForm">
                                     <div class="mb-6">
                                         <div class="grid grid-cols-1 gap-3 mx-0 mb-1 sm:mb-4">

@@ -1,49 +1,20 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import {
-    Briefcase,
-    MapPin,
-    Building,
-    PlusIcon,
-    Trash2,
-    Edit,
-    Loader2,
-    ExternalLink,
-    Share2,
-    Navigation,
-    Camera,
-    Maximize2,
-    Zap,
-    Star,
-
-} from 'lucide-vue-next';
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Briefcase, MapPin, Building, PlusIcon, Trash2, Edit, Loader2, ExternalLink, Share2, Navigation, Zap, Star, CheckCheck, AlertCircle } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref, onMounted } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
- 
+import { SignboardI } from '@/types';
+import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
-type Signboard = {
-    id: number;
-    slug: string;
-    town: string;
-    street?: string;
-    landmark: string;
-    blk_number?: string;
-    gps: string;
-    business_id: number;
-    region_id: number;
-    featured_url?: string;
-    gallery_urls: string[];
-    region: { id: number; name: string };
-    business: { id: number; name: string };
-    categories: Array<{ id: number; name: string }>;
-};
 
 const props = defineProps<{
-    signboard: Signboard
+    signboard: SignboardI,
+    payment_status: null|"success"|"failed",
 }>();
 
 onMounted( () => {
@@ -77,11 +48,45 @@ const reviewData = [
     { label: 'Speed', rating: 4 },
 ];
 
+const subscriptionForm = useForm({
+    'plan_id': 1,
+    'signboard_id': props.signboard.id
+})
+
+const submitSubscriptionForm = ()=>{
+    subscriptionForm.post(route('payments.signboard-subscription'), {
+        replace: true,
+        onSuccess: (response)=>{
+            const authorizationUrl = response.props.data.authorization_url
+            if (authorizationUrl){
+                window.location = authorizationUrl
+            }
+            else {
+                toastError("Payment initialization failed, pleased reload the page and try again")
+            }
+        }
+    });
+}
+
 </script>
 <template>
     <Head :title="props.signboard.landmark" />
     <Layout>
         <div class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen w-full">
+            <Alert v-if="payment_status" class="mb-5" :variant="payment_status=='success' ? 'success' : 'destructive' ">
+                <CheckCheck v-if="payment_status === 'success' "/>
+                <AlertCircle v-else/>
+                <AlertTitle>Payment Status</AlertTitle>
+                <AlertDescription>
+                    <span v-if="payment_status === 'success' ">
+                        Your subscription is active. Your signboard is now being promoted and will enjoy increased visibility
+                        across our platform. Sit back and watch the attention roll in!
+                    </span>
+                    <span v-else>
+                        Unfortunately, your payment couldn’t be processed. Please check your payment details and try again. If the issue persists, contact support for assistance.
+                    </span>
+                </AlertDescription>
+            </Alert>
             <div class="relative overflow-hidden">
                 <div  class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
                     <div class="absolute inset-0 bg-black/20"></div>
@@ -132,6 +137,10 @@ const reviewData = [
                             </div>
 
                             <div class="flex gap-3">
+                                <Button @click="submitSubscriptionForm" :processing="subscriptionForm.processing">
+                                    Subscribe
+                                </Button>
+
                                 <Link :href="route('my-signboards.create')"
                                       :data="{ business: props.signboard.business.id }"
                                     class="flex items-center gap-x-2 bg-primary hover:bg-primary/30 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105">

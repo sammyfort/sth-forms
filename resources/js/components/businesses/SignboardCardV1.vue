@@ -26,12 +26,10 @@ const props = withDefaults(
         class?: HTMLAttributes['class'],
         imageHeight? : string,
         signboard: SignboardI,
-        isAdvertised?: boolean,
         carouselPlugin?: AutoplayType
     }>(),
     {
         imageHeight: "48",
-        isAdvertised: false,
     }
 )
 
@@ -44,11 +42,11 @@ const ratedHandler = (sb: SignboardI)=>{
 
 <template>
     <div :class="cn('overflow-hidden relative  rounded-lg bg-white shadow cursor-pointer transform transition-transform duration-300 hover:scale-99', props.class)">
-        <TooltipProvider v-if="isAdvertised">
+        <TooltipProvider v-if="signboard.active_subscription">
             <Tooltip>
                 <TooltipTrigger as-child>
-                    <div class="absolute top-3 p-1 rounded-[50%] bg-secondary right-3 text-white">
-                        <Handshake :size="15"/>
+                    <div class="absolute top-3 p-1 rounded-[50%] bg-primary right-3 text-white">
+                        <Handshake :size="20"/>
                     </div>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">

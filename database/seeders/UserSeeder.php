@@ -48,17 +48,20 @@ class UserSeeder extends Seeder
             $user = User::query()->create($userData);
             Business::factory(3)
                 ->for($user)
-                ->create()
-                ->each(function ($business) use ($signboardCategory, $regions) {
-//                    Signboard::factory(5)
-//                        ->for($business)
-//                        ->create([
-//                            'region_id' => $regions->random(),
-//                        ])
-//                        ->each(function (Signboard $signboard) use ($signboardCategory) {
-//                            $signboard->categories()
-//                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
-//                        });
+                ->create([
+                    'created_by_id' => $user->id
+                ])
+                ->each(function ($business) use ($user, $signboardCategory, $regions) {
+                    Signboard::factory(5)
+                        ->for($business)
+                        ->create([
+                            'region_id' => $regions->random(),
+                            'created_by_id' => $user->id
+                        ])
+                        ->each(function (Signboard $signboard) use ($signboardCategory) {
+                            $signboard->categories()
+                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
+                        });
                 });
         }
     }

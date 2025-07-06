@@ -54,7 +54,8 @@ class Signboard extends Model implements HasMedia, Viewable
     protected $appends = [
         "total_average_rating",
         "reviews_count",
-        "created_at_str"
+        "created_at_str",
+        "active_subscription"
     ];
 
     public function business(): BelongsTo
@@ -93,6 +94,13 @@ class Signboard extends Model implements HasMedia, Viewable
     {
         return Attribute::make(
             get: fn() => $this->totalReviews() ?? 0
+        );
+    }
+
+    public function activeSubscription(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->subscriptions()->whereDate('ends_at', '>=', now())->first()
         );
     }
 

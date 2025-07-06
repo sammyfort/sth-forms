@@ -57,6 +57,7 @@ const resumeCarouselPlay = ()=>{
         }"
         :class="cn('', props.containerClass)"
         class=" overflow-hidden"
+        v-if="signboards.length"
     >
         <div class="mb-5">
             <slot />

@@ -131,6 +131,9 @@ class SignboardController extends Controller
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
             })
+            ->whereHas('subscriptions', function ($subscriptionQuery) {
+                $subscriptionQuery->where('ends_at', '>=', now());
+            })
             ->inRandomOrder()
             ->take(10)
             ->get();
@@ -227,12 +230,13 @@ class SignboardController extends Controller
     }
 
 
-    public function showMySignboards(Signboard $signboard): Response
+    public function showMySignboard(Signboard $signboard): Response
     {
         Gate::authorize('view', [$signboard, request()->user()]);
 
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->load(['business', 'region', 'reviews', 'categories'])->toArrayWithMedia(),
+            'payment_status' => request()->get('payment_status'),
         ]);
     }
 
