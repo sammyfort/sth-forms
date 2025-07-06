@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\Signboard\RateRequest;
-use App\Http\Requests\Signboard\SignboardRequest;
+use App\Http\Requests\Signboard\StoreSignboardRequest;
 use App\Http\Requests\Signboard\UpdateSignboardRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 use App\Models\User;
+use App\Services\GhanaPostService;
 use App\Services\HelperService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -205,7 +206,7 @@ class SignboardController extends Controller
         ]);
     }
 
-    public function store(SignboardRequest $request): RedirectResponse
+    public function store(StoreSignboardRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $business = $request->user()->businesses()->findOrFail($data['business_id']);
