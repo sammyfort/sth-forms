@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PaymentStatus;
 use App\Filament\Resources\SignboardSubscriptionResource\Pages;
 use App\Filament\Resources\SignboardSubscriptionResource\RelationManagers;
 use App\Models\SignboardSubscription;
@@ -24,26 +25,25 @@ class SignboardSubscriptionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('signboard_id')
-                    ->relationship('signboard', 'id'),
+                    ->relationship('signboard', 'id')
+                    ->hiddenOn('edit'),
                 Forms\Components\Select::make('plan_id')
                     ->relationship('plan', 'name'),
                 Forms\Components\TextInput::make('amount')
+                    ->hiddenOn('edit')
                     ->numeric(),
                 Forms\Components\TextInput::make('payment_reference')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('payment_status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('pending'),
+                    ->hiddenOn('edit'),
+                Forms\Components\Select::make('payment_status')
+                    ->options(PaymentStatus::class)
+                    ->required(),
                 Forms\Components\TextInput::make('payment_channel')
-                    ->maxLength(255),
+                    ->hiddenOn('edit'),
                 Forms\Components\DateTimePicker::make('starts_at'),
                 Forms\Components\DateTimePicker::make('ends_at'),
                 Forms\Components\TextInput::make('receipt_number')
+                    ->hiddenOn('edit')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('created_by_id')
-                    ->numeric(),
             ]);
     }
 

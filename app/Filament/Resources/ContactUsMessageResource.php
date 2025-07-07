@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\ContactUsMessageStatus;
 use App\Filament\Resources\ContactUsMessageResource\Pages;
 use App\Filament\Resources\ContactUsMessageResource\RelationManagers;
 use App\Models\ContactUsMessage;
@@ -24,16 +25,17 @@ class ContactUsMessageResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make("name")
+                    ->hiddenOn('edit')
                     ->label("Sender's Name"),
-                Forms\Components\TextInput::make('mobile'),
-                Forms\Components\TextInput::make('email'),
+                Forms\Components\TextInput::make('mobile')
+                    ->hiddenOn('edit'),
+                Forms\Components\TextInput::make('email')
+                    ->hiddenOn('edit'),
                 Forms\Components\Textarea::make('message')
+                    ->hiddenOn('edit'),
+                Forms\Components\Select::make('status')
+                    ->options(ContactUsMessageStatus::class)
                     ->required()
-                    ->rows(10)
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
             ]);
     }
 
@@ -60,6 +62,7 @@ class ContactUsMessageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
