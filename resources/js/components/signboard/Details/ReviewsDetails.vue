@@ -87,35 +87,35 @@ const props = defineProps<Props>()
                             <div class="flex items-center gap-4">
                                 <div class="w-[50px]">5 stars</div>
                                 <div class="flex bg-gray-200 w-[150px]">
-                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['5']}px]`"></div>
+                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['5']}%]`"></div>
                                 </div>
                                 <div>{{ distributions['5'] }}%</div>
                             </div>
                             <div class="flex items-center gap-4">
                                 <div class="w-[50px]">4 stars</div>
                                 <div class="flex bg-gray-200 w-[150px]">
-                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['4']}px]`"></div>
+                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['4']}%]`"></div>
                                 </div>
                                 <div>{{ distributions['4'] }}%</div>
                             </div>
                             <div class="flex items-center gap-4">
                                 <div class="w-[50px]">3 stars</div>
                                 <div class="flex bg-gray-200 w-[150px]">
-                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['3']}px]`"></div>
+                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['3']}%]`"></div>
                                 </div>
                                 <div>{{ distributions['3'] }}%</div>
                             </div>
                             <div class="flex items-center gap-4">
                                 <div class="w-[50px]">2 stars</div>
                                 <div class="flex bg-gray-200 w-[150px]">
-                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['2']}px]`"></div>
+                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['2']}%]`"></div>
                                 </div>
                                 <div>{{ distributions['2'] }}%</div>
                             </div>
                             <div class="flex items-center gap-4">
                                 <div class="w-[50px]">1 star</div>
                                 <div class="flex bg-gray-200 w-[150px]">
-                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['1']}]`"></div>
+                                    <div class="bg-gray-400 h-2" :class="`w-[${distributions['1']}%]`"></div>
                                 </div>
                                 <div>{{ distributions['1'] }}%</div>
                             </div>
