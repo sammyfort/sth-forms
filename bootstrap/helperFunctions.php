@@ -62,3 +62,10 @@ if (!function_exists('arrayAndSubToObject')){
         return (object) array_map(__FUNCTION__, $array);
     }
 }
+
+if (!function_exists('cediSign')){
+    function cediSign(): string
+    {
+        return "₵";
+    }
+}

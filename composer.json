@@ -3,15 +3,19 @@
     "name": "laravel/vue-starter-kit",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "codeat3/blade-element-plus-icons": "^1.1",
+        "codeat3/blade-fontisto-icons": "^1.5",
+        "codeat3/blade-govicons": "^1.5",
+        "codeat3/blade-line-awesome-icons": "^1.5",
+        "codeat3/blade-majestic-icons": "^2.2",
+        "codeat3/blade-simple-line-icons": "^1.5",
         "codebyray/laravel-review-rateable": "^2.0",
         "cyrildewit/eloquent-viewable": "^7.0",
+        "filament/filament": "^3.3",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.0",
@@ -19,6 +23,7 @@
         "laravel/tinker": "^2.10.1",
         "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-medialibrary": "^11.13",
+        "spatie/laravel-permission": "^6.20",
         "spatie/laravel-query-builder": "^6.3",
         "spatie/laravel-sluggable": "^3.7",
         "spatie/laravel-tags": "^4.10",
@@ -40,7 +45,9 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },
-        "files": ["bootstrap/helperFunctions.php"]
+        "files": [
+            "bootstrap/helperFunctions.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
@@ -50,7 +57,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
                 'lastname' => 'Arhinful',
                 'email' => 'kofibusy@gmail.com',
                 'mobile' => '0542092800',
-                'password' => "11111111",
+                'password' => "123",
                 'email_verified_at' => now(),
             ]
         ];
@@ -64,5 +64,16 @@ class UserSeeder extends Seeder
                         });
                 });
         }
+
+        $admin = User::query()->create([
+            'uuid' => Str::uuid(),
+            'firstname' => 'Super',
+            'lastname' => 'Admin',
+            'email' => 'admin@app.com',
+            'mobile' => '0507455860',
+            'password' => "123",
+            'email_verified_at' => now(),
+        ]);
+        $admin->assignRole('admin');
     }
 }

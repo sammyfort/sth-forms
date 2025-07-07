@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->uuid();
             $table->string('name');
             $table->string('slug');
-            $table->string('description')->nullable();
+            $table->text('description')->nullable();
             $table->float('price', 2);
             $table->integer('number_of_days');
             $table->foreignId('created_by_id')->nullable();

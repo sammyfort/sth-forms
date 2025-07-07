@@ -30,7 +30,7 @@ class GPSRule implements ValidationRule
         }
 
         $areaCode = $matches[1];
-        if (!in_array($areaCode, $this->validAreaCodes)) {
+        if (!in_array(strtoupper($areaCode), $this->validAreaCodes)) {
             $fail('The :attribute has an invalid area code.');
         }
     }
