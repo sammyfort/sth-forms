@@ -11,7 +11,8 @@ type Props = {
     model?: string;
     label?: string;
     containerClass?: HTMLAttributes['class'];
-    textarea?: boolean
+    textarea?: boolean,
+    class?: HTMLAttributes['class']
 };
 const props = defineProps<Props>();
 const id = Math.random().toString(36).substring(2, 10);

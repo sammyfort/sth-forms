@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\Signboard\RateRequest;
-use App\Http\Requests\Signboard\SignboardRequest;
+use App\Http\Requests\Signboard\StoreSignboardRequest;
 use App\Http\Requests\Signboard\UpdateSignboardRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 use App\Models\User;
+use App\Services\GhanaPostService;
 use App\Services\HelperService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -64,6 +65,10 @@ class SignboardController extends Controller
 //            ->inRandomOrder()
             ->paginate(8);
 
+        $signboards->map(function (Signboard $signboard) {
+            $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
+            return $signboard;
+        });
 
         $regions = Region::query()->select(['id', 'name'])->get();
         $categories = SignboardCategory::query()->select(['id', 'name'])->get();
@@ -77,7 +82,7 @@ class SignboardController extends Controller
 
     public function show(Signboard $signboard): Response
     {
-        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories']);
+        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories', 'media']);
         $averageRatings = $signboard->averageRatings();
 
         // find ratings distributions
@@ -106,9 +111,11 @@ class SignboardController extends Controller
                 $distributions[$key] = ((int)$value / (int)$totalReviews) * 100;
             }
         }
-
+        $viewCooldown = now()->addHours(3);
+        views($signboard)->cooldown($viewCooldown)->record();
+        $signboard->views_count = views($signboard)->count();
         return Inertia::render('Signboards/Signboard', [
-            'signboard' => $signboard,
+            'signboard' => $signboard->toArrayWithMedia(),
             'ratings' => $averageRatings,
             'distributions' => $distributions,
         ]);
@@ -125,9 +132,15 @@ class SignboardController extends Controller
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
             })
+            ->whereHas('subscriptions', function ($subscriptionQuery) {
+                $subscriptionQuery->where('ends_at', '>=', now());
+            })
             ->inRandomOrder()
             ->take(10)
             ->get();
+        $signboards->map(function (Signboard $signboard) {
+            $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
+        });
         return response()->success([
             'signboards' => $signboards
         ]);
@@ -193,7 +206,7 @@ class SignboardController extends Controller
         ]);
     }
 
-    public function store(SignboardRequest $request): RedirectResponse
+    public function store(StoreSignboardRequest $request): RedirectResponse
     {
         $data = $request->validated();
         $business = $request->user()->businesses()->findOrFail($data['business_id']);
@@ -218,13 +231,13 @@ class SignboardController extends Controller
     }
 
 
-    public function showMySignboards(Signboard $signboard): Response
-
+    public function showMySignboard(Signboard $signboard): Response
     {
         Gate::authorize('view', [$signboard, request()->user()]);
 
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->load(['business', 'region', 'reviews', 'categories'])->toArrayWithMedia(),
+            'payment_status' => request()->get('payment_status'),
         ]);
     }
 
@@ -253,7 +266,6 @@ class SignboardController extends Controller
             $signboard->categories()->sync($data['categories']);
 
             if ($request->hasFile('featured_image')) {
-                $signboard->clearMediaCollection('featured');
                 $signboard->addMediaFromRequest('featured_image')->toMediaCollection('featured');
             }
 
@@ -285,8 +297,5 @@ class SignboardController extends Controller
         return redirect()->route('my-signboards.index')
             ->with(successRes("Signboard deleted successfully."));
     }
-
-
-
 
 }

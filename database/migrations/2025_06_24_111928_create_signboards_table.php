@@ -21,6 +21,8 @@ return new class extends Migration {
             $table->string('landmark');
             $table->string('blk_number')->nullable();
             $table->string('gps');
+            $table->string('gps_lat')->nullable();
+            $table->string('gps_lon')->nullable();
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
         });

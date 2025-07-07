@@ -4,14 +4,19 @@ namespace App\Observers;
 
 
 use App\Models\Signboard;
+use App\Services\GhanaPostService;
 
 class SignboardObserver
 {
-    public function creating(Signboard $business): void
+    public function creating(Signboard $signboard): void
     {
-        if (empty($business->slug)) {
-            $business->slug = rand(11111111, 99999999);
+        if (empty($signboard->slug)) {
+            $signboard->slug = rand(11111111, 99999999);
         }
+        // get lat and lon from gps(Ghana post)
+        $location = GhanaPostService::getLocationByGPS($signboard->gps);
+        $signboard->gps_lat = $location->centerLongitude;
+        $signboard->gps_lon = $location->centerLatitude;
     }
 
     /**
@@ -27,7 +32,12 @@ class SignboardObserver
      */
     public function updated(Signboard $signboard): void
     {
-        //
+        if ($signboard->isDirty('gps')){
+            $location = GhanaPostService::getLocationByGPS($signboard->gps);
+            $signboard->gps_lat = $location->centerLongitude;
+            $signboard->gps_lon = $location->centerLatitude;
+            $signboard->save();
+        }
     }
 
     /**

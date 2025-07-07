@@ -8,6 +8,7 @@ import { router } from '@inertiajs/vue3';
 import { getPromotedSignboards } from '@/lib/api';
 
 import { cn } from '@/lib/utils';
+import SignboardCardV1Skeleton from '@/components/skeletons/SignboardCardV1Skeleton.vue';
 
 
 const plugin = Autoplay({
@@ -20,9 +21,12 @@ const props = defineProps<{
     containerClass?: HTMLAttributes['class'],
 }>()
 const signboards = ref<SignboardI[]>([])
+const processing = ref<boolean>(false)
 
 onMounted(async ()=>{
+    processing.value = true
     signboards.value = (await getPromotedSignboards()).signboards
+    processing.value = false
 })
 
 const popoverIsOpen = ref(false)
@@ -53,19 +57,28 @@ const resumeCarouselPlay = ()=>{
         }"
         :class="cn('', props.containerClass)"
         class=" overflow-hidden"
+        v-if="signboards.length"
     >
         <div class="mb-5">
             <slot />
         </div>
         <CarouselContent class="mb-5 shadow-none">
             <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="signboard in signboards" :key="signboard.id">
-                <SignboardCardV1
-                    :is-advertised="true"
-                    :class="cn('border border-secondary', props.class)"
-                    :signboard="signboard"
-                    :carousel-plugin="plugin"
-                    @popover-open="onPopoverStateChanged"
-                />
+                <template v-if="processing">
+                    <SignboardCardV1Skeleton
+                        v-for="x in [1,2,3]"
+                        :key="x"
+                    />
+                </template>
+                <template v-else>
+                    <SignboardCardV1
+                        :is-advertised="true"
+                        :class="cn('border border-secondary', props.class)"
+                        :signboard="signboard"
+                        :carousel-plugin="plugin"
+                        @popover-open="onPopoverStateChanged"
+                    />
+                </template>
             </CarouselItem>
         </CarouselContent>
     </Carousel>

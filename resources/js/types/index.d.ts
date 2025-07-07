@@ -22,7 +22,10 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     ziggy: Config & { location: string };
     sidebarOpen: boolean;
     success: boolean,
-    message: string
+    message: string,
+    data: {
+        [key]: string
+    }
 };
 
 export interface User extends ModelI{
@@ -73,6 +76,7 @@ export interface BusinessI extends ModelI{
     instagram?: string;
     verified?: boolean,
     user: User,
+    user_id: number,
     initials: string,
 }
 
@@ -87,6 +91,18 @@ export interface RegionI extends ModelI{
     slug: string
 }
 
+export interface SignboardSubscription extends ModelI{
+    'signboard_id': number;
+    'plan_id': number;
+    'amount': number;
+    'payment_reference': string;
+    'payment_status': string;
+    'payment_channel': string;
+    'starts_at': string;
+    'ends_at': string;
+    'receipt_number': string;
+}
+
 export interface SignboardI extends ModelI{
     business_id: number;
     business: BusinessI;
@@ -98,9 +114,15 @@ export interface SignboardI extends ModelI{
     street: string;
     blk_number: string;
     gps: string;
+    gps_lat: string,
+    gps_lon: string,
     total_average_rating: number,
     reviews_count: number,
     slug: string,
+    featured_url: string,
+    views_count: number|null,
+    active_subscription: SignboardSubscription|null,
+    gallery_urls: [],
     reviews: ReviewI[];
 }
 

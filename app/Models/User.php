@@ -4,6 +4,7 @@ namespace App\Models;
 
  use App\Notifications\PasswordResetNotification;
  use App\Traits\BootModelTrait;
+ use Filament\Models\Contracts\FilamentUser;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
  use Illuminate\Database\Eloquent\Casts\Attribute;
  use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,9 @@ use Illuminate\Notifications\Notifiable;
  use Illuminate\Support\Carbon;
  use Spatie\MediaLibrary\HasMedia;
  use Spatie\MediaLibrary\InteractsWithMedia;
+ use Filament\Panel;
+ use Spatie\Permission\Traits\HasRoles;
+ use Filament\Models\Contracts\HasName;
 
  /**
  * @property string $id
@@ -37,9 +41,9 @@ use Illuminate\Notifications\Notifiable;
  * @property string $google_id
  */
 
- class User extends Authenticatable implements MustVerifyEmail, HasMedia
+ class User extends Authenticatable implements MustVerifyEmail, HasMedia, FilamentUser, HasName
 {
-    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail, BootModelTrait, InteractsWithMedia;
+    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail, BootModelTrait, InteractsWithMedia, HasRoles;
 
     protected $hidden = [
         'password',
@@ -95,6 +99,16 @@ use Illuminate\Notifications\Notifiable;
              'id',
              'id'
          );
+     }
+
+     public function canAccessPanel(Panel $panel): bool
+     {
+         return $this->hasRole('admin');
+     }
+
+     public function getFilamentName(): string
+     {
+         return "{$this->firstname} {$this->lastname}";
      }
 
  }

@@ -9,6 +9,8 @@ import { toastError, toastSuccess } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
 import { PopoverClose } from 'reka-ui';
 import { AutoplayType } from 'embla-carousel-autoplay';
+import { rateSignboard } from '@/lib/api';
+import { Errors, Page, PageProps } from '@inertiajs/core';
 
 
 type Props = {
@@ -17,7 +19,7 @@ type Props = {
 }
 const props = defineProps<Props>()
 
-const form = useForm<{
+type Form = {
     overall: number,
     customer_service: number,
     quality: number,
@@ -25,7 +27,9 @@ const form = useForm<{
     communication: number,
     speed: number,
     review: string|null
-}>({
+}
+
+const form = useForm<Form>({
     overall: 0,
     customer_service: 0,
     quality: 0,
@@ -43,25 +47,15 @@ const emit = defineEmits<{
 }>()
 
 const submit = async ()=> {
-    form.post(route('signboards.ratings', props.signboard.id), {
-        onSuccess: (response) => {
-            if (response.props.success){
-                toastSuccess(response.props.message)
-                closeBtn?.value?.$el?.click()
-                emit('rated', response.props.data.signboard as SignboardI)
-                // form.reset()
-            }
-            else {
-                toastError(response.props.message)
-            }
-        },
-        onError: (errors)=>{
-            for (const error in errors){
-                toastError(errors[error])
-                break;
-            }
-        },
-        preserveScroll: true,
+    await rateSignboard(form, props.signboard.id, (response: Page<PageProps>)=>{
+        toastSuccess(response.props.message)
+        closeBtn?.value?.$el?.click()
+        emit('rated', response.props.data.signboard as SignboardI)
+    }, null, (errors: Errors)=>{
+        for (const error in errors){
+            toastError(errors[error])
+            break;
+        }
     })
 }
 

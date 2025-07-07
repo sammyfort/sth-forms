@@ -4,29 +4,40 @@ namespace App\Models;
 
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
+use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 /**
  * @property string $id
  * @property string $uuid
-* @property int $created_by_id
-* @property string $created_at
-* @property string $updated_at
-*/
-
+ * @property int $created_by_id
+ * @property string $created_at
+ * @property string $updated_at
+ * @property Collection<Review> $reviews
+ * @property int|null $views_count
+ * @property string|null $featured_url
+ * @property string $gps
+ * @property string $gps_lat
+ * @property string $gps_lon
+ */
 #[ObservedBy(SignboardObserver::class)]
-class Signboard extends Model implements  HasMedia
+class Signboard extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews;
 
     public function registerMediaConversions(Media $media = null): void
     {
@@ -35,10 +46,19 @@ class Signboard extends Model implements  HasMedia
             ->height(200)
             ->sharpen(10);
     }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('featured')
+            ->singleFile();
+        $this->addMediaCollection('gallery');
+    }
+
     protected $appends = [
         "total_average_rating",
         "reviews_count",
-        "created_at_str"
+        "created_at_str",
+        "active_subscription"
     ];
 
     public function business(): BelongsTo
@@ -49,6 +69,11 @@ class Signboard extends Model implements  HasMedia
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(SignboardSubscription::class, 'signboard_id');
     }
 
     public function categories(): BelongsToMany
@@ -72,6 +97,13 @@ class Signboard extends Model implements  HasMedia
     {
         return Attribute::make(
             get: fn() => $this->totalReviews() ?? 0
+        );
+    }
+
+    public function activeSubscription(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->subscriptions()->whereDate('ends_at', '>=', now())->first()
         );
     }
 

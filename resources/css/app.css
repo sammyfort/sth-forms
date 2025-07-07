@@ -26,6 +26,9 @@
     --color-primary: var(--primary);
     --color-primary-foreground: var(--primary-foreground);
 
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+
     --color-deem: #009689;
     --color-deem-foreground: hsl(0 0% 98%);
 
@@ -114,6 +117,8 @@
     --popover-foreground: hsl(0 0% 3.9%);
     --primary: #fb8509;
     --primary-foreground: hsl(0 0% 98%);
+    --success: #1eef33;
+    --success-foreground: hsl(0, 0%, 0%);
     --deem: #009689;
     --deem-foreground: hsl(0 0% 98%);
     --secondary: #004576;
@@ -153,6 +158,8 @@
     --popover-foreground: hsl(0 0% 3.9%);
     --primary: #fb8509;
     --primary-foreground: hsl(0 0% 98%);
+    --success: #1eef33;
+    --success-foreground: hsl(0, 0%, 0%);
     --deem: #009689;
     --deem-foreground: hsl(0 0% 98%);
     --secondary: #004576;

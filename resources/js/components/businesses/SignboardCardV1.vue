@@ -10,6 +10,7 @@ import SignboardRating from '@/components/businesses/SignboardRating.vue';
 import StarRating from 'vue-star-rating'
 import { AutoplayType } from 'embla-carousel-autoplay';
 import { router } from '@inertiajs/vue3';
+import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
 
 
 const emit = defineEmits<{
@@ -25,12 +26,10 @@ const props = withDefaults(
         class?: HTMLAttributes['class'],
         imageHeight? : string,
         signboard: SignboardI,
-        isAdvertised?: boolean,
         carouselPlugin?: AutoplayType
     }>(),
     {
         imageHeight: "48",
-        isAdvertised: false,
     }
 )
 
@@ -43,11 +42,11 @@ const ratedHandler = (sb: SignboardI)=>{
 
 <template>
     <div :class="cn('overflow-hidden relative  rounded-lg bg-white shadow cursor-pointer transform transition-transform duration-300 hover:scale-99', props.class)">
-        <TooltipProvider v-if="isAdvertised">
+        <TooltipProvider v-if="signboard.active_subscription">
             <Tooltip>
                 <TooltipTrigger as-child>
-                    <div class="absolute top-3 p-1 rounded-[50%] bg-secondary right-3 text-white">
-                        <Handshake :size="15"/>
+                    <div class="absolute top-3 p-1 rounded-[50%] bg-primary right-3 text-white">
+                        <Handshake :size="20"/>
                     </div>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
@@ -57,7 +56,7 @@ const ratedHandler = (sb: SignboardI)=>{
         </TooltipProvider>
         <img
             class="object-end w-full object-cover" :class="'h-'+imageHeight"
-            src="https://images.unsplash.com/photo-1570797197190-8e003a00c846?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=968&q=80"
+            :src="signboard.featured_url"
             alt="Home in Countryside"
             @click="router.visit(route('signboards.show', signboard.slug))"
         />
@@ -111,15 +110,27 @@ const ratedHandler = (sb: SignboardI)=>{
             </div>
 
             <div class="mt-auto ms-auto w-full flex items-baseline">
-                <div class="flex flex-wrap items-center">
+                <div class="md:flex hidden flex-wrap items-center">
                     <SignboardRating
-                        :signboard="signboardC" :id="`rating-pop-${signboard.id}`"
+                        :signboard="signboardC"
+                        :id="`rating-pop-${signboard.id}`"
                         :carousel-plugin="carouselPlugin"
                         @popover-open="onPopoverStateChanged"
                         @rated="ratedHandler"
                     >
                         <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
                     </SignboardRating>
+                </div>
+                <div class="md:hidden">
+                    <SignboardRatingModal
+                        :signboard="signboardC"
+                        :id="`rating-modal-${signboard.id}`"
+                        :carousel-plugin="carouselPlugin"
+                        @popover-open="onPopoverStateChanged"
+                        @rated="ratedHandler"
+                    >
+                        <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
+                    </SignboardRatingModal>
                 </div>
                 <Button size="sm" variant="secondary" as-child class="ms-auto mt-auto">
                     <Link :href="route('signboards.show', signboard.slug)" class=" text-primary" size="sm">View Signboard</Link>

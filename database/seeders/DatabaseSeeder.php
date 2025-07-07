@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RegionSeeder::class);
         $this->call(SignboardCategorySeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(SignboardSubscriptionPlanSeeder::class);
     }
 }
