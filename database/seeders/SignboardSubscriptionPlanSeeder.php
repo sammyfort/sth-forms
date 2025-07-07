@@ -21,13 +21,13 @@ class SignboardSubscriptionPlanSeeder extends Seeder
                 'number_of_days' => 7,
             ],
             [
-                'name' => 'Basic',
+                'name' => 'Commercial',
                 'description' => 'We will advertise your signboard for 15 days, helping you to reach more customers.',
                 'price' => 90,
                 'number_of_days' => 15,
             ],
             [
-                'name' => 'Basic',
+                'name' => 'Pro',
                 'description' => 'We will advertise your signboard for 30 days, helping you to reach more customers.',
                 'price' => 170,
                 'number_of_days' => 30,
