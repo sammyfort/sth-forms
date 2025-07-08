@@ -9,6 +9,12 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        return Inertia::render('Dashboard');
+        $subscriptions = request()->user()->subscriptions()->with(['signboard', 'signboard.business'])->get();
+        $signboards = request()->user()->signboards()->with(['business'])->get();
+       // $running =  request()->user()->subscriptions()->running()->get();
+        return Inertia::render('Dashboard/Dashboard', [
+            'subscriptions' => $subscriptions,
+            'signboards' => $signboards,
+        ]);
     }
 }

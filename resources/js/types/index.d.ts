@@ -95,12 +95,14 @@ export interface SignboardSubscription extends ModelI{
     'signboard_id': number;
     'plan_id': number;
     'amount': number;
+     signboard: SignboardI;
     'payment_reference': string;
     'payment_status': string;
     'payment_channel': string;
     'starts_at': string;
     'ends_at': string;
     'receipt_number': string;
+    is_active: boolean;
 }
 
 export interface SignboardI extends ModelI{

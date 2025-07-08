@@ -4,8 +4,8 @@ import { Head, useForm } from '@inertiajs/vue3';
 import { toastSuccess, toastError } from '@/lib/helpers';
 import { Building2 } from 'lucide-vue-next';
 import Layout from '@/layouts/Layout.vue';
-import SignboardForm from '@/pages/Signboards/components/SignboardForm.vue';
-import PageHeader from '@/pages/Signboards/components/PageHeader.vue';
+import SignboardForm from '@/pages/Signboards/blocks/SignboardForm.vue';
+import PageHeader from '@/pages/Signboards/blocks/PageHeader.vue';
 
 const props = defineProps<{
     business?: Number;

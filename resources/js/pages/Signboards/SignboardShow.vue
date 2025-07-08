@@ -7,9 +7,13 @@ import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref, onMounted } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
+
+import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';
+
 import { SignboardI } from '@/types';
 import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 
 
 const props = defineProps<{
@@ -261,8 +265,16 @@ const submitSubscriptionForm = ()=>{
                         </div>
 
                         <div class="lg:col-span-2">
-                            <SignboardGallery :signboard="signboard as unknown as SignboardI" />
+
+                            <ImageShow
+                                :featured-url="props.signboard.featured_url"
+                                :gallery-urls="props.signboard.gallery_urls"
+                                title="Signboard Gallery"
+                            />
+
                         </div>
+
+
                     </div>
                 </div>
 
