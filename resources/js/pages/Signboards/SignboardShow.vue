@@ -8,7 +8,7 @@ import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref, onMounted } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 
-import ImageShow from '@/pages/Signboards/components/ImageShow.vue';
+import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';
 
 import { SignboardI } from '@/types';
 import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
@@ -271,8 +271,6 @@ const submitSubscriptionForm = ()=>{
                                 :gallery-urls="props.signboard.gallery_urls"
                                 title="Signboard Gallery"
                             />
-
-                            <SignboardGallery :signboard="signboard as unknown as SignboardI" />
 
                         </div>
 
