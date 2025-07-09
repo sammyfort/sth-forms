@@ -235,12 +235,12 @@ class SignboardController extends Controller
     public function showMySignboard(Signboard $signboard): Response
     {
         Gate::authorize('view', [$signboard, request()->user()]);
-        $subPlans = SignboardSubscriptionPlan::query()->get(['id', 'name', 'description']);
+        $subPlans = SignboardSubscriptionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
 
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->load(['business', 'region', 'reviews', 'categories'])->toArrayWithMedia(),
             'payment_status' => request()->get('payment_status'),
-            'signboardSubscriptionPlans' => $subPlans,
+            'plans' => $subPlans,
         ]);
     }
 
