@@ -38,13 +38,24 @@ const goToPage = (page: number) => {
 };
 
 </script>
-
 <template>
     <Head title="My Businesses" />
 
     <Layout>
+        <div class="hidden md:block fixed top-40 right-8 z-40">
+            <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
+                <Button
+                    class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
+                >
+                    <PlusIcon class="w-4 h-4" />
+                    <span>Add Business</span>
+                </Button>
+            </CreateBusiness>
+        </div>
+
         <div class="relative min-h-screen px-4 pt-8">
-            <div class="flex justify-center mb-5">
+
+            <div class="md:hidden flex justify-end mb-5">
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
                         class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
@@ -107,7 +118,7 @@ const goToPage = (page: number) => {
                 </Link>
 
                 <div class="mt-8 flex justify-center w-full">
-                    <Paginator
+                    <Paginator v-if="props.businesses.per_page > 10"
                         :total="props.businesses.total"
                         :per-page="props.businesses.per_page"
                         :current-page="props.businesses.current_page"
@@ -116,13 +127,11 @@ const goToPage = (page: number) => {
                 </div>
             </div>
 
-
-
             <div v-else class="fixed inset-0 flex flex-col items-center justify-center text-center text-gray-600 px-4">
                 <Briefcase class="w-20 h-20 mb-6 text-primary opacity-80" />
                 <h3 class="text-2xl font-semibold mb-2 text-gray-700">No businesses yet</h3>
                 <p class="text-base text-gray-500 mb-6">
-                    You haven’t added any businesses yet. Click below to get started.
+                    You haven't added any businesses yet. Click below to get started.
                 </p>
                 <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                     <Button
@@ -137,4 +146,3 @@ const goToPage = (page: number) => {
 
     </Layout>
 </template>
-

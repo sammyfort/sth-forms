@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { PlusIcon, Briefcase} from 'lucide-vue-next';
+import { PlusIcon, Briefcase, Eye} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { onMounted, ref } from 'vue';
 import { getApi } from '@/lib/meta';
 import Paginator from '@/components/helpers/Paginator.vue';
+import CreateBusiness from '@/pages/Businesses/CreateBusiness.vue';
+
 const props = defineProps<{
     signboards: {
         data: Array<{
@@ -50,8 +52,20 @@ const goToPage = (page: number) => {
     <Head title="My Signboard" />
 
     <Layout>
+        <div class="hidden md:block fixed top-40 right-8 z-40">
+            <Link
+                :href="route('my-signboards.create')">
+                <Button
+                    class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
+                >
+                    <PlusIcon class="w-4 h-4" />
+                    <span>Add Signboard</span>
+                </Button>
+            </Link>
+        </div>
+
         <div class="relative min-h-screen px-4 pt-8">
-            <div class="flex justify-center mb-5">
+            <div class="md:hidden flex justify-end mb-5">
                 <Link
                     :href="route('my-signboards.create')">
                     <Button
@@ -104,22 +118,18 @@ const goToPage = (page: number) => {
                                         </div>
                                     </div>
 
-                                    <a :href="`https://maps.google.com/?q=${signboard.gps}`" target="_blank"
+                                    <button
                                        class="relative z-10 mt-6 inline-flex items-center justify-center bg-primary text-white py-2.5 px-4 text-sm rounded-md w-full hover:bg-primary transition">
-                                        <svg class="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5 14.5 7.62 14.5 9 13.38 11.5 12 11.5z"
-                                            />
-                                        </svg>
-                                        View on Map
-                                    </a>
+                                         <Eye/>
+                                        View Signboard
+                                    </button>
                                 </div>
                             </div>
                         </Link >
                     </div>
 
                     <div class="mt-8 flex justify-center w-full">
-                        <Paginator
+                        <Paginator v-if="props.signboards.per_page > 10"
                             :total="props.signboards.total"
                             :per-page="props.signboards.per_page"
                             :current-page="props.signboards.current_page"
