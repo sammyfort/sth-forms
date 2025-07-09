@@ -4,8 +4,6 @@ import { Head, Link } from '@inertiajs/vue3';
 import StatsCard from '@/pages/Dashboard/blocks/StatsCard.vue';
 import { Eye, PlusIcon, Rocket, ChartColumnIncreasing, ChartBarIcon } from 'lucide-vue-next';
 import type { SignboardSubscriptionI, SignboardI } from '@/types';
-import { Button } from '@/components/ui/button';
-
 
 const props = defineProps<{
     subscriptions: SignboardSubscriptionI[];

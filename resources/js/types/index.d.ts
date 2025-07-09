@@ -194,3 +194,5 @@ export interface RatingsDistributionI{
     4: number
     5: number
 }
+
+

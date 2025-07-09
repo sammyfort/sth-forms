@@ -1,7 +1,24 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import { Briefcase, MapPin, Building, PlusIcon, Trash2, Edit, Loader2, ExternalLink, Share2, Navigation, Zap, Star, CheckCheck, AlertCircle } from 'lucide-vue-next';
+import {
+    Briefcase,
+    MapPin,
+    Building,
+    PlusIcon,
+    Trash2,
+    Edit,
+    Loader2,
+    ExternalLink,
+    Share2,
+    Navigation,
+    Zap,
+    Star,
+    TrendingUp,
+    Rocket,
+    Bel,
+    ChevronDown,
+} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
@@ -11,27 +28,26 @@ import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';
 
 import { SignboardI, SignboardSubscriptionPlanI } from '@/types';
-import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-
-
+import InputSelect from '@/components/InputSelect.vue';
+const showPlans = ref(false);
+const selectedPlan = ref('');
 
 const props = defineProps<{
-    signboard: SignboardI,
-    payment_status: null|"success"|"failed",
-    signboardSubscriptionPlans: SignboardSubscriptionPlanI[]
+    signboard: SignboardI;
+    plans: SignboardSubscriptionPlanI;
+    payment_status: null | 'success' | 'failed';
 }>();
 
-onMounted( () => {
-   // console.log(props.signboard)
-})
+onMounted(() => {
+    // console.log(props.signboard)
+});
 
 const showDialog = ref(false);
 const isDeleting = ref(false);
 const deleteSignboard = () => {
     isDeleting.value = true;
     router.delete(route('my-signboards.delete', props.signboard.id), {
-        onSuccess: res => {
+        onSuccess: (res) => {
             if (res.props.success) {
                 toastSuccess(res.props.message);
             } else {
@@ -54,159 +70,142 @@ const reviewData = [
 ];
 
 const subscriptionForm = useForm({
-    'plan_id': 1,
-    'signboard_id': props.signboard.id
-})
+    plan_id: '',
+    signboard_id: props.signboard.id,
+});
 
-const submitSubscriptionForm = ()=>{
+const submitSubscriptionForm = () => {
     subscriptionForm.post(route('payments.signboard-subscription'), {
         replace: true,
-        onSuccess: (response)=>{
-            const authorizationUrl = response.props.data.authorization_url
-            if (authorizationUrl){
-                window.location = authorizationUrl
+        onSuccess: (response) => {
+            const authorizationUrl = response.props.data.authorization_url;
+            if (authorizationUrl) {
+                window.location = authorizationUrl;
+            } else {
+                toastError('Payment initialization failed, pleased reload the page and try again');
             }
-            else {
-                toastError("Payment initialization failed, pleased reload the page and try again")
-            }
-        }
+        },
     });
-}
-
+};
 </script>
+
 <template>
     <Head :title="props.signboard.landmark" />
     <Layout>
-        <div class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen w-full">
-            <Alert v-if="payment_status" class="mb-5" :variant="payment_status=='success' ? 'success' : 'destructive' ">
-                <CheckCheck v-if="payment_status === 'success' "/>
-                <AlertCircle v-else/>
-                <AlertTitle>Payment Status</AlertTitle>
-                <AlertDescription>
-                    <span v-if="payment_status === 'success' ">
-                        Your subscription is active. Your signboard is now being promoted and will enjoy increased visibility
-                        across our platform. Sit back and watch the attention roll in!
-                    </span>
-                    <span v-else>
-                        Unfortunately, your payment couldn’t be processed. Please check your payment details and try again. If the issue persists, contact support for assistance.
-                    </span>
-                </AlertDescription>
-            </Alert>
+        <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50">
             <div class="relative overflow-hidden">
-                <div  class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
+                <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
                     <div class="absolute inset-0 bg-black/20"></div>
-                    <div class="absolute inset-0 hero-pattern"></div>
+                    <div class="hero-pattern absolute inset-0"></div>
                 </div>
 
                 <div class="relative px-6 py-16 md:py-24">
-                    <div class="max-w-6xl mx-auto">
-
+                    <div class="mx-auto max-w-6xl">
                         <nav class="mb-8">
-                            <div class="flex items-center space-x-2 text-white/80 text-sm">
+                            <div class="flex items-center space-x-2 text-sm text-white/80">
                                 <span>Signboards</span>
                                 <span>/</span>
                                 <span>{{ props.signboard.region.name }}</span>
                                 <span>/</span>
-                                <span class="text-white font-medium">{{ props.signboard.landmark }}</span>
+                                <span class="font-medium text-white">{{ props.signboard.landmark }}</span>
                             </div>
                         </nav>
 
-                        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8">
-
+                        <div class="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end">
                             <div class="flex-1">
-                                <div class="flex items-center gap-4 mb-4">
-                                    <div class="h-16 w-16 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                                        <Briefcase class="w-8 h-8 text-white" />
+                                <div class="mb-4 flex items-center gap-4">
+                                    <div
+                                        class="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/10 backdrop-blur-sm"
+                                    >
+                                        <Briefcase class="h-8 w-8 text-white" />
                                     </div>
                                     <div>
-                                        <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">
+                                        <h1 class="mb-2 text-4xl font-bold text-white md:text-5xl">
                                             {{ props.signboard.landmark }}
                                         </h1>
                                         <div class="flex items-center gap-4 text-white/90">
                                             <span class="flex items-center gap-2">
-                                                <MapPin class="w-4 h-4" />
+                                                <MapPin class="h-4 w-4" />
                                                 {{ props.signboard.town }}
                                             </span>
                                             <span class="flex items-center gap-2">
-                                                <Building class="w-4 h-4" />
+                                                <Building class="h-4 w-4" />
                                                 {{ props.signboard.region.name }}
                                             </span>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 max-w-md">
-                                    <h3 class="text-white font-semibold mb-2">Business Information</h3>
-                                    <p class="text-white/90 text-lg">{{ props.signboard.business.name }}</p>
+                                <div class="max-w-md rounded-2xl border border-white/20 bg-white/10 p-6 backdrop-blur-md">
+                                    <h3 class="mb-2 font-semibold text-white">Business Information</h3>
+                                    <p class="text-lg text-white/90">{{ props.signboard.business.name }}</p>
                                 </div>
                             </div>
 
                             <div class="flex gap-3">
-                                <Button @click="submitSubscriptionForm" :processing="subscriptionForm.processing">
-                                    Subscribe
-                                </Button>
 
-                                <Link :href="route('my-signboards.create')"
-                                      :data="{ business: props.signboard.business.id }"
-                                    class="flex items-center gap-x-2 bg-primary hover:bg-primary/30 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105">
-                                    <PlusIcon class="w-5 h-5" />
+                                <Link
+                                    :href="route('my-signboards.create')"
+                                    :data="{ business: props.signboard.business.id }"
+                                    class="flex items-center gap-x-2 rounded-xl border border-white/30 bg-primary px-6 py-3 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-primary/30"
+                                >
+                                    <PlusIcon class="h-5 w-5" />
                                     <span>Add Signboard</span>
                                 </Link>
 
-                                <Link :href="route('my-signboards.edit', props.signboard.slug)"
-                                      class="flex items-center gap-x-2 bg-primary hover:bg-primary/30 backdrop-blur-sm text-white border border-white/30 px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105">
-                                    <Edit class="w-5 h-5" />
+                                <Link
+                                    :href="route('my-signboards.edit', props.signboard.slug)"
+                                    class="flex items-center gap-x-2 rounded-xl border border-white/30 bg-primary px-6 py-3 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-primary/30"
+                                >
+                                    <Edit class="h-5 w-5" />
                                     <span>Edit Signboard</span>
                                 </Link>
 
-
-
-                                <Button
+                                <button
+                                    href="javascript:void(0)"
                                     variant="destructive"
                                     @click="showDialog = true"
-                                    class="bg-red-500/20 hover:bg-red-500 backdrop-blur-sm text-white border border-red-300/30 px-6 py-3 rounded-xl transition-all duration-200 hover:scale-105"
                                     :disabled="isDeleting"
+                                    class="flex items-center gap-x-2 rounded-xl border border-white/30 bg-red-500 px-6 py-3 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-red-600"
                                 >
-                                    <Trash2 class="w-4 h-4 mr-2" />
-                                    <span v-if="!isDeleting">Delete</span>
+                                    <Trash2 class="mr-2 h-4 w-4" />
+                                    <span v-if="!isDeleting">Delete Signboard</span>
                                     <span v-else class="flex items-center gap-2">
-                                        <Loader2 class="w-4 h-4 animate-spin" />
+                                        <Loader2 class="h-5 w-5 animate-spin" />
                                         Deleting...
                                     </span>
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-
-            <div class="px-6 -mt-8 relative z-10">
-                <div class="max-w-6xl mx-auto">
-                    <div class="grid lg:grid-cols-3 gap-8">
-
+            <div class="relative z-10 -mt-8 px-6">
+                <div class="mx-auto max-w-full">
+                    <div class="grid gap-8 lg:grid-cols-4">
                         <div class="lg:col-span-1">
-                            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-6">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <MapPin class="w-5 h-5 text-primary" />
+                            <div class="mb-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-xl">
+                                <h3 class="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+                                    <MapPin class="h-5 w-5 text-primary" />
                                     Location Details
                                 </h3>
                                 <div class="space-y-4">
-                                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                                        <span class="text-gray-600 font-medium">GPS Coordinates</span>
-                                        <span class="text-gray-900 font-mono text-sm">{{ props.signboard.gps }}</span>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-2">
+                                        <span class="font-medium text-gray-600">GPS Coordinates</span>
+                                        <span class="font-mono text-sm text-gray-900">{{ props.signboard.gps }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                                        <span class="text-gray-600 font-medium">Street</span>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-2">
+                                        <span class="font-medium text-gray-600">Street</span>
                                         <span class="text-gray-900">{{ props.signboard.street || '—' }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                                        <span class="text-gray-600 font-medium">Block Number</span>
+                                    <div class="flex items-center justify-between border-b border-gray-100 py-2">
+                                        <span class="font-medium text-gray-600">Block Number</span>
                                         <span class="text-gray-900">{{ props.signboard.blk_number || '—' }}</span>
                                     </div>
-                                    <div class="flex justify-between items-center py-2">
-                                        <span class="text-gray-600 font-medium">Region</span>
-                                        <span class="text-gray-900 bg-blue-100 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                                    <div class="flex items-center justify-between py-2">
+                                        <span class="font-medium text-gray-600">Region</span>
+                                        <span class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-gray-900 text-primary">
                                             {{ props.signboard.region.name }}
                                         </span>
                                     </div>
@@ -214,50 +213,36 @@ const submitSubscriptionForm = ()=>{
                             </div>
 
 
-                            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 mb-3">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <Zap class="w-5 h-5 text-primary" />
-                                    Category
-                                </h3>
-                                <div class="flex flex-wrap gap-2">
-                                    <span v-if="props.signboard.categories.length"
-                                          v-for="category in props.signboard.categories"
-                                          :key="category.id"
-                                          class="bg-primary text-white px-3 py-1
-                                          rounded-full text-sm font-medium">{{ category.name }}</span>
 
-                                    <span v-else
-                                          class="text-red px-3 py-1
-                                          rounded-full text-sm font-medium">No Category</span>
-                                </div>
-                            </div>
-
-
-                            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6">
-                                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <Zap class="w-5 h-5 text-primary" />
+                            <div class="rounded-2xl border border-gray-100 bg-white p-6 shadow-xl">
+                                <h3 class="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+                                    <Zap class="h-5 w-5 text-primary" />
                                     Quick Actions
                                 </h3>
                                 <div class="space-y-3">
                                     <a
                                         :href="`https://maps.google.com/?q=${props.signboard.gps}`"
                                         target="_blank"
-                                        class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 hover:bg-blue-100   text-primary transition-colors duration-200 group"
+                                        class="group flex items-center gap-3 rounded-xl bg-orange-50 p-3 text-primary transition-colors duration-200 hover:bg-blue-100"
                                     >
-                                        <div class="p-2 bg-primary rounded-lg group-hover:scale-110 transition-transform duration-200">
-                                            <ExternalLink class="w-4 h-4 text-white" />
+                                        <div class="rounded-lg bg-primary p-2 transition-transform duration-200 group-hover:scale-110">
+                                            <ExternalLink class="h-4 w-4 text-white" />
                                         </div>
                                         <span class="font-medium">View on Google Maps</span>
                                     </a>
-                                    <button class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 hover:bg-blue-100 text-primary transition-colors duration-200 group w-full">
-                                        <div class="p-2 bg-primary rounded-lg group-hover:scale-110 transition-transform duration-200">
-                                            <Share2 class="w-4 h-4 text-white" />
+                                    <button
+                                        class="group flex w-full items-center gap-3 rounded-xl bg-orange-50 p-3 text-primary transition-colors duration-200 hover:bg-blue-100"
+                                    >
+                                        <div class="rounded-lg bg-primary p-2 transition-transform duration-200 group-hover:scale-110">
+                                            <Share2 class="h-4 w-4 text-white" />
                                         </div>
                                         <span class="font-medium">Share Location</span>
                                     </button>
-                                    <button class="flex items-center gap-3 p-3 rounded-xl bg-orange-50 hover:bg-blue-100  text-primary transition-colors duration-200 group w-full">
-                                        <div class="p-2 bg-primary rounded-lg group-hover:scale-110 transition-transform duration-200">
-                                            <Navigation class="w-4 h-4 text-white" />
+                                    <button
+                                        class="group flex w-full items-center gap-3 rounded-xl bg-orange-50 p-3 text-primary transition-colors duration-200 hover:bg-blue-100"
+                                    >
+                                        <div class="rounded-lg bg-primary p-2 transition-transform duration-200 group-hover:scale-110">
+                                            <Navigation class="h-4 w-4 text-white" />
                                         </div>
                                         <span class="font-medium">Get Directions</span>
                                     </button>
@@ -266,33 +251,141 @@ const submitSubscriptionForm = ()=>{
                         </div>
 
                         <div class="lg:col-span-2">
-
                             <ImageShow
                                 :featured-url="props.signboard.featured_url"
                                 :gallery-urls="props.signboard.gallery_urls"
                                 title="Signboard Gallery"
                             />
-
                         </div>
 
+                        <div class="lg:col-span-1">
+                            <div class="mb-3 rounded-2xl border border-gray-100 bg-white p-6 shadow-xl">
+                                <h3 class="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+                                    <Zap class="h-5 w-5 text-primary" />
+                                    Category
+                                </h3>
+                                <div class="flex flex-wrap gap-2">
+                                    <span
+                                        v-if="props.signboard.categories.length"
+                                        v-for="category in props.signboard.categories"
+                                        :key="category.id"
+                                        class="rounded-full bg-primary px-3 py-1 text-sm font-medium text-white"
+                                    >{{ category.name }}</span
+                                    >
 
+                                    <span v-else class="text-red rounded-full px-3 py-1 text-sm font-medium">No Category</span>
+                                </div>
+                            </div>
+
+
+                            <div class="mb-6 rounded-2xl border border-gray-100 bg-white p-6 shadow-xl">
+                                <h3 class="mb-4 flex items-center gap-2 text-xl font-bold text-gray-900">
+                                    <TrendingUp class="h-5 w-5 text-primary" />
+                                    Promote Signboard
+                                </h3>
+                                <div class="mb-6">
+                                    <div class="mb-3 flex items-center justify-between">
+                                        <span class="font-medium text-gray-600">Current Status</span>
+                                        <span
+                                            :class="[
+                                                'rounded-full px-3 py-1 text-sm font-medium',
+                                                props.signboard.active_subscription > 1 ? 'bg-green-600 text-white' : 'bg-red-600 text-white',
+                                            ]"
+                                        >
+                                            {{ props.signboard.active_subscription > 1 ? 'Promoted' : 'Not Promoted' }}
+                                        </span>
+                                    </div>
+
+                                    <div class="mb-3 h-2 w-full rounded-full bg-gray-200">
+                                        <div class="h-2 rounded-full bg-primary transition-all duration-300" :style="[props.signboard.views_count, '%']"></div>
+                                    </div>
+
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Reviews</span>
+                                            <span class="font-semibold">{{ props.signboard.reviews_count || 0 }}</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">Total Views</span>
+                                            <span class="font-semibold">{{ props.signboard.views_count || 0 }}</span>
+                                        </div>
+                                        <div v-if="1 < props.signboard.active_subscription" class="flex justify-between">
+                                            <span class="text-gray-600">Expires</span>
+                                            <span class="font-semibold text-orange-600">
+                                                {{ new Date(props.signboard.active_subscription.ends_at).toDateString() }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-6 mb-4 border-t border-gray-100 pt-4">
+                                    <div class="mb-3 flex items-center justify-between">
+                                        <h4 class="font-semibold text-gray-900">Promote Now</h4>
+                                        <button
+                                            @click="showPlans = !showPlans"
+                                            class="text-sm font-medium text-primary transition-colors hover:text-primary/80"
+                                        >
+                                            {{ showPlans ? 'Select Plan' : 'View Plans' }}
+                                        </button>
+                                    </div>
+
+                                    <div v-if="showPlans" class="space-y-2">
+                                        <div v-for="plan in props.plans.slice(0, 3)" :key="plan.id" class="flex items-center justify-between text-sm">
+                                            <span class="text-gray-600">{{ plan.number_of_days }} Days</span>
+                                            <span class="font-semibold text-primary">{{ plan.price }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div v-else class="relative">
+                                        <InputSelect
+                                            label="Select Plan"
+                                            :form="subscriptionForm"
+                                            model="plan_id"
+                                            :options="
+                                                props.plans.map((plan) => ({
+                                                    label: `${plan.number_of_days} Days - ₵${plan.price}`,
+                                                    value: plan.id,
+                                                }))
+                                            "
+                                            required
+                                            searchable
+                                        />
+                                    </div>
+
+                                    <button
+                                        v-if="subscriptionForm.plan_id"
+                                        @click="submitSubscriptionForm"
+                                        :disabled="subscriptionForm.processing"
+                                        class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-white transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
+                                    >
+                                        <span v-if="subscriptionForm.processing" class="flex items-center gap-2">
+                                            <Loader2 class="h-4 w-4 animate-spin" />Processing...
+                                        </span>
+                                        <span v-else class="flex items-center gap-2">
+                                            <Rocket class="h-4 w-4" />
+                                            {{ props.signboard.active_subscription > 1 ? 'Extend Promotion' : 'Promote Now' }}</span
+                                        >
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
 
-                <div class="max-w-6xl mx-auto p-6">
-                    <h2 class="text-2xl font-bold text-gray-900 mb-4">Reviews</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div v-for="(r, i) in reviewData" :key="i" class="bg-white p-4 rounded-lg shadow">
+                <div class="mx-auto max-w-6xl p-6">
+                    <h2 class="mb-4 text-2xl font-bold text-gray-900">Reviews</h2>
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <div v-for="(r, i) in reviewData" :key="i" class="rounded-lg bg-white p-4 shadow">
                             <h3 class="font-semibold text-gray-800">{{ r.label }}</h3>
-                            <p class="text-sm text-gray-600 mb-2">Rated {{ r.rating }} stars out of 5</p>
+                            <p class="mb-2 text-sm text-gray-600">Rated {{ r.rating }} stars out of 5</p>
                             <div class="flex">
-                                <Star v-for="n in r.rating" :key="n + '-on'" class="w-5 h-5 text-yellow-500" />
-                                <Star v-for="n in (5 - r.rating)" :key="n + '-off'" class="w-5 h-5 text-gray-300" />
+                                <Star v-for="n in r.rating" :key="n + '-on'" class="h-5 w-5 text-yellow-500" />
+                                <Star v-for="n in 5 - r.rating" :key="n + '-off'" class="h-5 w-5 text-gray-300" />
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <ConfirmDialogue
@@ -307,7 +400,6 @@ const submitSubscriptionForm = ()=>{
         </div>
     </Layout>
 </template>
-
 
 <style scoped>
 .hero-pattern {
