@@ -1,6 +1,8 @@
 <script setup lang="ts">
 
 import { Facebook, Instagram, Linkedin } from 'lucide-vue-next';
+import { Link } from '@inertiajs/vue3';
+import ContactUsSheet from '@/components/ContactUsSheet.vue';
 </script>
 
 <template>
@@ -11,16 +13,16 @@ import { Facebook, Instagram, Linkedin } from 'lucide-vue-next';
                     <h2 class="text-primary text-sm uppercase font-medium mb-6">APP</h2>
                     <ul class="space-y-4">
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Home</a>
+                            <Link :href="route('home')" class="text-gray-400 hover:text-primary text-sm transition-all">Home</Link>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Businesses</a>
+                            <Link :href="route('home')" class="text-gray-400 hover:text-primary text-sm transition-all">Businesses</Link>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Find A Business</a>
+                            <Link :href="route('signboards.index')" class="text-gray-400 hover:text-primary text-sm transition-all">Find A Signboard</Link>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Terms &amp; Conditions</a>
+                            <Link :href="route('privacy-policy')" class="text-gray-400 hover:text-primary text-sm transition-all">Privacy Policy</Link>
                         </li>
                     </ul>
                 </div>
@@ -29,16 +31,20 @@ import { Facebook, Instagram, Linkedin } from 'lucide-vue-next';
                     <h2 class="text-primary text-sm uppercase font-medium mb-6">COMPANY</h2>
                     <ul class="space-y-4">
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">About Us</a>
+                            <Link :href="route('about-us')" class="text-gray-400 hover:text-primary text-sm transition-all">About Us</Link>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">FAQs</a>
+                            <Link :href="route('faq.index')" class="text-gray-400 hover:text-primary text-sm transition-all">FAQs</Link>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Contact Us</a>
+                            <ContactUsSheet>
+                                <span class="text-gray-400 hover:text-primary text-sm transition-all cursor-pointer">Contact Us</span>
+                            </ContactUsSheet>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Career</a>
+                            <ContactUsSheet>
+                                <span class="text-gray-400 hover:text-primary text-sm transition-all cursor-pointer">Career</span>
+                            </ContactUsSheet>
                         </li>
                     </ul>
                 </div>
@@ -47,10 +53,10 @@ import { Facebook, Instagram, Linkedin } from 'lucide-vue-next';
                     <h2 class="text-primary text-sm uppercase font-medium mb-6">Useful Links</h2>
                     <ul class="space-y-4">
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Advertise</a>
+                            <Link :href="route('my-signboards.index')" class="text-gray-400 hover:text-primary text-sm transition-all">Advertise</Link>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="text-gray-400 hover:text-primary text-sm transition-all">Dashboard</a>
+                            <Link :href="route('dashboard')" class="text-gray-400 hover:text-primary text-sm transition-all">Dashboard</Link>
                         </li>
                     </ul>
                 </div>

@@ -40,11 +40,6 @@ const user = computed(() => page.props.auth.user)
                                 :href="route('signboards.index')"
                                 class="hover:text-primary py-4 text-center"
                             >Browse Signboards</Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Signboards/Signboard' }"
-                                href="/templates"
-                                class="hover:text-primary py-4 text-center"
-                            >Locate A Signboard</Link>
                             <CompanyNavPopover>
                                 <span
                                     :class="{ 'active-nav': $page.component === 'FAQ' || $page.component === 'AboutUs' }"
