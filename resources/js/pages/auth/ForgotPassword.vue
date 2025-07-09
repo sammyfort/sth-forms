@@ -37,7 +37,7 @@ const submit = () => {
     >
         <Head title="Forgot password" />
 
-        <Card class="w-100 max-w-md mx-auto mt-0">
+        <Card class="w-120 max-w-md mx-auto mt-0">
             <CardHeader class="text-center">
                 <div class="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                     <Lock class="h-6 w-6 text-primary" />

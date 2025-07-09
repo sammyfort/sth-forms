@@ -64,9 +64,9 @@ const props = defineProps<{
                             <div class="p-6 border-b border-gray-200">
                                 <div class="flex items-center justify-between">
                                     <h2 class="text-lg font-semibold text-gray-900">Your Signboards</h2>
-                                    <button class="text-blue-600 hover:text-blue-700 font-medium text-sm">
+                                    <Link :href="route('my-signboards.index')" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
                                         View All
-                                    </button>
+                                    </Link>
                                 </div>
                             </div>
                             <div class="divide-y divide-gray-200">
@@ -79,10 +79,10 @@ const props = defineProps<{
                                                 <p class="text-sm text-gray-600">{{ signboard.landmark }}</p>
                                                 <div class="flex items-center mt-2 space-x-4">
                                                 <span class="text-sm text-gray-500">
-                                                    {{ signboard.reviews_count}} views
+                                                    {{ signboard.reviews_count}} Views
                                                 </span>
                                                     <span class="text-sm text-gray-500">
-                                                    {{ signboard.reviews_count }} revenue
+                                                    {{ signboard.reviews_count }} Visitors
                                                 </span>
                                                     <span class="text-sm text-gray-500 bg-green-100 text-green-800">
                                                     {{ 'Active' }}
@@ -94,14 +94,7 @@ const props = defineProps<{
                                                 :class="['px-2 py-1 rounded-full text-xs font-medium', 'bg-green-100 text-green-800']">
                                                 {{ 'Active'}}
                                             </span>
-                                                <button class="text-gray-400 hover:text-gray-600">
-                                                    <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                                         stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                              stroke-width="2"
-                                                              d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                                                    </svg>
-                                                </button>
+
                                             </div>
                                         </div>
                                     </div>
