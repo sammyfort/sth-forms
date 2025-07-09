@@ -43,7 +43,6 @@ const handleScroll = async () => {
     if (loadingSignboards.value || !nextPage.value) return;
 
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-        console.log('nextPage.value', nextPage.value);
         if (!nextPage.value) return;
         router.get(
             nextPage.value,
@@ -64,7 +63,6 @@ const handleScroll = async () => {
                         nextPageUrl = nextPageUrl + filteredQuery?.value.replace('?', '&');
                     }
                     nextPage.value = nextPageUrl;
-                    console.log('nextPage-down', nextPage.value);
                 },
             },
         );
