@@ -91,11 +91,20 @@ export interface RegionI extends ModelI{
     slug: string
 }
 
-export interface SignboardSubscription extends ModelI{
+export interface SignboardSubscriptionPlanI extends ModelI{
+    name: string
+    slug: string
+    description: string
+    price: number
+    number_of_days: number
+}
+
+export interface SignboardSubscriptionI extends ModelI{
     'signboard_id': number;
     'plan_id': number;
     'amount': number;
      signboard: SignboardI;
+     plan: SignboardSubscriptionPlanI;
     'payment_reference': string;
     'payment_status': string;
     'payment_channel': string;
@@ -123,7 +132,7 @@ export interface SignboardI extends ModelI{
     slug: string,
     featured_url: string,
     views_count: number|null,
-    active_subscription: SignboardSubscription|null,
+    active_subscription: SignboardSubscriptionI|null,
     gallery_urls: [],
     reviews: ReviewI[];
 }

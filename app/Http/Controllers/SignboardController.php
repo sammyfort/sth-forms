@@ -9,6 +9,7 @@ use App\Http\Requests\Signboard\UpdateSignboardRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
+use App\Models\SignboardSubscriptionPlan;
 use App\Models\User;
 use App\Services\GhanaPostService;
 use App\Services\HelperService;
@@ -234,10 +235,12 @@ class SignboardController extends Controller
     public function showMySignboard(Signboard $signboard): Response
     {
         Gate::authorize('view', [$signboard, request()->user()]);
+        $subPlans = SignboardSubscriptionPlan::query()->get(['id', 'name', 'description']);
 
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->load(['business', 'region', 'reviews', 'categories'])->toArrayWithMedia(),
             'payment_status' => request()->get('payment_status'),
+            'signboardSubscriptionPlans' => $subPlans,
         ]);
     }
 
