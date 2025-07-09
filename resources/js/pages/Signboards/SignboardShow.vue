@@ -10,7 +10,7 @@ import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 
 import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';
 
-import { SignboardI } from '@/types';
+import { SignboardI, SignboardSubscriptionPlanI } from '@/types';
 import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
@@ -19,6 +19,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 const props = defineProps<{
     signboard: SignboardI,
     payment_status: null|"success"|"failed",
+    signboardSubscriptionPlans: SignboardSubscriptionPlanI[]
 }>();
 
 onMounted( () => {

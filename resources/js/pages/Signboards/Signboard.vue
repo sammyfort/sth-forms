@@ -15,6 +15,7 @@ import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.v
 import AdvertisedSignboardsH from '@/components/businesses/AdvertisedSignboardsH.vue';
 import { Eye } from 'lucide-vue-next';
 import TextLink from '@/components/TextLink.vue';
+import { computed } from 'vue';
 
 type Props = {
     signboard: SignboardI;
@@ -23,7 +24,7 @@ type Props = {
 };
 const props = defineProps<Props>();
 const business = props.signboard.business;
-const reviews = props.signboard.reviews;
+const reviews = computed(()=> props.signboard.reviews);
 
 </script>
 

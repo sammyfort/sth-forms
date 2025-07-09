@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BusinessController;
-use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
@@ -71,6 +70,7 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
+Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('privacy-policy');
 
 Route::prefix('payments')->as('payments.')->group(function () {
     Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initialize'])

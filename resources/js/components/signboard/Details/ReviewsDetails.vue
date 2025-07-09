@@ -5,14 +5,19 @@ import { number_format } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import SignboardRating from '@/components/businesses/SignboardRating.vue';
 import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
+import { usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
+
+const page = usePage()
+const user = computed(()=> page.props.auth.user)
 
 type Props = {
     signboard: SignboardI,
     ratings: AverageRatingsI,
     distributions: RatingsDistributionI,
 }
-const props = defineProps<Props>()
+defineProps<Props>()
 
 </script>
 
@@ -20,7 +25,7 @@ const props = defineProps<Props>()
     <div class="p-4 border-t text-fade">
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
-            <div class="ms-auto md:block hidden">
+            <div v-if="user.id !== signboard.created_by_id" class="ms-auto md:block hidden">
                 <SignboardRating :signboard="signboard">
                     <Button size="sm">Add Review</Button>
                 </SignboardRating>
