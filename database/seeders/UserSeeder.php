@@ -35,7 +35,7 @@ class UserSeeder extends Seeder
                 'firstname' => 'Emmanuel',
                 'lastname' => 'Arhinful',
                 'email' => 'fii@gmail.com',
-                'mobile' => '0542092800',
+                'mobile' => '0507455860',
                 'password' => "123",
                 'email_verified_at' => now(),
             ]
@@ -70,7 +70,7 @@ class UserSeeder extends Seeder
             'firstname' => 'Super',
             'lastname' => 'Admin',
             'email' => 'admin@app.com',
-            'mobile' => '0507455860',
+            'mobile' => '0257906340',
             'password' => "123",
             'email_verified_at' => now(),
         ]);
