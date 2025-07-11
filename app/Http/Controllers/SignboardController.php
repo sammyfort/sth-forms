@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 
+use App\Enums\PaymentStatus;
 use App\Http\Requests\Signboard\RateRequest;
 use App\Http\Requests\Signboard\StoreSignboardRequest;
 use App\Http\Requests\Signboard\UpdateSignboardRequest;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
+use App\Models\SignboardSubscription;
 use App\Models\SignboardSubscriptionPlan;
 use App\Models\User;
 use App\Services\GhanaPostService;
@@ -139,6 +141,22 @@ class SignboardController extends Controller
             ->inRandomOrder()
             ->take(10)
             ->get();
+
+        if ($signboards->count() < 1) {
+            $signboards = Signboard::query()
+                ->with(['business', 'region'])
+                ->with('categories', function ($categoriesQuery) {
+                    $categoriesQuery->take(3);
+                })
+                ->with('reviews', function ($reviewsQuery) {
+                    $reviewsQuery->where('user_id', auth()->id())
+                        ->with(['ratings']);
+                })
+                ->inRandomOrder()
+                ->take(10)
+                ->get();
+        }
+
         $signboards->map(function (Signboard $signboard) {
             $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
         });
@@ -237,9 +255,28 @@ class SignboardController extends Controller
         Gate::authorize('view', [$signboard, request()->user()]);
         $subPlans = SignboardSubscriptionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
 
+        // check if it has payment
+        $paymentStatus = request()->get('payment_status');
+        $paymentReference = request()->get('reference');
+        if ($paymentStatus && $paymentReference) {
+            $subscription = signboardSubscription::query()
+                ->where('payment_reference', $paymentReference)
+                ->where('payment_status', PaymentStatus::PENDING->value)
+                ->first();
+            if ($subscription){
+                if ($paymentStatus == 'cancelled'){
+                    $subscription->payment_status = PaymentStatus::CANCELED;
+                }
+                $subscription->save();
+            }
+            else{
+                $paymentStatus = null;
+            }
+        }
+
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->load(['business', 'region', 'reviews', 'categories'])->toArrayWithMedia(),
-            'payment_status' => request()->get('payment_status'),
+            'payment_status' => $paymentStatus,
             'plans' => $subPlans,
         ]);
     }

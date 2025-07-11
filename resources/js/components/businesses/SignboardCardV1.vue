@@ -55,7 +55,7 @@ const ratedHandler = (sb: SignboardI)=>{
             </Tooltip>
         </TooltipProvider>
         <img
-            class="object-end w-full object-cover" :class="'h-'+imageHeight"
+            class="object-end w-full object-cover max-h-55" :class="'h-'+imageHeight"
             :src="signboard.featured_url"
             alt="Home in Countryside"
             @click="router.visit(route('signboards.show', signboard.slug))"

@@ -7,24 +7,168 @@ use App\Http\Requests\SignboarbSubscriptionRequest;
 use App\Models\Signboard;
 use App\Models\SignboardSubscription;
 use App\Models\SignboardSubscriptionPlan;
+use App\Services\HubtelService;
 use App\Services\PaystackService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class SignboardSubscriptionPaymentController extends Controller
 {
     private PaystackService $paystackService;
+    private HubtelService $hubtelService;
 
     public function __construct()
     {
         $this->paystackService = new PaystackService();
+        $this->hubtelService = new HubtelService();
     }
 
-    public function initialize(SignboarbSubscriptionRequest $request): \Illuminate\Http\RedirectResponse
+    public function initializeHubtel(SignboarbSubscriptionRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validated();
         $plan = SignboardSubscriptionPlan::query()->find($validatedData['plan_id']);
         $reference = Str::uuid()->toString();
+        $signboard = Signboard::query()->find($validatedData['signboard_id'], ['id', 'slug']);
+        $signboardRoute = route('my-signboards.show', $signboard->slug)."?reference=$reference";
+
+        $data = [
+            "totalAmount" => $plan->price,
+            "description" => "Signboard test",
+            "callbackUrl" => route('payments.signboard-subscription.verify'),
+            "returnUrl" => "$signboardRoute&payment_status=pending",
+            "merchantAccountNumber" => "2030753",
+            "cancellationUrl" => "$signboardRoute&payment_status=cancelled",
+            "clientReference" => $reference
+        ];
+
+        $payment = $this->hubtelService->initializePayment($data);
+
+        if ($payment){
+            SignboardSubscription::query()->create([
+                'signboard_id' => $validatedData['signboard_id'],
+                'plan_id' => $validatedData['plan_id'],
+                'payment_reference' => $reference,
+                'checkout_id' => $payment['checkoutId'],
+                'payment_status' => PaymentStatus::PENDING,
+            ]);
+        }
+
+        return back()->with(successRes('Url generated', ['authorization_url' => $payment['checkoutUrl']]));
+    }
+
+    public function verifyHubtel(Request $request): mixed
+    {
+        Log::info('Hubtel Webhook Received', $request->all());
+
+        $payload = $request->all();
+
+        if (!isset($payload['ResponseCode']) || $payload['ResponseCode'] !== '0000') {
+            Log::warning('Invalid Hubtel webhook response code', $payload);
+            return response('', 200);
+        }
+
+        $data = $payload['Data'] ?? [];
+
+        $reference = $data['ClientReference'] ?? null;
+        $checkoutId = $data['CheckoutId'] ?? null;
+        $status = strtolower($data['Status'] ?? '');
+        $amount = (float) ($data['Amount'] ?? 0);
+        $channel = $data['PaymentDetails']['Channel'] ?? null;
+
+        if (!$reference || !$status || !$amount) {
+            Log::warning('Incomplete Hubtel webhook data', $data);
+            return response('', 200);
+        }
+
+        // Find subscription using the payment reference
+        $subscription = SignboardSubscription::query()
+            ->where('payment_reference', $reference)
+            ->first();
+
+        if (!$subscription) {
+            Log::warning('Subscription not found for reference: ' . $reference);
+            return response('', 200);
+        }
+
+        $signboard = $subscription->signboard;
+        $plan = $subscription->plan;
+
+        if (!$signboard || !$plan) {
+            Log::warning('Missing signboard or plan for subscription', ['subscription_id' => $subscription->id]);
+            return response('', 200);
+        }
+
+        if ($status === 'success' && $amount >= $plan->price) {
+            $now = now();
+
+            // Get existing subscriptions (excluding current one) that are still active
+            $activeSubs = $signboard->subscriptions()
+                ->where('id', '!=', $subscription->id)
+                ->where('ends_at', '>', $now)
+                ->get();
+
+            $arrearsDays = 0;
+
+            if ($activeSubs->count()) {
+                $latest = $activeSubs->first(); // Just use the first one
+                $arrearsDays = Carbon::parse($latest->ends_at)->diffInDays($now);
+
+                // End all other subscriptions
+                foreach ($activeSubs as $old) {
+                    $old->update(['ends_at' => $now]);
+                }
+            }
+
+            // Update this subscription
+            $subscription->update([
+                'checkout_id'     => $checkoutId,
+                'payment_channel' => $channel,
+                'amount'          => $plan->price,
+                'starts_at'       => $now,
+                'payment_platform'       => "hubtel",
+                'ends_at'         => $now->addDays($plan->number_of_days + $arrearsDays),
+                'payment_status'  => PaymentStatus::PAID,
+            ]);
+
+            Log::info('Subscription marked as PAID', ['reference' => $reference]);
+        }
+        else {
+            // Mark failed
+            $subscription->update([
+                'payment_status' => PaymentStatus::FAILED,
+            ]);
+            Log::info('Payment failed or amount mismatch', ['reference' => $reference]);
+        }
+
+        return response('', 200);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function initializePaystack(SignboarbSubscriptionRequest $request): \Illuminate\Http\RedirectResponse
+    {
+        $validatedData = $request->validated();
+        $plan = SignboardSubscriptionPlan::query()->find($validatedData['plan_id']);
+        $reference = Str::uuid()->toString();
+        $signboardRoute = route('my-signboards.show', $validatedData['signboard_id']);
         $data = [
             'reference' => $reference,
             'email' => auth()->user()->email,
@@ -35,6 +179,7 @@ class SignboardSubscriptionPaymentController extends Controller
                 "plan_id" => $validatedData['plan_id'],
             ],
         ];
+
         $paymentUrl = $this->paystackService->initializePayment($data);
         if ($paymentUrl){
             SignboardSubscription::query()->create([
@@ -47,7 +192,7 @@ class SignboardSubscriptionPaymentController extends Controller
         return back()->with(successRes('Url generated', ['authorization_url' => $paymentUrl]));
     }
 
-    public function verify(): \Illuminate\Http\RedirectResponse
+    public function verifyPaystack(): \Illuminate\Http\RedirectResponse
     {
         $reference = request('reference');
         if (!$reference) abort(404);
@@ -62,9 +207,6 @@ class SignboardSubscriptionPaymentController extends Controller
                     $amount = $payment->amount / 100;
                     if ($plan->price <= $amount) {
                         $now = now();
-
-                        // TODO:: Check if signboard has existing subscription, then add days from $plan
-
                         // get existing active subscription if there is any
                         // Add the remaining days to the new subscription
                         $exSubs = $signboard->subscriptions()
@@ -92,6 +234,7 @@ class SignboardSubscriptionPaymentController extends Controller
                             'starts_at' => $now,
                             'ends_at' => $now->addDays(($plan->number_of_days + $arrearsDays)),
                             'payment_status' => PaymentStatus::PAID,
+                            'payment_platform' => "paystack",
                         ]);
                         // redirect back to the signboard show page, with payment successful alert
                         return redirect(route('my-signboards.show', $signboard)."?payment_status=success");

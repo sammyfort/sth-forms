@@ -34,8 +34,10 @@ const resumeCarouselPlay = ()=>{
         plugin.stop()
     }
     else {
-        plugin.reset()
-        plugin.play()
+        try {
+            plugin.reset()
+            plugin.play()
+        } catch (err){}
     }
 }
 
@@ -55,7 +57,6 @@ const resumeCarouselPlay = ()=>{
         <CarouselContent :class="cn('mb-5', props.itemsClass)">
             <CarouselItem class="basis-1/3" v-for="signboard in signboards" :key="signboard.id">
                 <SignboardCardV1
-                    :is-advertised="true"
                     class="border border-secondary"
                     :signboard="signboard"
                     :carousel-plugin="plugin"

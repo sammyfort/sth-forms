@@ -73,9 +73,10 @@ Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
 Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('privacy-policy');
 
 Route::prefix('payments')->as('payments.')->group(function () {
-    Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initialize'])
+    Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initializeHubtel'])
         ->middleware(['auth', 'verified'])->name('signboard-subscription');
-    Route::get('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verify'])
+
+    Route::get('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
         ->name('signboard-subscription.verify');
 });
 
