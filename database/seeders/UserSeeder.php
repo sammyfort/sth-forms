@@ -34,7 +34,7 @@ class UserSeeder extends Seeder
                 'uuid' => Str::uuid(),
                 'firstname' => 'Emmanuel',
                 'lastname' => 'Arhinful',
-                'email' => 'kofibusy@gmail.com',
+                'email' => 'fii@gmail.com',
                 'mobile' => '0542092800',
                 'password' => "123",
                 'email_verified_at' => now(),
