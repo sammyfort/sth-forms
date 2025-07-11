@@ -1,41 +1,24 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import {
-    Briefcase,
-    MapPin,
-    Building,
-    PlusIcon,
-    Trash2,
-    Edit,
-    Loader2,
-    ExternalLink,
-    Share2,
-    Navigation,
-    Zap,
-    Star,
-    TrendingUp,
-    Rocket,
-    Bel,
-    ChevronDown,
-} from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
+import { Briefcase, MapPin, Building, PlusIcon, Trash2, Edit, Loader2, ExternalLink, Share2, Navigation, Zap, Star, TrendingUp, Rocket, XCircle, Clock, } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref, onMounted } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
-
 import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';
-
 import { SignboardI, SignboardSubscriptionPlanI } from '@/types';
 import InputSelect from '@/components/InputSelect.vue';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+
+
 const showPlans = ref(false);
 const selectedPlan = ref('');
 
 const props = defineProps<{
     signboard: SignboardI;
     plans: SignboardSubscriptionPlanI;
-    payment_status: null | 'success' | 'failed';
+    payment_status: null | 'success' | 'failed' | 'cancelled' | 'pending';
 }>();
 
 onMounted(() => {
@@ -93,6 +76,22 @@ const submitSubscriptionForm = () => {
     <Head :title="props.signboard.landmark" />
     <Layout>
         <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50">
+            <Alert v-if="payment_status == 'pending'" class="mb-5" variant="success">
+                <Clock />
+                <AlertTitle>Payment in Progress</AlertTitle>
+                <AlertDescription>
+                    We've received your request and are currently verifying your payment. <br>
+                    This may take a few moments. Once confirmed, your signboard promotion will be activated automatically.
+                </AlertDescription>
+            </Alert>
+            <Alert v-if="payment_status == 'cancelled'" class="mb-5" variant="destructive">
+                <XCircle />
+                <AlertTitle>Transaction Cancelled</AlertTitle>
+                <AlertDescription>
+                    You cancelled the payment process. <br>
+                    If this was unintentional, please try again to complete your signboard promotion.
+                </AlertDescription>
+            </Alert>
             <div class="relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
                     <div class="absolute inset-0 bg-black/20"></div>

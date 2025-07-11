@@ -40,8 +40,10 @@ const resumeCarouselPlay = ()=>{
         plugin.stop()
     }
     else {
-        plugin.reset()
-        plugin.play()
+        try {
+            plugin.reset()
+            plugin.play()
+        } catch (err){}
     }
 }
 

@@ -25,7 +25,7 @@ defineProps<Props>()
     <div class="p-4 border-t text-fade">
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
-            <div v-if="user.id !== signboard.created_by_id" class="ms-auto md:block hidden">
+            <div v-if="user?.id !== signboard.created_by_id" class="ms-auto md:block hidden">
                 <SignboardRating :signboard="signboard">
                     <Button size="sm">Add Review</Button>
                 </SignboardRating>

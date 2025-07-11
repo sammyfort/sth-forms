@@ -90,7 +90,7 @@ const reviews = computed(()=> props.signboard.reviews);
                                     <div class="text-fade mb-1 underline">Fields Of Operation</div>
                                     <div class="flex flex-wrap gap-3">
                                         <Badge v-for="category in signboard.categories" :key="category.id" class="cursor-pointer" variant="secondary">
-                                            <Link href="" class="hover:text-secondary">{{ category.name }}</Link>
+                                            <Link href="" class="hover:text-primary">{{ category.name }}</Link>
                                         </Badge>
                                     </div>
                                 </div>

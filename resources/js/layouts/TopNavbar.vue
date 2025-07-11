@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import { LogOut } from 'lucide-vue-next';
-import { UserPlus2, Milestone, Building2, Menu } from 'lucide-vue-next';
+import { UserPlus2, Milestone, Building2, Menu, ChevronDown } from 'lucide-vue-next';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -40,12 +40,15 @@ const user = computed(() => page.props.auth.user)
                                 :href="route('signboards.index')"
                                 class="hover:text-primary py-4 text-center"
                             >Browse Signboards</Link>
- 
+
                             <CompanyNavPopover>
                                 <span
                                     :class="{ 'active-nav': $page.component === 'FAQ' || $page.component === 'AboutUs' }"
-                                    class="hover:text-primary py-4 text-center"
-                                >Company</span>
+                                    class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
+                                >
+                                    <span>Company</span>
+                                    <ChevronDown :size="22"/>
+                                </span>
                             </CompanyNavPopover>
                         </div>
                     </div>

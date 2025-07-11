@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->foreignId('plan_id')->nullable()->constrained('signboard_subscription_plans')->nullOnDelete();
             $table->float('amount', 2)->nullable();
             $table->string('payment_reference');
+            $table->string('checkout_id')->nullable();
+            $table->string('payment_platform')->nullable();
             $table->string('payment_status')->default(PaymentStatus::PENDING);
             $table->string('payment_channel')->nullable();
             $table->timestamp('starts_at')->nullable();

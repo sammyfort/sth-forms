@@ -1,7 +1,6 @@
-import { toastError, toastSuccess } from '@/lib/helpers';
-import { SignboardI } from '@/types';
+import { toastError } from '@/lib/helpers';
 import { InertiaForm } from '@inertiajs/vue3';
-import { Page, PageProps, Errors } from '@inertiajs/core';
+import { Page, Errors } from '@inertiajs/core';
 
 export const getPromotedSignboards = async ()=>{
     const data = {
