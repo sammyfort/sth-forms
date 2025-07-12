@@ -28,7 +28,7 @@ export type AppPageProps<T extends Record<string, unknown> = Record<string, unkn
     }
 };
 
-export interface User extends ModelI{
+export interface User extends ModelI {
     firstname: string;
     lastname: string;
     fullname: string;
@@ -46,25 +46,25 @@ export interface User extends ModelI{
     avatar?: MediaI,
 }
 
-export interface MediaI{
-    "id": number,
-    "model_type": string,
-    "model_id": number,
-    "uuid": string,
-    "collection_name": string,
-    "name": string,
-    "file_name": string,
-    "mime_type": string,
-    "size": number,
-    "generated_conversions": [],
-    "order_column": 1,
-    "created_at": string,
-    "updated_at": string,
-    "url": string,
-    "original_url": string,
+export interface MediaI {
+    'id': number,
+    'model_type': string,
+    'model_id': number,
+    'uuid': string,
+    'collection_name': string,
+    'name': string,
+    'file_name': string,
+    'mime_type': string,
+    'size': number,
+    'generated_conversions': [],
+    'order_column': 1,
+    'created_at': string,
+    'updated_at': string,
+    'url': string,
+    'original_url': string,
 }
 
-export interface BusinessI extends ModelI{
+export interface BusinessI extends ModelI {
     slug: string;
     name: string;
     email: string;
@@ -80,41 +80,43 @@ export interface BusinessI extends ModelI{
     initials: string,
 }
 
-export interface SignboardCategoryI extends ModelI{
-    slug: string
-    name: string
-    description: string
+export interface SignboardCategoryI extends ModelI {
+    slug: string;
+    name: string;
+    description: string;
 }
 
-export interface RegionI extends ModelI{
-    name: string
-    slug: string
+export interface RegionI extends ModelI {
+    name: string;
+    slug: string;
 }
 
-export interface SignboardSubscriptionPlanI extends ModelI{
-    name: string
-    slug: string
-    description: string
-    price: number
-    number_of_days: number
+export interface SignboardSubscriptionPlanI extends ModelI {
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    number_of_days: number;
 }
 
-export interface SignboardSubscriptionI extends ModelI{
-    'signboard_id': number;
-    'plan_id': number;
-    'amount': number;
-     signboard: SignboardI;
-     plan: SignboardSubscriptionPlanI;
-    'payment_reference': string;
-    'payment_status': string;
-    'payment_channel': string;
-    'starts_at': string;
-    'ends_at': string;
-    'receipt_number': string;
+export interface SignboardSubscriptionI extends ModelI {
+    id: number;
+    signboard_id: number;
+    plan_id: number;
+    amount: number;
+    signboard: SignboardI;
+    plan: SignboardSubscriptionPlanI;
+    payment_reference: string;
+    payment_status: string;
+    payment_channel: string;
+    payment_platform: string;
+    starts_at: string;
+    ends_at: string;
+    receipt_number: string;
     is_active: boolean;
 }
 
-export interface SignboardI extends ModelI{
+export interface SignboardI extends ModelI {
     business_id: number;
     business: BusinessI;
     categories: SignboardCategoryI[],
@@ -131,16 +133,18 @@ export interface SignboardI extends ModelI{
     reviews_count: number,
     slug: string,
     featured_url: string,
-    views_count: number|null,
-    active_subscription: SignboardSubscriptionI|null,
+    views_count: number | null,
+    active_subscription: SignboardSubscriptionI | null,
     gallery_urls: [],
     reviews: ReviewI[];
+    subscriptions: SignboardSubscriptionI | []
+
 }
 
-export interface RatingI extends ModelI{
-    key: 'overall' | 'customer_service' | 'quality' | 'price' | 'communication' | 'speed'
-    review_id: number
-    value: number
+export interface RatingI extends ModelI {
+    key: 'overall' | 'customer_service' | 'quality' | 'price' | 'communication' | 'speed';
+    review_id: number;
+    value: number;
 }
 
 export interface ReviewI extends ModelI {
@@ -157,9 +161,9 @@ export interface ReviewI extends ModelI {
 }
 
 export interface PaginationLinkI {
-    active: boolean
-    label: string
-    url?: string|null
+    active: boolean;
+    label: string;
+    url?: string | null;
 }
 
 export interface PaginatedDataI<DT> {
@@ -178,21 +182,21 @@ export interface PaginatedDataI<DT> {
     total: number,
 }
 
-export interface AverageRatingsI{
-    communication: number
-    customer_service: number
-    overall: number
-    price: number
-    quality: number
-    speed: number
+export interface AverageRatingsI {
+    communication: number;
+    customer_service: number;
+    overall: number;
+    price: number;
+    quality: number;
+    speed: number;
 }
 
-export interface RatingsDistributionI{
-    1: number
-    2:number
-    3: number
-    4: number
-    5: number
+export interface RatingsDistributionI {
+    1: number;
+    2: number;
+    3: number;
+    4: number;
+    5: number;
 }
 
 
