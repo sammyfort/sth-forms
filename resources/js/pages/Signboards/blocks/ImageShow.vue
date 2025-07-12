@@ -11,13 +11,13 @@
                     <img
                         :src="featuredUrl"
                         alt="Featured Image"
-                        class="w-full h-80 object-cover rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
+                        class="w-full h-80 object-contain bg-gray-50 rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-[1.02]"
                     />
                     <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300 rounded-2xl"></div>
                     <div class="absolute top-4 left-4">
-            <span class="bg-gradient-to-r from-yellow-400 to-primary text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-              Featured
-            </span>
+                        <span class="bg-gradient-to-r from-yellow-400 to-primary text-white px-3 py-1 rounded-full text-sm font-medium shadow-lg">
+                            Featured
+                        </span>
                     </div>
                     <button
                         @click.stop="openLightbox(0)"
@@ -40,7 +40,7 @@
                         <img
                             :src="url"
                             :alt="`Gallery Image ${idx + 1}`"
-                            class="w-full h-32 object-cover rounded-xl shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:scale-105"
+                            class="w-full h-32 object-contain bg-gray-50 rounded-xl shadow-md transition-all duration-300 group-hover:shadow-xl group-hover:scale-105"
                         />
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 rounded-xl flex items-center justify-center">
                             <Maximize2 class="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -58,7 +58,6 @@
             <p class="text-gray-500">Upload photos to showcase this location.</p>
         </div>
 
-
         <Teleport to="body">
             <div
                 v-if="lightboxOpen"
@@ -68,7 +67,7 @@
                 tabindex="0"
                 ref="lightboxRef"
             >
-                <div class="relative max-w-7xl max-h-full">
+                <div class="relative w-full h-full flex items-center justify-center">
                     <img
                         :src="allImages[currentImageIndex]?.url"
                         :alt="`Image ${currentImageIndex + 1}`"
@@ -76,31 +75,29 @@
                         @click.stop
                     />
 
-
                     <button
                         @click="closeLightbox"
-                        class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200"
+                        class="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200 z-10"
                     >
                         <X class="w-6 h-6" />
                     </button>
 
-
                     <template v-if="allImages.length > 1">
                         <button
                             @click.stop="prevImage"
-                            class="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200"
+                            class="absolute left-4 top-1/2 -translate-y-1/2 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200 z-10"
                         >
                             <ChevronLeft class="w-6 h-6" />
                         </button>
                         <button
                             @click.stop="nextImage"
-                            class="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200"
+                            class="absolute right-4 top-1/2 -translate-y-1/2 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white hover:bg-white/30 transition-colors duration-200 z-10"
                         >
                             <ChevronRight class="w-6 h-6" />
                         </button>
                     </template>
 
-                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm">
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1 text-white text-sm z-10">
                         {{ currentImageIndex + 1 }} / {{ allImages.length }}
                     </div>
                 </div>
@@ -126,7 +123,6 @@ const props = withDefaults(defineProps<Props>(), {
     title: 'Image Gallery',
     className: ''
 });
-
 
 const lightboxOpen = ref(false);
 const currentImageIndex = ref(0);
@@ -183,7 +179,6 @@ const handleBodyScroll = () => {
         document.body.style.overflow = '';
     }
 };
-
 
 onMounted(() => {
     document.addEventListener('keydown', handleKeyDown);
