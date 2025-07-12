@@ -278,6 +278,8 @@ class SignboardController extends Controller
             'signboard' => $signboard->load(['reviews.ratings','business', 'region', 'reviews', 'categories', 'subscriptions'])->toArrayWithMedia(),
             'payment_status' => $paymentStatus,
             'plans' => $subPlans,
+            'ratings' => $signboard->averageRatings(),
+            'distributions' => [],
         ]);
     }
 
