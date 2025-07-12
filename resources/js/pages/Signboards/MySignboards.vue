@@ -3,10 +3,9 @@ import Layout from '@/layouts/Layout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { PlusIcon, Briefcase, Eye} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
-import { onMounted, ref } from 'vue';
-import { getApi } from '@/lib/meta';
+
 import Paginator from '@/components/helpers/Paginator.vue';
-import CreateBusiness from '@/pages/Businesses/CreateBusiness.vue';
+
 
 const props = defineProps<{
     signboards: {
@@ -28,17 +27,8 @@ const props = defineProps<{
     };
 }>();
 
-const regions = ref([]);
-const businesses = ref([]);
 
-onMounted(async () => {
-    const [regRes, busRes] = await Promise.all([
-        getApi('regions'),
-        getApi('authBusinesses'),
-    ]);
-    regions.value = regRes.metadata?.regions ?? [];
-    businesses.value = busRes.metadata?.businesses ?? [];
-});
+
 
 const goToPage = (page: number) => {
     router.get(route('my-signboards.index'), { page }, {

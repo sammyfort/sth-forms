@@ -131,8 +131,6 @@ const deleteSignboard = () => {
                                 </Link>
 
                                 <button
-                                    href="javascript:void(0)"
-                                    variant="destructive"
                                     @click="showDialog = true"
                                     :disabled="isDeleting"
                                     class="flex items-center gap-x-2 rounded-xl border border-white/30 bg-red-500 px-6 py-3 text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 hover:bg-red-600"
@@ -172,7 +170,7 @@ const deleteSignboard = () => {
                         </div>
                     </div>
                 </div>
-                <PaymentHistory  :signboard="props.signboard"/>
+                <PaymentHistory :signboard="props.signboard"/>
                 <div v-if="reviews.length" class="mx-auto max-w-6xl p-6">
                     <h2 class="mb-4 text-2xl font-bold text-gray-900">Reviews</h2>
                     <div class="p-4">
