@@ -47,7 +47,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{signboard}', [SignboardController::class, 'update'])->name('update');
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
     });
-
     Route::prefix('signboards')->as('signboards.')->group(function () {
         Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
     });

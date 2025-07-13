@@ -50,6 +50,7 @@ const createSignboard = () => {
         onSuccess: (res) => {
             if (res.props.success) {
                 toastSuccess(res.props.message);
+
             } else {
                 toastError(res.props.message);
             }
