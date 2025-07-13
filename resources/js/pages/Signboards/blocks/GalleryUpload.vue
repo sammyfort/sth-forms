@@ -28,9 +28,9 @@ const emit = defineEmits<{
                 </div>
                 <h3 class="text-lg font-semibold text-gray-900">Gallery Images</h3>
             </div>
-            <span class="px-2 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full">
-        {{ previews.length }} uploaded
-      </span>
+            <span class="inline-flex items-center whitespace-nowrap px-3 py-1
+             text-xs font-medium bg-gray-100 text-gray-700 rounded-full">{{ previews.length }} uploaded</span>
+
         </div>
 
         <div class="space-y-4">
