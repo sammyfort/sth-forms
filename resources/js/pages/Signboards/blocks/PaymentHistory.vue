@@ -196,7 +196,7 @@ const getStatusColor = (status: string) => {
 
         <div v-if="filteredTransactions.length === 0 && props.signboard.subscriptions.length > 0" class="text-center py-8">
             <Search class="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p class="text-gray-500">No transactions match your filters</p>
+            <p class="text-gray-500">No promotion match your filters</p>
             <Button variant="outline" size="sm" @click="clearFilters" class="mt-2">
                 Clear Filters
             </Button>
@@ -204,7 +204,7 @@ const getStatusColor = (status: string) => {
 
         <div v-if="props.signboard.subscriptions.length === 0" class="text-center py-8">
             <CreditCard class="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <p class="text-gray-500">No transactions found</p>
+            <p class="text-gray-500">No promotion found</p>
         </div>
     </div>
 </template>
