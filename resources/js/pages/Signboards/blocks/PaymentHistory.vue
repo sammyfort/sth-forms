@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Calendar, CheckCircle, Clock, CreditCard, DollarSign, XCircle, Search, X } from 'lucide-vue-next';
-import { SignboardI, SignboardSubscriptionI } from '@/types';
+import { SignboardI } from '@/types';
 import {
     Table,
     TableBody,
@@ -25,15 +25,15 @@ const props = defineProps<{
     signboard: SignboardI
 }>()
 
-// Reactive filter states
+
 const searchQuery = ref('');
 const dateFilter = ref('all');
 
-// Computed filtered transactions
+
 const filteredTransactions = computed(() => {
     let filtered = [...props.signboard.subscriptions];
 
-    // Apply search filter
+
     if (searchQuery.value) {
         const query = searchQuery.value.toLowerCase();
         filtered = filtered.filter(subscription =>
@@ -44,7 +44,7 @@ const filteredTransactions = computed(() => {
         );
     }
 
-    // Apply date filter
+
     if (dateFilter.value !== 'all') {
         const now = new Date();
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -72,13 +72,13 @@ const filteredTransactions = computed(() => {
     return filtered;
 });
 
-// Clear all filters
+
 const clearFilters = () => {
     searchQuery.value = '';
     dateFilter.value = 'all';
 };
 
-// Check if any filters are active
+
 const hasActiveFilters = computed(() => {
     return searchQuery.value !== '' || dateFilter.value !== 'all';
 });
@@ -107,10 +107,10 @@ const getStatusColor = (status: string) => {
         <div class="mb-6 flex items-center justify-between">
             <h2 class="flex items-center gap-2 text-2xl font-bold text-gray-900">
                 <CreditCard class="h-6 w-6 text-primary" />
-                Transaction History
+                Promotion History
             </h2>
             <Badge v-if="props.signboard.subscriptions.length" variant="secondary" class="text-sm">
-                {{ filteredTransactions.length }} of {{ props.signboard.subscriptions.length }} transactions
+                {{ filteredTransactions.length }} of {{ props.signboard.subscriptions.length }} promtions
             </Badge>
         </div>
 

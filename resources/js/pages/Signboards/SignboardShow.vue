@@ -165,7 +165,7 @@ const deleteSignboard = () => {
                         </div>
 
                         <div class="lg:col-span-1">
-                           <OperationFields :signboard="signboard"/>
+                            <OperationFields :signboard="signboard"/>
                             <PromoteSignboard :signboard="signboard" :plans="plans"/>
                         </div>
                     </div>
