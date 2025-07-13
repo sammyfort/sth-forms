@@ -49,7 +49,7 @@ const props = defineProps<{
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
                     <StatsCard title="Total Signboards" :value="props.signboards.length" icon-bg="bg-primary text-white" :icon="ChartBarIcon" />
-                    <StatsCard title="Active Campaigns" :value="props.subscriptions.length" icon-bg="bg-primary text-white" :icon="Rocket" />
+                    <StatsCard title="Total Campaigns" :value="props.subscriptions.length" icon-bg="bg-primary text-white" :icon="Rocket" />
                     <StatsCard title="Active Campaigns" :value="props.subscriptions.filter(s => s.is_active).length" icon-bg="bg-primary text-white" :icon="ChartColumnIncreasing" />
                     <StatsCard title="Total Views" :value="props.signboards.filter(s => s.reviews_count).length" icon-bg="bg-primary text-white" :icon="Eye"/>
 
@@ -140,34 +140,34 @@ const props = defineProps<{
                             </div>
                         </div>
 
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200">
-                            <div class="p-6 border-b border-gray-200">
-                                <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>
-                            </div>
-                            <div class="p-6 space-y-3">
-                                <button
-                                    class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-3 rounded-lg font-medium transition-colors text-left">
-                                    <div class="flex items-center">
-                                        <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                        </svg>
-                                        Add New Signboard
-                                    </div>
-                                </button>
-                                <button
-                                    class="w-full bg-green-50 hover:bg-green-100 text-green-700 px-4 py-3 rounded-lg font-medium transition-colors text-left">
-                                    <div class="flex items-center">
-                                        <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                        </svg>
-                                        Launch Campaign
-                                    </div>
-                                </button>
+<!--                        <div class="bg-white rounded-xl shadow-sm border border-gray-200">-->
+<!--                            <div class="p-6 border-b border-gray-200">-->
+<!--                                <h2 class="text-lg font-semibold text-gray-900">Quick Actions</h2>-->
+<!--                            </div>-->
+<!--                            <div class="p-6 space-y-3">-->
+<!--                                <button-->
+<!--                                    class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 px-4 py-3 rounded-lg font-medium transition-colors text-left">-->
+<!--                                    <div class="flex items-center">-->
+<!--                                        <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
+<!--                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
+<!--                                                  d="M12 6v6m0 0v6m0-6h6m-6 0H6" />-->
+<!--                                        </svg>-->
+<!--                                        Add New Signboard-->
+<!--                                    </div>-->
+<!--                                </button>-->
+<!--                                <button-->
+<!--                                    class="w-full bg-green-50 hover:bg-green-100 text-green-700 px-4 py-3 rounded-lg font-medium transition-colors text-left">-->
+<!--                                    <div class="flex items-center">-->
+<!--                                        <svg class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">-->
+<!--                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"-->
+<!--                                                  d="M13 10V3L4 14h7v7l9-11h-7z" />-->
+<!--                                        </svg>-->
+<!--                                        Launch Campaign-->
+<!--                                    </div>-->
+<!--                                </button>-->
 
-                            </div>
-                        </div>
+<!--                            </div>-->
+<!--                        </div>-->
                     </div>
                 </div>
             </div>
