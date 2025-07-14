@@ -130,6 +130,9 @@ class SignboardSubscriptionPaymentController extends Controller
                     }
                 }
 
+                Log::info(now()->addDays(($plan->number_of_days + $arrearsDays)));
+                Log::info(now()->addDays(($plan->number_of_days + $arrearsDays))->diffInDays());
+
                 // Update this subscription
                 $subscription->update([
                     'checkout_id'     => $checkoutId,
