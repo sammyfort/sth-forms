@@ -70,7 +70,6 @@ class SignboardSubscriptionPaymentController extends Controller
         $payload = $request->all();
 
         if (!isset($payload['ResponseCode']) || $payload['ResponseCode'] != '0000') {
-            Log::warning($payload->ResponseCode);
             Log::warning('Invalid Hubtel webhook response code', $payload);
             return response('', 200);
         }
@@ -90,6 +89,7 @@ class SignboardSubscriptionPaymentController extends Controller
 
         // Find subscription using the payment reference
         $subscription = SignboardSubscription::query()
+//            ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
             ->first();
 
