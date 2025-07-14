@@ -33,23 +33,8 @@ class GitController extends Controller
                         putenv("COMPOSER_HOME={$home}");
                         // Run the shell commands
                         $composerPath = '/opt/cpanel/composer/bin/composer';
-//                        $process = new Process(['sh', '-c', "cd {$path} && export HOME={$home} && export COMPOSER_HOME={$home} && git pull origin $branch_name && $composerPath install --ignore-platform-reqs && php artisan migrate --force && php artisan optimize:clear"]);
                         $process = new Process(['sh', '-c', "cd {$path} && export HOME={$home} && export COMPOSER_HOME={$home} && git fetch --all && git reset --hard origin/$branch_name && $composerPath install --ignore-platform-reqs && php artisan migrate --force && php artisan optimize:clear"]);
                         $process->run();
-
-                        // Log the output and error
-                        try {
-                            Log::channel('slackDeployment')->info('Process output', [
-                                'Branch' => strtoupper(env('GIT_BRANCH_NAME')),
-                                'Environment' => strtoupper(env('APP_ENV')),
-                                'success-output' => $process->getOutput(),
-                            ]);
-                            Log::channel('slackDeployment')->error('Process error output', [
-                                'Branch' => strtoupper(env('GIT_BRANCH_NAME')),
-                                'Environment' => strtoupper(env('APP_ENV')),
-                                'error-output' => $process->getErrorOutput(),
-                            ]);
-                        } catch (\Exception $exception){}
 
                         // Check if there were any errors
                         if (!$process->isSuccessful()) {
@@ -58,7 +43,7 @@ class GitController extends Controller
                         return response('Success', 200);
                     } catch (\Exception $e) {
                         // Log the error for debugging
-                        Log::error('Webhook execution failed', ['error' => $e->getMessage()]);
+//                        Log::error('Webhook execution failed', ['error' => $e->getMessage()]);
                         return response('Internal Server Error', 500);
                     }
                 }
