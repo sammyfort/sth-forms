@@ -35,15 +35,15 @@ class AppServiceProvider extends ServiceProvider
             $this->app['request']->server->set('HTTPS', 'on');
         }
 
-        if ($enforceHttps) {
-            $this->app['router']->pushMiddlewareToGroup('web', function ($request, $next){
-                $response = $next($request);
-                return $response->withHeaders([
-                    'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
-                    'Content-Security-Policy' => "upgrade-insecure-requests",
-                    'X-Content-Type-Options' => 'nosniff'
-                ]);
-            });
-        }
+//        if ($enforceHttps) {
+//            $this->app['router']->pushMiddlewareToGroup('web', function ($request, $next){
+//                $response = $next($request);
+//                return $response->withHeaders([
+//                    'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
+//                    'Content-Security-Policy' => "upgrade-insecure-requests",
+//                    'X-Content-Type-Options' => 'nosniff'
+//                ]);
+//            });
+//        }
     }
 }
