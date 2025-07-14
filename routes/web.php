@@ -42,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [SignboardController::class, 'mySignboards'])->name('index');
         Route::get('/create', [SignboardController::class, 'create'])->name('create');
         Route::post('/store', [SignboardController::class, 'store'])->name('store');
-        Route::get('/{signboard:slug}', [SignboardController::class, 'showMySignboard'])->name('show');
+        Route::get('/details/{signboard:slug}', [SignboardController::class, 'showMySignboard'])->name('show');
         Route::get('/edit/{signboard:slug}', [SignboardController::class, 'edit'])->name('edit');
         Route::post('/{signboard}', [SignboardController::class, 'update'])->name('update');
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
