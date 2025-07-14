@@ -135,7 +135,7 @@ class SignboardSubscriptionPaymentController extends Controller
                     'checkout_id'     => $checkoutId,
                     'payment_channel' => $channel,
                     'starts_at'       => $now,
-                    'ends_at'         => $now->addDays($plan->number_of_days + $arrearsDays),
+                    'ends_at'         => now()->addDays($plan->number_of_days + $arrearsDays),
                     'payment_status'  => PaymentStatus::PAID,
                 ]);
 
@@ -222,7 +222,7 @@ class SignboardSubscriptionPaymentController extends Controller
                         // Add the remaining days to the new subscription
                         $exSubs = $signboard->subscriptions()
                             ->where('id', '!=', $subscription->id)
-                            ->whereDate('ends_at', '<=', $now)
+                            ->whereDate('ends_at', '>=', $now)
                             ->get();
                         $exSub = $exSubs->first();
 
