@@ -41,18 +41,29 @@ class UserSeeder extends Seeder
             ]
         ];
 
+        $admin = User::query()->create([
+            'uuid' => Str::uuid(),
+            'firstname' => 'Super',
+            'lastname' => 'Admin',
+            'email' => 'admin@app.com',
+            'mobile' => '0257906340',
+            'password' => "123",
+            'email_verified_at' => now(),
+        ]);
+        $admin->assignRole('admin');
+
         $signboardCategory = SignboardCategory::query()->pluck('id');
         $regions = Region::query()->pluck('id');
 
         foreach ($users as $userData) {
             $user = User::query()->create($userData);
-            Business::factory(3)
+            Business::factory(2)
                 ->for($user)
                 ->create([
                     'created_by_id' => $user->id
                 ])
                 ->each(function ($business) use ($user, $signboardCategory, $regions) {
-                    Signboard::factory(5)
+                    Signboard::factory(3)
                         ->for($business)
                         ->create([
                             'region_id' => $regions->random(),
@@ -64,16 +75,5 @@ class UserSeeder extends Seeder
                         });
                 });
         }
-
-        $admin = User::query()->create([
-            'uuid' => Str::uuid(),
-            'firstname' => 'Super',
-            'lastname' => 'Admin',
-            'email' => 'admin@app.com',
-            'mobile' => '0257906340',
-            'password' => "123",
-            'email_verified_at' => now(),
-        ]);
-        $admin->assignRole('admin');
     }
 }

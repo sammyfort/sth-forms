@@ -2,10 +2,7 @@
 
 namespace App\Models;
 
-use App\Observers\BusinessObserver;
 use App\Policies\BusinessPolicy;
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\BootModelTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @property string $id
@@ -24,17 +23,23 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $name
  */
 
-#[ObservedBy(BusinessObserver::class)]
 #[UsePolicy(BusinessPolicy::class)]
 class Business extends Model
 {
     //
-    use BootModelTrait, HasFactory;
+    use BootModelTrait, HasFactory, HasSlug;
 
     protected $appends = [
         "created_at_str",
         "initials"
     ];
+
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
 
     public function user(): BelongsTo
     {
