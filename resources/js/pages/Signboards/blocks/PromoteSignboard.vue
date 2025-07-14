@@ -58,7 +58,7 @@ onMounted(()=>{
             </div>
 
             <div class="mb-3 h-2 w-full rounded-full bg-gray-200">
-                <div class="h-2 rounded-full bg-primary transition-all duration-300" :class="[`w-${promotionPercentage}%`]">
+                <div class="h-2 rounded-full bg-primary transition-all duration-300" :class="[`w-${(promotionPercentage-45)}%`]">
                 </div>
             </div>
 
