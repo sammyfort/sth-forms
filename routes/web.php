@@ -8,6 +8,7 @@ use App\Http\Controllers\FAQController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SignboardController;
 use App\Http\Controllers\SignboardSubscriptionPaymentController;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -74,9 +75,6 @@ Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('pri
 Route::prefix('payments')->as('payments.')->group(function () {
     Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initializeHubtel'])
         ->middleware(['auth', 'verified'])->name('signboard-subscription');
-
-    Route::post('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
-        ->name('signboard-subscription.verify')->middleware(['api']);
 });
 
 require __DIR__.'/auth.php';
