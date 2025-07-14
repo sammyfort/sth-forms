@@ -5,12 +5,13 @@ import InputSelect from '@/components/InputSelect.vue';
 import { SignboardI, SignboardSubscriptionPlanI } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import { toastError } from '@/lib/helpers';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const props = defineProps<{
     signboard: SignboardI
     plans: SignboardSubscriptionPlanI
 }>();
+const promotionPercentage = ref(0)
 const showPlans = ref(false);
 const subscriptionForm = useForm({
     plan_id: '',
@@ -30,6 +31,15 @@ const submitSubscriptionForm = () => {
         },
     });
 };
+
+onMounted(()=>{
+    const subscription = props.signboard.active_subscription
+    if (subscription && subscription.total_days > 0 && subscription.days_left > 0){
+        promotionPercentage.value = (100 * subscription.days_left) / subscription.total_days
+    }
+    console.log(subscription)
+})
+
 </script>
 
 <template>
@@ -48,6 +58,11 @@ const submitSubscriptionForm = () => {
             </div>
 
             <div class="mb-3 h-2 w-full rounded-full bg-gray-200">
+                <div class="h-2 rounded-full bg-primary transition-all duration-300" :class="[`w-${promotionPercentage}%`]">
+                </div>
+            </div>
+
+            <div class="mb-3 h-2 w-full rounded-full bg-gray-200">
                 <div class="h-2 rounded-full bg-primary transition-all duration-300"
                      :style="[props.signboard.views_count, '%']">
                 </div>
@@ -62,7 +77,7 @@ const submitSubscriptionForm = () => {
                     <span class="text-gray-600">Total Views</span>
                     <span class="font-semibold">{{ props.signboard.views_count || 0 }}</span>
                 </div>
-                <div v-if="1 < props.signboard.active_subscription" class="flex justify-between">
+                <div v-if="props.signboard.active_subscription" class="flex justify-between">
                     <span class="text-gray-600">Expires</span>
                     <span class="font-semibold text-orange-600">
                         {{ new Date(props.signboard.active_subscription.ends_at).toDateString() }}
