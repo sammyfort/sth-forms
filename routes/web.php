@@ -76,7 +76,7 @@ Route::prefix('payments')->as('payments.')->group(function () {
         ->middleware(['auth', 'verified'])->name('signboard-subscription');
 
     Route::post('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
-        ->name('signboard-subscription.verify');
+        ->name('signboard-subscription.verify')->middleware(['api']);
 });
 
 require __DIR__.'/auth.php';
