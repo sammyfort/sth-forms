@@ -90,7 +90,7 @@ class SignboardSubscriptionPaymentController extends Controller
 
         // Find subscription using the payment reference
         $subscription = SignboardSubscription::query()
-//            ->where('payment_status', PaymentStatus::PENDING)
+            ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
             ->first();
 
@@ -122,8 +122,7 @@ class SignboardSubscriptionPaymentController extends Controller
             try {
                 if ($activeSubs->count()) {
                     $latest = $activeSubs->first(); // Just use the first one
-                    $arrearsDays = (int) $now->diffInDays(Carbon::parse($latest->ends_at));
-
+                    $arrearsDays = max((int) $now->diffInDays(Carbon::parse($latest->ends_at)), 0);
                     // End all other subscriptions
                     foreach ($activeSubs as $old) {
                         $old->update(['ends_at' => $now]);
@@ -131,10 +130,6 @@ class SignboardSubscriptionPaymentController extends Controller
                 }
 
                 $endsAt = now()->addDays(($plan->number_of_days + $arrearsDays));
-                Log::info($endsAt);
-                Log::info('arrears'. $arrearsDays);
-                Log::info('$plan->number_of_days'. $plan->number_of_days);
-                Log::info(now()->addDays(($plan->number_of_days + $arrearsDays))->diffInDays());
 
                 // Update this subscription
                 $subscription->update([
