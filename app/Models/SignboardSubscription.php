@@ -64,7 +64,7 @@ class SignboardSubscription extends Model
     public function daysLeft(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->ends_at ? now()->diffInDays($this->ends_at) : 0
+            get: fn () => $this->ends_at ? round(now()->diffInDays($this->ends_at)) : 0
         );
     }
 }
