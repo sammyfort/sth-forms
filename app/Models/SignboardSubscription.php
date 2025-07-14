@@ -68,7 +68,7 @@ class SignboardSubscription extends Model
         return Attribute::make(
             get: function (){
                 if ($this->starts_at && $this->ends_at){
-                    return round(Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at)));
+                    return (int) Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at));
                 }
                 return 0;
             }
@@ -78,7 +78,7 @@ class SignboardSubscription extends Model
     public function daysLeft(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->ends_at ? round(now()->diffInDays($this->ends_at)) : 0
+            get: fn () => $this->ends_at ? (int) now()->diffInDays($this->ends_at) : 0
         );
     }
 }
