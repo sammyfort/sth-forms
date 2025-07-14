@@ -90,7 +90,7 @@ class SignboardSubscriptionPaymentController extends Controller
 
         // Find subscription using the payment reference
         $subscription = SignboardSubscription::query()
-            ->where('payment_status', PaymentStatus::PENDING)
+//            ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
             ->first();
 
