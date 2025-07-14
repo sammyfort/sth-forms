@@ -21,7 +21,7 @@ class BusinessPolicy
      */
     public function view(User $user, Business $business): Response
     {
-        return $user->id === $business->user_id
+        return $user->id == $business->user_id
             ? Response::allow()
             : Response::denyWithStatus(404, "Business not found");
     }
@@ -39,7 +39,7 @@ class BusinessPolicy
      */
     public function update(User $user, Business $business): Response
     {
-        return $user->id === $business->user_id
+        return $user->id == $business->user_id
             ? Response::allow()
             : Response::denyWithStatus(404, "Business not found");
     }
@@ -49,7 +49,7 @@ class BusinessPolicy
      */
     public function delete(User $user, Business $business): Response
     {
-        return $user->id === $business->user_id
+        return $user->id == $business->user_id
             ? Response::allow()
             : Response::denyWithStatus(404, "Business not Found");
     }
