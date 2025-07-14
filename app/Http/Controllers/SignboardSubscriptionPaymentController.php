@@ -11,6 +11,7 @@ use App\Services\HubtelService;
 use App\Services\PaystackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
@@ -89,7 +90,7 @@ class SignboardSubscriptionPaymentController extends Controller
 
         // Find subscription using the payment reference
         $subscription = SignboardSubscription::query()
-//            ->where('payment_status', PaymentStatus::PENDING)
+            ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
             ->first();
 
@@ -117,26 +118,32 @@ class SignboardSubscriptionPaymentController extends Controller
 
             $arrearsDays = 0;
 
-            if ($activeSubs->count()) {
-                $latest = $activeSubs->first(); // Just use the first one
-                $arrearsDays = Carbon::parse($latest->ends_at)->diffInDays($now);
+            DB::beginTransaction();
+            try {
+                if ($activeSubs->count()) {
+                    $latest = $activeSubs->first(); // Just use the first one
+                    $arrearsDays = Carbon::parse($latest->ends_at)->diffInDays($now);
 
-                // End all other subscriptions
-                foreach ($activeSubs as $old) {
-                    $old->update(['ends_at' => $now]);
+                    // End all other subscriptions
+                    foreach ($activeSubs as $old) {
+                        $old->update(['ends_at' => $now]);
+                    }
                 }
+
+                // Update this subscription
+                $subscription->update([
+                    'checkout_id'     => $checkoutId,
+                    'payment_channel' => $channel,
+                    'starts_at'       => $now,
+                    'ends_at'         => $now->addDays($plan->number_of_days + $arrearsDays),
+                    'payment_status'  => PaymentStatus::PAID,
+                ]);
+
+                Log::info('Subscription marked as PAID', ['reference' => $reference]);
+
+                DB::commit();
             }
-
-            // Update this subscription
-            $subscription->update([
-                'checkout_id'     => $checkoutId,
-                'payment_channel' => $channel,
-                'starts_at'       => $now,
-                'ends_at'         => $now->addDays($plan->number_of_days + $arrearsDays),
-                'payment_status'  => PaymentStatus::PAID,
-            ]);
-
-            Log::info('Subscription marked as PAID', ['reference' => $reference]);
+            catch (\Exception $e) {}
         }
         else {
             // Mark failed
