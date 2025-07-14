@@ -35,7 +35,7 @@ class BusinessController extends Controller
     }
     public function show(Business $business): Response
     {
-        Gate::authorize('view', [$business, request()->user()]);
+        Gate::authorize('view', $business);
         return inertia('Businesses/MyBusinessShow', [
             'business' => $business->load('signboards.region'),
         ]);
@@ -43,7 +43,7 @@ class BusinessController extends Controller
 
     public function update(Request $request, Business $business): RedirectResponse
     {
-        Gate::authorize('update', [$business, request()->user()]);
+        Gate::authorize('update', $business);
         $data = $request->validate($this->rules());
         $business->update($data);
         return back()->with(successRes("Business updated successfully."));
@@ -52,7 +52,7 @@ class BusinessController extends Controller
 
     public function delete(Business $business): RedirectResponse
     {
-        Gate::authorize('delete', [$business, request()->user()]);
+        Gate::authorize('delete', $business);
         $business->delete();
         return redirect()->route('my-businesses.index')
             ->with(successRes("Business deleted successfully."));

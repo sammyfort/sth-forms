@@ -251,7 +251,7 @@ class SignboardController extends Controller
 
     public function showMySignboard(Signboard $signboard): Response
     {
-        Gate::authorize('view', [$signboard, request()->user()]);
+        Gate::authorize('view', $signboard);
         $subPlans = SignboardSubscriptionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
 
         // check if it has payment
@@ -284,7 +284,7 @@ class SignboardController extends Controller
 
     public function edit(Signboard $signboard): Response
     {
-        Gate::authorize('update', [$signboard, request()->user()]);
+        Gate::authorize('update', $signboard);
 
         return Inertia::render('Signboards/SignboardEdit', [
             'signboard' => $signboard->load(['business', 'region', 'categories'])->toArrayWithMedia(),
@@ -297,7 +297,7 @@ class SignboardController extends Controller
 
     public function update(UpdateSignboardRequest $request, Signboard $signboard): RedirectResponse
     {
-        Gate::authorize('update', [$signboard, request()->user()]);
+        Gate::authorize('update', $signboard);
 
         $data = $request->validated();
 
@@ -333,7 +333,7 @@ class SignboardController extends Controller
 
     public function delete(Signboard $signboard): RedirectResponse
     {
-        Gate::authorize('delete', [$signboard, request()->user()]);
+        Gate::authorize('delete', $signboard);
         $signboard->delete();
         return redirect()->route('my-signboards.index')
             ->with(successRes("Signboard deleted successfully."));
