@@ -75,7 +75,7 @@ Route::prefix('payments')->as('payments.')->group(function () {
     Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initializeHubtel'])
         ->middleware(['auth', 'verified'])->name('signboard-subscription');
 
-    Route::get('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
+    Route::post('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
         ->name('signboard-subscription.verify');
 });
 
