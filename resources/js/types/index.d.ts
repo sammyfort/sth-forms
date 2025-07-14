@@ -114,6 +114,8 @@ export interface SignboardSubscriptionI extends ModelI {
     ends_at: string;
     receipt_number: string;
     is_active: boolean;
+    days_left: number;
+    total_days: number;
 }
 
 export interface SignboardI extends ModelI {

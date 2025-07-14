@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\BootModelTrait;
 use Carbon\Carbon;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,8 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 * @property int $created_by_id
 * @property string $created_at
 * @property string $updated_at
- * @property string $ends_at
- * @property string $starts_at
+ * @property CarbonImmutable $ends_at
+ * @property CarbonImmutable $starts_at
  */
 
 class SignboardSubscription extends Model
@@ -28,7 +29,8 @@ class SignboardSubscription extends Model
 
     protected $appends = [
         'is_active',
-        'days_left'
+        'days_left',
+        'total_days',
     ];
 
     public function signboard(): BelongsTo
@@ -59,6 +61,18 @@ class SignboardSubscription extends Model
 //            ->where(function ($q) use ($now) {
 //                $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
 //            });
+    }
+
+    public function totalDays(): Attribute
+    {
+        return Attribute::make(
+            get: function (){
+                if ($this->starts_at && $this->ends_at){
+                    return round($this->starts_at->diffInDays($this->ends_at));
+                }
+                return 0;
+            }
+        );
     }
 
     public function daysLeft(): Attribute
