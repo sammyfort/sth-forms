@@ -42,8 +42,8 @@ const submitSubscriptionForm = () => {
             <div class="mb-3 flex items-center justify-between">
                 <span class="font-medium text-gray-600">Current Status</span>
                 <span
-                    :class="['rounded-full px-3 py-1 text-sm font-medium',props.signboard.active_subscription > 1 ? 'bg-green-600 text-white' : 'bg-red-600 text-white', ]">
-                    {{ props.signboard.active_subscription > 1 ? 'Promoted' : 'Not Promoted' }}
+                    :class="['rounded-full px-3 py-1 text-sm font-medium', props.signboard.active_subscription ? 'bg-green-600 text-white' : 'bg-red-600 text-white', ]">
+                    {{ props.signboard.active_subscription ? 'Promoted' : 'Not Promoted' }}
                 </span>
             </div>
 
