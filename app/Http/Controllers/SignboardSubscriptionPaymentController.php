@@ -243,7 +243,7 @@ class SignboardSubscriptionPaymentController extends Controller
                             'receipt_number' => $payment->receipt_number,
                             'amount' => $plan->price,
                             'starts_at' => $now,
-                            'ends_at' => $now->addDays(($plan->number_of_days + $arrearsDays)),
+                            'ends_at' => now()->addDays(($plan->number_of_days + $arrearsDays)),
                             'payment_status' => PaymentStatus::PAID,
                             'payment_platform' => "paystack",
                         ]);
