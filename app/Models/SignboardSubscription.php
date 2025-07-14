@@ -68,7 +68,7 @@ class SignboardSubscription extends Model
         return Attribute::make(
             get: function (){
                 if ($this->starts_at && $this->ends_at){
-                    return round($this->starts_at->diffInDays($this->ends_at));
+                    return round(Carbon::parse($this->starts_at)->diffInDays(Carbon::parse($this->ends_at)));
                 }
                 return 0;
             }
