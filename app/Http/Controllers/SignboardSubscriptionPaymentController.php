@@ -52,6 +52,8 @@ class SignboardSubscriptionPaymentController extends Controller
                 'payment_reference' => $reference,
                 'checkout_id' => $payment['checkoutId'],
                 'payment_status' => PaymentStatus::PENDING,
+                'amount' => $plan->price,
+                'payment_platform' => 'Hubtel',
             ]);
         }
 
@@ -125,9 +127,7 @@ class SignboardSubscriptionPaymentController extends Controller
             $subscription->update([
                 'checkout_id'     => $checkoutId,
                 'payment_channel' => $channel,
-                'amount'          => $plan->price,
                 'starts_at'       => $now,
-                'payment_platform'       => "hubtel",
                 'ends_at'         => $now->addDays($plan->number_of_days + $arrearsDays),
                 'payment_status'  => PaymentStatus::PAID,
             ]);

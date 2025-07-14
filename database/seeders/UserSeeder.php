@@ -46,23 +46,23 @@ class UserSeeder extends Seeder
 
         foreach ($users as $userData) {
             $user = User::query()->create($userData);
-//            Business::factory(3)
-//                ->for($user)
-//                ->create([
-//                    'created_by_id' => $user->id
-//                ])
-//                ->each(function ($business) use ($user, $signboardCategory, $regions) {
-//                    Signboard::factory(5)
-//                        ->for($business)
-//                        ->create([
-//                            'region_id' => $regions->random(),
-//                            'created_by_id' => $user->id
-//                        ])
-//                        ->each(function (Signboard $signboard) use ($signboardCategory) {
-//                            $signboard->categories()
-//                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
-//                        });
-//                });
+            Business::factory(3)
+                ->for($user)
+                ->create([
+                    'created_by_id' => $user->id
+                ])
+                ->each(function ($business) use ($user, $signboardCategory, $regions) {
+                    Signboard::factory(5)
+                        ->for($business)
+                        ->create([
+                            'region_id' => $regions->random(),
+                            'created_by_id' => $user->id
+                        ])
+                        ->each(function (Signboard $signboard) use ($signboardCategory) {
+                            $signboard->categories()
+                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
+                        });
+                });
         }
 
         $admin = User::query()->create([

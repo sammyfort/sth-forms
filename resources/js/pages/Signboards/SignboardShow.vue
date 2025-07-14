@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link } from '@inertiajs/vue3';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import {
     Briefcase,
     MapPin,
@@ -9,6 +10,7 @@ import {
     Trash2,
     Edit,
     Loader2,
+    XCircle, Clock,
 } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
@@ -32,7 +34,7 @@ const props = defineProps<{
     plans: SignboardSubscriptionPlanI;
     ratings: AverageRatingsI;
     distributions: RatingsDistributionI;
-    payment_status: null | 'success' | 'failed';
+    payment_status: null | 'success' | 'failed' | 'cancelled' | 'pending';
 }>();
 const reviews = computed(()=> props.signboard.reviews);
 
@@ -62,6 +64,22 @@ const deleteSignboard = () => {
     <Head :title="props.signboard.landmark" />
     <Layout>
         <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50">
+            <Alert v-if="payment_status == 'pending'" class="mb-5" variant="success">
+                <Clock />
+                <AlertTitle>Payment in Progress</AlertTitle>
+                <AlertDescription>
+                    We've received your request and are currently verifying your payment. <br>
+                    This may take a few moments. Once confirmed, your signboard promotion will be activated automatically.
+                </AlertDescription>
+            </Alert>
+            <Alert v-if="payment_status == 'cancelled'" class="mb-5" variant="destructive">
+                <XCircle />
+                <AlertTitle>Transaction Cancelled</AlertTitle>
+                <AlertDescription>
+                    You cancelled the payment process. <br>
+                    If this was unintentional, please try again to complete your signboard promotion.
+                </AlertDescription>
+            </Alert>
             <div class="relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
                     <div class="absolute inset-0 bg-black/20"></div>

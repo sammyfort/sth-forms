@@ -20,6 +20,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { number_format } from '@/lib/helpers';
 
 const props = defineProps<{
     signboard: SignboardI
@@ -179,7 +180,7 @@ const getStatusColor = (status: string) => {
                         <TableCell>
                             <div class="flex items-center gap-1">
                                 <DollarSign class="h-4 w-4 text-green-600" />
-                                <span class="font-medium">₵{{ subscription.amount.toFixed(2) }}</span>
+                                <span class="font-medium">₵{{ number_format(subscription.amount, 2) }}</span>
                             </div>
                         </TableCell>
                         <TableCell>
