@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\BootModelTrait;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,14 +17,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 * @property int $created_by_id
 * @property string $created_at
 * @property string $updated_at
-*/
+ * @property string $ends_at
+ * @property string $starts_at
+ */
 
 class SignboardSubscription extends Model
 {
     //
     use BootModelTrait, HasFactory;
 
-    protected $appends = ['is_active'];
+    protected $appends = [
+        'is_active',
+        'days_left'
+    ];
+
     public function signboard(): BelongsTo
     {
         return $this->belongsTo(Signboard::class, 'signboard_id');
@@ -37,19 +44,27 @@ class SignboardSubscription extends Model
     public function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->starts_at <= now() &&
-                (is_null($this->ends_at) || $this->ends_at >= now())
+            get: fn () => $this->starts_at <= now() && $this->ends_at >= now()
         );
     }
 
 
-    public function scopeRunning($query)
+    public function scopeRunning(Builder $query)
     {
         $now = Carbon::now();
 
         return $query->where('starts_at', '<=', $now)
-            ->where(function ($q) use ($now) {
-                $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
-            });
+            ->whereNotNull('ends_at')
+            ->where('ends_at', '>=', $now);
+//            ->where(function ($q) use ($now) {
+//                $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
+//            });
+    }
+
+    public function daysLeft(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->ends_at ? now()->diffInDays($this->ends_at) : 0
+        );
     }
 }
