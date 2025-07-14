@@ -18,8 +18,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 * @property int $created_by_id
 * @property string $created_at
 * @property string $updated_at
- * @property CarbonImmutable $ends_at
- * @property CarbonImmutable $starts_at
+ * @property string $ends_at
+ * @property string $starts_at
  */
 
 class SignboardSubscription extends Model
