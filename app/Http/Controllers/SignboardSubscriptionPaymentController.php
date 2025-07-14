@@ -32,16 +32,19 @@ class SignboardSubscriptionPaymentController extends Controller
         $reference = Str::uuid()->toString();
         $signboard = Signboard::query()->find($validatedData['signboard_id'], ['id', 'slug']);
         $signboardRoute = route('my-signboards.show', $signboard->slug)."?reference=$reference";
+        $redirectUrl = route('payments.signboard-subscription.verify');
 
         $data = [
             "totalAmount" => $plan->price,
             "description" => "Signboard test",
-            "callbackUrl" => route('payments.signboard-subscription.verify'),
+            "callbackUrl" => $redirectUrl,
             "returnUrl" => "$signboardRoute&payment_status=pending",
             "merchantAccountNumber" => "2030753",
             "cancellationUrl" => "$signboardRoute&payment_status=cancelled",
             "clientReference" => $reference
         ];
+
+        Log::info($redirectUrl);
 
         $payment = $this->hubtelService->initializePayment($data);
 
