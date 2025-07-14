@@ -130,6 +130,8 @@ class SignboardSubscriptionPaymentController extends Controller
                 }
 
                 $endsAt = now()->addDays(($plan->number_of_days + $arrearsDays));
+                Log::info('Ends at ---- '. $endsAt);
+                Log::info('arrears ----- '. $arrearsDays);
 
                 // Update this subscription
                 $subscription->update([
