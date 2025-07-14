@@ -40,7 +40,7 @@ onMounted(()=>{
             promotionPercentage.value = number_format(((100 * daysPast) / subscription.total_days), 0) as unknown as number
         }
     }
-    console.log(subscription)
+    console.log(subscription?.ends_at)
 })
 
 </script>
