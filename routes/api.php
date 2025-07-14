@@ -12,5 +12,5 @@ Route::get('/user', function (Request $request) {
 
 Route::post('github-webhook', GitController::class);
 
-Route::post('signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
+Route::post('payments/signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
     ->name('payments.signboard-subscription.verify');
