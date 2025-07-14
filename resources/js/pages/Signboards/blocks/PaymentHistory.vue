@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Calendar, CheckCircle, Clock, CreditCard, DollarSign, XCircle, Search, X } from 'lucide-vue-next';
-import { SignboardI } from '@/types';
+import { SignboardI, SignboardSubscriptionI, SignboardSubscriptionPlanI } from '@/types';
 import {
     Table,
     TableBody,
@@ -31,7 +31,7 @@ const searchQuery = ref('');
 const dateFilter = ref('all');
 
 
-const filteredTransactions = computed(() => {
+const filteredTransactions = computed<SignboardSubscriptionI[]>(() => {
     let filtered = [...props.signboard.subscriptions];
 
 
@@ -156,7 +156,7 @@ const getStatusColor = (status: string) => {
                 <TableHeader>
                     <TableRow>
                         <TableHead class="text-left">Date</TableHead>
-                        <TableHead class="text-left">Platform</TableHead>
+                        <TableHead class="text-left">Plan</TableHead>
                         <TableHead class="text-left">Channel</TableHead>
                         <TableHead class="text-left">Amount</TableHead>
                         <TableHead class="text-left">Status</TableHead>
@@ -166,17 +166,18 @@ const getStatusColor = (status: string) => {
                 <TableBody>
                     <TableRow v-for="subscription in filteredTransactions" :key="subscription.id">
                         <TableCell>
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1.5">
                                 <Calendar class="h-4 w-4 text-gray-400" />
                                 {{ new Date(subscription.created_at).toLocaleDateString() }}
                             </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell class="flex gap-2">
+                            <span class="font-semibold">{{ subscription.plan.name }}</span>
                             <Badge variant="outline" class="text-xs">
-                                {{ subscription.payment_platform }}
+                                 <span>{{ subscription.plan.number_of_days }} days</span>
                             </Badge>
                         </TableCell>
-                        <TableCell>{{ subscription.payment_channel }}</TableCell>
+                        <TableCell>{{ subscription.payment_channel ?? '--' }}</TableCell>
                         <TableCell>
                             <div class="flex items-center gap-1">
                                 <DollarSign class="h-4 w-4 text-green-600" />

@@ -4,7 +4,7 @@ import { Loader2, Rocket, TrendingUp } from 'lucide-vue-next';
 import InputSelect from '@/components/InputSelect.vue';
 import { SignboardI, SignboardSubscriptionPlanI } from '@/types';
 import { useForm } from '@inertiajs/vue3';
-import { toastError } from '@/lib/helpers';
+import { number_format, toastError } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
 
 const props = defineProps<{
@@ -35,9 +35,11 @@ const submitSubscriptionForm = () => {
 onMounted(()=>{
     const subscription = props.signboard.active_subscription
     if (subscription && subscription.total_days > 0 && subscription.days_left > 0){
-        promotionPercentage.value = (100 * subscription.days_left) / subscription.total_days
+        const daysPast = subscription.total_days - subscription.days_left
+        if (daysPast > 0){
+            promotionPercentage.value = number_format(((100 * daysPast) / subscription.total_days), 0) as unknown as number
+        }
     }
-    console.log(subscription)
 })
 
 </script>
@@ -57,8 +59,11 @@ onMounted(()=>{
                 </span>
             </div>
 
-            <div class="mb-3 h-2 w-full rounded-full bg-gray-200">
-                <div class="h-2 rounded-full bg-primary transition-all duration-300" :class="[`w-${(promotionPercentage-45)}%`]">
+            <div v-if="signboard.active_subscription" class="flex flex-col w-full gap-1 mb-3">
+                <div class="text-fade ms-auto text-sm">{{ props.signboard.active_subscription?.days_left }} Day(s) Left</div>
+                <div class="h-2 w-full rounded-full bg-gray-200">
+                    <div class="h-2 rounded-full bg-primary transition-all duration-300" :style="{width: `${promotionPercentage}%`}">
+                    </div>
                 </div>
             </div>
 
