@@ -5,30 +5,12 @@ import { PlusIcon, Briefcase, Eye} from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 
 import Paginator from '@/components/helpers/Paginator.vue';
+import { PaginatedDataI, SignboardI } from '@/types';
 
 
 const props = defineProps<{
-    signboards: {
-        data: Array<{
-            id: number;
-            slug: string;
-            town: string;
-            street: string;
-            landmark: string;
-            blk_number: string;
-            gps: string;
-            region?: { name: string };
-            business?: { name: string };
-        }>;
-        current_page: number;
-        last_page: number;
-        per_page: number;
-        total: number;
-    };
+    signboards: PaginatedDataI<SignboardI>
 }>();
-
-
-
 
 const goToPage = (page: number) => {
     router.get(route('my-signboards.index'), { page }, {

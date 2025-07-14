@@ -8,9 +8,6 @@ class BusinessObserver
 {
     public function creating(Business $business): void
     {
-        if (empty($business->slug)) {
-            $business->slug = rand(11111111, 99999999);
-        }
     }
     /**
      * Handle the Business "created" event.

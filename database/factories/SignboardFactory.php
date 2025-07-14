@@ -17,7 +17,6 @@ class SignboardFactory extends Factory
     public function definition(): array
     {
         return [
-            'slug' => $this->faker->unique()->slug(),
             'town' => $this->faker->city(),
             'landmark' => $this->faker->streetAddress(),
             'street' => $this->faker->streetName(),
