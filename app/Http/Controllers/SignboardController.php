@@ -272,9 +272,10 @@ class SignboardController extends Controller
                 $paymentStatus = null;
             }
         }
+        $signboard->load(['reviews.ratings','business', 'region', 'reviews', 'categories', 'subscriptions'])->toArrayWithMedia();
 
         return Inertia::render('Signboards/SignboardShow', [
-            'signboard' => $signboard->load(['reviews.ratings','business', 'region', 'reviews', 'categories', 'subscriptions'])->toArrayWithMedia(),
+            'signboard' => $signboard,
             'payment_status' => $paymentStatus,
             'plans' => $subPlans,
             'ratings' => $signboard->averageRatings(),

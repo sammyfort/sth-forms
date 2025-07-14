@@ -102,7 +102,6 @@ class Signboard extends Model implements HasMedia, Viewable
 
     public function activeSubscription(): Attribute
     {
-        dd($this->subscriptions()->whereDate('ends_at', '>=', now())->first());
         return Attribute::make(
             get: fn() => $this->subscriptions()->whereDate('ends_at', '>=', now())->first()
         );

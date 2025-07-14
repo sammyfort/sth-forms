@@ -57,6 +57,7 @@ const deleteSignboard = () => {
     });
 };
 
+console.log(props.signboard);
 
 </script>
 
