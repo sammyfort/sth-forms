@@ -114,6 +114,7 @@ class SignboardSubscriptionPaymentController extends Controller
             $activeSubs = $signboard->subscriptions()
                 ->where('id', '!=', $subscription->id)
                 ->where('ends_at', '>', $now)
+                ->latest()
                 ->get();
 
             $arrearsDays = 0;
