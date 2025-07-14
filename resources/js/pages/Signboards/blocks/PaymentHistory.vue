@@ -168,7 +168,16 @@ const getStatusColor = (status: string) => {
                         <TableCell>
                             <div class="flex items-center gap-1.5">
                                 <Calendar class="h-4 w-4 text-gray-400" />
-                                {{ new Date(subscription.created_at).toLocaleDateString() }}
+                                {{
+                                    new Date(subscription.created_at).toLocaleString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: false
+                                    })
+                                }}
                             </div>
                         </TableCell>
                         <TableCell class="flex gap-2">
