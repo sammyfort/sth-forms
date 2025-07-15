@@ -48,8 +48,10 @@ class SignboardSubscription extends Model
     public function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->starts_at <= now() && $this->ends_at >= now()
-                && $this->payment_status == PaymentStatus::PAID
+            get: fn () =>
+                $this->payment_status == PaymentStatus::PAID &&
+                !is_null($this->ends_at) &&
+                Carbon::parse($this->ends_at)->isFuture()
         );
     }
 
