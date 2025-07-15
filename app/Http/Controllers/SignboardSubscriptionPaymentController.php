@@ -151,6 +151,8 @@ class SignboardSubscriptionPaymentController extends Controller
                     'payment_status'  => PaymentStatus::PAID,
                 ]);
 
+                Log::info(json_encode($subscription->toArray()));
+
                 Log::info('Subscription marked as PAID', ['reference' => $reference]);
 
                 DB::commit();
