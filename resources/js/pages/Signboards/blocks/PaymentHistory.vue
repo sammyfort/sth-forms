@@ -159,9 +159,10 @@ const getStatusColor = (status: string) => {
                         <TableHead class="text-left">Plan</TableHead>
                         <TableHead class="text-left">Start Date</TableHead>
                         <TableHead class="text-left">End Date</TableHead>
+                        <TableHead class="text-left">Status</TableHead>
 <!--                        <TableHead class="text-left">Channel</TableHead>-->
                         <TableHead class="text-left">Amount</TableHead>
-                        <TableHead class="text-left">Status</TableHead>
+                        <TableHead class="text-left">Payment Status</TableHead>
                         <TableHead class="text-left">Reference</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -173,7 +174,7 @@ const getStatusColor = (status: string) => {
                                 {{ dateAndTime(subscription.created_at) }}
                             </div>
                         </TableCell>
-                        <TableCell class="flex gap-2">
+                        <TableCell class="flex flex-col gap-2">
                             <span class="font-semibold">{{ subscription.plan.name }}</span>
                             <Badge variant="outline" class="text-xs">
                                  <span>{{ subscription.plan.number_of_days }} days</span>
@@ -181,10 +182,14 @@ const getStatusColor = (status: string) => {
                         </TableCell>
                         <TableCell>{{ subscription.payment_status == 'paid' ? dateAndTime(subscription.starts_at) : '' }}</TableCell>
                         <TableCell>{{ subscription.payment_status == 'paid' ? dateAndTime(subscription.ends_at) : '' }}</TableCell>
+                        <TableCell>
+                            <Badge v-if="subscription.payment_status === 'paid' " :variant="subscription.is_active ? 'success' : 'destructive' ">
+                                {{ subscription.is_active ? 'Active' : 'Expired' }}
+                            </Badge>
+                        </TableCell>
 <!--                        <TableCell>{{ subscription.payment_channel ?? '&#45;&#45;' }}</TableCell>-->
                         <TableCell>
                             <div class="flex items-center gap-1">
-                                <DollarSign class="h-4 w-4 text-green-600" />
                                 <span class="font-medium">₵{{ number_format(subscription.amount, 2) }}</span>
                             </div>
                         </TableCell>

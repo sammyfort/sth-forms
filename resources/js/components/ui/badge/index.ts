@@ -8,11 +8,15 @@ export const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          'border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90',
+          'text-gray-600 bg-gray-50 border-gray-200',
         secondary:
-          'border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90',
+          'text-secondary bg-blue-50 border-blue-200',
+        success:
+          'text-green-600 bg-green-50 border-green-200',
         destructive:
-         'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+         'text-red-600 bg-red-50 border-red-200',
+        primary:
+         'text-primary bg-orange-50 border-orange-200',
         outline:
           'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
       },
