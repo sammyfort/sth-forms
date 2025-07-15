@@ -121,12 +121,6 @@ class SignboardSubscriptionPaymentController extends Controller
 
             $arrearsDays = 0;
 
-            Log::info(json_encode([
-                'plan_days'    => $plan->number_of_days,
-                'arrears_days' => $arrearsDays,
-                'raw_sum'      => $plan->number_of_days + $arrearsDays,
-            ]));
-
             DB::beginTransaction();
             try {
                 if ($activeSubs->count()) {
@@ -138,7 +132,15 @@ class SignboardSubscriptionPaymentController extends Controller
                     }
                 }
 
-                $endsAt = now()->addDays(($plan->number_of_days + $arrearsDays));
+                $totalDays = (int)(round($plan->number_of_days + $arrearsDays));
+                $endsAt = now()->addDays(max($totalDays, 0));
+
+                Log::info(json_encode([
+                    'plan_days'    => $plan->number_of_days,
+                    'arrears_days' => $arrearsDays,
+                    'raw_sum'      => $plan->number_of_days + $arrearsDays,
+                    'Ends At'      => $endsAt,
+                ]));
 
                 // Update this subscription
                 $subscription->update([
