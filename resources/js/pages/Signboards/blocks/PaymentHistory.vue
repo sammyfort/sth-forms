@@ -179,8 +179,8 @@ const getStatusColor = (status: string) => {
                                  <span>{{ subscription.plan.number_of_days }} days</span>
                             </Badge>
                         </TableCell>
-                        <TableCell>{{ dateAndTime(subscription.starts_at) }} {{ subscription.payment_status }}</TableCell>
-                        <TableCell>{{ dateAndTime(subscription.ends_at) }}</TableCell>
+                        <TableCell>{{ subscription.payment_status == 'paid' ? dateAndTime(subscription.starts_at) : '' }}</TableCell>
+                        <TableCell>{{ subscription.payment_status == 'paid' ? dateAndTime(subscription.ends_at) : '' }}</TableCell>
 <!--                        <TableCell>{{ subscription.payment_channel ?? '&#45;&#45;' }}</TableCell>-->
                         <TableCell>
                             <div class="flex items-center gap-1">
