@@ -20,7 +20,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { number_format } from '@/lib/helpers';
+import { dateAndTime, number_format } from '@/lib/helpers';
 
 const props = defineProps<{
     signboard: SignboardI
@@ -158,6 +158,8 @@ const getStatusColor = (status: string) => {
                         <TableHead class="text-left">Date</TableHead>
                         <TableHead class="text-left">Plan</TableHead>
                         <TableHead class="text-left">Channel</TableHead>
+                        <TableHead class="text-left">Start Date</TableHead>
+                        <TableHead class="text-left">End Date</TableHead>
                         <TableHead class="text-left">Amount</TableHead>
                         <TableHead class="text-left">Status</TableHead>
                         <TableHead class="text-left">Reference</TableHead>
@@ -168,16 +170,7 @@ const getStatusColor = (status: string) => {
                         <TableCell>
                             <div class="flex items-center gap-1.5">
                                 <Calendar class="h-4 w-4 text-gray-400" />
-                                {{
-                                    new Date(subscription.created_at).toLocaleString('en-US', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: false
-                                    })
-                                }}
+                                {{ dateAndTime(subscription.created_at) }}
                             </div>
                         </TableCell>
                         <TableCell class="flex gap-2">
@@ -185,6 +178,12 @@ const getStatusColor = (status: string) => {
                             <Badge variant="outline" class="text-xs">
                                  <span>{{ subscription.plan.number_of_days }} days</span>
                             </Badge>
+                        </TableCell>
+                        <TableCell class="flex gap-2">
+                            <span class="font-semibold">{{ dateAndTime(subscription.starts_at) }}</span>
+                        </TableCell>
+                        <TableCell class="flex gap-2">
+                            <span class="font-semibold">{{ dateAndTime(subscription.ends_at) }}</span>
                         </TableCell>
                         <TableCell>{{ subscription.payment_channel ?? '--' }}</TableCell>
                         <TableCell>

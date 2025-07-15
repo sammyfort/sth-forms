@@ -1,5 +1,5 @@
 import { toast } from 'vue-sonner'
-import { Page, PageProps } from '@inertiajs/core'
+import { Page } from '@inertiajs/core'
 
 export const toastSuccess = (message: string, description?: string, options? : typeof toast) => {
     toast.success(message, {
@@ -63,4 +63,15 @@ export const number_format = (val: number, decimal=2)=> {
         return "0.0";
     }
     return num.toFixed(decimal);
+}
+
+export const dateAndTime = (dateStr: string)=>{
+    return new Date(dateStr).toLocaleString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    })
 }
