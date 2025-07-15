@@ -35,6 +35,10 @@ class SignboardSubscription extends Model
         'total_days',
     ];
 
+    public $casts = [
+        'payment_status' => PaymentStatus::class,
+    ];
+
     public function signboard(): BelongsTo
     {
         return $this->belongsTo(Signboard::class, 'signboard_id');
