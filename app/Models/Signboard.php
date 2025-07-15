@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatus;
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
 use Codebyray\ReviewRateable\Models\Review;
@@ -103,7 +104,11 @@ class Signboard extends Model implements HasMedia, Viewable
     public function activeSubscription(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->subscriptions()->whereDate('ends_at', '>=', now())->first()
+            get: fn() => $this->subscriptions()
+                ->where('payment_status', PaymentStatus::PAID)
+                ->whereDate('ends_at', '>', now())
+                ->latest()
+                ->first()
         );
     }
 
