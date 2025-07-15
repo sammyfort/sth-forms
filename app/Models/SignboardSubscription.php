@@ -62,8 +62,6 @@ class SignboardSubscription extends Model
 
     public function scopeRunning(Builder $query)
     {
-        $now = Carbon::now();
-
         $query
             ->where('payment_status', PaymentStatus::PAID)
             ->whereNotNull('ends_at')

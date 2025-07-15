@@ -75,9 +75,9 @@ class SignboardSubscriptionPaymentController extends Controller
 
         Log::info('IP Address: '. $request->ip());
         $allowedIps = [
-            '52.50.116.54', '18.202.122.131', '52.31.15.68', // Hubtel IPs
+            '52.50.116.54', '18.202.122.131', '52.31.15.68', '108.129.40.25' // Hubtel IPs
         ];
-        Log::info('in Ip: '. !in_array($request->ip(), $allowedIps));
+        Log::info('in Ip: '. in_array($request->ip(), $allowedIps));
 
         $payload = $request->all();
 

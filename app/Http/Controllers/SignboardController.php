@@ -135,8 +135,11 @@ class SignboardController extends Controller
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
             })
-            ->whereHas('subscriptions', function ($subscriptionQuery) {
-                $subscriptionQuery->where('ends_at', '>=', now());
+            ->whereHas('subscriptions', function (Builder $subscriptionQuery) {
+                $subscriptionQuery
+                    ->where('payment_status', PaymentStatus::PAID)
+                    ->whereNotNull('ends_at')
+                    ->whereDate('ends_at', '>=', now());
             })
             ->inRandomOrder()
             ->take(10)
