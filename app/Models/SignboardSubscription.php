@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentStatus;
 use App\Traits\BootModelTrait;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -56,6 +57,7 @@ class SignboardSubscription extends Model
         $now = Carbon::now();
 
         return $query->where('starts_at', '<=', $now)
+            ->where('payment_status', PaymentStatus::PAID)
             ->whereNotNull('ends_at')
             ->where('ends_at', '>=', $now);
 //            ->where(function ($q) use ($now) {

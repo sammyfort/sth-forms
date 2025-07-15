@@ -65,195 +65,82 @@ class SignboardSubscriptionPaymentController extends Controller
         return back()->with(successRes('Url generated', ['authorization_url' => $payment['checkoutUrl']]));
     }
 
-//    public function verifyHubtel(Request $request): mixed
-//    {
-//        Log::info('Hubtel Webhook Received', $request->all());
-//
-//        $payload = $request->all();
-//
-//        if (!isset($payload['ResponseCode']) || $payload['ResponseCode'] != '0000') {
-//            Log::warning('Invalid Hubtel webhook response code', $payload);
-//            return response('', 200);
-//        }
-//
-//        $data = $payload['Data'] ?? [];
-//
-//        $reference = $data['ClientReference'] ?? null;
-//        $checkoutId = $data['CheckoutId'] ?? null;
-//        $status = strtolower($data['Status'] ?? '');
-//        $amount = (float) ($data['Amount'] ?? 0);
-//        $channel = $data['PaymentDetails']['Channel'] ?? null;
-//
-//        if (!$reference || !$status || !$amount) {
-//            Log::warning('Incomplete Hubtel webhook data', $data);
-//            return response('', 200);
-//        }
-//
-//        // Find subscription using the payment reference
-//        $subscription = SignboardSubscription::query()
-//            ->where('payment_status', PaymentStatus::PENDING)
-//            ->where('payment_reference', $reference)
-//            ->first();
-//
-//        if (!$subscription) {
-//            Log::warning('Subscription not found for reference: ' . $reference);
-//            return response('', 200);
-//        }
-//
-//        $signboard = $subscription->signboard;
-//        $plan = $subscription->plan;
-//
-//        if (!$signboard || !$plan) {
-//            Log::warning('Missing signboard or plan for subscription', ['subscription_id' => $subscription->id]);
-//            return response('', 200);
-//        }
-//
-//        if ($status === 'success' && $amount >= $plan->price) {
-//            $now = now();
-//
-//            // Get existing subscriptions (excluding current one) that are still active
-//            $activeSubs = $signboard->subscriptions()
-//                ->where('id', '!=', $subscription->id)
-//                ->where('ends_at', '>', $now)
-//                ->latest()
-//                ->get();
-//
-//            $arrearsDays = 0;
-//
-//            Log::info(json_encode([
-//                'plan_days'    => $plan->number_of_days,
-//                'arrears_days' => $arrearsDays,
-//                'raw_sum'      => $plan->number_of_days + $arrearsDays,
-//            ]));
-//
-//            DB::beginTransaction();
-//            try {
-//                if ($activeSubs->count()) {
-//                    $latest = $activeSubs->first(); // Just use the first one
-//                    $arrearsDays = max((int) $now->diffInDays(Carbon::parse($latest->ends_at)), 0);
-//                    // End all other subscriptions
-//                    foreach ($activeSubs as $old) {
-//                        $old->update(['ends_at' => $now]);
-//                    }
-//                }
-//
-//                $endsAt = now()->addDays(($plan->number_of_days + $arrearsDays));
-//
-//                // Update this subscription
-//                $subscription->update([
-//                    'checkout_id'     => $checkoutId,
-//                    'payment_channel' => $channel,
-//                    'starts_at'       => $now,
-//                    'ends_at'         => $endsAt,
-//                    'payment_status'  => PaymentStatus::PAID,
-//                ]);
-//
-//                Log::info('Subscription marked as PAID', ['reference' => $reference]);
-//
-//                DB::commit();
-//            }
-//            catch (\Exception $e) {}
-//        }
-//        else {
-//            // Mark failed
-//            $subscription->update([
-//                'payment_status' => PaymentStatus::FAILED,
-//            ]);
-//            Log::info('Payment failed or amount mismatch', ['reference' => $reference]);
-//        }
-//
-//        return response('', 200);
-//    }
-
-
-    public function verifyHubtel(Request $request): \Illuminate\Http\Response
+    public function verifyHubtel(Request $request): mixed
     {
-        Log::info('📥 Hubtel Webhook Received', $request->all());
+        Log::info('Hubtel Webhook Received', $request->all());
 
         $payload = $request->all();
 
-        if (!isset($payload['ResponseCode']) || $payload['ResponseCode'] !== '0000') {
-            Log::warning('❌ Invalid Hubtel response code', $payload);
+        if (!isset($payload['ResponseCode']) || $payload['ResponseCode'] != '0000') {
+            Log::warning('Invalid Hubtel webhook response code', $payload);
             return response('', 200);
         }
 
         $data = $payload['Data'] ?? [];
 
-        $reference   = $data['ClientReference'] ?? null;
-        $checkoutId  = $data['CheckoutId'] ?? null;
-        $status      = strtolower($data['Status'] ?? '');
-        $amount      = (float) ($data['Amount'] ?? 0);
-        $channel     = $data['PaymentDetails']['Channel'] ?? null;
+        $reference = $data['ClientReference'] ?? null;
+        $checkoutId = $data['CheckoutId'] ?? null;
+        $status = strtolower($data['Status'] ?? '');
+        $amount = (float) ($data['Amount'] ?? 0);
+        $channel = $data['PaymentDetails']['Channel'] ?? null;
 
         if (!$reference || !$status || !$amount) {
-            Log::warning('⚠️ Incomplete Hubtel webhook data', compact('reference', 'status', 'amount'));
+            Log::warning('Incomplete Hubtel webhook data', $data);
             return response('', 200);
         }
 
         // Find subscription using the payment reference
         $subscription = SignboardSubscription::query()
-            ->where('payment_status', PaymentStatus::PENDING)
+//            ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
             ->first();
 
         if (!$subscription) {
-            Log::warning("⚠️ Subscription not found for reference: {$reference}");
+            Log::warning('Subscription not found for reference: ' . $reference);
             return response('', 200);
         }
 
         $signboard = $subscription->signboard;
-        $plan      = $subscription->plan;
+        $plan = $subscription->plan;
 
         if (!$signboard || !$plan) {
-            Log::warning('⚠️ Missing signboard or plan for subscription', ['subscription_id' => $subscription->id]);
+            Log::warning('Missing signboard or plan for subscription', ['subscription_id' => $subscription->id]);
             return response('', 200);
         }
 
-        // Payment is successful and amount is valid
-        if ($status === 'success' && $amount >= (float) $plan->price) {
+        if ($status === 'success' && $amount >= $plan->price) {
+            $now = now();
+
+            // Get existing subscriptions (excluding current one) that are still active
+            $activeSubs = $signboard->subscriptions()
+                ->where('id', '!=', $subscription->id)
+                ->where('payment_status', PaymentStatus::PAID)
+                ->where('ends_at', '>', $now)
+                ->latest()
+                ->get();
+
+            $arrearsDays = 0;
+
+            Log::info(json_encode([
+                'plan_days'    => $plan->number_of_days,
+                'arrears_days' => $arrearsDays,
+                'raw_sum'      => $plan->number_of_days + $arrearsDays,
+            ]));
+
             DB::beginTransaction();
-
             try {
-                $now = now();
-
-                // Get any active subscriptions (excluding current one)
-                $activeSubs = $signboard->subscriptions()
-                    ->where('id', '!=', $subscription->id)
-                    ->where('ends_at', '>', $now)
-                    ->latest()
-                    ->get();
-
-                $arrearsDays = 0;
-
                 if ($activeSubs->count()) {
-                    $latest = $activeSubs->first();
-                    $arrearsDays = max($now->diffInDays(Carbon::parse($latest->ends_at)), 0);
-
-                    // End all active subscriptions
+                    $latest = $activeSubs->first(); // Just use the first one
+                    $arrearsDays = max((int) $now->diffInDays(Carbon::parse($latest->ends_at)), 0);
+                    // End all other subscriptions
                     foreach ($activeSubs as $old) {
                         $old->update(['ends_at' => $now]);
                     }
                 }
 
-                // Safely compute ends_at date
-                $planDays   = (int) $plan->number_of_days;
-                $totalDays  = $planDays + $arrearsDays;
+                $endsAt = now()->addDays(($plan->number_of_days + $arrearsDays));
 
-                if ($totalDays <= 0) {
-                    Log::warning('⚠️ Computed total subscription days <= 0', compact('planDays', 'arrearsDays', 'totalDays'));
-                }
-
-                $endsAt = $now->copy()->addDays(max(0, $totalDays));
-
-                Log::info('✅ Subscription time calculated', [
-                    'now'        => $now,
-                    'ends_at'    => $endsAt,
-                    'plan_days'  => $planDays,
-                    'arrears'    => $arrearsDays,
-                    'total_days' => $totalDays,
-                ]);
-
-                // Update current subscription
+                // Update this subscription
                 $subscription->update([
                     'checkout_id'     => $checkoutId,
                     'payment_channel' => $channel,
@@ -262,23 +149,18 @@ class SignboardSubscriptionPaymentController extends Controller
                     'payment_status'  => PaymentStatus::PAID,
                 ]);
 
-                Log::info('✅ Subscription marked as PAID', ['reference' => $reference]);
+                Log::info('Subscription marked as PAID', ['reference' => $reference]);
 
                 DB::commit();
-            } catch (\Throwable $e) {
-                DB::rollBack();
-                Log::error('❌ Hubtel webhook processing failed', [
-                    'reference' => $reference,
-                    'error'     => $e->getMessage(),
-                ]);
             }
-        } else {
-            // Mark as failed
+            catch (\Exception $e) {}
+        }
+        else {
+            // Mark failed
             $subscription->update([
                 'payment_status' => PaymentStatus::FAILED,
             ]);
-
-            Log::info('❌ Payment failed or amount mismatch', ['reference' => $reference, 'status' => $status, 'amount' => $amount]);
+            Log::info('Payment failed or amount mismatch', ['reference' => $reference]);
         }
 
         return response('', 200);
