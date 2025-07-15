@@ -38,10 +38,10 @@ const filteredTransactions = computed<SignboardSubscriptionI[]>(() => {
     if (searchQuery.value) {
         const query = searchQuery.value.toLowerCase();
         filtered = filtered.filter(subscription =>
-            subscription.payment_reference.toLowerCase().includes(query) ||
-            subscription.amount.toString().includes(query) ||
-            subscription.payment_platform.toLowerCase().includes(query) ||
-            subscription.payment_channel.toLowerCase().includes(query)
+            subscription.payment_reference?.toLowerCase()?.includes(query) ||
+            subscription.amount?.toString()?.includes(query) ||
+            subscription.payment_platform?.toLowerCase()?.includes(query) ||
+            subscription.payment_channel?.toLowerCase()?.includes(query)
         );
     }
 
