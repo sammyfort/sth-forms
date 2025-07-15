@@ -159,7 +159,7 @@ const getStatusColor = (status: string) => {
                         <TableHead class="text-left">Plan</TableHead>
                         <TableHead class="text-left">Start Date</TableHead>
                         <TableHead class="text-left">End Date</TableHead>
-                        <TableHead class="text-left">Channel</TableHead>
+<!--                        <TableHead class="text-left">Channel</TableHead>-->
                         <TableHead class="text-left">Amount</TableHead>
                         <TableHead class="text-left">Status</TableHead>
                         <TableHead class="text-left">Reference</TableHead>
@@ -181,7 +181,7 @@ const getStatusColor = (status: string) => {
                         </TableCell>
                         <TableCell>{{ dateAndTime(subscription.starts_at) }}</TableCell>
                         <TableCell>{{ dateAndTime(subscription.ends_at) }}</TableCell>
-                        <TableCell>{{ subscription.payment_channel ?? '--' }}</TableCell>
+<!--                        <TableCell>{{ subscription.payment_channel ?? '&#45;&#45;' }}</TableCell>-->
                         <TableCell>
                             <div class="flex items-center gap-1">
                                 <DollarSign class="h-4 w-4 text-green-600" />

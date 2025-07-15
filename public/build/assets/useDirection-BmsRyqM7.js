@@ -1,1 +1,0 @@
-import{i as r}from"./useForwardPropsEmits-CDmUFIx3.js";import{r as n,y as i}from"./app-Dxle9BXj.js";function c(t){const e=r({dir:n("ltr")});return i(()=>{var o;return(t==null?void 0:t.value)||((o=e.dir)==null?void 0:o.value)||"ltr"})}export{c as u};
