@@ -157,9 +157,9 @@ const getStatusColor = (status: string) => {
                     <TableRow>
                         <TableHead class="text-left">Date</TableHead>
                         <TableHead class="text-left">Plan</TableHead>
-                        <TableHead class="text-left">Channel</TableHead>
                         <TableHead class="text-left">Start Date</TableHead>
                         <TableHead class="text-left">End Date</TableHead>
+                        <TableHead class="text-left">Channel</TableHead>
                         <TableHead class="text-left">Amount</TableHead>
                         <TableHead class="text-left">Status</TableHead>
                         <TableHead class="text-left">Reference</TableHead>
@@ -179,12 +179,8 @@ const getStatusColor = (status: string) => {
                                  <span>{{ subscription.plan.number_of_days }} days</span>
                             </Badge>
                         </TableCell>
-                        <TableCell class="flex gap-2">
-                            <span class="font-semibold">{{ dateAndTime(subscription.starts_at) }}</span>
-                        </TableCell>
-                        <TableCell class="flex gap-2">
-                            <span class="font-semibold">{{ dateAndTime(subscription.ends_at) }}</span>
-                        </TableCell>
+                        <TableCell>{{ dateAndTime(subscription.starts_at) }}</TableCell>
+                        <TableCell>{{ dateAndTime(subscription.ends_at) }}</TableCell>
                         <TableCell>{{ subscription.payment_channel ?? '--' }}</TableCell>
                         <TableCell>
                             <div class="flex items-center gap-1">
