@@ -25,6 +25,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $firstname
  * @property string $lastname
  * @property string $fullname
+ * @property string $mobile
  * @property string $email
  * @property string $facebook
  * @property string $x

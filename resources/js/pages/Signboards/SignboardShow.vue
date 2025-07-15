@@ -14,7 +14,7 @@ import {
 } from 'lucide-vue-next';
 import { router } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 
 import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';

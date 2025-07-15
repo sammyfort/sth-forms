@@ -13,8 +13,8 @@ class HubtelService
 
     public function __construct()
     {
-        $this->appSecret = env('HUBTEL_SECRET_KEY');
-        $this->appId = env('HUBTEL_APP_ID');
+        $this->appSecret = config('app.hubtel_secrete_key');
+        $this->appId = config('app.hubtel_app_id');
         $encoded = base64_encode("{$this->appId}:{$this->appSecret}");
         $this->request = Http::withHeaders([
             'Authorization' => "Basic $encoded",

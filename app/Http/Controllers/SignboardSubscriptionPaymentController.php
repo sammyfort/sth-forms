@@ -30,6 +30,7 @@ class SignboardSubscriptionPaymentController extends Controller
     public function initializeHubtel(SignboarbSubscriptionRequest $request): \Illuminate\Http\RedirectResponse
     {
         $validatedData = $request->validated();
+        $user = auth()->user();
         $plan = SignboardSubscriptionPlan::query()->find($validatedData['plan_id']);
         $reference = Str::uuid()->toString();
         $signboard = Signboard::query()->find($validatedData['signboard_id'], ['id', 'slug']);
@@ -38,10 +39,13 @@ class SignboardSubscriptionPaymentController extends Controller
 
         $data = [
             "totalAmount" => $plan->price,
-            "description" => "Signboard test",
+            "payeeName" => $user->fullname,
+            "payeeMobileNumber" => $user->mobile,
+            "payeeEmail" => $user->email,
+            "description" => "Signboard promotion subscription",
             "callbackUrl" => $redirectUrl,
             "returnUrl" => "$signboardRoute&payment_status=pending",
-            "merchantAccountNumber" => "2030753",
+            "merchantAccountNumber" => config('app.hubtel_account_number'),
             "cancellationUrl" => "$signboardRoute&payment_status=cancelled",
             "clientReference" => $reference
         ];
@@ -69,6 +73,12 @@ class SignboardSubscriptionPaymentController extends Controller
     {
         Log::info('Hubtel Webhook Received', $request->all());
 
+        Log::info('IP Address: '. $request->ip());
+        $allowedIps = [
+            '52.50.116.54', '18.202.122.131', '52.31.15.68', // Hubtel IPs
+        ];
+        Log::info('in Ip: '. !in_array($request->ip(), $allowedIps));
+
         $payload = $request->all();
 
         if (!isset($payload['ResponseCode']) || $payload['ResponseCode'] != '0000') {
@@ -91,7 +101,7 @@ class SignboardSubscriptionPaymentController extends Controller
 
         // Find subscription using the payment reference
         $subscription = SignboardSubscription::query()
-//            ->where('payment_status', PaymentStatus::PENDING)
+            ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
             ->first();
 
@@ -135,13 +145,6 @@ class SignboardSubscriptionPaymentController extends Controller
                 $totalDays = (int)(round($plan->number_of_days + $arrearsDays));
                 $endsAt = now()->addDays(max($totalDays, 0));
 
-                Log::info(json_encode([
-                    'plan_days'    => $plan->number_of_days,
-                    'arrears_days' => $arrearsDays,
-                    'raw_sum'      => $plan->number_of_days + $arrearsDays,
-                    'Ends At'      => $endsAt,
-                ]));
-
                 // Update this subscription
                 $subscription->update([
                     'checkout_id'     => $checkoutId,
@@ -150,11 +153,7 @@ class SignboardSubscriptionPaymentController extends Controller
                     'ends_at'         => $endsAt,
                     'payment_status'  => PaymentStatus::PAID,
                 ]);
-
-                Log::info(json_encode($subscription->toArray()));
-
                 Log::info('Subscription marked as PAID', ['reference' => $reference]);
-
                 DB::commit();
             }
             catch (\Exception $e) {}

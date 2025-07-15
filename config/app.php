@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    // custom define keys
+    'hubtel_account_number' => env('HUBTEL_ACCOUNT_NUMBER'),
+    'hubtel_secrete_key' => env('HUBTEL_SECRET_KEY'),
+    'hubtel_app_id' => env('HUBTEL_APP_ID'),
+
 ];
