@@ -105,9 +105,7 @@ class Signboard extends Model implements HasMedia, Viewable
     {
         return Attribute::make(
             get: fn() => $this->subscriptions()
-                ->where('payment_status', PaymentStatus::PAID)
-                ->whereDate('ends_at', '>', now())
-                ->latest()
+                ->running()
                 ->first()
         );
     }

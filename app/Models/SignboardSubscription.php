@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 * @property string $updated_at
  * @property string $ends_at
  * @property string $starts_at
+ * @property bool $payment_status
  */
 
 class SignboardSubscription extends Model
@@ -48,6 +49,7 @@ class SignboardSubscription extends Model
     {
         return Attribute::make(
             get: fn () => $this->starts_at <= now() && $this->ends_at >= now()
+                && $this->payment_status == PaymentStatus::PAID
         );
     }
 
@@ -56,13 +58,11 @@ class SignboardSubscription extends Model
     {
         $now = Carbon::now();
 
-        return $query->where('starts_at', '<=', $now)
+        $query
             ->where('payment_status', PaymentStatus::PAID)
             ->whereNotNull('ends_at')
-            ->where('ends_at', '>=', $now);
-//            ->where(function ($q) use ($now) {
-//                $q->whereNull('ends_at')->orWhere('ends_at', '>=', $now);
-//            });
+            ->whereDate('ends_at', '>', now())
+            ->latest();
     }
 
     public function totalDays(): Attribute
