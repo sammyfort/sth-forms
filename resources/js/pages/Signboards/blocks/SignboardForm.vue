@@ -88,7 +88,7 @@ const emit = defineEmits<{
 
                         <div class="md:col-span-2">
                             <InputSelect
-                                label="Signboard Categories"
+                                label="Fields Of Operation"
                                 :form="form"
                                 model="categories"
                                 :options="categories"
@@ -144,7 +144,7 @@ const emit = defineEmits<{
                         />
                         <InputText
                             :form="form"
-                            label="GPS Coordinates"
+                            label="GPS"
                             model="gps"
                             placeholder="e.g., 5.6037, -0.1870"
                         />

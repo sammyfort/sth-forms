@@ -38,7 +38,7 @@ const props = defineProps<{
             </div>
 
             <div class="flex items-center justify-between border-b border-gray-100 py-2">
-                <span class="font-medium text-gray-600">GPS Coordinates</span>
+                <span class="font-medium text-gray-600">GPS</span>
                 <span class="font-mono text-sm text-gray-900">{{ props.signboard.gps }}</span>
             </div>
 
