@@ -9,30 +9,9 @@ import { router } from '@inertiajs/vue3'
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { ref, onMounted } from 'vue'
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
-import CreateBusiness from '@/pages/Businesses/CreateBusiness.vue';
+import { BusinessI } from '@/types';
 const props = defineProps<{
-    business: {
-        id: number;
-        name: string;
-        email: string;
-        mobile: string;
-        description: string;
-        facebook?: string;
-        x?: string;
-        linkedin?: string;
-        instagram?: string;
-        verified?: boolean;
-        created_at?: string;
-        signboards: Array<{
-            id: number;
-            slug: string;
-            name?: string;
-            town?: string;
-            location?: string;
-            status?: 'active' | 'inactive';
-            created_at?: string;
-        }>;
-    };
+    business: BusinessI;
 }>();
 
 onMounted(() => {
@@ -124,13 +103,14 @@ const closeBusiness = () => {
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-medium text-gray-600">Rating</p>
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <p class="text-lg sm:text-2xl font-bold text-gray-900">4.9</p>
+                                    <p class="text-lg sm:text-2xl font-bold text-gray-900">{{ business.average_rating}}</p>
                                     <div class="flex text-yellow-400">
-                                        <Star class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
-                                        <Star class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
-                                        <Star class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
-                                        <Star class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
-                                        <Star class="w-4 h-4 sm:w-5 sm:h-5 fill-current" />
+                                        <Star
+                                            v-for="i in 5"
+                                            :key="i"
+                                            class="w-4 h-4 sm:w-5 sm:h-5"
+                                            :class="{ 'fill-current': i <= Math.floor(Number(business.average_rating)), 'text-gray-300': i > Math.floor(Number(business.average_rating)) }"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -206,7 +186,7 @@ const closeBusiness = () => {
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
-                        <div v-if="props.business.signboards.length"
+                        <div v-if="business.signboards.length"
                              v-for="signboard in props.business.signboards" :key="signboard.id"
                              class="group relative overflow-hidden rounded-lg border  border-gray-200 hover:border-indigo-300 transition-all duration-300 hover:shadow-lg">
                             <div class="aspect-video bg-gradient-to-br from-indigo-50 to-purple-50 p-4 sm:p-6 flex items-center justify-center">
