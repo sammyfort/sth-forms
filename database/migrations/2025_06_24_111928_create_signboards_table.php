@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->uuid();
             $table->foreignId('business_id')->constrained();
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->string('region_id');
             $table->string('slug')->unique();
             $table->string('town');
