@@ -13,6 +13,34 @@ class SignboardCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        SignboardCategory::factory(10)->create();
+        $categories = [
+            'Grocery Store',
+            'Pharmacy',
+            'Fashion Boutique',
+            'Barbering Salon',
+            'Hair Salon',
+            'Electronics Shop',
+            'Mobile Money Vendor',
+            'Printing Press',
+            'Cold Store',
+            'Furniture Store',
+            'Restaurant',
+            'Hardware Store',
+            'Auto Spare Parts',
+            'Bookshop',
+            'Catering Services',
+            'Photography Studio',
+            'Internet Café',
+            'Building Contractor',
+            'Travel & Tour Agency',
+            'Real Estate Agency'
+        ];
+
+        foreach ($categories as $category) {
+            SignboardCategory::query()->create([
+                'name' => $category,
+            ]);
+        }
+
     }
 }

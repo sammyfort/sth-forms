@@ -17,14 +17,9 @@ use Spatie\Sluggable\SlugOptions;
 * @property string $updated_at
 */
 
-class SignboardCategory extends Model
+class ServiceCategory extends Model
 {
-    //
     use BootModelTrait, HasSlug, HasFactory;
-
-    protected $appends = [
-        "created_at_str"
-    ];
 
     public function getSlugOptions() : SlugOptions
     {
@@ -33,13 +28,13 @@ class SignboardCategory extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function signboards(): BelongsToMany
+    public function services(): BelongsToMany
     {
         return $this->belongsToMany(
-            Signboard::class,
-            'signboard_signboard_categories',
+            Service::class,
+            'service_service_category',
             'category_id',
-            'signboard_id'
+            'service_id'
         );
     }
 }
