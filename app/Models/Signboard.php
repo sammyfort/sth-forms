@@ -17,10 +17,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Sluggable\SlugOptions;
+use Spatie\Tags\HasSlug;
 use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Translatable\HasTranslations;
 
 /**
  * @property string $id
@@ -39,6 +42,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Signboard extends Model implements HasMedia, Viewable
 {
     use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews;
+
+
 
     public function registerMediaConversions(Media $media = null): void
     {

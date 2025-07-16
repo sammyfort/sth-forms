@@ -66,7 +66,7 @@ const emit = defineEmits<{
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="md:col-span-2">
+
                             <InputSelect
                                 label="Select Business"
                                 :form="form"
@@ -76,7 +76,16 @@ const emit = defineEmits<{
                                 required
                                 searchable
                             />
-                        </div>
+
+                            <InputText
+                                :form="form"
+                                label="Name/Title"
+                                model="name"
+                                required
+                            />
+
+
+
                         <div class="md:col-span-2">
                             <InputSelect
                                 label="Signboard Categories"

@@ -18,6 +18,7 @@ const form = useForm({
     business_id: '',
     region_id: '',
     categories: [],
+    name: '',
     town: '',
     street: '',
     landmark: '',

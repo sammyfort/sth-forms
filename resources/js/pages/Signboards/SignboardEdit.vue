@@ -11,6 +11,7 @@ const props = defineProps<{
     signboard: {
         id: number;
         business_id: number;
+        name: string,
         region_id: number;
         categories?: Array<{ id: number; name: string }>;
         slug: string;
@@ -29,6 +30,7 @@ const props = defineProps<{
 
 const form = useForm({
     business_id: '',
+    name: '',
     region_id: '',
     categories: [],
     town: '',
@@ -52,6 +54,7 @@ const galleryErrors = computed(() =>
 );
 
 onMounted(() => {
+    form.name = props.signboard.name
     form.business_id = String(props.signboard.business_id);
     form.region_id = String(props.signboard.region_id);
     form.categories = props.signboard.categories?.map(cat => cat.id) || [];

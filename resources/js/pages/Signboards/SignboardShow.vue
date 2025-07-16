@@ -108,7 +108,7 @@ const deleteSignboard = () => {
                                     </div>
                                     <div>
                                         <h1 class="mb-2 text-4xl font-bold text-white md:text-5xl">
-                                            {{ props.signboard.landmark }}
+                                            {{ props.signboard.name }}
                                         </h1>
                                         <div class="flex items-center gap-4 text-white/90">
                                             <span class="flex items-center gap-2">

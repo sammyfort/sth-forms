@@ -23,6 +23,7 @@ class UpdateSignboardRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => ['required', 'string'],
             'business_id' => ['required', Rule::exists('businesses', 'id')->where('user_id', request()->user()->id)],
             'region_id' => ['required', Rule::exists('regions', 'id')],
             'categories' => ['required', 'array'],

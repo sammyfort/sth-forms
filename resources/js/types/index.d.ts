@@ -76,8 +76,10 @@ export interface BusinessI extends ModelI {
     instagram?: string;
     verified?: boolean,
     user: User,
+    signboards: SignboardI
     user_id: number,
     initials: string,
+    average_rating: number
 }
 
 export interface SignboardCategoryI extends ModelI {
@@ -119,6 +121,8 @@ export interface SignboardSubscriptionI extends ModelI {
 }
 
 export interface SignboardI extends ModelI {
+    id: number;
+    name: string;
     business_id: number;
     business: BusinessI;
     categories: SignboardCategoryI[],

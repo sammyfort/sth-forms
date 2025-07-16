@@ -58,4 +58,18 @@ class Business extends Model
         );
     }
 
+    public function averageRating(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => ratingFormat(
+                $this->signboards()
+                    ->with('ratings')
+                    ->get()
+                    ->pluck('overallAverageRating')
+                    ->filter()
+                    ->avg()
+            )
+        );
+    }
+
 }
