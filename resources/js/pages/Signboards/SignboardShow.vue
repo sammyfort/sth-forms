@@ -26,6 +26,7 @@ import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
 import LocationDetails from '@/pages/Signboards/blocks/LocationDetails.vue';
 import SignboardActions from '@/pages/Signboards/blocks/SignboardActions.vue';
 import OperationFields from '@/pages/Signboards/blocks/OperationFields.vue';
+import ReviewsDetails from '@/components/signboard/Details/ReviewsDetails.vue';
 
 
 
@@ -188,13 +189,19 @@ const deleteSignboard = () => {
                         </div>
                     </div>
                 </div>
-                <PaymentHistory :signboard="props.signboard"/>
-                <div v-if="reviews.length" class="mx-auto max-w-6xl p-6">
-                    <h2 class="mb-4 text-2xl font-bold text-gray-900">Reviews</h2>
-                    <div class="p-4">
+                <div class="flex w-full flex-wrap mt-15">
+                    <div class="w-full">
+                        <h2 class="mb-4 text-2xl font-bold text-gray-900">Reviews And Comments</h2>
+                    </div>
+                    <div class="w-full lg:w-1/2">
+                        <ReviewsDetails class="border-t-0" :signboard="signboard" :ratings="ratings" :distributions="distributions" />
+                    </div>
+                    <div v-if="reviews.length" class="w-full lg:border-s lg:w-1/2 lg:ps-15">
+                        <h2 class="mb-4 text-lg pt-5 font-bold text-fade">Comments</h2>
                         <ReviewsList :signboard="signboard" :reviews="reviews" />
                     </div>
                 </div>
+                <PaymentHistory :signboard="props.signboard"/>
             </div>
             <ConfirmDialogue
                 v-model:open="showDialog"

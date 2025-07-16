@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import SignboardRating from '@/components/businesses/SignboardRating.vue';
 import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
 import { usePage } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { computed, HTMLAttributes } from 'vue';
+import { cn } from '@/lib/utils';
 
 
 const page = usePage()
@@ -16,21 +17,22 @@ type Props = {
     signboard: SignboardI,
     ratings: AverageRatingsI,
     distributions: RatingsDistributionI,
+    class?: HTMLAttributes['class']
 }
-defineProps<Props>()
+const props = defineProps<Props>()
 
 </script>
 
 <template>
-    <div class="p-4 border-t text-fade">
+    <div :class="cn('p-4 border-t text-fade', props.class)">
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
-            <div v-if="user?.id !== signboard.created_by_id" class="ms-auto md:block hidden">
+            <div v-if="user?.id !== signboard.business.user_id" class="ms-auto md:block hidden">
                 <SignboardRating :signboard="signboard">
                     <Button size="sm">Add Review</Button>
                 </SignboardRating>
             </div>
-            <div class="ms-auto md:hidden">
+            <div class="ms-auto md:hidden" v-if="user?.id !== signboard.business.user_id">
                 <SignboardRatingModal :signboard="signboard">
                     <Button size="sm">Add Review</Button>
                 </SignboardRatingModal>
@@ -57,7 +59,7 @@ defineProps<Props>()
             <div class="w-full">
                 <div class="text-xl mb-3 font-medium text-secondary">Insights</div>
                 <div class="flex flex-wrap">
-                    <div class="w-1/2">
+                    <div class="w-full md:w-1/2">
                         <div class="font-medium mb-2">Ratings By Category</div>
                         <div class="flex flex-col gap-1 text-sm">
                             <div class="flex gap-3">
@@ -86,7 +88,7 @@ defineProps<Props>()
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/2">
+                    <div class="w-full md:w-1/2 mt-7 md:mt-0">
                         <div class="font-medium mb-2">Ratings Distribution</div>
                         <div class="flex flex-col gap-1 text-sm">
                             <div class="flex items-center gap-4">
