@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BootModelTrait;
+use App\Traits\HasMediaUploads;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
@@ -35,8 +36,9 @@ use Spatie\Tags\HasTags;
 
 class Service extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasFactory, InteractsWithMedia, InteractsWithViews;
+    use BootModelTrait, HasFactory, InteractsWithMedia, InteractsWithViews, HasMediaUploads;
 
+    protected $appends = ['featured', 'gallery'];
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('featured')->singleFile();
@@ -59,7 +61,9 @@ class Service extends Model implements HasMedia, Viewable
             ServiceCategory::class,
             'service_service_category',
             'service_id',
-            'category_id'
-        );
+            'category_id',
+            'id',
+            'id'
+        )->withPivot('uuid');
     }
 }

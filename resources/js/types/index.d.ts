@@ -56,11 +56,19 @@ export interface ServiceI extends ModelI{
     business_name?: string;
     region_id: number;
     region: RegionI;
+    categories: ServiceCategories
     town: string;
     gps: string;
     user: User;
     featured: MediaI;
     gallery: MediaI[];
+    is_promoted: boolean
+}
+
+export interface ServiceCategories extends ModelI
+{
+    name: string
+
 }
 
 export interface MediaI {

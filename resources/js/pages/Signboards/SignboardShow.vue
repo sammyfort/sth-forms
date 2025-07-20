@@ -27,6 +27,7 @@ import LocationDetails from '@/pages/Signboards/blocks/LocationDetails.vue';
 import SignboardActions from '@/pages/Signboards/blocks/SignboardActions.vue';
 import OperationFields from '@/pages/Signboards/blocks/OperationFields.vue';
 import ReviewsDetails from '@/components/signboard/Details/ReviewsDetails.vue';
+import ImagePreview from '@/components/ImagePreview.vue';
 
 
 
@@ -176,7 +177,7 @@ const deleteSignboard = () => {
                         </div>
 
                         <div class="lg:col-span-2">
-                            <ImageShow
+                            <ImagePreview
                                 :featured-url="props.signboard.featured_url"
                                 :gallery-urls="props.signboard.gallery_urls"
                                 title="Signboard Gallery"
