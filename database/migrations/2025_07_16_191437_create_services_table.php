@@ -16,6 +16,7 @@ return new class extends Migration {
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
+            $table->string('slug');
             $table->longText('description');
             $table->string('first_mobile');
             $table->string('business_name')->nullable();
@@ -25,6 +26,9 @@ return new class extends Migration {
             $table->foreignId('region_id')->constrained();
             $table->string('town');
             $table->string('gps')->nullable();
+
+           // $table->decimal('charge_amount')->nullable();
+           // $table->string('estimated_days')->nullable();
 
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();

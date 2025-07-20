@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\PaymentStatus;
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
+use App\Traits\HasMediaUploads;
 use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
@@ -41,7 +42,7 @@ use Spatie\Translatable\HasTranslations;
 #[ObservedBy(SignboardObserver::class)]
 class Signboard extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews, HasMediaUploads;
 
 
 
@@ -115,15 +116,5 @@ class Signboard extends Model implements HasMedia, Viewable
         );
     }
 
-    public function toArrayWithMedia(): array
-    {
-        $data = $this->toArray();
-        $featuredMedia = $this->getFirstMedia('featured');
-        $data['featured_url'] = $featuredMedia ? $featuredMedia->getUrl() : null;
 
-        $galleryMedia = $this->getMedia('gallery');
-        $data['gallery_urls'] = $galleryMedia->map(fn($media) => $media->getUrl())->toArray();
-
-        return $data;
-    }
 }
