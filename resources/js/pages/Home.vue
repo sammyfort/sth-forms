@@ -50,17 +50,20 @@ const searchOptions: InputSelectOption[] = [
                 <div class="flex flex-wrap justify-center p-10 gap-7">
                     <div
                         @click="router.visit(route('services.index'))"
-                        class="flex items-center transition-all ease-in-out duration-350 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300"
+                        class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300"
                     >
                         <span>Artisans</span>
                     </div>
-                    <div class="flex items-center transition-all ease-in-out duration-350 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
+                    <div
+                        @click="router.visit(route('signboards.index'))"
+                        class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300"
+                    >
                         <span>Signboard</span>
                     </div>
-                    <div class="flex items-center transition-all ease-in-out duration-350 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
+                    <div class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
                         <span>Job</span>
                     </div>
-                    <div class="flex items-center transition-all ease-in-out duration-350 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
+                    <div class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
                         <span>Buy</span>
                     </div>
                 </div>

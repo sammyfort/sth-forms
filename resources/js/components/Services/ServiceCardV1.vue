@@ -18,11 +18,11 @@ const props = defineProps<{
         :class="cn('shadow-sm border-0 py-2 rounded-none gap-1 transform transition-transform duration-300 hover:scale-99 cursor-pointer', {'border-1 border-primary': service.is_advertised}, props.class)"
     >
         <CardHeader>
-            <div>
-                <div class="font-semibold text-lg p-0 m-0 leading-tight">{{ service.title }}</div>
+            <div class="overflow-hidden">
+                <div class="font-semibold text-lg p-0 m-0 leading-tight truncate">{{ service.title }}</div>
                 <div class="text-fade leading-tight">
-                    <div>{{ service.user.fullname }}</div>
-                    <div class="text-xs">{{ service.business_name }}</div>
+                    <div class="truncate">{{ service.user.fullname }}</div>
+                    <div class="text-xs truncate">{{ service.business_name }}</div>
                 </div>
             </div>
         </CardHeader>
@@ -37,7 +37,7 @@ const props = defineProps<{
                     <MapPin :size="15" class="text-primary"/>
                     <div>
                         <div class="text-sm">{{ service.region.name }}</div>
-                        <div class="text-xs text-fade">{{ service.town }}</div>
+                        <div class="text-xs text-fade truncate">{{ service.town }}</div>
                     </div>
                 </div>
             </div>

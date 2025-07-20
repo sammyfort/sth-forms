@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SignboardController;
 use App\Http\Controllers\SignboardSubscriptionPaymentController;
 use App\Models\Service;
@@ -69,20 +70,8 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
 });
 
 Route::prefix('artisans')->as('services.')->group(function () {
-    Route::get('/', function (){
-        $services = Service::query()
-            ->with(['user', 'region'])
-            ->with('media', function ($builder){
-                $builder->where('collection_name', 'featured');
-            })
-            ->paginate();
-        $services->map(function (Service $service){
-            $service->featured = $service->getFirstMedia('featured');
-        });
-        return Inertia::render('Services', [
-            'services' => $services
-        ]);
-    })->name('index');
+    Route::get('/', [ServiceController::class, 'index'])->name('index');
+    Route::get('/promoted', [ServiceController::class, 'getPromotedSignboards'])->name('promoted');
 });
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
