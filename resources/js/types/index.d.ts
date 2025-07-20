@@ -61,7 +61,7 @@ export interface ServiceI extends ModelI{
     town: string;
     gps: string;
     user: User;
-    featured: MediaI;
+    featured: string|MediaI;
     gallery: MediaI[];
     is_promoted: boolean
 }
