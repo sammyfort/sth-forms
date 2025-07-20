@@ -4,7 +4,6 @@ import SignboardCardV1 from '@/components/businesses/SignboardCardV1.vue';
 import { Carousel, CarouselItem, CarouselContent } from '@/components/ui/carousel';
 import { HTMLAttributes, onMounted, ref } from 'vue';
 import { SignboardI } from '@/types';
-import { router } from '@inertiajs/vue3';
 import { getPromotedSignboards } from '@/lib/api';
 
 import { cn } from '@/lib/utils';

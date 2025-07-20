@@ -9,6 +9,7 @@ use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -29,7 +30,8 @@ use Spatie\Tags\HasTags;
 * @property string $region_id
 * @property string $town
 * @property Collection<ServiceCategory> $categories
-*/
+ * @property \Spatie\MediaLibrary\MediaCollections\Models\Media|null $featured
+ */
 
 class Service extends Model implements HasMedia, Viewable
 {
@@ -39,6 +41,16 @@ class Service extends Model implements HasMedia, Viewable
     {
         $this->addMediaCollection('featured')->singleFile();
         $this->addMediaCollection('gallery');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
     }
 
     public function categories(): BelongsToMany

@@ -46,6 +46,23 @@ export interface User extends ModelI {
     avatar?: MediaI,
 }
 
+export interface ServiceI extends ModelI{
+    title: string;
+    description: string;
+    first_mobile: string;
+    second_mobile: string;
+    email: string;
+    address: string;
+    business_name?: string;
+    region_id: number;
+    region: RegionI;
+    town: string;
+    gps: string;
+    user: User;
+    featured: MediaI;
+    gallery: MediaI[];
+}
+
 export interface MediaI {
     'id': number,
     'model_type': string,
@@ -205,4 +222,8 @@ export interface RatingsDistributionI {
     5: number;
 }
 
+export type InputSelectOption = {
+    label: string
+    value: string
+}
 

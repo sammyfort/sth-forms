@@ -3,15 +3,15 @@ import { InertiaForm } from '@inertiajs/vue3';
 import { Page, Errors } from '@inertiajs/core';
 
 export const getPromotedSignboards = async ()=>{
-    const data = {
-        signboards: []
-    }
     const request = await fetch(route('signboards.promoted'))
     const response = await request.json()
-    if (response.success){
-        data.signboards = response.data.signboards
-    }
-    return data
+    return response.success ? response.data.signboards : {signboards: []}
+}
+
+export const getPromotedServices = async ()=>{
+    const request = await fetch(route('services.promoted'))
+    const response = await request.json()
+    return response.success ? response.data.signboards : {signboards: []}
 }
 
 export const rateSignboard = async (

@@ -206,7 +206,6 @@ onUnmounted(() => {
                             v-for="signboard in signboardsChunk"
                             :key="signboard.id"
                             class="shadow-2xl"
-                            image-height="45"
                         />
                         <AdvertisedSignboardsH
                             containerClass="md:col-span-3 lg:col-span-3 xl:col-span-4 sm:col-span-2 lg:hidden"
