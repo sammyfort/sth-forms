@@ -7,17 +7,9 @@ use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use App\Enums\PaymentStatus;
-use App\Http\Requests\Profile\UpdateSocialsRequest;
 use App\Http\Requests\Service\StoreServiceRequest;
 use App\Http\Requests\Service\UpdateServiceRequest;
-use App\Models\Region;
-use App\Models\Service;
-use App\Models\ServiceCategory;
-use App\Models\Signboard;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -81,7 +73,7 @@ class ServiceController extends Controller
     }
 
 
-    public function show(Service $service): Response
+    public function showMyServices(Service $service): Response
     {
 
         return Inertia::render('Services/Service', [
@@ -95,8 +87,10 @@ class ServiceController extends Controller
 
         return Inertia::render('Services/MyServices',[
             'services' =>  auth()->user()->services()
-                ->with(['region', 'categories', 'user',])->orderBy('created_at', $sort)
-                ->paginate(12)->withQueryString(),
+                ->with(['region', 'category', 'user',])
+                ->orderBy('created_at', $sort)
+                ->paginate(12)
+                ->withQueryString(),
             'sort' => $sort,
         ]);
     }
