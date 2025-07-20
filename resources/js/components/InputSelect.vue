@@ -2,27 +2,15 @@
 import InputError from '@/components/InputError.vue'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import {
-    Select,
-    SelectTrigger,
-    SelectValue,
-    SelectContent,
-    SelectGroup,
-    SelectItem
-} from '@/components/ui/select'
 
 import { useAttrs, ref, computed, watch, onMounted, onUnmounted } from 'vue'
-
-type Option = {
-    label: string
-    value: string
-}
+import { InputSelectOption } from '@/types';
 
 type Props = {
     form?: Record<string, any>
     model?: string
     label?: string
-    options: Option[]
+    options: InputSelectOption[]
     searchable?: boolean
     taggable?: boolean
 }

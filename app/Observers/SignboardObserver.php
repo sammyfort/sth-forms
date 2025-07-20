@@ -14,9 +14,9 @@ class SignboardObserver
             $signboard->slug = rand(11111111, 99999999);
         }
         // get lat and lon from gps(Ghana post)
-        $location = GhanaPostService::getLocationByGPS($signboard->gps);
-        $signboard->gps_lat = $location->centerLongitude;
-        $signboard->gps_lon = $location->centerLatitude;
+//        $location = GhanaPostService::getLocationByGPS($signboard->gps);
+//        $signboard->gps_lat = $location->centerLongitude;
+//        $signboard->gps_lon = $location->centerLatitude;
     }
 
     /**

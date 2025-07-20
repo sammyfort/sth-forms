@@ -29,7 +29,7 @@ const props = withDefaults(
         carouselPlugin?: AutoplayType
     }>(),
     {
-        imageHeight: "48",
+        imageHeight: "40",
     }
 )
 
@@ -41,7 +41,10 @@ const ratedHandler = (sb: SignboardI)=>{
 </script>
 
 <template>
-    <div :class="cn('overflow-hidden relative  rounded-lg bg-white shadow cursor-pointer transform transition-transform duration-300 hover:scale-99', props.class)">
+    <div
+        @click="router.visit(route('signboards.show', signboard.slug))"
+        :class="cn('overflow-hidden relative  rounded-lg bg-white shadow cursor-pointer transform transition-transform duration-300 hover:scale-99', props.class)"
+    >
         <TooltipProvider v-if="signboard.active_subscription">
             <Tooltip>
                 <TooltipTrigger as-child>
@@ -58,7 +61,6 @@ const ratedHandler = (sb: SignboardI)=>{
             class="object-end w-full object-cover max-h-55" :class="'h-'+imageHeight"
             :src="signboard.featured_url"
             alt="Home in Countryside"
-            @click="router.visit(route('signboards.show', signboard.slug))"
         />
         <div class="p-4 flex flex-col gap-3">
             <div class="flex flex-wrap gap-x-2 gap-y-0 text-xs">
@@ -85,10 +87,10 @@ const ratedHandler = (sb: SignboardI)=>{
                     <MapPinned :size="15" class="text-primary"/>
                     <div>{{ signboard.town }}</div>
                 </div>
-                <div class="mt-1 flex gap-2 items-center text-sm">
-                    <Pin :size="15" class="text-primary"/>
-                    <div>{{ signboard.street }}</div>
-                </div>
+<!--                <div class="mt-1 flex gap-2 items-center text-sm">-->
+<!--                    <Pin :size="15" class="text-primary"/>-->
+<!--                    <div>{{ signboard.street }}</div>-->
+<!--                </div>-->
             </div>
 
             <div class="flex flex-wrap items-center">
@@ -109,33 +111,33 @@ const ratedHandler = (sb: SignboardI)=>{
                 <span class="w-1/3 ms-auto text-center text-sm text-gray-600">{{ signboardC.reviews_count }} reviews</span>
             </div>
 
-            <div class="mt-auto ms-auto w-full flex items-baseline">
-                <div class="md:flex hidden flex-wrap items-center">
-                    <SignboardRating
-                        :signboard="signboardC"
-                        :id="`rating-pop-${signboard.id}`"
-                        :carousel-plugin="carouselPlugin"
-                        @popover-open="onPopoverStateChanged"
-                        @rated="ratedHandler"
-                    >
-                        <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
-                    </SignboardRating>
-                </div>
-                <div class="md:hidden">
-                    <SignboardRatingModal
-                        :signboard="signboardC"
-                        :id="`rating-modal-${signboard.id}`"
-                        :carousel-plugin="carouselPlugin"
-                        @popover-open="onPopoverStateChanged"
-                        @rated="ratedHandler"
-                    >
-                        <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>
-                    </SignboardRatingModal>
-                </div>
-                <Button size="sm" variant="secondary" as-child class="ms-auto mt-auto">
-                    <Link :href="route('signboards.show', signboard.slug)" class=" text-primary" size="sm">View Signboard</Link>
-                </Button>
-            </div>
+<!--            <div class="mt-auto ms-auto w-full flex items-baseline">-->
+<!--                <div class="md:flex hidden flex-wrap items-center">-->
+<!--                    <SignboardRating-->
+<!--                        :signboard="signboardC"-->
+<!--                        :id="`rating-pop-${signboard.id}`"-->
+<!--                        :carousel-plugin="carouselPlugin"-->
+<!--                        @popover-open="onPopoverStateChanged"-->
+<!--                        @rated="ratedHandler"-->
+<!--                    >-->
+<!--                        <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>-->
+<!--                    </SignboardRating>-->
+<!--                </div>-->
+<!--                <div class="md:hidden">-->
+<!--                    <SignboardRatingModal-->
+<!--                        :signboard="signboardC"-->
+<!--                        :id="`rating-modal-${signboard.id}`"-->
+<!--                        :carousel-plugin="carouselPlugin"-->
+<!--                        @popover-open="onPopoverStateChanged"-->
+<!--                        @rated="ratedHandler"-->
+<!--                    >-->
+<!--                        <span class="md:w-1/3 w-full text-primary underline text-sm font-semibold hover:text-secondary">Review</span>-->
+<!--                    </SignboardRatingModal>-->
+<!--                </div>-->
+<!--                <Button size="sm" variant="secondary" as-child class="ms-auto mt-auto">-->
+<!--                    <Link :href="route('signboards.show', signboard.slug)" class=" text-primary" size="sm">View Signboard</Link>-->
+<!--                </Button>-->
+<!--            </div>-->
         </div>
     </div>
 </template>

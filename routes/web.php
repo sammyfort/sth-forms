@@ -5,16 +5,17 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SignboardController;
 use App\Http\Controllers\SignboardSubscriptionPaymentController;
+use App\Models\Service;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
@@ -65,6 +66,23 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
     Route::get('/', [SignboardController::class, 'index'])->name('index');
     Route::get('/{signboard:slug}/details', [SignboardController::class, 'show'])->name('show');
     Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
+});
+
+Route::prefix('artisans')->as('services.')->group(function () {
+    Route::get('/', function (){
+        $services = Service::query()
+            ->with(['user', 'region'])
+            ->with('media', function ($builder){
+                $builder->where('collection_name', 'featured');
+            })
+            ->paginate();
+        $services->map(function (Service $service){
+            $service->featured = $service->getFirstMedia('featured');
+        });
+        return Inertia::render('Services', [
+            'services' => $services
+        ]);
+    })->name('index');
 });
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');

@@ -14,9 +14,11 @@ return new class extends Migration {
             $table->id();
             $table->uuid();
 
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->longText('description');
             $table->string('first_mobile');
+            $table->string('business_name')->nullable();
             $table->string('second_mobile')->nullable();
             $table->string('email')->nullable();
             $table->tinyText('address')->nullable();

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Business;
 use App\Models\Region;
+use App\Models\Service;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 use App\Models\User;
@@ -72,7 +73,17 @@ class UserSeeder extends Seeder
                         ->each(function (Signboard $signboard) use ($signboardCategory) {
                             $signboard->categories()
                                 ->attach($signboardCategory->take(rand(3, 10))->toArray());
+                            $signboard->addMediaFromUrl('https://picsum.photos/200/300')
+                                ->toMediaCollection('featured');
                         });
+                });
+
+            Service::factory(10)
+                ->for($user)
+                ->create()
+                ->each(function ($service){
+                    $service->addMediaFromUrl('https://picsum.photos/200/300')
+                        ->toMediaCollection('featured');
                 });
         }
     }
