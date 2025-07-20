@@ -73,7 +73,7 @@ class ServiceController extends Controller
     }
 
 
-    public function showMyServices(Service $service): Response
+    public function show(Service $service): Response
     {
 
         return Inertia::render('Services/Service', [
@@ -109,10 +109,10 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function show(Service $service): Response
+    public function showMyServices(Service $service): Response
     {
         return Inertia::render('Services/ServiceShow',[
-            'service' => $service->load(['user','categories', 'region'])
+            'service' => $service->loadMissing(['user','category', 'region'])
         ]);
     }
 

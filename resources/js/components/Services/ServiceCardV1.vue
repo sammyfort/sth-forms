@@ -35,7 +35,7 @@ const props = defineProps<{
             <div class="relative">
                 <img
                     class="object-end w-full object-cover max-h-30 object-center"
-                    :src="service.featured.original_url"
+                    :src="service.featured"
                     alt="Featured Image"
                 >
                 <div class="absolute bottom-[0px] right-0 px-2 bg-primary/50 text-sm text-white">
