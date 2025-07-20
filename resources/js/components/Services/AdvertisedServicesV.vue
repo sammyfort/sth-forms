@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import Autoplay from 'embla-carousel-autoplay'
 import { Carousel, CarouselItem, CarouselContent } from '@/components/ui/carousel';
-import { HTMLAttributes, onMounted, ref } from 'vue';
-
 import { cn } from '@/lib/utils';
-import SignboardCardV1Skeleton from '@/components/skeletons/SignboardCardV1Skeleton.vue';
-import ServiceCardV1 from '@/components/Services/ServiceCardV1.vue';
+import { HTMLAttributes, onMounted, ref } from 'vue';
+import { ServiceI } from '@/types';
 import { getPromotedServices } from '@/lib/api';
+import ServiceCardV1 from '@/components/Services/ServiceCardV1.vue';
 import ServiceCardV1Skeleton from '@/components/skeletons/ServiceCardV1Skeleton.vue';
 
-
 const plugin = Autoplay({
-    delay: 3000,
+    delay: 5000,
     stopOnMouseEnter: true,
     stopOnInteraction: false,
 })
+
 const props = defineProps<{
-    class?: HTMLAttributes['class'],
-    containerClass?: HTMLAttributes['class'],
+    itemsClass?: HTMLAttributes['class']
 }>()
-const services = ref<any[]>([])
+
+const services = ref<ServiceI[]>([])
 const processing = ref<boolean>(false)
 
 onMounted(async ()=>{
@@ -54,31 +53,29 @@ const resumeCarouselPlay = ()=>{
         @mouseenter="plugin.stop"
         @mouseleave="resumeCarouselPlay"
         :opts="{
-            loop: true
+            loop: true,
         }"
-        :class="cn('', props.containerClass)"
-        class=" overflow-hidden"
+        orientation="vertical"
         v-if="services.length"
     >
-        <div class="mb-5">
-            <slot />
-        </div>
-        <CarouselContent class="mb-5 shadow-none">
-            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="service in services" :key="service.id">
+        <CarouselContent :class="cn('mb-5', props.itemsClass)">
+            <CarouselItem class="basis-1/3" v-for="service in services" :key="service.id">
+                <ServiceCardV1
+                    class="border border-secondary"
+                    :service="service"
+                    :carousel-plugin="plugin"
+                    @popover-open="onPopoverStateChanged"
+                />
                 <template v-if="processing">
                     <ServiceCardV1Skeleton
                         v-for="x in [1,2,3]"
                         :key="x"
                     />
                 </template>
-                <template v-else>
-                    <ServiceCardV1
-                        :service="service"
-                    />
-                </template>
             </CarouselItem>
         </CarouselContent>
     </Carousel>
+
 </template>
 
 <style scoped>

@@ -64,7 +64,7 @@ class UserSeeder extends Seeder
                     'created_by_id' => $user->id
                 ])
                 ->each(function ($business) use ($user, $signboardCategory, $regions) {
-                    Signboard::factory(3)
+                    Signboard::factory(20)
                         ->for($business)
                         ->create([
                             'region_id' => $regions->random(),
@@ -78,7 +78,7 @@ class UserSeeder extends Seeder
                         });
                 });
 
-            Service::factory(10)
+            Service::factory(100)
                 ->for($user)
                 ->create()
                 ->each(function ($service){

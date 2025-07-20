@@ -76,7 +76,7 @@ const ratedHandler = (sb: SignboardI)=>{
                         <Link
                             :href="route('signboards.show', signboard.slug)"
                             class="hover:underline hover:text-secondary"
-                        >{{ signboard.business.name }}</Link>
+                        >{{ signboard.name }}</Link>
                     </h4>
                 </div>
                 <div class="mt-1 flex gap-2 items-center text-sm">

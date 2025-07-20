@@ -8,14 +8,15 @@ import InputText from '@/components/InputText.vue';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
+import { onBeforeMount, onMounted } from 'vue';
 import { router } from '@inertiajs/vue3';
 import SignboardCardV1Skeleton from '@/components/skeletons/SignboardCardV1Skeleton.vue';
 import BackToTop from '@/components/BackToTop.vue';
-import { query } from '@vortechron/query-builder-ts';
 import { Signpost, Star, BriefcaseBusiness } from 'lucide-vue-next';
 import AdvertisedSignboardsH from '@/components/businesses/AdvertisedSignboardsH.vue';
 import { chunkArray } from '@/lib/helpers';
+import { useScrollPagination } from '@/lib/useScrollPagination';
+import { useFilterQuery } from '@/lib/useFilterQuery';
 
 type Props = {
     signboardsData: PaginatedDataI<SignboardI>;
@@ -25,9 +26,17 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const signboards = ref<SignboardI[]>([]);
-const loadingSignboards = ref<boolean>(false);
-const nextPage = ref<string | null>(null);
+const {
+    items: signboards,
+    loading: loadingSignboards,
+    nextPage,
+} = useScrollPagination<SignboardI>({
+    initialData: props.signboardsData.data,
+    nextPageUrl: props.signboardsData.next_page_url,
+    extractResponseData: (page) => page.props.signboardsData,
+    preserveKeys: ['signboardsData'],
+});
+
 const filterForm = useForm<{
     q: string | null;
     categories: Array<number> | null;
@@ -37,87 +46,25 @@ const filterForm = useForm<{
     categories: null,
     region: null,
 });
-const filteredQuery = ref<string | null>(null);
 
-const handleScroll = async () => {
-    if (loadingSignboards.value || !nextPage.value) return;
-
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-        if (!nextPage.value) return;
-        router.get(
-            nextPage.value,
-            {},
-            {
-                onStart: () => (loadingSignboards.value = true),
-                onFinish: () => (loadingSignboards.value = false),
-                preserveState: true,
-                preserveScroll: true,
-                preserveUrl: true,
-                only: ['signboardsData'],
-                onSuccess: (page) => {
-                    const resSignboardsData = page.props.signboardsData as PaginatedDataI<SignboardI>;
-                    signboards.value = [...signboards.value, ...(resSignboardsData.data as SignboardI[])] as SignboardI[];
-
-                    let nextPageUrl = resSignboardsData.next_page_url;
-                    if (filteredQuery.value && nextPageUrl) {
-                        nextPageUrl = nextPageUrl + filteredQuery?.value.replace('?', '&');
-                    }
-                    nextPage.value = nextPageUrl;
-                },
-            },
-        );
-    }
-};
-
-const handlerFilter = () => {
-    const queryBuilder = query()
-        .when(filterForm.region !== null, (query) => {
-            query.filter('region', filterForm.region as unknown as string);
-        })
-        .when(filterForm.categories !== null && filterForm.categories.length > 0, (query) => {
-            const cats = (filterForm.categories as []) ?? [];
-            console.log(cats);
-            cats.forEach((cat) => {
-                query.filter('categories', cat as unknown as string);
+const { filteredQuery, runFilter } = useFilterQuery({
+    form: filterForm,
+    routeName: 'signboards.index',
+    preserveKeys: ['signboardsData'],
+    buildQuery: (qBuilder) => {
+        if (filterForm.q) qBuilder.filter('q', filterForm.q);
+        if (filterForm.region) qBuilder.filter('region', filterForm.region.toString());
+        if (filterForm.categories?.length) {
+            filterForm.categories.forEach((cat) => {
+                qBuilder.filter('categories', cat.toString());
             });
-        })
-        .when(filterForm.q !== null && filterForm.q !== '', (query) => {
-            query.filter('q', filterForm.q as unknown as string);
-        });
-
-    const queryUrl = queryBuilder.build().replace('/', '');
-    if (!queryUrl || queryUrl === '/') {
-        filteredQuery.value = null;
-        router.visit(route('signboards.index'));
-    } else {
-        signboards.value = [];
-        filteredQuery.value = queryUrl;
-        console.log('queryUrl', queryUrl);
-
-        router.visit(route('signboards.index') + decodeURIComponent(queryBuilder.build()), {
-            preserveState: true,
-            preserveScroll: true,
-            only: ['signboardsData'],
-            onSuccess: (response) => {
-                const filteredSignboards: PaginatedDataI<SignboardI> = response.props.signboardsData as PaginatedDataI<SignboardI>;
-                nextPage.value = null;
-                if (filteredSignboards.next_page_url) {
-                    nextPage.value = filteredSignboards.next_page_url + queryUrl.replace('?', '&');
-                }
-                signboards.value = filteredSignboards.data as SignboardI[];
-            },
-            onStart: () => (loadingSignboards.value = true),
-            onFinish: () => (loadingSignboards.value = false),
-        });
-    }
-};
+        }
+    },
+});
 
 onMounted(() => {
     nextPage.value = props.signboardsData.next_page_url;
     signboards.value = props.signboardsData.data as SignboardI[];
-
-    window.removeEventListener('scroll', handleScroll); // this here will help prevent duplicate binding
-    window.addEventListener('scroll', handleScroll);
 });
 
 onBeforeMount(() => {
@@ -132,10 +79,6 @@ onBeforeMount(() => {
     if (urlParams.size > 0) {
         filteredQuery.value = '&' + urlParams.toString();
     }
-});
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', handleScroll);
 });
 </script>
 
@@ -186,7 +129,7 @@ onUnmounted(() => {
                                         <div class="grid grid-cols-2 gap-3">
                                             <Button
                                                 v-show="filterForm.region || filterForm.categories?.length || filterForm.q?.length"
-                                                @click="handlerFilter"
+                                                @click="runFilter"
                                                 >Apply Filter</Button
                                             >
                                             <Button v-show="filteredQuery" variant="secondary" @click="router.visit(route('signboards.index'))"

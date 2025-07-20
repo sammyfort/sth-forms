@@ -15,12 +15,13 @@ return new class extends Migration {
             $table->uuid();
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id');
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->longText('description');
             $table->string('first_mobile');
-            $table->string('business_name')->nullable();
             $table->string('second_mobile')->nullable();
+            $table->string('business_name')->nullable();
             $table->string('email')->nullable();
             $table->tinyText('address')->nullable();
             $table->foreignId('region_id')->constrained();

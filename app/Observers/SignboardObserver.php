@@ -10,9 +10,6 @@ class SignboardObserver
 {
     public function creating(Signboard $signboard): void
     {
-        if (empty($signboard->slug)) {
-            $signboard->slug = rand(11111111, 99999999);
-        }
         // get lat and lon from gps(Ghana post)
 //        $location = GhanaPostService::getLocationByGPS($signboard->gps);
 //        $signboard->gps_lat = $location->centerLongitude;
