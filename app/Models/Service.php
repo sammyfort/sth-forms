@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 use Spatie\Tags\HasTags;
 
 /**
@@ -35,7 +37,15 @@ use Spatie\Tags\HasTags;
 
 class Service extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasFactory, InteractsWithMedia, InteractsWithViews;
+    use BootModelTrait, HasFactory, InteractsWithMedia, InteractsWithViews, HasSlug;
+
+
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
+    }
 
     public function registerMediaCollections(): void
     {
@@ -53,13 +63,8 @@ class Service extends Model implements HasMedia, Viewable
         return $this->belongsTo(Region::class);
     }
 
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(
-            ServiceCategory::class,
-            'service_service_category',
-            'service_id',
-            'category_id'
-        );
+        return $this->belongsTo(ServiceCategory::class, 'category_id');
     }
 }

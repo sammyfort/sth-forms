@@ -48,6 +48,7 @@ export interface User extends ModelI {
 
 export interface ServiceI extends ModelI{
     title: string;
+    slug: string;
     description: string;
     first_mobile: string;
     second_mobile: string;
@@ -100,6 +101,12 @@ export interface BusinessI extends ModelI {
 }
 
 export interface SignboardCategoryI extends ModelI {
+    slug: string;
+    name: string;
+    description: string;
+}
+
+export interface ServiceCategoryI extends ModelI {
     slug: string;
     name: string;
     description: string;

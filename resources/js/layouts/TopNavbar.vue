@@ -36,10 +36,25 @@ const user = computed(() => page.props.auth.user)
                                 class="hover:text-primary py-4 text-center"
                             >Home</Link>
                             <Link
+                                :class="{ 'active-nav': $page.component === 'Services/Services' }"
+                                :href="route('services.index')"
+                                class="hover:text-primary py-4 text-center"
+                            >Artisans</Link>
+                            <Link
                                 :class="{ 'active-nav': $page.component === 'Signboards/Signboards' }"
                                 :href="route('signboards.index')"
                                 class="hover:text-primary py-4 text-center"
-                            >Browse Signboards</Link>
+                            >Signboards</Link>
+                            <Link
+                                :class="{ 'active-nav': $page.component === 'Jobs/Jobs' }"
+                                :href="route('signboards.index')"
+                                class="hover:text-primary py-4 text-center"
+                            >Jobs</Link>
+                            <Link
+                                :class="{ 'active-nav': $page.component === 'Shops/Shop' }"
+                                :href="route('signboards.index')"
+                                class="hover:text-primary py-4 text-center"
+                            >Shop</Link>
 
                             <CompanyNavPopover>
                                 <span

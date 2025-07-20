@@ -6,6 +6,7 @@ use App\Traits\BootModelTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -28,13 +29,8 @@ class ServiceCategory extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function services(): BelongsToMany
+    public function services(): HasMany
     {
-        return $this->belongsToMany(
-            Service::class,
-            'service_service_category',
-            'category_id',
-            'service_id'
-        );
+        return $this->hasMany(Service::class, 'category_id');
     }
 }

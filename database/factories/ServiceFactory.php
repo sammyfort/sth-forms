@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Region;
+use App\Models\ServiceCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,6 +28,7 @@ class ServiceFactory extends Factory
             'address' => $this->faker->optional()->streetAddress(),
             'region_id' => Region::query()->inRandomOrder()->first()->id,
             'town' => $this->faker->city(),
+            'category_id' => ServiceCategory::query()->inRandomOrder()->first()->id,
             'gps' => $this->faker->optional()->latitude() . ',' . $this->faker->optional()->longitude(),
         ];
     }

@@ -72,6 +72,7 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
 Route::prefix('artisans')->as('services.')->group(function () {
     Route::get('/', [ServiceController::class, 'index'])->name('index');
     Route::get('/promoted', [ServiceController::class, 'getPromotedSignboards'])->name('promoted');
+    Route::get('/details/{service:slug}', [ServiceController::class, 'show'])->name('show');
 });
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');

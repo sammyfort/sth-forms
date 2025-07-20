@@ -43,7 +43,8 @@ class SignboardController extends Controller
         $signboards = QueryBuilder::for(Signboard::class)
             ->allowedFilters([
                 AllowedFilter::callback('q', function (Builder $query, $input) {
-                    $query->where("town", "LIKE", "%$input%")
+                    $query->where("name", "LIKE", "%$input%")
+                        ->orWhere("town", "LIKE", "%$input%")
                         ->orWhere("street", "LIKE", "%$input%")
                         ->orWhere("landmark", "LIKE", "%$input%")
                         ->orWhere("blk_number", "LIKE", "%$input%")
@@ -67,20 +68,18 @@ class SignboardController extends Controller
             })
             ->with(['business', 'region'])
 //            ->inRandomOrder()
-            ->paginate(8);
+            ->paginate(8)
+            ->appends(request()->query());
 
         $signboards->map(function (Signboard $signboard) {
             $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
             return $signboard;
         });
 
-        $regions = Region::query()->select(['id', 'name'])->get();
-        $categories = SignboardCategory::query()->select(['id', 'name'])->get();
-
         return Inertia::render('Signboards/Signboards', [
             'signboardsData' => $signboards,
-            'regions' => $regions,
-            'categories' => $categories,
+            'regions' => Region::query()->select(['id', 'name'])->get(),
+            'categories' => SignboardCategory::query()->select(['id', 'name'])->get(),
         ]);
     }
 
