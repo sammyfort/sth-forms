@@ -1,6 +1,6 @@
 
 <script setup lang="ts">
-import { ref, watchEffect } from 'vue'
+import { ref, defineEmits } from 'vue'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -15,31 +15,26 @@ import {
 
 
 const props = defineProps<{
-    open: boolean
     title?: string
     description?: string
     confirmText?: string
     cancelText?: string
     loading?: boolean
 }>()
+const isOpen = ref(false)
+const emit = defineEmits(['confirm'])
 
-const emits = defineEmits<{
-    (e: 'update:open', value: boolean): void
-    (e: 'confirm'): void
-}>()
-const isOpen = ref(props.open)
 
-watchEffect(() => {
-    isOpen.value = props.open
-})
 
-watchEffect(() => {
-    emits('update:open', isOpen.value)
-})
+
 </script>
 
 <template>
     <AlertDialog v-model:open="isOpen">
+        <AlertDialogTrigger as-child>
+
+            <slot/>
+        </AlertDialogTrigger>
         <AlertDialogContent>
             <AlertDialogHeader>
                 <AlertDialogTitle>{{ props.title || 'Are you sure?' }}</AlertDialogTitle>
@@ -50,7 +45,7 @@ watchEffect(() => {
                 <AlertDialogCancel :disabled="props.loading">
                     {{ props.cancelText || 'Cancel' }}
                 </AlertDialogCancel>
-                <AlertDialogAction :disabled="props.loading" @click="$emit('confirm')">
+                <AlertDialogAction :disabled="props.loading" @click="emit('confirm')">
                     {{ props.confirmText || 'Confirm' }}
                 </AlertDialogAction>
             </AlertDialogFooter>

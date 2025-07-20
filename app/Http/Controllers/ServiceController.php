@@ -7,6 +7,20 @@ use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
+use App\Enums\PaymentStatus;
+use App\Http\Requests\Profile\UpdateSocialsRequest;
+use App\Http\Requests\Service\StoreServiceRequest;
+use App\Http\Requests\Service\UpdateServiceRequest;
+use App\Models\Region;
+use App\Models\Service;
+use App\Models\ServiceCategory;
+use App\Models\Signboard;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -66,11 +80,140 @@ class ServiceController extends Controller
         ]);
     }
 
+
     public function show(Service $service): Response
     {
 
         return Inertia::render('Services/Service', [
             'service' => $service
         ]);
+    }
+
+    public function getMyServices(): Response
+    {
+        $sort = request('sort', 'desc');
+
+        return Inertia::render('Services/MyServices',[
+            'services' =>  auth()->user()->services()
+                ->with(['region', 'categories', 'user',])->orderBy('created_at', $sort)
+                ->paginate(12)->withQueryString(),
+            'sort' => $sort,
+        ]);
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('Services/ServiceCreate',[
+            'categories' => ServiceCategory::select(['id', 'name'])
+                ->get()
+                ->map(fn($cat) => [
+                    'label' => $cat->name,
+                    'value' => $cat->id,
+                ]),
+             'regions' => Region::select(['id', 'name'])->get()
+                 ->map(fn($reg) => ['label' => $reg->name, 'value' => $reg->id,])
+        ]);
+    }
+
+    public function show(Service $service): Response
+    {
+        return Inertia::render('Services/ServiceShow',[
+            'service' => $service->load(['user','categories', 'region'])
+        ]);
+    }
+
+    public function store(StoreServiceRequest $request): RedirectResponse
+    {
+        $data = $request->validated();
+
+        DB::transaction(function () use ($data, $request) {
+            $categoryIds = collect($data['categories'])->map(function ($name) {
+                $normalized = Str::lower(trim($name));
+                return ServiceCategory::firstOrCreate(
+                    ['name' => $normalized],
+                    ['name' => $normalized]
+                )->id;
+            });
+
+            $service = auth()->user()->services()->create(
+                Arr::except($data, ['featured', 'gallery', 'categories'])
+            );
+            $service->categories()->sync(
+                collect($categoryIds)->mapWithKeys(fn ($id) => [$id => ['uuid' => Str::uuid()]])->toArray()
+            );
+            $service->handleUploads($request, [
+                'featured' => 'featured',
+                'gallery' => 'gallery',
+            ]);
+        });
+
+        return back()->with(successRes("Service created successfully."));
+    }
+
+    public function edit(Service $service): Response
+    {
+        return Inertia::render('Services/ServiceEdit',[
+            'service' =>  $service->load(['user','categories', 'region'])->toArrayWithMedia(),
+            'categories' => ServiceCategory::select(['id', 'name'])
+                ->get()
+                ->map(fn($cat) => [
+                    'label' => $cat->name,
+                    'value' => $cat->id,
+                ]),
+            'regions' => Region::select(['id', 'name'])->get()
+                ->map(fn($reg) => ['label' => $reg->name, 'value' => $reg->id,])
+        ]);
+    }
+
+    public function update(UpdateServiceRequest $request, Service $service): RedirectResponse
+    {
+        $data = $request->validated();
+
+        DB::transaction(function () use ($service, $data, $request) {
+            $service->update(Arr::except($data, ['featured', 'gallery', 'removed_gallery_urls', 'categories']));
+
+            $categoryIds = collect($data['categories'])->map(function ($name) {
+                $normalized = Str::lower(trim($name));
+                return ServiceCategory::firstOrCreate(['name' => $normalized])->id;
+            });
+
+            $syncPayload = [];
+            foreach ($categoryIds as $id) {
+                $syncPayload[$id] = ['uuid' => Str::uuid()];
+            }
+            $service->categories()->sync($syncPayload);
+
+
+            if ($request->hasFile('featured')) {
+                $service->addMediaFromRequest('featured')->toMediaCollection('featured');
+            }
+
+            $removedUrls = $request->input('removed_gallery_urls', []);
+            if (!empty($removedUrls)) {
+
+                $galleryMedia = $service->getMedia('gallery');
+                foreach ($galleryMedia as $media) {
+                    if (in_array($media->getUrl(), $removedUrls)) {
+                        $media->delete();
+                    }
+                }
+            }
+            if ($request->hasFile('gallery')) {
+                foreach ($request->file('gallery') as $file) {
+                    $service->addMedia($file)->toMediaCollection('gallery');
+                }
+            }
+        });
+
+        return back()->with(successRes("Service updated successfully."));
+
+    }
+
+    public function destroy(Service $service): RedirectResponse
+    {
+
+        $service->delete();
+        return redirect()->route('my-services.index')
+            ->with(successRes("Service deleted successfully."));
     }
 }

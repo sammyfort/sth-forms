@@ -10,6 +10,8 @@ import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MobileNav from '@/layouts/MobileNav.vue';
 import CompanyNavPopover from '@/components/CompanyNavPopover.vue';
+import SignboardNav from '@/layouts/SignboardNav.vue';
+import ServiceNav from '@/layouts/ServiceNav.vue';
 
 
 const page = usePage()
@@ -82,25 +84,35 @@ const user = computed(() => page.props.auth.user)
                             >
                                 <LayoutDashboard  :size="15" class="text-secondary"/> Dashboard
                             </Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Businesses/MyBusinesses' || $page.component === 'Businesses/MyBusinessShow'}"
-                                class="hover:text-primary flex items-center gap-1 py-4 text-center"
-                                :href="route('my-businesses.index')"
-                            >
-                                <Building2 :size="15" class="text-secondary"/> My Businesses
-                            </Link>
-                            <Link
-                                class="hover:text-primary flex items-center gap-1 py-4 text-center"
-                                :class="{ 'active-nav': $page.component === 'Signboards/MySignboards'
+
+                            <SignboardNav>
+                                 <span :class="{ 'active-nav':
+                                 $page.component === 'Signboards/MySignboards'
                                 || $page.component === 'Signboards/SignboardShow'
                                 || $page.component === 'Signboards/SignboardCreate'
                                 || $page.component === 'Signboards/SignboardEdit'
-                            }"
-                                :href="route('my-signboards.index')"
-                            >
-                                <Milestone :size="15" class="text-secondary"/> My Signboards
-                            </Link>
+
+                                || $page.component === 'Businesses/BusinessesShow'
+                                || $page.component === 'Businesses/BusinessesCreate'
+                                || $page.component === 'Businesses/BusinessesEdit'
+                                || $page.component === 'Businesses/MyBusinesses'
+                                 }"
+                                     class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
+                                 ><Milestone :size="15" class="text-secondary"/> My Signboards<ChevronDown :size="22"/></span>
+                            </SignboardNav>
+
+                            <ServiceNav>
+                                 <span :class="{ 'active-nav':
+                                 $page.component === 'Services/MyServices'
+                                || $page.component === 'Services/ServiceShow'
+                                || $page.component === 'Services/ServiceCreate'
+                                || $page.component === 'Services/ServiceEdit'
+                                 }"
+                                       class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
+                                 ><Building2 :size="15" class="text-secondary"/> My Services<ChevronDown :size="22"/></span>
+                            </ServiceNav>
                         </div>
+
                         <div v-if="!user" class="hidden lg:block gap-1">
                             <Link :href="route('login')" variant="secondary" class="px-[1rem] gap-2 items-center flex font-black text-secondary hover:text-primary">
                                 Login

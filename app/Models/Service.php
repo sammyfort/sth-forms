@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\BootModelTrait;
+use App\Traits\HasMediaUploads;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
@@ -37,7 +38,9 @@ use Spatie\Tags\HasTags;
 
 class Service extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasFactory, InteractsWithMedia, InteractsWithViews, HasSlug;
+    use BootModelTrait, HasFactory, InteractsWithMedia, InteractsWithViews, HasSlug, HasMediaUploads;
+  
+    protected $appends = ['featured', 'gallery'];
 
 
     public function getSlugOptions() : SlugOptions
@@ -46,7 +49,7 @@ class Service extends Model implements HasMedia, Viewable
             ->generateSlugsFrom('title')
             ->saveSlugsTo('slug');
     }
-
+  
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('featured')->singleFile();

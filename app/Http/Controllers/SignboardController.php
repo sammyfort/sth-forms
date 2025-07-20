@@ -211,15 +211,11 @@ class SignboardController extends Controller
             $signboard = $business->signboards()->create(Arr::except($data, ['featured_image', 'gallery_images', 'categories']));
             $signboard->categories()->sync($data['categories']);
 
-            if ($request->hasFile('featured_image')) {
-                $signboard->addMediaFromRequest('featured_image')->toMediaCollection('featured');
-            }
+            $signboard->handleUploads($request, [
+                'featured' => 'featured_image',
+                'gallery' => 'gallery_images',
+            ]);
 
-            if ($request->hasFile('gallery_images')) {
-                foreach ($request->file('gallery_images') as $file) {
-                    $signboard->addMedia($file)->toMediaCollection('gallery');
-                }
-            }
         });
 
         return back()->with(successRes("Signboard created successfully."));

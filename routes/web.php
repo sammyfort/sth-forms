@@ -53,6 +53,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('signboards')->as('signboards.')->group(function () {
         Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
     });
+
+
+    Route::prefix('my-services')->as('my-services.')->group( function (){
+        Route::get('/', [ServiceController::class, 'getMyServices'])->name('index');
+        Route::get('/create', [ServiceController::class, 'create'])->name('create');
+        Route::post('/store', [ServiceController::class, 'store'])->name('store');
+        Route::get('/show/{service}', [ServiceController::class, 'show'])->name('show');
+
+        Route::get('/edit/{service}', [ServiceController::class, 'edit'])->name('edit');
+        Route::post('/update/{service}', [ServiceController::class, 'update'])->name('update');
+        Route::delete('/destroy', [ServiceController::class, 'destroy'])->name('destroy');
+    });
+
 });
 
 Route::get('api/{path}', ApiController::class)->name('api');
@@ -69,11 +82,12 @@ Route::prefix('signboards')->as('signboards.')->group(function () {
     Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
 });
 
-Route::prefix('artisans')->as('services.')->group(function () {
+Route::prefix('artisans')->as('services.')->group(callback: function () {
     Route::get('/', [ServiceController::class, 'index'])->name('index');
     Route::get('/promoted', [ServiceController::class, 'getPromotedSignboards'])->name('promoted');
     Route::get('/details/{service:slug}', [ServiceController::class, 'show'])->name('show');
 });
+
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 Route::get('faq', [FaqController::class, 'index'])->name('faq.index');

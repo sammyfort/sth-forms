@@ -28,6 +28,9 @@ return new class extends Migration {
             $table->string('town');
             $table->string('gps')->nullable();
 
+           // $table->decimal('charge_amount')->nullable();
+           // $table->string('estimated_days')->nullable();
+
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
         });

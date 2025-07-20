@@ -1,0 +1,160 @@
+
+
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
+import { toastSuccess, toastError } from '@/lib/helpers';
+import { Building2 } from 'lucide-vue-next';
+import Layout from '@/layouts/Layout.vue';
+import PageHeader from '@/pages/Signboards/blocks/PageHeader.vue';
+
+import FormComponent from '@/components/FormComponent.vue';
+import InputSelect from '@/components/InputSelect.vue';
+import InputText from '@/components/InputText.vue';
+import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
+import GalleryFilesUpload from '@/components/GalleryFilesUpload.vue';
+import {  ServiceI } from '@/types';
+
+const props = defineProps<{
+    categories: Array<{ label: string, value: string }>,
+    regions: Array<{ label: string, value: string }>
+    service:  ServiceI
+}>();
+const galleryUploadRef = ref();
+const featureUploadRef = ref();
+const form = useForm({
+    title: '',
+    description: '',
+    first_mobile: '',
+    business_name: '',
+    second_mobile: '',
+    email: '',
+    address: '',
+    town: '',
+    gps: '',
+    region_id: '',
+    categories: [],
+    featured: null,
+    gallery: [] as File[],
+    removed_gallery_urls: [] as string[],
+});
+
+onMounted(() => {
+    const s = props.service;
+    form.title = s.title;
+    form.description = s.description;
+    form.first_mobile = s.first_mobile;
+    form.second_mobile = s.second_mobile;
+    form.business_name = s.business_name;
+    form.email = s.email;
+    form.address = s.address;
+    form.town = s.town;
+    form.gps = s.gps;
+    form.region_id = s.region_id;
+    form.categories = s.categories?.map(cat => cat.id) || [];
+});
+
+const galleryItems = computed(() => {
+    if (!props.service.gallery) {
+        return [];
+    }
+
+    const urls = Array.from(props.service.gallery);
+
+    return urls.map((url, index) => ({
+        url: url,
+        isOriginal: true,
+        originalIndex: index
+    }));
+
+});
+
+const galleryErrors = computed(() =>
+    Object.keys(form.errors)
+        .filter(key => key.startsWith('gallery.'))
+        .map(key => form.errors[key])
+);
+
+const updateService = () => {
+    form.post(route('my-services.update', props.service.id), {
+        onSuccess: (res) => {
+            if (res.props.success) {
+                toastSuccess(res.props.message);
+
+            } else {
+                toastError(res.props.message);
+            }
+
+        }
+    });
+};
+
+
+</script>
+
+<template>
+    <Head title="Update Service" />
+    <Layout>
+        <div class="w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+            <PageHeader
+                title="Add New Service"
+                subtitle="Create a new service listing for your business"
+                :icon="Building2"
+            />
+
+            <FormComponent   :form="form"
+                                 :featured-preview="props.service.featured"
+                                 :gallery-items="galleryItems"
+                                 :gallery-errors="galleryErrors"
+                                 submit-text="Update Service"
+                                 processing-text="Updating Service..."
+                                 @submit="updateService">
+
+                <template #form-sections>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">Business Information</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InputSelect
+                                label="Select Region" :form="form" model="region_id" :options="props.regions"   required searchable
+                            />
+                            <InputText :form="form" label="Name/Title" model="title" required />
+                            <InputText :form="form" label="Town" model="town" required />
+                            <InputText :form="form" label="Address" model="address" required />
+                            <InputText :form="form" label="First Mobile No" type=tel model="first_mobile" required />
+                            <InputText :form="form" label="Second Mobile No" type="tel" model="second_mobile"  />
+                            <InputText :form="form" label="Email address" type="email" model="email" required />
+                            <InputText :form="form" label="Business Name" model="business_name"  />
+                            <InputText :form="form" label="GPS Address" model="gps" required />
+                            <InputText :form="form" label="Description" model="description"  textarea />
+
+                            <div class="md:col-span-2">
+                                <InputSelect label="Fields Of Service" :form="form" model="categories"
+                                             :options="props.categories" taggable required searchable />
+                            </div>
+
+                        </div>
+                    </div>
+                </template>
+
+                <template #media-section>
+                    <FeatureFileUpload
+                        ref="featureUploadRef"
+                        :form="form"
+                        :featured-preview="props.service.featured"
+                        v-model:file="form.featured"
+                        model-name="featured"
+                    />
+
+                    <GalleryFilesUpload
+                        ref="galleryUploadRef"
+                        :form="form"
+                        v-model:files="form.gallery"
+                        :gallery-errors="galleryErrors"
+                        :gallery-items="galleryItems"
+                    />
+                </template>
+            </FormComponent>
+        </div>
+    </Layout>
+</template>

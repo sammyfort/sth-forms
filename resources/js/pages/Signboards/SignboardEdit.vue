@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import { toastSuccess, toastError } from '@/lib/helpers';
 import { Edit3 } from 'lucide-vue-next';
+
 import Layout from '@/layouts/Layout.vue';
-import SignboardForm from '@/pages/Signboards/blocks/SignboardForm.vue';
 import PageHeader from '@/pages/Signboards/blocks/PageHeader.vue';
+import FormComponent from '@/components/FormComponent.vue';
+import InputSelect from '@/components/InputSelect.vue';
+import InputText from '@/components/InputText.vue';
+import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
+import GalleryFilesUpload from '@/components/GalleryFilesUpload.vue';
 
 const props = defineProps<{
     signboard: {
         id: number;
         business_id: number;
-        name: string,
+        name: string;
         region_id: number;
         categories?: Array<{ id: number; name: string }>;
         slug: string;
@@ -20,12 +25,12 @@ const props = defineProps<{
         landmark: string;
         blk_number: string;
         gps: string;
-        featured_url?: string;
-        gallery_urls: string[];
+        featured?: string;
+        gallery: string[];
     };
-    categories: Array<{ label: string, value: string }>,
-    regions: Array<{ label: string, value: string }>
-    businesses: Array<{ label: string, value: string }>
+    categories: Array<{ label: string; value: string }>;
+    regions: Array<{ label: string; value: string }>;
+    businesses: Array<{ label: string; value: string }>;
 }>();
 
 const form = useForm({
@@ -38,108 +43,60 @@ const form = useForm({
     landmark: '',
     blk_number: '',
     gps: '',
-    featured_image: null,
-    gallery_images: [] as File[],
+    featured: null,
+    gallery: [] as File[],
     removed_gallery_urls: [] as string[],
 });
 
-const featuredPreview = ref<string | null>(props.signboard.featured_url || null);
-const galleryPreviews = ref<string[]>([...props.signboard.gallery_urls || []]);
-const galleryItems = ref<Array<{url: string, isOriginal: boolean, originalIndex?: number}>>([]);
-
-const galleryErrors = computed(() =>
-    Object.keys(form.errors)
-        .filter((key) => key.startsWith('gallery_images.'))
-        .map((key) => form.errors[key])
-);
-
 onMounted(() => {
-    form.name = props.signboard.name
-    form.business_id = String(props.signboard.business_id);
-    form.region_id = String(props.signboard.region_id);
-    form.categories = props.signboard.categories?.map(cat => cat.id) || [];
-    form.town = props.signboard.town || '';
-    form.street = props.signboard.street || '';
-    form.landmark = props.signboard.landmark || '';
-    form.blk_number = props.signboard.blk_number || '';
-    form.gps = props.signboard.gps || '';
+    const s = props.signboard;
+    form.business_id = String(s.business_id);
+    form.name = s.name;
+    form.region_id = String(s.region_id);
+    form.categories = s.categories?.map(cat => cat.id) || [];
+    form.town = s.town;
+    form.street = s.street;
+    form.landmark = s.landmark;
+    form.blk_number = s.blk_number;
+    form.gps = s.gps;
 
-    galleryItems.value = (props.signboard.gallery_urls || []).map((url, index) => ({
-        url,
+
+});
+
+const galleryItems = computed(() => {
+    if (!props.signboard.gallery) {
+        return [];
+    }
+
+    const urls = Array.from(props.signboard.gallery);
+
+    return urls.map((url, index) => ({
+        url: url,
         isOriginal: true,
         originalIndex: index
     }));
+
 });
+
+const galleryErrors = computed(() =>
+    Object.keys(form.errors)
+        .filter(key => key.startsWith('gallery_images.'))
+        .map(key => form.errors[key])
+);
 
 const updateSignboard = () => {
     form.post(route('my-signboards.update', props.signboard.id), {
         forceFormData: true,
+        preserveScroll: true,
         onSuccess: res => {
-            const message = res.props.message;
             if (res.props.success) {
-                toastSuccess(message);
+                toastSuccess(res.props.message);
                 form.removed_gallery_urls = [];
             } else {
-                toastError(message);
+                toastError(res.props.message);
             }
-        },
-        preserveScroll: true,
-    });
-};
-
-const handleFeaturedImage = (e: Event) => {
-    const file = (e.target as HTMLInputElement).files?.[0] || null;
-    form.featured_image = file;
-    if (featuredPreview.value && featuredPreview.value.startsWith('blob:')) {
-        URL.revokeObjectURL(featuredPreview.value);
-    }
-    featuredPreview.value = file ? URL.createObjectURL(file) : null;
-};
-
-const removeFeatured = () => {
-    form.featured_image = null;
-    if (featuredPreview.value && featuredPreview.value.startsWith('blob:')) {
-        URL.revokeObjectURL(featuredPreview.value);
-    }
-    featuredPreview.value = null;
-};
-
-const handleGalleryImages = (e: Event) => {
-    const files = (e.target as HTMLInputElement).files ? Array.from((e.target as HTMLInputElement).files!) : [];
-
-    files.forEach(file => {
-        const blobUrl = URL.createObjectURL(file);
-        form.gallery_images.push(file);
-
-        galleryItems.value.push({
-            url: blobUrl,
-            isOriginal: false
-        });
-    });
-    galleryPreviews.value = galleryItems.value.map(item => item.url);
-    (e.target as HTMLInputElement).value = '';
-};
-
-const removeGalleryImage = (idx: number) => {
-    const item = galleryItems.value[idx];
-
-    if (item.isOriginal) {
-        form.removed_gallery_urls.push(item.url);
-    } else {
-        const blobUrl = item.url;
-        URL.revokeObjectURL(blobUrl);
-
-        const fileIndex = galleryItems.value
-            .slice(0, idx)
-            .filter(i => !i.isOriginal).length;
-
-        if (fileIndex < form.gallery_images.length) {
-            form.gallery_images.splice(fileIndex, 1);
         }
-    }
-
-    galleryItems.value.splice(idx, 1);
-    galleryPreviews.value = galleryItems.value.map(item => item.url);
+    });
 };
 </script>
 
@@ -153,24 +110,56 @@ const removeGalleryImage = (idx: number) => {
                 :icon="Edit3"
             />
 
-            <SignboardForm
+            <FormComponent
                 :form="form"
-                :categories="categories"
-                :regions="regions"
-                :businesses="businesses"
-                :business-field-disabled="true"
-                :featured-preview="featuredPreview"
-                :gallery-previews="galleryPreviews"
+                :featured-preview="props.signboard.featured"
                 :gallery-items="galleryItems"
                 :gallery-errors="galleryErrors"
                 submit-text="Update Signboard"
                 processing-text="Updating Signboard..."
-                @handle-featured-image="handleFeaturedImage"
-                @remove-featured="removeFeatured"
-                @handle-gallery-images="handleGalleryImages"
-                @remove-gallery-image="removeGalleryImage"
                 @submit="updateSignboard"
-            />
+            >
+                <template #form-sections>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">Business Information</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InputSelect label="Select Business" :form="form" model="business_id" :disabled="true" :options="businesses" required searchable />
+                            <InputText :form="form" label="Name/Title" model="name" required />
+                            <div class="md:col-span-2">
+                                <InputSelect label="Fields Of Operation" :form="form" model="categories" :options="categories" taggable required searchable />
+                            </div>
+                            <InputSelect label="Region" :form="form" model="region_id" :options="regions" required searchable />
+                            <InputText :form="form" label="Town" model="town" required />
+                        </div>
+                    </div>
+
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">Location Details</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <InputText :form="form" label="Street Address" model="street" placeholder="e.g., Main Street" />
+                            <InputText :form="form" label="Landmark" model="landmark" required placeholder="e.g., Near Central Mall" />
+                            <InputText :form="form" label="Block Number" model="blk_number" placeholder="e.g., Block A" />
+                            <InputText :form="form" label="GPS" model="gps" placeholder="e.g., 5.6037, -0.1870" />
+                        </div>
+                    </div>
+
+                </template>
+                <template #media-section>
+                    <FeatureFileUpload
+                        :form="form"
+                        :featured-preview="props.signboard.featured"
+                        v-model:file="form.featured"
+                    />
+
+                    <GalleryFilesUpload
+                        :form="form"
+                        v-model:files="form.gallery"
+                        :gallery-errors="galleryErrors"
+                        :gallery-items="galleryItems"
+                    />
+                </template>
+            </FormComponent>
         </div>
     </Layout>
 </template>
