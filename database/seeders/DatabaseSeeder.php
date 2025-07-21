@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             RegionSeeder::class,
             SignboardCategorySeeder::class,
-            SignboardSubscriptionPlanSeeder::class,
+            PromotionPlanSeeder::class,
             ServiceCategorySeeder::class,
             UserSeeder::class,
         ]);

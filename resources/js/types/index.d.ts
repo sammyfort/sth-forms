@@ -119,7 +119,7 @@ export interface RegionI extends ModelI {
     slug: string;
 }
 
-export interface SignboardSubscriptionPlanI extends ModelI {
+export interface PromotionPlanI extends ModelI {
     name: string;
     slug: string;
     description: string;
@@ -127,13 +127,15 @@ export interface SignboardSubscriptionPlanI extends ModelI {
     number_of_days: number;
 }
 
-export interface SignboardSubscriptionI extends ModelI {
+export interface PromotionI extends ModelI {
     id: number;
-    signboard_id: number;
+    promotable_id: number;
+    promotable_type: string;
+    promotable: ModelI & {[key]: string}
     plan_id: number;
     amount: number;
     signboard: SignboardI;
-    plan: SignboardSubscriptionPlanI;
+    plan: PromotionPlanI;
     payment_reference: string;
     payment_status: string;
     payment_channel: string;
@@ -166,11 +168,10 @@ export interface SignboardI extends ModelI {
     slug: string,
     featured_url: string,
     views_count: number | null,
-    active_subscription: SignboardSubscriptionI | null,
     gallery_urls: [],
     reviews: ReviewI[];
-    subscriptions: SignboardSubscriptionI | []
-
+    promotions: PromotionI[]
+    active_promotion: PromotionI | null,
 }
 
 export interface RatingI extends ModelI {
@@ -233,6 +234,6 @@ export interface RatingsDistributionI {
 
 export type InputSelectOption = {
     label: string
-    value: string
+    value: number|string
 }
 

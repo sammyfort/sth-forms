@@ -6,6 +6,7 @@ use App\Enums\PaymentStatus;
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
+use App\Traits\HasPromotion;
 use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
@@ -42,7 +43,9 @@ use Spatie\Translatable\HasTranslations;
 #[ObservedBy(SignboardObserver::class)]
 class Signboard extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasTags, HasFactory, ReviewRateable, InteractsWithMedia, InteractsWithViews, HasMediaUploads;
+    use BootModelTrait, HasTags, HasFactory, ReviewRateable,
+        InteractsWithMedia, InteractsWithViews, HasMediaUploads,
+        HasSlug, HasPromotion;
 
 
     public function getSlugOptions() : SlugOptions
@@ -71,7 +74,7 @@ class Signboard extends Model implements HasMedia, Viewable
         "total_average_rating",
         "reviews_count",
         "created_at_str",
-        "active_subscription"
+        "active_promotion"
     ];
 
     public function business(): BelongsTo
@@ -82,11 +85,6 @@ class Signboard extends Model implements HasMedia, Viewable
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
-    }
-
-    public function subscriptions(): HasMany
-    {
-        return $this->hasMany(SignboardSubscription::class, 'signboard_id');
     }
 
     public function categories(): BelongsToMany
@@ -112,15 +110,5 @@ class Signboard extends Model implements HasMedia, Viewable
             get: fn() => $this->totalReviews() ?? 0
         );
     }
-
-    public function activeSubscription(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => $this->subscriptions()
-                ->running()
-                ->first()
-        );
-    }
-
 
 }
