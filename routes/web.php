@@ -97,7 +97,7 @@ Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('pri
 
 Route::post('promotions', [PromotionController::class, 'initializeHubtel'])
     ->middleware(['auth', 'verified'])
-    ->name('promote');
+    ->name('promotions.payment.initialize');
 
 Route::prefix('payments')->as('payments.')->group(function () {
     Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initializeHubtel'])

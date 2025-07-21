@@ -23,4 +23,15 @@ enum Promotable: string
             default => throw new InvalidArgumentException()
         };
     }
+
+    public static function getRoute(self $promotable, string $slug): string
+    {
+        return match ($promotable){
+            self::SERVICE => route('my-services.show', $slug),
+            self::SIGNBOARD => route('my-signboards.show', $slug),
+//            self::JOB => Service::class,
+//            self::SERVICE => Service::class,
+            default => throw new InvalidArgumentException()
+        };
+    }
 }

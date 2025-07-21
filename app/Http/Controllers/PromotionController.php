@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DTO\PromotionDTO;
 use App\Enums\PaymentStatus;
 use App\Enums\Promotable;
 use App\Http\Requests\PromotionRequest;
@@ -10,12 +11,21 @@ use App\Models\PromotionPlan;
 use App\Models\Signboard;
 use App\Models\SignboardSubscription;
 use App\Models\SignboardSubscriptionPlan;
+use App\Services\HubtelService;
+use App\Services\PaystackService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use \Illuminate\Http\RedirectResponse;
 
 class PromotionController extends Controller
 {
+    private HubtelService $hubtelService;
+
+    public function __construct()
+    {
+        $this->hubtelService = new HubtelService();
+    }
+
     public function initializeHubtel(PromotionRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
@@ -25,29 +35,26 @@ class PromotionController extends Controller
         $promotableEnum = Promotable::from($validatedData['promotable_type']);
         $promotableModel = Promotable::getModel($promotableEnum);
         $promotable = $promotableModel::query()->find($validatedData['signboard_id'], ['id', 'slug']);
-        $promotableRoute = route('my-signboards.show', $promotable->slug)."?reference=$reference";
-
-        $signboardRoute = route('my-signboards.show', $signboard->slug)."?reference=$reference";
-        $redirectUrl = route('payments.signboard-subscription.verify');
+        $promotableRoute = Promotable::getRoute($promotable, $promotable->slug)."?reference=$reference";
+        $redirectUrl = route('promotions.payment.verify');
 
         $data = [
             "totalAmount" => $plan->price,
             "payeeName" => $user->fullname,
             "payeeMobileNumber" => $user->mobile,
             "payeeEmail" => $user->email,
-            "description" => "Signboard promotion subscription",
+            "description" => "Alexoa promotion subscription",
             "callbackUrl" => $redirectUrl,
-            "returnUrl" => "$signboardRoute&payment_status=pending",
+            "returnUrl" => "$promotableRoute&payment_status=pending",
             "merchantAccountNumber" => config('app.hubtel_account_number'),
-            "cancellationUrl" => "$signboardRoute&payment_status=cancelled",
+            "cancellationUrl" => "$promotableRoute&payment_status=cancelled",
             "clientReference" => $reference
         ];
-
-        Log::info($redirectUrl);
 
         $payment = $this->hubtelService->initializePayment($data);
 
         if ($payment){
+            $promotion = new PromotionDTO($reference);
             SignboardSubscription::query()->create([
                 'signboard_id' => $validatedData['signboard_id'],
                 'plan_id' => $validatedData['plan_id'],
