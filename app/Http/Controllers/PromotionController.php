@@ -10,6 +10,8 @@ use App\Models\PromotionPlan;
 use App\Services\HubtelService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use \Illuminate\Http\RedirectResponse;
@@ -100,7 +102,6 @@ class PromotionController extends Controller
             return response('', 200);
         }
 
-        /** @var Promotion|null $promotion */
         $promotion = Promotion::query()
             ->where('payment_status', PaymentStatus::PENDING)
             ->where('payment_reference', $reference)
