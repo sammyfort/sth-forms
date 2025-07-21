@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { Calendar, CheckCircle, Clock, CreditCard, XCircle, Search, X } from 'lucide-vue-next';
-import { SignboardI, PromotionI } from '@/types';
+import { PromotionI } from '@/types';
 import {
     Table,
     TableBody,
@@ -23,7 +23,7 @@ import { Badge } from '@/components/ui/badge';
 import { dateAndTime, number_format } from '@/lib/helpers';
 
 const props = defineProps<{
-    signboard: SignboardI
+    promotions: PromotionI[],
 }>()
 
 
@@ -32,8 +32,7 @@ const dateFilter = ref('all');
 
 
 const filteredTransactions = computed<PromotionI[]>(() => {
-    let filtered = [...props.signboard.promotions];
-
+    let filtered = [...props.promotions];
 
     if (searchQuery.value) {
         const query = searchQuery.value.toLowerCase();
@@ -41,10 +40,10 @@ const filteredTransactions = computed<PromotionI[]>(() => {
             promotion.payment_reference?.toLowerCase()?.includes(query) ||
             promotion.amount?.toString()?.includes(query) ||
             promotion.payment_platform?.toLowerCase()?.includes(query) ||
-            promotion.payment_channel?.toLowerCase()?.includes(query)
+            promotion.payment_channel?.toLowerCase()?.includes(query) ||
+            promotion.plan.name?.toLowerCase()?.includes(query)
         );
     }
-
 
     if (dateFilter.value !== 'all') {
         const now = new Date();
@@ -79,7 +78,6 @@ const clearFilters = () => {
     dateFilter.value = 'all';
 };
 
-
 const hasActiveFilters = computed(() => {
     return searchQuery.value !== '' || dateFilter.value !== 'all';
 });
@@ -110,8 +108,8 @@ const getStatusColor = (status: string) => {
                 <CreditCard class="h-6 w-6 text-primary" />
                 Promotion History
             </h2>
-            <Badge v-if="props.signboard.promotions.length" variant="secondary" class="text-sm">
-                {{ filteredTransactions.length }} of {{ props.signboard.promotions.length }} promotions
+            <Badge v-if="promotions.length" variant="secondary" class="text-sm">
+                {{ filteredTransactions.length }} of {{ promotions.length }} promotions
             </Badge>
         </div>
 
@@ -125,8 +123,6 @@ const getStatusColor = (status: string) => {
                         class="pl-10 w-100"
                     />
                 </div>
-
-
                 <Select v-model="dateFilter">
                     <SelectTrigger class="w-full sm:w-40">
                         <SelectValue placeholder="Filter by date" />
@@ -160,7 +156,6 @@ const getStatusColor = (status: string) => {
                         <TableHead class="text-left">Start Date</TableHead>
                         <TableHead class="text-left">End Date</TableHead>
                         <TableHead class="text-left">Status</TableHead>
-<!--                        <TableHead class="text-left">Channel</TableHead>-->
                         <TableHead class="text-left">Amount</TableHead>
                         <TableHead class="text-left">Payment Status</TableHead>
                         <TableHead class="text-left">Reference</TableHead>
@@ -187,7 +182,6 @@ const getStatusColor = (status: string) => {
                                 {{ promotion.is_active ? 'Active' : 'Expired' }}
                             </Badge>
                         </TableCell>
-<!--                        <TableCell>{{ promotion.payment_channel ?? '&#45;&#45;' }}</TableCell>-->
                         <TableCell>
                             <div class="flex items-center gap-1">
                                 <span class="font-medium">₵{{ number_format(promotion.amount, 2) }}</span>
@@ -205,7 +199,7 @@ const getStatusColor = (status: string) => {
             </Table>
         </div>
 
-        <div v-if="filteredTransactions.length === 0 && props.signboard.promotions.length > 0" class="text-center py-8">
+        <div v-if="filteredTransactions.length === 0 && promotions.length > 0" class="text-center py-8">
             <Search class="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <p class="text-gray-500">No promotion match your filters</p>
             <Button variant="outline" size="sm" @click="clearFilters" class="mt-2">
@@ -213,7 +207,7 @@ const getStatusColor = (status: string) => {
             </Button>
         </div>
 
-        <div v-if="props.signboard.promotions.length === 0" class="text-center py-8">
+        <div v-if="promotions.length === 0" class="text-center py-8">
             <CreditCard class="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <p class="text-gray-500">No promotion found</p>
         </div>

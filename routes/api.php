@@ -13,10 +13,6 @@ Route::get('/user', function (Request $request) {
 
 Route::post('github-webhook', GitController::class);
 
-Route::post('payments/signboard-subscription/verify', [SignboardSubscriptionPaymentController::class, 'verifyHubtel'])
-//    ->middleware(['verify.payment.ip'])
-    ->name('payments.signboard-subscription.verify');
-
 Route::post('promotions/payment/verify', [PromotionController::class, 'verifyHubtel'])
 //    ->middleware(['verify.payment.ip'])
     ->name('promotions.payment.verify');

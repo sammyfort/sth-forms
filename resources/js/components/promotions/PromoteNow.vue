@@ -1,0 +1,89 @@
+<script setup lang="ts">
+
+import { Rocket } from 'lucide-vue-next';
+import InputSelect from '@/components/InputSelect.vue';
+import { InputSelectOption, ModelI, PromotionPlanI } from '@/types';
+import { useForm } from '@inertiajs/vue3';
+import { toastError } from '@/lib/helpers';
+import { ref } from 'vue';
+import { PromotableE } from '@/lib/enums';
+import { Button } from '@/components/ui/button';
+
+const props = defineProps<{
+    promotable: ModelI & any,
+    plans: PromotionPlanI[],
+    promotableType: PromotableE
+}>();
+
+const showPlans = ref(false);
+
+const promotionForm = useForm({
+    plan_id: null,
+    promotable_id: props.promotable.id,
+    promotable_type: props.promotableType
+});
+
+const submitPromotionForm = () => {
+    promotionForm.post(route('promotions.payment.initialize'), {
+        replace: true,
+        onSuccess: (response) => {
+            const authorizationUrl = response.props.data.authorization_url;
+            if (authorizationUrl) {
+                window.location = authorizationUrl;
+            } else {
+                toastError('Payment initialization failed, pleased reload the page and try again');
+            }
+        },
+    });
+};
+
+</script>
+
+<template>
+    <div class="mt-6 mb-4 border-t border-gray-100 pt-4">
+        <div class="mb-3 flex items-center justify-between">
+            <h4 class="font-semibold text-gray-900">Promote Now</h4>
+            <button
+                @click="showPlans = !showPlans"
+                class="text-sm font-medium text-primary transition-colors hover:text-primary/80"
+            >
+                {{ showPlans ? 'Select Plan' : 'View Plans' }}
+            </button>
+        </div>
+
+        <div v-if="showPlans" class="space-y-2">
+            <div v-for="plan in props.plans.slice(0, 3)" :key="plan.id"
+                 class="flex items-center justify-between text-sm">
+                <span class="text-gray-600">{{ plan.number_of_days }} Days</span>
+                <span class="font-semibold text-primary">{{ plan.price }}</span>
+            </div>
+        </div>
+
+        <div v-else class="relative">
+            <InputSelect
+                label="Select Plan"
+                :form="promotionForm"
+                model="plan_id"
+                :options="props.plans.map((plan: PromotionPlanI): InputSelectOption => ({
+                         label: `${plan.name} - ${plan.number_of_days} Days - ₵${plan.price}`,
+                         value: plan.id,
+                      }))"
+                required
+                searchable
+            />
+        </div>
+
+        <Button
+            v-if="promotionForm.plan_id"
+            @click="submitPromotionForm"
+            :processing="promotionForm.processing"
+            class="mt-4 w-full"
+        >
+            <Rocket class="h-4 w-4" /> Promote Now
+        </Button>
+    </div>
+</template>
+
+<style scoped>
+
+</style>

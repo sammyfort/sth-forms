@@ -17,12 +17,19 @@ import { Link } from '@inertiajs/vue3';
                     class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
                     :class="{ 'text-primary': $page.component === 'Businesses/MyBusinesses' }"
                 >
+                    Overview
+                </Link>
+                <Link
+                    :href="route('my-businesses.index')"
+                    class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
+                    :class="{ 'text-primary': $page.component === 'Businesses/MyBusinesses' }"
+                >
                     My Businesses
                 </Link>
                 <Link
                     :href="route('my-signboards.index')"
                     class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
-                    :class="{ 'text-primary': $page.component === 'Services/MyServices' }"
+                    :class="{ 'text-primary': $page.component === 'Signboards/MySignboards' }"
                 >My Signboards</Link>
 
             </div>

@@ -107,14 +107,6 @@ use Illuminate\Notifications\Notifiable;
          );
      }
 
-     public function subscriptions()
-     {
-         return SignboardSubscription::whereHas('signboard.business', function ($q) {
-             $q->where('user_id', $this->id);
-         });
-     }
-
-
      public function canAccessPanel(Panel $panel): bool
      {
          return $this->hasRole('admin');

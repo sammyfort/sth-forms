@@ -17,10 +17,15 @@ import { Link } from '@inertiajs/vue3';
                     class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
                     :class="{ 'text-primary': $page.component === 'Services/MyServices' }"
                 >
+                    Overview
+                </Link>
+                <Link
+                    :href="route('my-services.index')"
+                    class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
+                    :class="{ 'text-primary': $page.component === 'Services/MyServices' }"
+                >
                     My Services
                 </Link>
-
-
             </div>
         </PopoverContent>
     </Popover>

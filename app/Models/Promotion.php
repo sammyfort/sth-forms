@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Enums\PaymentStatus;
 use App\Traits\BootModelTrait;
-use App\Traits\HasPromotion;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Promotion extends Model
 {
     //
-    use BootModelTrait, HasPromotion;
+    use BootModelTrait;
 
     protected $appends = [
         'is_active',
@@ -57,7 +56,7 @@ class Promotion extends Model
         );
     }
 
-    public function scopeRunning(Builder $query)
+    public function scopeRunning(Builder $query): void
     {
         $query
             ->where('payment_status', PaymentStatus::PAID)
