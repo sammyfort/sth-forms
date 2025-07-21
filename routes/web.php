@@ -85,7 +85,6 @@ Route::prefix('artisans')->as('services.')->group(callback: function () {
     Route::get('/details/{service:slug}', [ServiceController::class, 'show'])->name('show');
 });
 
-
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');

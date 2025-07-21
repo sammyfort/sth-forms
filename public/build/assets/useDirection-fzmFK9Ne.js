@@ -1,1 +1,0 @@
-import{j as r}from"./index-CFhbb7sd.js";import{r as n,y as u}from"./app-DRCK7nkC.js";function i(t){const e=r({dir:n("ltr")});return u(()=>{var o;return(t==null?void 0:t.value)||((o=e.dir)==null?void 0:o.value)||"ltr"})}export{i as u};
