@@ -33,11 +33,11 @@ class PromotionController extends Controller
         $reference = Str::uuid()->toString();
         $promotableEnum = Promotable::from($validatedData['promotable_type']);
         $promotableModel = Promotable::getModel($promotableEnum);
-        $promotable = $promotableModel::query()->find($validatedData['signboard_id'], ['id', 'slug']);
+        $promotable = $promotableModel::query()->find($validatedData['promotable_id'], ['id', 'slug']);
         if (! $promotable) {
             return back()->with(errorRes());
         }
-        $promotableRoute = Promotable::getRoute($promotable, $promotable->slug)."?reference=$reference";
+        $promotableRoute = Promotable::getRoute($promotableEnum, $promotable->slug)."?reference=$reference";
         $redirectUrl = route('promotions.payment.verify');
 
         $data = [

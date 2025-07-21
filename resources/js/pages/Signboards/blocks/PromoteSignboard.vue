@@ -2,24 +2,29 @@
 
 import { Loader2, Rocket, TrendingUp } from 'lucide-vue-next';
 import InputSelect from '@/components/InputSelect.vue';
-import { SignboardI, SignboardSubscriptionPlanI } from '@/types';
+import { InputSelectOption, PromotionPlanI, SignboardI } from '@/types';
 import { useForm } from '@inertiajs/vue3';
 import { number_format, toastError } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
+import { PromotableE } from '@/lib/enums';
 
 const props = defineProps<{
     signboard: SignboardI
-    plans: SignboardSubscriptionPlanI
+    plans: PromotionPlanI[],
+    promotableType: PromotableE
 }>();
+
 const promotionPercentage = ref(0)
 const showPlans = ref(false);
-const subscriptionForm = useForm({
-    plan_id: '',
-    signboard_id: props.signboard.id,
+
+const promotionForm = useForm({
+    plan_id: null,
+    promotable_id: props.signboard.id,
+    promotable_type: props.promotableType
 });
 
-const submitSubscriptionForm = () => {
-    subscriptionForm.post(route('payments.signboard-subscription'), {
+const submitPromotionForm = () => {
+    promotionForm.post(route('promotions.payment.initialize'), {
         replace: true,
         onSuccess: (response) => {
             const authorizationUrl = response.props.data.authorization_url;
@@ -33,11 +38,11 @@ const submitSubscriptionForm = () => {
 };
 
 onMounted(()=>{
-    const subscription = props.signboard.active_subscription
-    if (subscription && subscription.total_days > 0 && subscription.days_left > 0){
-        const daysPast = subscription.total_days - subscription.days_left
+    const promotion = props.signboard.active_promotion
+    if (promotion && promotion.total_days > 0 && promotion.days_left > 0){
+        const daysPast = promotion.total_days - promotion.days_left
         if (daysPast > 0){
-            promotionPercentage.value = number_format(((100 * daysPast) / subscription.total_days), 0) as unknown as number
+            promotionPercentage.value = number_format(((100 * daysPast) / promotion.total_days), 0) as unknown as number
         }
     }
 })
@@ -54,13 +59,13 @@ onMounted(()=>{
             <div class="mb-3 flex items-center justify-between">
                 <span class="font-medium text-gray-600">Current Status</span>
                 <span
-                    :class="['rounded-full px-3 py-1 text-sm font-medium', props.signboard.active_subscription ? 'bg-green-600 text-white' : 'bg-red-600 text-white', ]">
-                    {{ props.signboard.active_subscription ? 'Promoted' : 'Not Promoted' }}
+                    :class="['rounded-full px-3 py-1 text-sm font-medium', props.signboard.active_promotion ? 'bg-green-600 text-white' : 'bg-red-600 text-white', ]">
+                    {{ props.signboard.active_promotion ? 'Promoted' : 'Not Promoted' }}
                 </span>
             </div>
 
-            <div v-if="signboard.active_subscription" class="flex flex-col w-full gap-1 mb-3">
-                <div class="text-fade ms-auto text-sm">{{ props.signboard.active_subscription?.days_left }} Day(s) Left</div>
+            <div v-if="signboard.active_promotion" class="flex flex-col w-full gap-1 mb-3">
+                <div class="text-fade ms-auto text-sm">{{ props.signboard.active_promotion?.days_left }} Day(s) Left</div>
                 <div class="h-2 w-full rounded-full bg-gray-200">
                     <div class="h-2 rounded-full bg-primary transition-all duration-300" :style="{width: `${promotionPercentage}%`}">
                     </div>
@@ -82,10 +87,10 @@ onMounted(()=>{
                     <span class="text-gray-600">Total Views</span>
                     <span class="font-semibold">{{ props.signboard.views_count || 0 }}</span>
                 </div>
-                <div v-if="props.signboard.active_subscription" class="flex justify-between">
+                <div v-if="props.signboard.active_promotion" class="flex justify-between">
                     <span class="text-gray-600">Expires</span>
                     <span class="font-semibold text-orange-600">
-                        {{ new Date(props.signboard.active_subscription.ends_at).toDateString() }}
+                        {{ new Date(props.signboard.active_promotion.ends_at).toDateString() }}
                     </span>
                 </div>
             </div>
@@ -113,11 +118,11 @@ onMounted(()=>{
             <div v-else class="relative">
                 <InputSelect
                     label="Select Plan"
-                    :form="subscriptionForm"
+                    :form="promotionForm"
                     model="plan_id"
-                    :options="props.plans.map((plan) => ({
-                     label: `${plan.number_of_days} Days - ₵${plan.price}`,
-                     value: plan.id,
+                    :options="props.plans.map((plan: PromotionPlanI): InputSelectOption => ({
+                         label: `${plan.name} - ${plan.number_of_days} Days - ₵${plan.price}`,
+                         value: plan.id,
                       }))"
                     required
                     searchable
@@ -125,15 +130,15 @@ onMounted(()=>{
             </div>
 
             <button
-                v-if="subscriptionForm.plan_id"
-                @click="submitSubscriptionForm"
-                :disabled="subscriptionForm.processing"
+                v-if="promotionForm.plan_id"
+                @click="submitPromotionForm"
+                :disabled="promotionForm.processing"
                 class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 font-medium text-white transition-all duration-200 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
             >
-                <span v-if="subscriptionForm.processing" class="flex items-center gap-2">
+                <span v-if="promotionForm.processing" class="flex items-center gap-2">
                     <Loader2 class="h-4 w-4 animate-spin" />Processing...</span>
                 <span v-else class="flex items-center gap-2"><Rocket class="h-4 w-4" />
-                    {{ props.signboard.active_subscription > 1 ? 'Extend Promotion' : 'Promote Now'}}
+                    {{ props.signboard.active_promotion ? 'Extend Promotion' : 'Promote Now'}}
                 </span>
             </button>
         </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { Calendar, CheckCircle, Clock, CreditCard, DollarSign, XCircle, Search, X } from 'lucide-vue-next';
-import { SignboardI, SignboardSubscriptionI, SignboardSubscriptionPlanI } from '@/types';
+import { Calendar, CheckCircle, Clock, CreditCard, XCircle, Search, X } from 'lucide-vue-next';
+import { SignboardI, PromotionI } from '@/types';
 import {
     Table,
     TableBody,
@@ -31,17 +31,17 @@ const searchQuery = ref('');
 const dateFilter = ref('all');
 
 
-const filteredTransactions = computed<SignboardSubscriptionI[]>(() => {
-    let filtered = [...props.signboard.subscriptions];
+const filteredTransactions = computed<PromotionI[]>(() => {
+    let filtered = [...props.signboard.promotions];
 
 
     if (searchQuery.value) {
         const query = searchQuery.value.toLowerCase();
-        filtered = filtered.filter(subscription =>
-            subscription.payment_reference?.toLowerCase()?.includes(query) ||
-            subscription.amount?.toString()?.includes(query) ||
-            subscription.payment_platform?.toLowerCase()?.includes(query) ||
-            subscription.payment_channel?.toLowerCase()?.includes(query)
+        filtered = filtered.filter(promotion =>
+            promotion.payment_reference?.toLowerCase()?.includes(query) ||
+            promotion.amount?.toString()?.includes(query) ||
+            promotion.payment_platform?.toLowerCase()?.includes(query) ||
+            promotion.payment_channel?.toLowerCase()?.includes(query)
         );
     }
 
@@ -50,8 +50,8 @@ const filteredTransactions = computed<SignboardSubscriptionI[]>(() => {
         const now = new Date();
         const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-        filtered = filtered.filter(subscription => {
-            const transactionDate = new Date(subscription.created_at);
+        filtered = filtered.filter(promotion => {
+            const transactionDate = new Date(promotion.created_at);
 
             switch (dateFilter.value) {
                 case 'today':
@@ -110,8 +110,8 @@ const getStatusColor = (status: string) => {
                 <CreditCard class="h-6 w-6 text-primary" />
                 Promotion History
             </h2>
-            <Badge v-if="props.signboard.subscriptions.length" variant="secondary" class="text-sm">
-                {{ filteredTransactions.length }} of {{ props.signboard.subscriptions.length }} promtions
+            <Badge v-if="props.signboard.promotions.length" variant="secondary" class="text-sm">
+                {{ filteredTransactions.length }} of {{ props.signboard.promotions.length }} promotions
             </Badge>
         </div>
 
@@ -167,45 +167,45 @@ const getStatusColor = (status: string) => {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="subscription in filteredTransactions" :key="subscription.id">
+                    <TableRow v-for="promotion in filteredTransactions" :key="promotion.id">
                         <TableCell>
                             <div class="flex items-center gap-1.5">
                                 <Calendar class="h-4 w-4 text-gray-400" />
-                                {{ dateAndTime(subscription.created_at) }}
+                                {{ dateAndTime(promotion.created_at) }}
                             </div>
                         </TableCell>
                         <TableCell class="flex flex-col gap-2">
-                            <span class="font-semibold">{{ subscription.plan.name }}</span>
+                            <span class="font-semibold">{{ promotion.plan.name }}</span>
                             <Badge variant="outline" class="text-xs">
-                                 <span>{{ subscription.plan.number_of_days }} days</span>
+                                 <span>{{ promotion.plan.number_of_days }} days</span>
                             </Badge>
                         </TableCell>
-                        <TableCell>{{ subscription.payment_status == 'paid' ? dateAndTime(subscription.starts_at) : '' }}</TableCell>
-                        <TableCell>{{ subscription.payment_status == 'paid' ? dateAndTime(subscription.ends_at) : '' }}</TableCell>
+                        <TableCell>{{ promotion.payment_status == 'paid' ? dateAndTime(promotion.starts_at) : '' }}</TableCell>
+                        <TableCell>{{ promotion.payment_status == 'paid' ? dateAndTime(promotion.ends_at) : '' }}</TableCell>
                         <TableCell>
-                            <Badge v-if="subscription.payment_status === 'paid' " :variant="subscription.is_active ? 'success' : 'destructive' ">
-                                {{ subscription.is_active ? 'Active' : 'Expired' }}
+                            <Badge v-if="promotion.payment_status === 'paid' " :variant="promotion.is_active ? 'success' : 'destructive' ">
+                                {{ promotion.is_active ? 'Active' : 'Expired' }}
                             </Badge>
                         </TableCell>
-<!--                        <TableCell>{{ subscription.payment_channel ?? '&#45;&#45;' }}</TableCell>-->
+<!--                        <TableCell>{{ promotion.payment_channel ?? '&#45;&#45;' }}</TableCell>-->
                         <TableCell>
                             <div class="flex items-center gap-1">
-                                <span class="font-medium">₵{{ number_format(subscription.amount, 2) }}</span>
+                                <span class="font-medium">₵{{ number_format(promotion.amount, 2) }}</span>
                             </div>
                         </TableCell>
                         <TableCell>
-                            <Badge :class="['inline-flex items-center gap-1 text-xs font-medium capitalize', getStatusColor(subscription.payment_status)]">
-                                <component :is="getStatusIcon(subscription.payment_status)" class="h-3 w-3" />
-                                {{ subscription.payment_status }}
+                            <Badge :class="['inline-flex items-center gap-1 text-xs font-medium capitalize', getStatusColor(promotion.payment_status)]">
+                                <component :is="getStatusIcon(promotion.payment_status)" class="h-3 w-3" />
+                                {{ promotion.payment_status }}
                             </Badge>
                         </TableCell>
-                        <TableCell class="font-mono text-gray-500">{{ subscription.payment_reference }}</TableCell>
+                        <TableCell class="font-mono text-gray-500">{{ promotion.payment_reference }}</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>
         </div>
 
-        <div v-if="filteredTransactions.length === 0 && props.signboard.subscriptions.length > 0" class="text-center py-8">
+        <div v-if="filteredTransactions.length === 0 && props.signboard.promotions.length > 0" class="text-center py-8">
             <Search class="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <p class="text-gray-500">No promotion match your filters</p>
             <Button variant="outline" size="sm" @click="clearFilters" class="mt-2">
@@ -213,7 +213,7 @@ const getStatusColor = (status: string) => {
             </Button>
         </div>
 
-        <div v-if="props.signboard.subscriptions.length === 0" class="text-center py-8">
+        <div v-if="props.signboard.promotions.length === 0" class="text-center py-8">
             <CreditCard class="h-12 w-12 text-gray-300 mx-auto mb-4" />
             <p class="text-gray-500">No promotion found</p>
         </div>

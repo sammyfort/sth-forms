@@ -95,7 +95,7 @@ Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
 Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('privacy-policy');
 
-Route::post('promotions', [PromotionController::class, 'initializeHubtel'])
+Route::post('promotions/payment', [PromotionController::class, 'initializeHubtel'])
     ->middleware(['auth', 'verified'])
     ->name('promotions.payment.initialize');
 

@@ -1,25 +1,13 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import {
-    Briefcase,
-    MapPin,
-    Building,
-    PlusIcon,
-    Trash2,
-    Edit,
-    Loader2,
-    XCircle, Clock,
-} from 'lucide-vue-next';
-import { router } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Briefcase, Building, Clock, Edit, Loader2, MapPin, PlusIcon, Trash2, XCircle } from 'lucide-vue-next';
 import { toastError, toastSuccess } from '@/lib/helpers';
-import { ref, computed } from 'vue';
+import { computed, ref } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 
-import ImageShow from '@/pages/Signboards/blocks/ImageShow.vue';
-
-import { AverageRatingsI, RatingsDistributionI, SignboardI, SignboardSubscriptionPlanI } from '@/types';
+import { AverageRatingsI, PromotionPlanI, RatingsDistributionI, SignboardI } from '@/types';
 import PaymentHistory from '@/pages/Signboards/blocks/PaymentHistory.vue';
 import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
 import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
@@ -28,17 +16,16 @@ import SignboardActions from '@/pages/Signboards/blocks/SignboardActions.vue';
 import OperationFields from '@/pages/Signboards/blocks/OperationFields.vue';
 import ReviewsDetails from '@/components/signboard/Details/ReviewsDetails.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
-
-
+import { PromotableE } from '@/lib/enums';
 
 const props = defineProps<{
     signboard: SignboardI;
-    plans: SignboardSubscriptionPlanI;
+    plans: PromotionPlanI[];
     ratings: AverageRatingsI;
     distributions: RatingsDistributionI;
     payment_status: null | 'success' | 'failed' | 'cancelled' | 'pending';
 }>();
-const reviews = computed(()=> props.signboard.reviews);
+const reviews = computed(() => props.signboard.reviews);
 
 const showDialog = ref(false);
 const isDeleting = ref(false);
@@ -58,8 +45,6 @@ const deleteSignboard = () => {
         },
     });
 };
-
-
 </script>
 
 <template>
@@ -70,7 +55,7 @@ const deleteSignboard = () => {
                 <Clock />
                 <AlertTitle>Payment in Progress</AlertTitle>
                 <AlertDescription>
-                    We've received your request and are currently verifying your payment. <br>
+                    We've received your request and are currently verifying your payment. <br />
                     This may take a few moments. Once confirmed, your signboard promotion will be activated automatically.
                 </AlertDescription>
             </Alert>
@@ -78,7 +63,7 @@ const deleteSignboard = () => {
                 <XCircle />
                 <AlertTitle>Transaction Cancelled</AlertTitle>
                 <AlertDescription>
-                    You cancelled the payment process. <br>
+                    You cancelled the payment process. <br />
                     If this was unintentional, please try again to complete your signboard promotion.
                 </AlertDescription>
             </Alert>
@@ -132,7 +117,6 @@ const deleteSignboard = () => {
                             </div>
 
                             <div class="flex gap-3">
-
                                 <Link
                                     :href="route('my-signboards.create')"
                                     :data="{ business: props.signboard.business.id }"
@@ -172,8 +156,8 @@ const deleteSignboard = () => {
                 <div class="mx-auto max-w-full">
                     <div class="grid gap-8 lg:grid-cols-4">
                         <div class="lg:col-span-1">
-                            <LocationDetails :signboard="signboard"/>
-                            <SignboardActions :signboard="signboard"/>
+                            <LocationDetails :signboard="signboard" />
+                            <SignboardActions :signboard="signboard" />
                         </div>
 
                         <div class="lg:col-span-2">
@@ -185,24 +169,24 @@ const deleteSignboard = () => {
                         </div>
 
                         <div class="lg:col-span-1">
-                            <OperationFields :signboard="signboard"/>
-                            <PromoteSignboard :signboard="signboard" :plans="plans"/>
+                            <OperationFields :signboard="signboard" />
+                            <PromoteSignboard :signboard="signboard" :plans="plans" :promotable-type="PromotableE.SIGNBOARD" />
                         </div>
                     </div>
                 </div>
-                <div class="flex w-full flex-wrap mt-15">
+                <div class="mt-15 flex w-full flex-wrap">
                     <div class="w-full">
                         <h2 class="mb-4 text-2xl font-bold text-gray-900">Reviews And Comments</h2>
                     </div>
                     <div class="w-full lg:w-1/2">
                         <ReviewsDetails class="border-t-0" :signboard="signboard" :ratings="ratings" :distributions="distributions" />
                     </div>
-                    <div v-if="reviews.length" class="w-full lg:border-s lg:w-1/2 lg:ps-15">
-                        <h2 class="mb-4 text-lg pt-5 font-bold text-fade">Comments</h2>
+                    <div v-if="reviews.length" class="w-full lg:w-1/2 lg:border-s lg:ps-15">
+                        <h2 class="text-fade mb-4 pt-5 text-lg font-bold">Comments</h2>
                         <ReviewsList :signboard="signboard" :reviews="reviews" />
                     </div>
                 </div>
-                <PaymentHistory :signboard="props.signboard"/>
+                <PaymentHistory :signboard="props.signboard" />
             </div>
             <ConfirmDialogue
                 v-model:open="showDialog"

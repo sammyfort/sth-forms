@@ -7,6 +7,8 @@ use App\Enums\PaymentStatus;
 use App\Http\Requests\Signboard\RateRequest;
 use App\Http\Requests\Signboard\StoreSignboardRequest;
 use App\Http\Requests\Signboard\UpdateSignboardRequest;
+use App\Models\Promotion;
+use App\Models\PromotionPlan;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
@@ -225,33 +227,18 @@ class SignboardController extends Controller
     public function showMySignboard(Signboard $signboard): Response
     {
         Gate::authorize('view', $signboard);
-        $subPlans = SignboardSubscriptionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
-        $signboard->loadMissing(['reviews.ratings','business.user', 'region', 'reviews', 'categories', 'subscriptions.plan']);
+        $promotionPlans = PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
+        $signboard->loadMissing(['reviews.ratings','business.user', 'region', 'reviews', 'categories', 'promotions.plan']);
 
         // check if it has payment
-        $paymentStatus = request()->get('payment_status');
-        $paymentReference = request()->get('reference');
-        if ($paymentStatus && $paymentReference) {
-            $subscription = signboardSubscription::query()
-                ->where('payment_reference', $paymentReference)
-                ->where('payment_status', PaymentStatus::PENDING->value)
-                ->first();
-            if ($subscription){
-                if ($paymentStatus == 'cancelled'){
-                    $subscription->payment_status = PaymentStatus::CANCELED;
-                }
-                $subscription->save();
-            }
-            else{
-                $paymentStatus = null;
-            }
-        }
+        $paymentStatus = Promotion::routeCallback();
+
         $distributions = SignboardService::getDistributions($signboard);
 
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->toArrayWithMedia(),
             'payment_status' => $paymentStatus,
-            'plans' => $subPlans,
+            'plans' => $promotionPlans,
             'ratings' => $signboard->averageRatings(),
             'distributions' => $distributions,
         ]);

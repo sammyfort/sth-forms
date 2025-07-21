@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Traits\BootModelTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 /**
  * @property string $id
@@ -16,5 +19,17 @@ use Illuminate\Database\Eloquent\Model;
 class PromotionPlan extends Model
 {
     //
-    use BootModelTrait;
+    use BootModelTrait, HasSlug;
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    public function promotions(): HasMany
+    {
+        return $this->hasMany(Promotion::class, 'plan_id');
+    }
 }
