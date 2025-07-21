@@ -2,18 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\DTO\PromotionDTO;
 use App\Enums\PaymentStatus;
 use App\Enums\Promotable;
 use App\Http\Requests\PromotionRequest;
-use App\Http\Requests\SignboarbSubscriptionRequest;
 use App\Models\PromotionPlan;
-use App\Models\Signboard;
-use App\Models\SignboardSubscription;
-use App\Models\SignboardSubscriptionPlan;
 use App\Services\HubtelService;
-use App\Services\PaystackService;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use \Illuminate\Http\RedirectResponse;
 
@@ -54,10 +47,8 @@ class PromotionController extends Controller
         $payment = $this->hubtelService->initializePayment($data);
 
         if ($payment){
-            $promotion = new PromotionDTO($reference);
-            SignboardSubscription::query()->create([
-                'signboard_id' => $validatedData['signboard_id'],
-                'plan_id' => $validatedData['plan_id'],
+            $promotable->promotions()->create([
+                'plan_id' => $plan->id,
                 'payment_reference' => $reference,
                 'checkout_id' => $payment['checkoutId'],
                 'payment_status' => PaymentStatus::PENDING,
