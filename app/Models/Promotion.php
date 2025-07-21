@@ -27,6 +27,16 @@ class Promotion extends Model
     //
     use BootModelTrait, HasPromotion;
 
+    protected $appends = [
+        'is_active',
+        'days_left',
+        'total_days',
+    ];
+
+    public $casts = [
+        'payment_status' => PaymentStatus::class,
+    ];
+
     public function promotable(): MorphTo
     {
         return $this->morphTo();
