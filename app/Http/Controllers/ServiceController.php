@@ -37,10 +37,11 @@ class ServiceController extends Controller
                 }),
                 AllowedFilter::exact('region', 'region_id'),
             ])
+            ->where('user_id', '!=', auth()->id())
             ->with('media', function ($builder){
                 $builder->where('collection_name', 'featured');
             })
-            ->with(['region', 'user'])
+            ->with(['region', 'user', 'category'])
 //            ->inRandomOrder()
             ->paginate(8)
             ->appends(request()->query());
@@ -59,6 +60,7 @@ class ServiceController extends Controller
     public function getPromotedSignboards(): JsonResponse
     {
         $services = Service::query()
+            ->where('user_id', '!=', auth()->id())
             ->with(['user', 'region', 'category'])
             ->inRandomOrder()
             ->take(10)
