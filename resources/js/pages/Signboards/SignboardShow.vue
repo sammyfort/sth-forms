@@ -8,7 +8,7 @@ import { computed, ref } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 
 import { AverageRatingsI, PromotionPlanI, RatingsDistributionI, SignboardI } from '@/types';
-import PaymentHistory from '@/pages/Signboards/blocks/PaymentHistory.vue';
+import PaymentHistory from '@/components/promotions/PaymentHistory.vue';
 import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
 import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
 import LocationDetails from '@/pages/Signboards/blocks/LocationDetails.vue';
@@ -186,7 +186,7 @@ const deleteSignboard = () => {
                         <ReviewsList :signboard="signboard" :reviews="reviews" />
                     </div>
                 </div>
-                <PaymentHistory :signboard="props.signboard" />
+                <PaymentHistory :promotions="signboard.promotions" />
             </div>
             <ConfirmDialogue
                 v-model:open="showDialog"

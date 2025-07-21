@@ -10,10 +10,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SignboardController;
-use App\Http\Controllers\SignboardSubscriptionPaymentController;
-use App\Models\Service;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -89,7 +85,6 @@ Route::prefix('artisans')->as('services.')->group(callback: function () {
     Route::get('/details/{service:slug}', [ServiceController::class, 'show'])->name('show');
 });
 
-
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
@@ -98,10 +93,5 @@ Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('pri
 Route::post('promotions/payment', [PromotionController::class, 'initializeHubtel'])
     ->middleware(['auth', 'verified'])
     ->name('promotions.payment.initialize');
-
-Route::prefix('payments')->as('payments.')->group(function () {
-    Route::post('signboard-subscription', [SignboardSubscriptionPaymentController::class, 'initializeHubtel'])
-        ->middleware(['auth', 'verified'])->name('signboard-subscription');
-});
 
 require __DIR__.'/auth.php';

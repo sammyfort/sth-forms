@@ -8,7 +8,6 @@ use Illuminate\Support\Collection;
 
 class HelperService
 {
-
     public function getRegions(): Collection
     {
         return Region::query()
@@ -18,8 +17,6 @@ class HelperService
                 'label' => $region->name,
                 'value' => (string) $region->id,
             ]);
-
-
     }
 
     public function getCategories(): Collection
@@ -32,7 +29,6 @@ class HelperService
             ]);
     }
 
-
     public function getAuthBusinesses(): Collection
     {
         return request()->user()->businesses()
@@ -44,8 +40,4 @@ class HelperService
             ]);
 
     }
-
-
-
-
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 
-use App\Enums\PaymentStatus;
 use App\Http\Requests\Signboard\RateRequest;
 use App\Http\Requests\Signboard\StoreSignboardRequest;
 use App\Http\Requests\Signboard\UpdateSignboardRequest;
@@ -12,21 +11,15 @@ use App\Models\PromotionPlan;
 use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
-use App\Models\SignboardSubscription;
-use App\Models\SignboardSubscriptionPlan;
-use App\Models\User;
-use App\Services\GhanaPostService;
 use App\Services\HelperService;
 use App\Services\SignboardService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -102,7 +95,7 @@ class SignboardController extends Controller
 
     public function getPromotedSignboards(): JsonResponse
     {
-        $signboards = Signboard::query()
+        $signboards = Signboard::getRandomPromotedQuery()
             ->with(['business', 'region'])
             ->with('categories', function ($categoriesQuery) {
                 $categoriesQuery->take(3);
@@ -110,14 +103,7 @@ class SignboardController extends Controller
             ->with('reviews', function ($reviewsQuery) {
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
-            })
-            ->whereHas('promotions', function (Builder $subscriptionQuery) {
-                $subscriptionQuery
-                    ->running();
-            })
-            ->inRandomOrder()
-            ->take(10)
-            ->get();
+            })->get();
 
         if ($signboards->count() < 1) {
             $signboards = Signboard::query()

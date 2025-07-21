@@ -59,16 +59,14 @@ class ServiceController extends Controller
 
     public function getPromotedSignboards(): JsonResponse
     {
-        $services = Service::query()
-            ->where('user_id', '!=', auth()->id())
-            ->with(['user', 'region', 'category'])
-            ->inRandomOrder()
-            ->take(10)
+        $services = Service::getRandomPromotedQuery()
+            ->with([['user', 'region', 'category']])
             ->get();
 
         $services->map(function (Service $service) {
             $service->featured = $service->getFirstMedia('featured');
         });
+
         return response()->success([
             'services' => $services
         ]);

@@ -3,15 +3,12 @@ import Layout from '@/layouts/Layout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import StatsCard from '@/pages/Dashboard/blocks/StatsCard.vue';
 import { Eye, PlusIcon, Rocket, ChartColumnIncreasing, ChartBarIcon } from 'lucide-vue-next';
-import type { SignboardSubscriptionI, SignboardI } from '@/types';
+import type { SignboardI, PromotionI } from '@/types';
 
 const props = defineProps<{
-    subscriptions: SignboardSubscriptionI[];
+    promotions: PromotionI[];
     signboards: SignboardI[];
 }>();
-
-
-
 
 </script>
 
@@ -24,9 +21,8 @@ const props = defineProps<{
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between items-center py-6">
                         <div>
-                            <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-                            <p class="text-sm text-gray-600">Welcome back! Here's what's happening with your
-                                signboards.</p>
+                            <h1 class="text-2xl font-bold text-gray-900">Signboard Overview</h1>
+                            <p class="text-sm text-gray-600">Welcome back! Here's what's happening with your signboards.</p>
                         </div>
                         <div class="flex space-x-3">
                             <Link :href="route('my-signboards.create')"
@@ -44,17 +40,13 @@ const props = defineProps<{
                 </div>
             </div>
 
-
             <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-
                     <StatsCard title="Total Signboards" :value="props.signboards.length" icon-bg="bg-primary text-white" :icon="ChartBarIcon" />
-                    <StatsCard title="Total Campaigns" :value="props.subscriptions.length" icon-bg="bg-primary text-white" :icon="Rocket" />
-                    <StatsCard title="Active Campaigns" :value="props.subscriptions.filter(s => s.is_active).length" icon-bg="bg-primary text-white" :icon="ChartColumnIncreasing" />
+                    <StatsCard title="Total Campaigns" :value="props.promotions.length" icon-bg="bg-primary text-white" :icon="Rocket" />
+                    <StatsCard title="Active Campaigns" :value="props.promotions.filter(s => s.is_active).length" icon-bg="bg-primary text-white" :icon="ChartColumnIncreasing" />
                     <StatsCard title="Total Views" :value="props.signboards.filter(s => s.reviews_count).length" icon-bg="bg-primary text-white" :icon="Eye"/>
-
                 </div>
-
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="lg:col-span-2">
@@ -109,8 +101,8 @@ const props = defineProps<{
                             <div class="p-6 border-b border-gray-200">
                                 <h2 class="text-lg font-semibold text-gray-900">Recent Campaigns</h2>
                             </div>
-                            <div  v-if="subscriptions.length" class="p-6 space-y-4">
-                                <div v-for="subscription in props.subscriptions" :key="subscription.id"
+                            <div  v-if="promotions.length" class="p-6 space-y-4">
+                                <div v-for="subscription in props.promotions" :key="subscription.id"
                                      class="border border-gray-200 rounded-lg p-4">
                                     <div class="flex items-center justify-between mb-2">
                                         <h3 class="font-medium text-gray-900">{{ subscription.amount }}</h3>

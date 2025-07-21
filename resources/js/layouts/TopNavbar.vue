@@ -9,9 +9,9 @@ import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover
 import { HandHelping, UserRoundCog, LayoutDashboard } from 'lucide-vue-next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import MobileNav from '@/layouts/MobileNav.vue';
-import CompanyNavPopover from '@/components/CompanyNavPopover.vue';
-import SignboardNav from '@/layouts/SignboardNav.vue';
-import ServiceNav from '@/layouts/ServiceNav.vue';
+import CompanyNavPopover from '@/components/Nav/CompanyNavPopover.vue';
+import SignboardNavPopover from '@/components/Nav/SignboardNavPopover.vue';
+import ServiceNavPopover from '@/components/Nav/ServiceNavPopover.vue';
 
 
 const page = usePage()
@@ -85,7 +85,7 @@ const user = computed(() => page.props.auth.user)
                                 <LayoutDashboard  :size="15" class="text-secondary"/> Dashboard
                             </Link>
 
-                            <SignboardNav>
+                            <SignboardNavPopover>
                                  <span :class="{ 'active-nav':
                                  $page.component === 'Signboards/MySignboards'
                                 || $page.component === 'Signboards/SignboardShow'
@@ -99,9 +99,9 @@ const user = computed(() => page.props.auth.user)
                                  }"
                                      class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
                                  ><Milestone :size="15" class="text-secondary"/> My Signboards<ChevronDown :size="22"/></span>
-                            </SignboardNav>
+                            </SignboardNavPopover>
 
-                            <ServiceNav>
+                            <ServiceNavPopover>
                                  <span :class="{ 'active-nav':
                                  $page.component === 'Services/MyServices'
                                 || $page.component === 'Services/ServiceShow'
@@ -110,7 +110,7 @@ const user = computed(() => page.props.auth.user)
                                  }"
                                        class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
                                  ><Building2 :size="15" class="text-secondary"/> My Services<ChevronDown :size="22"/></span>
-                            </ServiceNav>
+                            </ServiceNavPopover>
                         </div>
 
                         <div v-if="!user" class="hidden lg:block gap-1">
