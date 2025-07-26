@@ -10,24 +10,26 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('_jobs', function (Blueprint $table) {
+        Schema::create('user_jobs', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('category_id')->nullable();
+
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('title');
-            $table->string('type');
-            $table->text('summary')->nullable();
+            $table->string('slug')->unique();
             $table->longText('description');
-            $table->string('contact_name');
-            $table->string('contact_phone');
-            $table->string('contact_email')->nullable();
-            $table->string('contact_website')->nullable();
+            $table->string('job_type'); // "Full-time", "Part-time", "Contract", "Internship"
+            $table->string('work_mode'); // onsite, remote, hybrid
+            $table->foreignId('region_id')->nullable();
+            $table->string('town')->nullable();
+            $table->string('salary')->nullable();
+            $table->mediumText('how_to_apply')->nullable();
+            $table->string('application_link')->nullable();
+            $table->timestamp('deadline');
             $table->string('status')->default('active');
-            $table->timestamp('expires_at')->nullable();
+
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
-            //
         });
     }
 
