@@ -83,9 +83,13 @@ class SignboardController extends Controller
         $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories', 'media']);
         $averageRatings = $signboard->averageRatings();
         $distributions = SignboardService::getDistributions($signboard);
-        $viewCooldown = now()->addHours(3);
-        views($signboard)->cooldown($viewCooldown)->record();
+
+        if (!auth() || auth()->id() != $signboard->created_by_id){
+            $viewCooldown = now()->addHours(3);
+            views($signboard)->cooldown($viewCooldown)->record();
+        }
         $signboard->views_count = views($signboard)->count();
+
         return Inertia::render('Signboards/Signboard', [
             'signboard' => $signboard->toArrayWithMedia(),
             'ratings' => $averageRatings,

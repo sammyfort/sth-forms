@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             SignboardCategorySeeder::class,
             PromotionPlanSeeder::class,
             ServiceCategorySeeder::class,
+            JobCategorySeeder::class,
             UserSeeder::class,
         ]);
     }

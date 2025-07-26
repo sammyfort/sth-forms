@@ -63,6 +63,17 @@ class ServiceController extends Controller
             ->with([['user', 'region', 'category']])
             ->get();
 
+        if ($services->count() < 1){
+            $services = Service::query()
+                ->with(['user', 'region', 'category'])
+                ->when(auth()->user(), function ($q){
+                    $q->where('created_by_id', '!=', auth()->id());
+                })
+                ->inRandomOrder()
+                ->take(10)
+                ->get();
+        }
+
         $services->map(function (Service $service) {
             $service->featured = $service->getFirstMedia('featured');
         });
@@ -75,6 +86,13 @@ class ServiceController extends Controller
 
     public function show(Service $service): Response
     {
+        $service->loadMissing(['user', 'category', 'region'])->loadCount('views');
+
+        if (!auth() || auth()->id() != $service->user_id){
+            $viewCooldown = now()->addHours(3);
+            views($service)->cooldown($viewCooldown)->record();
+        }
+        $service->views_count = views($service)->count();
 
         return Inertia::render('Services/Service', [
             'service' => $service
