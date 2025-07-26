@@ -4,10 +4,24 @@ namespace App\Models;
 
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
+ 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+ 
+use App\Traits\HasPromotion;
+use CyrildeWit\EloquentViewable\Contracts\Viewable;
+use CyrildeWit\EloquentViewable\InteractsWithViews;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
+ 
 
 /**
  * @property string $id
@@ -17,21 +31,58 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 * @property string $updated_at
 */
 
+ 
 class Job extends Model implements  HasMedia
 {
     //
     use BootModelTrait, HasMediaUploads, InteractsWithMedia;
 
     protected $table = '_jobs';
+ 
+class Job extends Model implements HasMedia, Viewable
+{
+    use BootModelTrait, HasFactory, InteractsWithMedia,
+        InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;
+
+    protected $table = "user_jobs";
+
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
+    }
+ 
 
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('featured')->singleFile();
+ 
         $this->addMediaCollection('gallery');
+ 
     }
 
     public function user(): BelongsTo
     {
+ 
         return  $this->belongsTo(User::class);
+ 
+        return $this->belongsTo(User::class);
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            JobCategory::class,
+            'job_job_category',
+            'job_id',
+            'category_id'
+        );
+    }
+
+    public function region(): BelongsTo
+    {
+        return $this->belongsTo(Region::class);
+ 
     }
 }

@@ -78,8 +78,6 @@ const goToPage = (page) => {
                         </p>
                     </div>
                 </div>
-
-
             </div>
 
 

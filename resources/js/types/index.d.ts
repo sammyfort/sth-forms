@@ -61,9 +61,11 @@ export interface ServiceI extends ModelI{
     town: string;
     gps: string;
     user: User;
+    user_id: number;
     featured: string|MediaI;
     gallery: MediaI[];
     is_promoted: boolean
+    views_count: number
 }
 
 export interface JobI extends ModelI{

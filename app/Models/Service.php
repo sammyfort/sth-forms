@@ -22,6 +22,7 @@ use Spatie\Tags\HasTags;
 /**
  * @property string $id
  * @property string $uuid
+ * @property int $user_id
 * @property int $created_by_id
 * @property string $created_at
 * @property string $updated_at
