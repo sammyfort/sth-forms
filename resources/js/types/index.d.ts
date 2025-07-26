@@ -87,7 +87,7 @@ export interface JobI extends ModelI{
     deadline: string
     status: string
     company_logo: string
-    category: JobCategoryI[]
+    categories: JobCategoryI[]
 }
 
 export interface MediaI {

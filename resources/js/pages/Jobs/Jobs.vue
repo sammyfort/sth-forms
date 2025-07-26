@@ -44,7 +44,7 @@ onMounted(() => {
             </div>
             <div class="relative grid grid-cols-4 max-w-[1400px] mx-auto gap-15">
                 <div class="lg:block col-span-4 lg:col-span-1">
-                    <div class="sticky top-0">
+                    <div class="sticky top-40">
                         <JobFilter
                             :categories="categories"
                             :regions="regions"

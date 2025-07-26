@@ -13,7 +13,7 @@ class JobFactory extends Factory
         return [
             'title' => $this->faker->jobTitle(),
             'company_name' => $this->faker->company(),
-            'description' => $this->faker->paragraphs(3, true),
+            'description' => $this->faker->paragraphs(10, true),
             'short_description' => $this->faker->sentence(20),
             'job_type' => $this->faker->randomElement(['Full time', 'Part time', 'Contract', 'Internship']),
             'work_mode' => $this->faker->randomElement(['onsite', 'remote', 'hybrid']),
@@ -26,7 +26,8 @@ class JobFactory extends Factory
                 'Based on experience'
             ]),
             'deadline' => $this->faker->dateTimeBetween('+7 days', '+30 days'),
-            'how_to_apply' => 'Send your CV and cover letter to: kofibusy@gmail.com'
+            'how_to_apply' => 'Send your CV and cover letter to: kofibusy@gmail.com',
+            'application_link' => $this->faker->randomElement(['https://www.google.com/', null]),
         ];
     }
 }

@@ -99,7 +99,7 @@ Route::prefix('artisans')->as('services.')->group(callback: function () {
 Route::prefix('jobs')->as('jobs.')->group(callback: function () {
     Route::get('/', [JobPublicController::class, 'index'])->name('index');
     Route::get('/promoted', [JobPublicController::class, 'getPromotedJobs'])->name('promoted');
-    Route::get('/details/{service:slug}', [JobPublicController::class, 'show'])->name('show');
+    Route::get('/details/{job:slug}', [JobPublicController::class, 'show'])->name('show');
 });
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');

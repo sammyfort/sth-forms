@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('job_job_category', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('job_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('job_id')->constrained('user_jobs')->cascadeOnDelete();
             $table->foreignId('category_id')->constrained('job_categories')->cascadeOnDelete();
             $table->timestamps();
         });

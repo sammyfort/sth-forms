@@ -5,6 +5,7 @@ import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
 import { Button } from '@/components/ui/button';
 import { JobI } from '@/types';
 import { ucFirst } from '@/lib/helpers';
+import { Link, router } from '@inertiajs/vue3';
 
 type Props = {
     job: JobI
@@ -15,7 +16,7 @@ const props = defineProps<Props>()
 </script>
 
 <template>
-    <Card class="shadow-none border-3 rounded-3xl border-gray-300 cursor-pointer hover:border-primary transform transition-all duration-300 hover:scale-99">
+    <Card @click="router.visit(route('jobs.show', job.slug))" class="shadow-none border-3 rounded-3xl border-gray-300 cursor-pointer hover:border-primary transform transition-all duration-300 hover:scale-99">
         <CardContent class="h-full">
             <div class="flex gap-7 flex-col h-full">
 
@@ -38,7 +39,8 @@ const props = defineProps<Props>()
                     <div class="font-semibold">{{ job.title }}</div>
                     <div class="flex gap-4 text-fade items-center">
                         <div class="flex gap-1 items-center text-primary">
-                            <Briefcase :size="15"/> <span class="text-xs">{{ ucFirst(job.work_mode) }}</span>
+                            <Briefcase :size="15"/>
+                            <span class="text-xs">{{ ucFirst(job.work_mode) }}</span>
                         </div>
                         <div class="flex gap-1 items-center">
                             <Clock :size="15"/>
@@ -49,7 +51,9 @@ const props = defineProps<Props>()
                 </div>
 
                 <div class="mt-auto">
-                    <Button class="w-full rounded-3xl">Apply</Button>
+                    <Link as-child :href="route('jobs.show', job.slug)">
+                        <Button class="w-full rounded-3xl">Apply</Button>
+                    </Link>
                 </div>
             </div>
         </CardContent>
