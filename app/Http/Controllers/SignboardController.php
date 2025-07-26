@@ -38,6 +38,9 @@ class SignboardController extends Controller
         $signboards = QueryBuilder::for(Signboard::class)
             ->allowedFilters([
                 AllowedFilter::callback('q', function (Builder $query, $input) {
+                    if (is_array($input)){
+                        $input = implode(',', $input);
+                    }
                     $query->where("name", "LIKE", "%$input%")
                         ->orWhere("town", "LIKE", "%$input%")
                         ->orWhere("street", "LIKE", "%$input%")

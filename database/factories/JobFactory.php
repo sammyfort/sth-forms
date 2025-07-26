@@ -12,7 +12,9 @@ class JobFactory extends Factory
     {
         return [
             'title' => $this->faker->jobTitle(),
+            'company_name' => $this->faker->company(),
             'description' => $this->faker->paragraphs(3, true),
+            'short_description' => $this->faker->sentence(20),
             'job_type' => $this->faker->randomElement(['Full time', 'Part time', 'Contract', 'Internship']),
             'work_mode' => $this->faker->randomElement(['onsite', 'remote', 'hybrid']),
             'town' => $this->faker->optional()->city(),

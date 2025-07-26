@@ -5,8 +5,10 @@ import { HTMLAttributes, onMounted, ref } from 'vue';
 
 import { cn } from '@/lib/utils';
 import ServiceCardV1 from '@/components/Services/ServiceCardV1.vue';
-import { getPromotedServices } from '@/lib/api';
+import { getPromotedJobs } from '@/lib/api';
 import ServiceCardV1Skeleton from '@/components/skeletons/ServiceCardV1Skeleton.vue';
+import JobCardV1Skeleton from '@/components/skeletons/JobCardV1Skeleton.vue';
+import JobCardV1 from '@/components/jobs/JobCardV1.vue';
 
 
 const plugin = Autoplay({
@@ -18,12 +20,12 @@ const props = defineProps<{
     class?: HTMLAttributes['class'],
     containerClass?: HTMLAttributes['class'],
 }>()
-const services = ref<any[]>([])
+const jobs = ref<any[]>([])
 const processing = ref<boolean>(false)
 
 onMounted(async ()=>{
     processing.value = true
-    services.value = (await getPromotedServices()).services
+    jobs.value = (await getPromotedJobs()).jobs
     processing.value = false
 })
 
@@ -57,22 +59,22 @@ const resumeCarouselPlay = ()=>{
         }"
         :class="cn('', props.containerClass)"
         class=" overflow-hidden"
-        v-if="services.length"
+        v-if="jobs.length"
     >
         <div class="mb-5">
             <slot />
         </div>
         <CarouselContent class="mb-5 shadow-none">
-            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="service in services" :key="service.id">
+            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="job in jobs" :key="`accordion-item-${job.id}`">
                 <template v-if="processing">
-                    <ServiceCardV1Skeleton
+                    <JobCardV1Skeleton
                         v-for="x in [1,2,3]"
                         :key="x"
                     />
                 </template>
                 <template v-else>
-                    <ServiceCardV1
-                        :service="service"
+                    <JobCardV1
+                        :job="job"
                     />
                 </template>
             </CarouselItem>

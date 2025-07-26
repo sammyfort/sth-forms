@@ -75,3 +75,7 @@ export const dateAndTime = (dateStr: string)=>{
         hour12: false
     })
 }
+
+export function ucFirst(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}

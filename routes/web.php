@@ -9,7 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\{SignboardController, JobController};
+use App\Http\Controllers\{JobPublicController, SignboardController, JobController};
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -94,6 +94,12 @@ Route::prefix('artisans')->as('services.')->group(callback: function () {
     Route::get('/', [ServiceController::class, 'index'])->name('index');
     Route::get('/promoted', [ServiceController::class, 'getPromotedSignboards'])->name('promoted');
     Route::get('/details/{service:slug}', [ServiceController::class, 'show'])->name('show');
+});
+
+Route::prefix('jobs')->as('jobs.')->group(callback: function () {
+    Route::get('/', [JobPublicController::class, 'index'])->name('index');
+    Route::get('/promoted', [JobPublicController::class, 'getPromotedJobs'])->name('promoted');
+    Route::get('/details/{service:slug}', [JobPublicController::class, 'show'])->name('show');
 });
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');

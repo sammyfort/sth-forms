@@ -25,6 +25,9 @@ class ServiceController extends Controller
         $services = QueryBuilder::for(Service::class)
             ->allowedFilters([
                 AllowedFilter::callback('q', function (Builder $query, $input) {
+                    if (is_array($input)){
+                        $input = implode(',', $input);
+                    }
                     $query->where("title", "LIKE", "%$input%")
                         ->orWhere("business_name", "LIKE", "%$input%")
                         ->orWhere("address", "LIKE", "%$input%")

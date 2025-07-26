@@ -15,8 +15,10 @@ return new class extends Migration {
             $table->uuid();
 
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->string('company_name');
             $table->string('title');
             $table->string('slug')->unique();
+            $table->tinyText('short_description');
             $table->longText('description');
             $table->string('job_type'); // "Full-time", "Part-time", "Contract", "Internship"
             $table->string('work_mode'); // onsite, remote, hybrid

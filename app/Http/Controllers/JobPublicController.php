@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Job;
+use App\Models\JobCategory;
+use App\Models\Region;
+use Illuminate\Http\JsonResponse;
+use Inertia\Inertia;
+use Inertia\Response;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
+
+class JobPublicController extends Controller
+{
+    public function index(): Response
+    {
+        $jobs = QueryBuilder::for(Job::class)
+
+            ->allowedFilters([
+                AllowedFilter::callback('q', function ($query, $input) {
+                    if (is_array($input)){
+                        $input = implode(',', $input);
+                    }
+                    $query->where("title", "LIKE", "%$input%")
+                        ->orWhere("company_name", "LIKE", "%$input%")
+                        ->orWhere("town", "LIKE", "%$input%")
+                        ->orWhere("salary", "LIKE", "%$input%");
+                }),
+                AllowedFilter::callback('work_mode', function ($query, $value) {
+                    $workModes = is_array($value) ? $value : explode(',', $value);
+                    $query->whereIn('work_mode', $workModes);
+                }),
+                AllowedFilter::callback('job_type', function ($query, $value) {
+                    $jobTypes = is_array($value) ? $value : explode(',', $value);
+                    $query->whereIn('job_type', $jobTypes);
+                }),
+                AllowedFilter::callback('categories', function ($query, $value) {
+                    $ids = is_array($value) ? $value : explode(',', $value);
+                    $query->whereHas('categories', function ($q) use ($ids) {
+                        $q->whereIn('job_categories.id', $ids);
+                    });
+                }),
+                AllowedFilter::exact('region', 'region_id'),
+            ])
+
+            ->with(['categories', 'region'])
+            ->with(['media' => function ($mediaQuery) {
+                $mediaQuery->where('collection_name', 'company_logo');
+            }])
+            ->paginate(15)
+            ->appends(request()->query());
+
+        return Inertia::render('Jobs/Jobs', [
+            'jobsData' => $jobs,
+            'categories' => JobCategory::query()->get(),
+            'regions' => Region::query()->get(),
+        ]);
+    }
+
+    public function show(): Response
+    {
+        return Inertia::render('Jobs/JobShow');
+    }
+
+    public function getPromotedJobs(): JsonResponse
+    {
+        $jobs = Job::query()
+            ->with(['user', 'region', 'categories'])
+            ->with(['media' => function ($mediaQuery) {
+                $mediaQuery->where('collection_name', 'company_logo');
+            }])
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return response()->success([
+            'jobs' => $jobs
+        ]);
+    }
+}
