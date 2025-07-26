@@ -66,6 +66,19 @@ export interface ServiceI extends ModelI{
     is_promoted: boolean
 }
 
+export interface JobI extends ModelI{
+    title: string;
+    type: string;
+    status: string
+    summary: string;
+    description: string
+    contact_name: string
+    contact_phone: string
+    contact_email: string
+    contact_website:string
+    expires_at: string
+}
+
 export interface MediaI {
     'id': number,
     'model_type': string,
