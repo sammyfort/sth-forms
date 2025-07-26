@@ -35,7 +35,7 @@ class Job extends Model implements  HasMedia
     use BootModelTrait, HasFactory, InteractsWithMedia,
         InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;
 
-    protected $table = '_jobs';
+    protected $table = 'user_jobs';
 
     public function getSlugOptions() : SlugOptions
     {
@@ -44,20 +44,14 @@ class Job extends Model implements  HasMedia
             ->saveSlugsTo('slug');
     }
 
-
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('featured')->singleFile();
-
-        $this->addMediaCollection('gallery');
-
     }
 
     public function user(): BelongsTo
     {
         return  $this->belongsTo(User::class);
-
-
     }
 
     public function categories(): BelongsToMany
@@ -73,6 +67,5 @@ class Job extends Model implements  HasMedia
     public function region(): BelongsTo
     {
         return $this->belongsTo(Region::class);
-
     }
 }

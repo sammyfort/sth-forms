@@ -24,6 +24,7 @@ class JobFactory extends Factory
                 'Based on experience'
             ]),
             'deadline' => $this->faker->dateTimeBetween('+7 days', '+30 days'),
+            'how_to_apply' => 'Send your CV and cover letter to: kofibusy@gmail.com'
         ];
     }
 }
