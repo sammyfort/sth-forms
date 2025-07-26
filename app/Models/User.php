@@ -85,10 +85,6 @@ use Illuminate\Notifications\Notifiable;
         return Attribute::make(fn () => $this->getFirstMedia('avatar'));
     }
 
-    public function jobs(): HasMany
-    {
-        return $this->hasMany(Job::class);
-    }
 
     public function businesses(): HasMany
     {
