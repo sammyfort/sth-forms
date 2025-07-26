@@ -41,7 +41,9 @@ trait HasPromotion
             ->whereHas('promotions', function (Builder $promotionQuery) {
                 $promotionQuery->running();
             })
-            ->where('created_by_id', '!=', auth()->id())
+            ->when(auth()->user(), function ($q){
+                $q->where('created_by_id', '!=', auth()->id());
+            })
             ->inRandomOrder()
             ->take($take);
     }

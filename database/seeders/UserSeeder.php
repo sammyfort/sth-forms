@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Business;
+use App\Models\Job;
 use App\Models\Region;
 use App\Models\Service;
 use App\Models\Signboard;
@@ -83,6 +84,14 @@ class UserSeeder extends Seeder
                 ->create()
                 ->each(function ($service){
                     $service->addMediaFromUrl('https://picsum.photos/200/300')
+                        ->toMediaCollection('featured');
+                });
+
+            Job::factory(5)
+                ->for($user)
+                ->create()
+                ->each(function ($job){
+                    $job->addMediaFromUrl('https://picsum.photos/200/300')
                         ->toMediaCollection('featured');
                 });
         }

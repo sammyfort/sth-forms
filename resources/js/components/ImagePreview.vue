@@ -1,3 +1,91 @@
+<script setup lang="ts">
+import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue';
+import { Camera, Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+
+interface Props {
+    featuredUrl?: string | null;
+    galleryUrls?: string[];
+    title?: string;
+    className?: string;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+    featuredUrl: null,
+    galleryUrls: () => [],
+    title: 'Image Gallery',
+    className: ''
+});
+
+const lightboxOpen = ref(false);
+const currentImageIndex = ref(0);
+const lightboxRef = ref<HTMLElement | null>(null);
+
+const allImages = computed(() => {
+    const images = [];
+    if (props.featuredUrl) {
+        images.push({ url: props.featuredUrl, isFeatured: true });
+    }
+    if (props.galleryUrls) {
+        images.push(...props.galleryUrls.map(url => ({ url, isFeatured: false })));
+    }
+    return images;
+});
+
+const hasImages = computed(() => allImages.value.length > 0);
+const hasAdditionalPhotos = computed(() => props.galleryUrls && props.galleryUrls.length > 0);
+
+const openLightbox = (index: number) => {
+    currentImageIndex.value = index;
+    lightboxOpen.value = true;
+    nextTick(() => {
+        lightboxRef.value?.focus();
+    });
+};
+
+const closeLightbox = () => {
+    lightboxOpen.value = false;
+};
+
+const nextImage = () => {
+    currentImageIndex.value = (currentImageIndex.value + 1) % allImages.value.length;
+};
+
+const prevImage = () => {
+    currentImageIndex.value = (currentImageIndex.value - 1 + allImages.value.length) % allImages.value.length;
+};
+
+const getImageIndex = (galleryIndex: number) => {
+    return props.featuredUrl ? galleryIndex + 1 : galleryIndex;
+};
+
+const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+};
+
+const handleBodyScroll = () => {
+    if (lightboxOpen.value) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+};
+
+onMounted(() => {
+    document.addEventListener('keydown', handleKeyDown);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = '';
+});
+
+import { watch } from 'vue';
+watch(lightboxOpen, handleBodyScroll);
+</script>
+
+
 <template>
     <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6" :class="className">
         <h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -105,90 +193,3 @@
         </Teleport>
     </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed, nextTick, onMounted, onUnmounted } from 'vue';
-import { Camera, Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-vue-next';
-
-interface Props {
-    featuredUrl?: string | null;
-    galleryUrls?: string[];
-    title?: string;
-    className?: string;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    featuredUrl: null,
-    galleryUrls: () => [],
-    title: 'Image Gallery',
-    className: ''
-});
-
-const lightboxOpen = ref(false);
-const currentImageIndex = ref(0);
-const lightboxRef = ref<HTMLElement | null>(null);
-
-const allImages = computed(() => {
-    const images = [];
-    if (props.featuredUrl) {
-        images.push({ url: props.featuredUrl, isFeatured: true });
-    }
-    if (props.galleryUrls) {
-        images.push(...props.galleryUrls.map(url => ({ url, isFeatured: false })));
-    }
-    return images;
-});
-
-const hasImages = computed(() => allImages.value.length > 0);
-const hasAdditionalPhotos = computed(() => props.galleryUrls && props.galleryUrls.length > 0);
-
-const openLightbox = (index: number) => {
-    currentImageIndex.value = index;
-    lightboxOpen.value = true;
-    nextTick(() => {
-        lightboxRef.value?.focus();
-    });
-};
-
-const closeLightbox = () => {
-    lightboxOpen.value = false;
-};
-
-const nextImage = () => {
-    currentImageIndex.value = (currentImageIndex.value + 1) % allImages.value.length;
-};
-
-const prevImage = () => {
-    currentImageIndex.value = (currentImageIndex.value - 1 + allImages.value.length) % allImages.value.length;
-};
-
-const getImageIndex = (galleryIndex: number) => {
-    return props.featuredUrl ? galleryIndex + 1 : galleryIndex;
-};
-
-const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') nextImage();
-    if (e.key === 'ArrowLeft') prevImage();
-};
-
-const handleBodyScroll = () => {
-    if (lightboxOpen.value) {
-        document.body.style.overflow = 'hidden';
-    } else {
-        document.body.style.overflow = '';
-    }
-};
-
-onMounted(() => {
-    document.addEventListener('keydown', handleKeyDown);
-});
-
-onUnmounted(() => {
-    document.removeEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = '';
-});
-
-import { watch } from 'vue';
-watch(lightboxOpen, handleBodyScroll);
-</script>
