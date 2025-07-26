@@ -78,7 +78,7 @@ const createJob = () => {
                             <InputSelect label="Job Status" :form="form" model="status" :options="props.statuses" required searchable />
                             <InputText :form="form" label="Ends At" type="date" model="expires_at" required />
                             <InputText :form="form" label="Contact Name" type=tel model="contact_name" required />
-                            <InputText :form="form" label="Contact No" type="tel" model="contact_phone"  />
+                            <InputText :form="form" label="Contact No" type="tel" model="contact_phone"  required />
                             <InputText :form="form" label="Contact Email" type="email" model="contact_email" required />
                             <InputText :form="form" label="Website" model="contact_website"  />
 
