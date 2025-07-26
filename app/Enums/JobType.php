@@ -5,9 +5,10 @@ namespace App\Enums;
 enum JobType: string
 {
 
-    case PARTTIME = 'part-time';
-    case FULLTIME = 'full-time';
-    case CONTRACT = 'contract';
+    case PARTTIME = 'Part time';
+    case FULLTIME = 'Full time';
+    case CONTRACT = 'Contract';
+    case INTERNSHIP = 'Internship';
 
 
     public static function toArray(): array

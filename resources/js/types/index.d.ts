@@ -69,16 +69,25 @@ export interface ServiceI extends ModelI{
 }
 
 export interface JobI extends ModelI{
-    title: string;
-    type: string;
-    status: string
-    summary: string;
+    user_id: number
+    company_name: string
+    user: User
+    title: string
+    slug: string
     description: string
-    contact_name: string
-    contact_phone: string
-    contact_email: string
-    contact_website:string
-    expires_at: string
+    short_description: string
+    job_type: string
+    work_mode: string
+    region_id: number
+    region: RegionI
+    town: string
+    salary: string
+    how_to_apply: string|null
+    application_link: string|null
+    deadline: string
+    status: string
+    company_logo: string
+    category: JobCategoryI[]
 }
 
 export interface MediaI {
@@ -124,6 +133,12 @@ export interface SignboardCategoryI extends ModelI {
 }
 
 export interface ServiceCategoryI extends ModelI {
+    slug: string;
+    name: string;
+    description: string;
+}
+
+export interface JobCategoryI extends ModelI {
     slug: string;
     name: string;
     description: string;

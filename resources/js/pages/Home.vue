@@ -8,6 +8,7 @@ import InputText from '@/components/InputText.vue';
 import TrustedBusinessesSection from '@/components/home/TrustedBusinessesSection.vue';
 import AdvertisedServicesH from '@/components/Services/AdvertisedServicesH.vue';
 import { router } from '@inertiajs/vue3';
+import AdvertisedJobsH from '@/components/jobs/AdvertisedJobsH.vue';
 
 const searchForm = useForm({
     directory: ''
@@ -60,8 +61,10 @@ const searchOptions: InputSelectOption[] = [
                     >
                         <span>Signboard</span>
                     </div>
-                    <div class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
-                        <span>Job</span>
+                    <div
+                        @click="router.visit(route('jobs.index'))"
+                        class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
+                        <span>Jobs</span>
                     </div>
                     <div class="flex items-center transition-all ease-in-out duration-500 hover:bg-primary hover:text-secondary cursor-pointer justify-center font-bold rounded-[100%] h-[120px] w-[120px] p-10 bg-gray-300">
                         <span>Buy</span>
@@ -73,9 +76,11 @@ const searchOptions: InputSelectOption[] = [
             </div>
             <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-20 mb-20">
                 <h1 class="text-center mb-3 text-gray-400 text-2xl font-medium ">Top Artisans</h1>
-<!--                <div class="grid items-stretch gap-7 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">-->
-<!--                </div>-->
                 <AdvertisedServicesH />
+            </div>
+            <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-20 mb-20">
+                <h1 class="text-center mb-3 text-gray-400 text-2xl font-medium ">Newly Posted Jobs</h1>
+                <AdvertisedJobsH />
             </div>
         </div>
   </Layout>

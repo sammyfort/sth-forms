@@ -87,12 +87,12 @@ class UserSeeder extends Seeder
                         ->toMediaCollection('featured');
                 });
 
-            Job::factory(5)
+            Job::factory(20)
                 ->for($user)
                 ->create()
                 ->each(function ($job){
                     $job->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('featured');
+                        ->toMediaCollection('company_logo');
                 });
         }
     }

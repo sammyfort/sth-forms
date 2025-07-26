@@ -26,6 +26,18 @@ export const getPromotedServices = async ()=>{
     return data
 }
 
+export const getPromotedJobs = async ()=>{
+    const data = {
+        jobs: []
+    }
+    const request = await fetch(route('jobs.promoted'))
+    const response = await request.json()
+    if (response.success){
+        data.jobs = response.data.jobs
+    }
+    return data
+}
+
 export const rateSignboard = async (
     form: InertiaForm<any>,
     signboardId: number,
