@@ -58,9 +58,13 @@ class JobPublicController extends Controller
         ]);
     }
 
-    public function show(): Response
+    public function show(Job $job): Response
     {
-        return Inertia::render('Jobs/JobShow');
+        $job->loadMissing(['categories', 'region']);
+
+        return Inertia::render('Jobs/Job', [
+            'job' => $job
+        ]);
     }
 
     public function getPromotedJobs(): JsonResponse

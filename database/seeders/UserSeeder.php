@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Business;
 use App\Models\Job;
+use App\Models\JobCategory;
 use App\Models\Region;
 use App\Models\Service;
 use App\Models\Signboard;
@@ -55,6 +56,7 @@ class UserSeeder extends Seeder
         $admin->assignRole('admin');
 
         $signboardCategory = SignboardCategory::query()->pluck('id');
+        $jobCategory = JobCategory::query()->pluck('id');
         $regions = Region::query()->pluck('id');
 
         foreach ($users as $userData) {
@@ -90,7 +92,8 @@ class UserSeeder extends Seeder
             Job::factory(20)
                 ->for($user)
                 ->create()
-                ->each(function ($job){
+                ->each(function (Job $job) use($jobCategory){
+                    $job->categories()->attach($jobCategory->take(rand(4, 10))->toArray());
                     $job->addMediaFromUrl('https://picsum.photos/200/300')
                         ->toMediaCollection('company_logo');
                 });

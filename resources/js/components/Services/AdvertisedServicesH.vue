@@ -25,6 +25,8 @@ onMounted(async ()=>{
     processing.value = true
     services.value = (await getPromotedServices()).services
     processing.value = false
+
+    console.log(services.value)
 })
 
 const popoverIsOpen = ref(false)
@@ -44,7 +46,6 @@ const resumeCarouselPlay = ()=>{
         } catch (err){}
     }
 }
-
 </script>
 
 <template>

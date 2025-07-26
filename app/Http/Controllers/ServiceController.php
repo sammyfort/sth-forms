@@ -70,7 +70,7 @@ class ServiceController extends Controller
             $services = Service::query()
                 ->with(['user', 'region', 'category'])
                 ->when(auth()->user(), function ($q){
-                    $q->where('created_by_id', '!=', auth()->id());
+                    $q->where('user_id', '!=', auth()->id());
                 })
                 ->inRandomOrder()
                 ->take(10)
