@@ -53,12 +53,12 @@ const goToPage = (page) => {
     <Head title="Artisan Works" />
 
     <Layout>
-        <div class="hidden md:block fixed bottom-8 right-8 z-50">
+        <div class=" md:block fixed bottom-8 right-8 z-50">
             <Link :href="route('my-services.create')">
                 <Button class="bg-primary hover:from-primary-700 hover:to-primary-700
                 text-white font-semibold px-6 py-4 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 ease-out flex items-center gap-3 group">
                     <PlusIcon class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
-                    <span class="hidden lg:block">Add Service</span>
+                    <span class=" lg:block">Add Service</span>
                 </Button>
             </Link>
         </div>
@@ -85,7 +85,9 @@ const goToPage = (page) => {
 
             <div class="md:hidden px-6 py-6 bg-white border-b border-slate-200">
                 <Link :href="route('my-services.create')">
-                    <Button class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-3 transform hover:scale-[1.02] transition-all duration-200">
+                    <Button class="w-full bg-primary
+                     hover:to-purple-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center
+                     justify-center gap-3 transform hover:scale-[1.02] transition-all duration-200">
                         <PlusIcon class="w-5 h-5" />
                         <span>Add New Service</span>
                     </Button>
@@ -138,12 +140,6 @@ const goToPage = (page) => {
                                         </span>
                                     </div>
 
-                                    <div class="absolute top-4 right-4 z-20">
-                                        <span class="bg-green-500/90 backdrop-blur-sm text-white text-sm font-bold px-3 py-1.5 rounded-full">
-                                            $100
-                                        </span>
-                                    </div>
-
 
                                     <div v-if="service.is_promoted" class="absolute bottom-4 left-4 z-20">
                                         <span class="bg-yellow-400/90 backdrop-blur-sm text-yellow-900 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
@@ -161,7 +157,6 @@ const goToPage = (page) => {
                                             {{ service.title.charAt(0) }}
                                         </div>
                                         <div>
-                                            <p class="font-semibold text-slate-800 text-sm">{{ service.user.fullname }}</p>
                                             <div class="flex items-center gap-1">
                                                 <MapPin class="w-3 h-3 text-slate-400" />
                                                 <p class="text-xs text-slate-500">{{ service.town }}</p>
@@ -189,19 +184,6 @@ const goToPage = (page) => {
                                               class="bg-slate-100 text-slate-500 text-xs font-medium px-2.5 py-1 rounded-full">
                                             +{{ service.categories.length - 3 }} more
                                         </span>
-                                    </div>
-
-
-                                    <div class="flex items-center justify-between text-sm text-slate-500 mb-4">
-                                        <div class="flex items-center gap-1">
-                                            <Star class="w-4 h-4 text-yellow-400 fill-current" />
-                                            <span class="font-medium text-slate-700">{{ service.rating || '4.8' }}</span>
-                                            <span>({{ service.reviews_count || '12' }})</span>
-                                        </div>
-                                        <div class="flex items-center gap-1">
-                                            <Clock class="w-4 h-4" />
-                                            <span>{{ service.completion_time || '3-5 days' }}</span>
-                                        </div>
                                     </div>
 
 
