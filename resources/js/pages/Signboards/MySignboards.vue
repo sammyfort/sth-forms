@@ -24,30 +24,17 @@ const goToPage = (page: number) => {
     <Head title="My Signboard" />
 
     <Layout>
-        <div class="hidden md:block fixed top-40 right-8 z-40">
-            <Link
-                :href="route('my-signboards.create')">
-                <Button
-                    class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
-                >
-                    <PlusIcon class="w-4 h-4" />
-                    <span>Add Signboard</span>
+        <div class=" md:block fixed bottom-8 right-8 z-50">
+            <Link :href="route('my-signboards.create')">
+                <Button class="bg-primary hover:from-primary-700 hover:to-primary-700
+                text-white font-semibold px-6 py-4 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 ease-out flex items-center gap-3 group">
+                    <PlusIcon class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                    <span class=" lg:block">Add Signboard</span>
                 </Button>
             </Link>
         </div>
 
         <div class="relative min-h-screen px-4 pt-8">
-            <div class="md:hidden flex justify-end mb-5">
-                <Link
-                    :href="route('my-signboards.create')">
-                    <Button
-                        class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
-                    >
-                        <PlusIcon class="w-4 h-4" />
-                        <span>Add Signboard</span>
-                    </Button>
-                </Link>
-            </div>
 
             <div v-if="signboards.data?.length" class="mt-4 w-full">
                 <div class="w-full mx-auto px-2">

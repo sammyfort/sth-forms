@@ -26,6 +26,14 @@ import { Link } from '@inertiajs/vue3';
                 >
                     My Services
                 </Link>
+
+                <Link
+                    :href="route('my-jobs.index')"
+                    class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
+                    :class="{ 'text-primary': $page.component === 'Jobs/MyJobs' }"
+                >
+                    My Jobs
+                </Link>
             </div>
         </PopoverContent>
     </Popover>

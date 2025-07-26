@@ -165,7 +165,7 @@ class ServiceController extends Controller
     public function edit(Service $service): Response
     {
         return Inertia::render('Services/ServiceEdit',[
-            'service' =>  $service->load(['user','categories', 'region'])->toArrayWithMedia(),
+            'service' =>  $service->load(['user', 'region'])->toArrayWithMedia(),
             'categories' => ServiceCategory::select(['id', 'name'])
                 ->get()
                 ->map(fn($cat) => [

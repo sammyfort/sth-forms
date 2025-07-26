@@ -42,7 +42,8 @@ const goToPage = (page: number) => {
     <Head title="My Businesses" />
 
     <Layout>
-        <div class="hidden md:block fixed top-40 right-8 z-40">
+
+        <div class=" md:block fixed bottom-8 right-8 z-50">
             <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
                 <Button
                     class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
@@ -54,17 +55,6 @@ const goToPage = (page: number) => {
         </div>
 
         <div class="relative min-h-screen px-4 pt-8">
-
-            <div class="md:hidden flex justify-end mb-5">
-                <CreateBusiness @created="$inertia.reload({ only: ['businesses'] })">
-                    <Button
-                        class="bg-primary hover:bg-primary text-white font-semibold px-4 py-2 rounded shadow flex items-center gap-2"
-                    >
-                        <PlusIcon class="w-4 h-4" />
-                        <span>Add Business</span>
-                    </Button>
-                </CreateBusiness>
-            </div>
             <div v-if="businesses.data.length" class="mt-4 flex flex-wrap items-center justify-center">
                 <Link
                     v-for="business in businesses.data"

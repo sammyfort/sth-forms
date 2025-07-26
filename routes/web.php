@@ -9,7 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\SignboardController;
+use App\Http\Controllers\{SignboardController, JobController};
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -61,6 +61,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/edit/{service}', [ServiceController::class, 'edit'])->name('edit');
         Route::post('/update/{service}', [ServiceController::class, 'update'])->name('update');
         Route::delete('/destroy', [ServiceController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('my-jobs')->as('my-jobs.')->group( function (){
+        Route::get('/', [JobController::class, 'getMyJobs'])->name('index');
+        Route::get('/create', [JobController::class, 'create'])->name('create');
+        Route::post('/store', [JobController::class, 'store'])->name('store');
+        Route::get('/show/{service}', [JobController::class, 'show'])->name('show');
+
+        Route::get('/edit/{service}', [JobController::class, 'edit'])->name('edit');
+        Route::post('/update/{service}', [JobController::class, 'update'])->name('update');
+        Route::delete('/destroy', [JobController::class, 'destroy'])->name('destroy');
     });
 
 });

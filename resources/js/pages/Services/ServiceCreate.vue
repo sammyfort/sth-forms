@@ -60,7 +60,7 @@ const createService = () => {
 </script>
 
 <template>
-    <Head title="Create Signboard" />
+    <Head title="Create Service" />
     <Layout>
         <div class="w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
             <PageHeader
@@ -89,7 +89,6 @@ const createService = () => {
                             <InputText :form="form" label="Business Name" model="business_name"  />
                             <InputText :form="form" label="GPS Address" model="gps" required />
                             <InputText :form="form" label="Description" model="description"  textarea />
-
                             <div class="md:col-span-2">
                                 <InputSelect label="Fields Of Service" :form="form" model="categories" :options="props.categories" taggable required searchable />
                             </div>

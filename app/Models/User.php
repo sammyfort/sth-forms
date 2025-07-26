@@ -100,6 +100,11 @@ use Illuminate\Notifications\Notifiable;
         return $this->hasMany(Service::class);
     }
 
+    public function jobs(): HasMany
+    {
+        return $this->hasMany(Job::class);
+    }
+
      public function signboards(): HasManyThrough
      {
          return $this->hasManyThrough(

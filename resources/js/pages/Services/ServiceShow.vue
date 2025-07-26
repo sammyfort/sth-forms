@@ -25,6 +25,7 @@ import { ServiceI } from '@/types'
 import { ref, onMounted } from 'vue'
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
+import { toastSuccess } from '@/lib/helpers';
 
 const props = defineProps<{
     service: ServiceI
@@ -56,6 +57,7 @@ const handleShare = () => {
         })
     } else {
         navigator.clipboard.writeText(window.location.href)
+        toastSuccess('Link copied to clipboard!');
     }
 }
 </script>
@@ -99,18 +101,13 @@ const handleShare = () => {
                                         <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent"></div>
                                     </div>
 
-                                    <div v-if="service.is_promoted" class="absolute top-4 left-4 z-20">
+                                    <div  class="absolute top-4 left-4 z-20">
                                         <span class="bg-yellow-400/90 backdrop-blur-sm text-yellow-900 text-sm font-bold px-3 py-2 rounded-full flex items-center gap-1">
                                             <Star class="w-4 h-4 fill-current" />
-                                            Featured Work
+                                            {{service.title}}
                                         </span>
                                     </div>
 
-                                    <div class="absolute top-4 right-4 z-20">
-                                        <span class="bg-green-500/90 backdrop-blur-sm text-white text-lg font-bold px-4 py-2 rounded-full">
-                                            $100
-                                        </span>
-                                    </div>
                                 </div>
                             </div>
 
@@ -134,9 +131,7 @@ const handleShare = () => {
                                     </div>
                                 </div>
 
-                                <p class="text-xl text-slate-300 max-w-3xl leading-relaxed mb-6">
-                                    {{ service.description }}
-                                </p>
+
 
 
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -150,11 +145,7 @@ const handleShare = () => {
                                         <div class="text-white font-bold text-lg">{{ service.reviews_count || '12' }}</div>
                                         <div class="text-slate-300 text-sm">Reviews</div>
                                     </div>
-                                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                                        <Clock class="w-6 h-6 text-green-400 mx-auto mb-2" />
-                                        <div class="text-white font-bold text-lg">{{ service.completion_time || '3-5' }}</div>
-                                        <div class="text-slate-300 text-sm">Days</div>
-                                    </div>
+
                                     <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                                         <Eye class="w-6 h-6 text-purple-400 mx-auto mb-2" />
                                         <div class="text-white font-bold text-lg">{{ service.views_count || '245' }}</div>
@@ -176,6 +167,7 @@ const handleShare = () => {
                             <span>Edit Service</span>
                         </Button>
                     </Link>
+
                     <Button @click="handleShare" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg">
                         <Share2 class="w-5 h-5" />
                     </Button>
@@ -221,43 +213,43 @@ const handleShare = () => {
                             </div>
 
 
-                            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-                                <h2 class="text-2xl font-bold text-slate-900 mb-6">Performance Overview</h2>
-                                <div class="grid md:grid-cols-2 gap-6">
-                                    <div class="space-y-4">
-                                        <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">
-                                            <div class="flex items-center gap-3">
-                                                <CheckCircle class="w-6 h-6 text-green-600" />
-                                                <span class="font-semibold text-slate-900">Orders Completed</span>
-                                            </div>
-                                            <span class="font-bold text-green-600 text-lg">{{ service.orders_completed || '24' }}</span>
-                                        </div>
-                                        <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">
-                                            <div class="flex items-center gap-3">
-                                                <Users class="w-6 h-6 text-blue-600" />
-                                                <span class="font-semibold text-slate-900">Active Orders</span>
-                                            </div>
-                                            <span class="font-bold text-blue-600 text-lg">{{ service.active_orders || '3' }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="space-y-4">
-                                        <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-xl">
-                                            <div class="flex items-center gap-3">
-                                                <DollarSign class="w-6 h-6 text-yellow-600" />
-                                                <span class="font-semibold text-slate-900">Total Earnings</span>
-                                            </div>
-                                            <span class="font-bold text-yellow-600 text-lg">${{ service.total_earnings || '2,400' }}</span>
-                                        </div>
-                                        <div class="flex items-center justify-between p-4 bg-purple-50 rounded-xl">
-                                            <div class="flex items-center gap-3">
-                                                <Heart class="w-6 h-6 text-purple-600" />
-                                                <span class="font-semibold text-slate-900">Favorites</span>
-                                            </div>
-                                            <span class="font-bold text-purple-600 text-lg">{{ service.favorites_count || '18' }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">-->
+<!--                                <h2 class="text-2xl font-bold text-slate-900 mb-6">Performance Overview</h2>-->
+<!--                                <div class="grid md:grid-cols-2 gap-6">-->
+<!--                                    <div class="space-y-4">-->
+<!--                                        <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">-->
+<!--                                            <div class="flex items-center gap-3">-->
+<!--                                                <CheckCircle class="w-6 h-6 text-green-600" />-->
+<!--                                                <span class="font-semibold text-slate-900">Orders Completed</span>-->
+<!--                                            </div>-->
+<!--                                            <span class="font-bold text-green-600 text-lg">{{ service.orders_completed || '24' }}</span>-->
+<!--                                        </div>-->
+<!--                                        <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">-->
+<!--                                            <div class="flex items-center gap-3">-->
+<!--                                                <Users class="w-6 h-6 text-blue-600" />-->
+<!--                                                <span class="font-semibold text-slate-900">Active Orders</span>-->
+<!--                                            </div>-->
+<!--                                            <span class="font-bold text-blue-600 text-lg">{{ service.active_orders || '3' }}</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="space-y-4">-->
+<!--                                        <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-xl">-->
+<!--                                            <div class="flex items-center gap-3">-->
+<!--                                                <DollarSign class="w-6 h-6 text-yellow-600" />-->
+<!--                                                <span class="font-semibold text-slate-900">Total Earnings</span>-->
+<!--                                            </div>-->
+<!--                                            <span class="font-bold text-yellow-600 text-lg">${{ service.total_earnings || '2,400' }}</span>-->
+<!--                                        </div>-->
+<!--                                        <div class="flex items-center justify-between p-4 bg-purple-50 rounded-xl">-->
+<!--                                            <div class="flex items-center gap-3">-->
+<!--                                                <Heart class="w-6 h-6 text-purple-600" />-->
+<!--                                                <span class="font-semibold text-slate-900">Favorites</span>-->
+<!--                                            </div>-->
+<!--                                            <span class="font-bold text-purple-600 text-lg">{{ service.favorites_count || '18' }}</span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
 
 
@@ -268,15 +260,7 @@ const handleShare = () => {
                                 <h3 class="text-xl font-bold text-slate-900 mb-6">Service Details</h3>
 
                                 <div class="space-y-4">
-                                    <div class="flex items-center justify-between py-3 border-b border-slate-100">
-                                        <span class="text-slate-600">Starting Price</span>
-                                        <span class="font-bold text-green-600 text-lg">$100</span>
-                                    </div>
 
-                                    <div class="flex items-center justify-between py-3 border-b border-slate-100">
-                                        <span class="text-slate-600">Delivery Time</span>
-                                        <span class="font-semibold text-slate-900">{{ service.completion_time || '3-5 days' }}</span>
-                                    </div>
 
                                     <div class="flex items-center justify-between py-3 border-b border-slate-100">
                                         <span class="text-slate-600">Status</span>
@@ -328,23 +312,6 @@ const handleShare = () => {
                             </div>
 
 
-<!--                            <div class="bg-gradient-to-br from-primary to-primary-600 rounded-2xl shadow-sm p-6 text-white">-->
-<!--                                <h3 class="text-xl font-bold mb-4">Quick Stats</h3>-->
-<!--                                <div class="space-y-3">-->
-<!--                                    <div class="flex items-center justify-between">-->
-<!--                                        <span class="text-primary-100">This Month</span>-->
-<!--                                        <span class="font-bold">{{ service.monthly_views || '89' }} views</span>-->
-<!--                                    </div>-->
-<!--                                    <div class="flex items-center justify-between">-->
-<!--                                        <span class="text-primary-100">Conversion Rate</span>-->
-<!--                                        <span class="font-bold">{{ service.conversion_rate || '12%' }}</span>-->
-<!--                                    </div>-->
-<!--                                    <div class="flex items-center justify-between">-->
-<!--                                        <span class="text-primary-100">Response Time</span>-->
-<!--                                        <span class="font-bold">{{ service.avg_response_time || '2h' }}</span>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
                         </div>
                     </div>
                 </div>
