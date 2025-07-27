@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Service;
 
 use App\Rules\GPSRule;
+use App\Rules\MobileNumber;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreServiceRequest extends FormRequest
@@ -25,10 +26,10 @@ class StoreServiceRequest extends FormRequest
         return [
             'title' => ['required'],
             'description' => ['required'],
-            'first_mobile' => ['required'],
+            'first_mobile' => ['required', new MobileNumber()],
+            'second_mobile' => ['nullable', new MobileNumber()],
             'business_name' => ['nullable'],
-            'second_mobile' => ['nullable'],
-            'email' => ['nullable'],
+            'email' => ['nullable', 'email'],
             'address' => ['nullable'],
             'region_id' => ['required', 'exists:regions,id'],
             'town' => ['required'],

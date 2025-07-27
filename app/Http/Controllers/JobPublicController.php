@@ -61,9 +61,21 @@ class JobPublicController extends Controller
     public function show(Job $job): Response
     {
         $job->loadMissing(['categories', 'region']);
+        $relatedJobs = Job::query()
+            ->whereRelation('categories', function ($catQuery) use ($job){
+                $catQuery->whereIn('category_id', $job->categories->pluck('id')->toArray());
+            })
+            ->with(['categories', 'region'])
+            ->with(['media' => function ($mediaQuery) {
+                $mediaQuery->where('collection_name', 'company_logo');
+            }])
+            ->take(6)
+            ->inRandomOrder()
+            ->get();
 
         return Inertia::render('Jobs/Job', [
-            'job' => $job
+            'job' => $job,
+            'relatedJobs' => $relatedJobs,
         ]);
     }
 

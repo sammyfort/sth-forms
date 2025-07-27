@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\PaymentStatus;
 use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
@@ -40,6 +39,7 @@ use Spatie\Translatable\HasTranslations;
  * @property string $gps_lat
  * @property string $gps_lon
  */
+
 #[ObservedBy(SignboardObserver::class)]
 class Signboard extends Model implements HasMedia, Viewable
 {

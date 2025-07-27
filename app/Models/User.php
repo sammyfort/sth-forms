@@ -3,9 +3,11 @@
 namespace App\Models;
 
  use App\Notifications\PasswordResetNotification;
+ use App\Observers\UserObserver;
  use App\Traits\BootModelTrait;
  use Filament\Models\Contracts\FilamentUser;
  use Illuminate\Contracts\Auth\MustVerifyEmail;
+ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
  use Illuminate\Database\Eloquent\Casts\Attribute;
  use Illuminate\Database\Eloquent\Factories\HasFactory;
  use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -40,11 +42,15 @@ use Illuminate\Notifications\Notifiable;
  * @property string $updated_at
  * @property string $initials
  * @property string $google_id
+ * @property string $referral_code
+ * @property int $points
  */
 
+ #[ObservedBy(UserObserver::class)]
  class User extends Authenticatable implements MustVerifyEmail, HasMedia, FilamentUser, HasName
 {
-    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail, BootModelTrait, InteractsWithMedia, HasRoles;
+    use HasFactory, Notifiable, \Illuminate\Auth\MustVerifyEmail,
+        BootModelTrait, InteractsWithMedia, HasRoles;
 
     protected $hidden = [
         'password',

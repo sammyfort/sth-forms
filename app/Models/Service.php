@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\ServiceObserver;
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
 use App\Traits\HasPromotion;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,8 +38,12 @@ use Spatie\Tags\HasTags;
 * @property string $town
 * @property Collection<ServiceCategory> $categories
  * @property \Spatie\MediaLibrary\MediaCollections\Models\Media|null $featured
+ * @property string $gps
+ * @property string $gps_lat
+ * @property string $gps_lon
  */
 
+#[ObservedBy(ServiceObserver::class)]
 class Service extends Model implements HasMedia, Viewable
 {
     use BootModelTrait, HasFactory, InteractsWithMedia,

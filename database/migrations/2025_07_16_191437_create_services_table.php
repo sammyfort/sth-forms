@@ -27,6 +27,8 @@ return new class extends Migration {
             $table->foreignId('region_id')->constrained();
             $table->string('town');
             $table->string('gps')->nullable();
+            $table->string('gps_lat')->nullable();
+            $table->string('gps_lon')->nullable();
 
            // $table->decimal('charge_amount')->nullable();
            // $table->string('estimated_days')->nullable();
