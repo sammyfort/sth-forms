@@ -10,6 +10,7 @@ namespace App\Models;
  use Illuminate\Database\Eloquent\Attributes\ObservedBy;
  use Illuminate\Database\Eloquent\Casts\Attribute;
  use Illuminate\Database\Eloquent\Factories\HasFactory;
+ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  use Illuminate\Database\Eloquent\Relations\HasMany;
  use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -43,6 +44,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $initials
  * @property string $google_id
  * @property string $referral_code
+ * @property string $referral_link
  * @property int $points
  */
 
@@ -61,13 +63,23 @@ use Illuminate\Notifications\Notifiable;
         'password' => 'hashed',
     ];
     protected $appends = [
-        'initials', 'fullname', 'avatar', 'created_at_str',
+        'initials', 'fullname', 'avatar', 'created_at_str', 'referral_link'
     ];
 
      public function registerMediaCollections(): void
      {
          $this->addMediaCollection('avatar')
              ->singleFile();
+     }
+
+     public function referrer(): BelongsTo
+     {
+         return $this->belongsTo(self::class, 'referrer_id');
+     }
+
+     public function referrals(): HasMany
+     {
+         return $this->hasMany(self::class, 'referrer_id');
      }
 
     public function fullname(): Attribute
@@ -91,6 +103,10 @@ use Illuminate\Notifications\Notifiable;
         return Attribute::make(fn () => $this->getFirstMedia('avatar'));
     }
 
+    public function referralLink(): Attribute
+    {
+        return Attribute::make(fn () => route('register')."?rfc=".$this->referral_code);
+    }
 
     public function businesses(): HasMany
     {

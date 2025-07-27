@@ -79,3 +79,40 @@ export const dateAndTime = (dateStr: string)=>{
 export function ucFirst(str: string): string {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
+
+export function copyRefContent(elRef, message? = 'Content copied to clipboard !') {
+    if (!elRef) return;
+    const code = elRef.innerText;
+    copyContent(code, message)
+}
+
+export function copyContent(code: string, message? = 'Content copied to clipboard !') {
+    // Try Clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code)
+            .then(() => {
+                toastSuccess(message);
+            })
+            .catch(err => {
+                toastError("Failed to copy to clipboard");
+            });
+    } else {
+        // Fallback using execCommand
+        const textarea = document.createElement('textarea');
+        textarea.value = code;
+        textarea.style.position = 'fixed'; // Avoid scrolling to bottom
+        document.body.appendChild(textarea);
+        textarea.focus();
+        textarea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            successful
+                ? toastSuccess(message)
+                : toastError("Failed to copy to clipboard");
+        } catch (err) {
+            toastError("Failed to copy to clipboard");
+        }
+        document.body.removeChild(textarea);
+    }
+}

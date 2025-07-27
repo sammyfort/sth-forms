@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Profile\UpdatePersonalDetailsRequest;
 use App\Http\Requests\Profile\UpdateSocialsRequest;
 use App\Notifications\PasswordChangedNotification;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,16 @@ class ProfileController extends Controller
 {
     public function show(): Response
     {
-        return Inertia::render('Profile/Show');
+        $referrals = auth()->user()->referrals()
+            ->get(['id', 'firstname', 'lastname', 'mobile', 'created_at'])
+            ->map(function ($user){
+                $user->created_at_dh = Carbon::parse($user->created_at)->diffForHumans();
+                return $user;
+            });
+
+        return Inertia::render('Profile/Show', [
+            'referrals' => $referrals
+        ]);
     }
 
     public function editPersonalDetails(UpdatePersonalDetailsRequest $request): RedirectResponse

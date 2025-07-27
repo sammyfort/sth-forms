@@ -44,6 +44,9 @@ export interface User extends ModelI {
     linkedin: string;
     last_login: string;
     avatar?: MediaI,
+    referral_code: string
+    referral_link: string
+    points: number
 }
 
 export interface ServiceI extends ModelI{

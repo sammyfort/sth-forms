@@ -15,15 +15,38 @@ class RegisteredUserController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('auth/Register');
+        $referrer = null;
+        if (request()->get('rfc')){
+            $referrer = User::query()
+                ->where('referral_code', request()->get('rfc'))
+                ->first(['referral_code', 'id']);
+        }
+        return Inertia::render('auth/Register', [
+            'rfc' => $referrer?->referral_code ?? null,
+        ]);
     }
 
     public function store(RegisterRequest $request): RedirectResponse
     {
-        $user = User::query()->create($request->validated());
+        $validated = $request->validated();
+        $rfc = $validated['rfc'] ?? null;
+
+        if ($rfc){
+            // set the referrer ID
+            $referrer = User::query()->where('referral_code', $rfc)->first();
+            if ($referrer){
+                $validated['referrer_id'] = $referrer->id;
+            }
+            unset($validated['rfc']);
+        }
+
+        $user = User::query()
+            ->create($validated);
+
         event(new Registered($user));
         Auth::login($user);
         $user->touch('last_login');
+
         return to_route('verification.notice');
     }
 }

@@ -1,11 +1,20 @@
 <script setup lang="ts">
-
 import Layout from '@/layouts/Layout.vue';
 import { Head } from '@inertiajs/vue3';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import PersonalDetailsCard from '@/components/profile/PersonalDetailsCard.vue';
 import SocialsCard from '@/components/profile/SocialsCard.vue';
 import ChangePasswordCard from '@/components/profile/ChangePasswordCard.vue';
+import ReferralPointsCard from '@/components/profile/ReferralPointsCard.vue';
+import ReferredUsersTable from '@/components/profile/ReferredUsersTable.vue';
+import { User } from '@/types';
+
+type Props = {
+    referrals: User[]
+}
+
+defineProps<Props>()
+
 </script>
 
 <template>
@@ -18,15 +27,15 @@ import ChangePasswordCard from '@/components/profile/ChangePasswordCard.vue';
 <!--                </div>-->
                 <div class="flex flex-wrap justify-center">
                     <Card class="border shadow-none border-gray-200 rounded-2xl lg:w-3/4 w-full">
-                        <CardHeader class="text-lg font-black">
-                            <div class="font-black text-2xl">
-                                Profile Details
-                            </div>
+                        <CardHeader class="text-2xl font-black">
+                            Profile Details
                         </CardHeader>
                         <CardContent>
                             <SocialsCard />
                             <PersonalDetailsCard />
+                            <ReferralPointsCard />
                             <ChangePasswordCard />
+                            <ReferredUsersTable  :referrals="referrals"/>
                         </CardContent>
                     </Card>
 <!--                    <div class="w-full lg:w-1/4 mt-8 lg:mt-0 lg:ps-8">-->

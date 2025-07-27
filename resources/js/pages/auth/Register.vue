@@ -9,6 +9,10 @@ import { onMounted, ref } from 'vue';
 import TypeIt from 'typeit';
 import { getRandomAuthImage } from '@/lib/helpers';
 
+const props = defineProps<{
+    rfc: string|null,
+}>()
+
 const form = useForm({
     firstname: '',
     lastname: '',
@@ -16,7 +20,9 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    rfc: props.rfc,
 });
+
 const bgImage = getRandomAuthImage()
 
 const submit = () => {

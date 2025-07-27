@@ -29,6 +29,7 @@ class RegisterRequest extends FormRequest
             'mobile' => ['required', 'string', 'max:100', new MobileNumber(), 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Password::defaults()],
+            'rfc' => ['nullable', 'string'],
         ];
     }
 }
