@@ -20,8 +20,8 @@ const props = defineProps<Props>()
     <Head :title="job.title"/>
     <Layout>
         <div class="w-full">
-            <div class="w-full bg-secondary py-15 text-white">
-                <div class="flex items-center gap-12 max-w-[1000px] mx-auto">
+            <div class="w-full bg-secondary py-15 text-white px-3">
+                <div class="flex flex-wrap items-center gap-12 max-w-[1000px] mx-auto">
                     <Avatar class="h-15 w-15">
                         <AvatarImage :src="job.company_logo"/>
                         <AvatarFallback>{{ job.company_name.charAt(0) + job.company_name.charAt(1) }}</AvatarFallback>
@@ -44,9 +44,9 @@ const props = defineProps<Props>()
                             <div>{{ job.region.name }}</div>
                         </Badge>
                     </div>
-                    <div class="ms-auto" v-if="job.application_link">
+                    <div class="lg:ms-auto mx-auto md:mx-0 md:w-auto w-full" v-if="job.application_link">
                         <a :href="job.application_link" target="_blank">
-                            <Button class="px-15 py-7 rounded-2xl">
+                            <Button class="px-15 py-7 rounded-2xl w-full">
                                 Apply Now
                             </Button>
                         </a>
@@ -54,14 +54,14 @@ const props = defineProps<Props>()
                 </div>
             </div>
             <div class="max-w-[1200px] mx-auto mt-10 flex flex-col md:flex-row gap-10 relative">
-                <div class="w-3/4 flex flex-col gap-10">
+                <div class="w-full md:w-3/4 flex flex-col gap-10">
                     <div>{{ job.description }}</div>
                     <div v-if="job.how_to_apply">
                         <div class="font-bold">How to apply: </div>
                         <div>{{ job.how_to_apply }}</div>
                     </div>
                 </div>
-                <div class="w-1/4">
+                <div class="w-full md:w-1/4">
                     <div class="sticky flex flex-col gap-5 top-0 bg-[#E8F0FF] rounded-3xl p-5">
                         <div class="flex flex-col gap-2">
                             <div class="border-s-primary border-s-4 px-2 font-semibold">Categories</div>

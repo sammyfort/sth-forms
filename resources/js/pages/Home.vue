@@ -9,17 +9,25 @@ import TrustedBusinessesSection from '@/components/home/TrustedBusinessesSection
 import AdvertisedServicesH from '@/components/Services/AdvertisedServicesH.vue';
 import { router } from '@inertiajs/vue3';
 import AdvertisedJobsH from '@/components/jobs/AdvertisedJobsH.vue';
+import { Button } from '@/components/ui/button';
 
 const searchForm = useForm({
-    directory: ''
+    directory: '',
+    q: '',
 })
 
 const searchOptions: InputSelectOption[] = [
-    {label: 'Artisans', value: 'artisans'},
+    {label: 'Artisans', value: 'services'},
     {label: 'Signboards', value: 'signboards'},
     {label: 'Jobs', value: 'jobs'},
     {label: 'Shops', value: 'shops'},
 ]
+
+function performSearch(){
+    searchForm.get(route('home.search'), {
+
+    })
+}
 
 </script>
 
@@ -30,19 +38,24 @@ const searchOptions: InputSelectOption[] = [
 
             <div class="px-3 py-10">
                 <div class="text-2xl font-semibold mb-5 text-center">Browse directories</div>
-                <div class="flex justify-center p-10 gap-7 flex-wrap">
+                <div class="flex justify-center items-end py-7 gap-7 flex-wrap">
                     <InputSelect
                         :options="searchOptions"
                         label="Directory"
                         :form="searchForm"
-                        model="categories"
+                        model="directory"
                         class="min-w-100"
                     />
                     <InputText
                         label="Search For"
                         container-class="min-w-100"
                         placeholder="Type what you're looking for..."
+                        model="q"
+                        :form="searchForm"
                     />
+                    <div class="w-full md:w-auto">
+                        <Button @click="performSearch" :processing="searchForm.processing" class="w-full md:w-auto md:px-10">Search</Button>
+                    </div>
                 </div>
             </div>
 

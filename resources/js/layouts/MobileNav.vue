@@ -41,16 +41,23 @@ const user = computed(() => page.props.auth.user)
                     <div class="flex items-center">
                         <TextLink
                             class="font-bold py-1.5 no-underline w-full ps-2"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboards' }"
+                            :class="{ 'mobile-active-nav': $page.component === 'Services/Services' || $page.component === 'Services/Service' }"
+                            :href="route('services.index')"
+                        >Browse Artisans</TextLink>
+                    </div>
+                    <div class="flex items-center">
+                        <TextLink
+                            class="font-bold py-1.5 no-underline w-full ps-2"
+                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboards' || $page.component === 'Signboards/Signboard' }"
                             :href="route('signboards.index')"
                         >Browse Signboards</TextLink>
                     </div>
                     <div class="flex items-center">
                         <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboard' }"
-                            href="/templates"
-                        >Locate A Signboard</TextLink>
+                            class="font-bold py-1.5 no-underline w-full ps-2"
+                            :class="{ 'mobile-active-nav': $page.component === 'Jobs/Jobs' || $page.component === 'Jobs/Job' }"
+                            :href="route('jobs.index')"
+                        >Find A Job</TextLink>
                     </div>
                     <div class="flex items-center">
                         <TextLink
