@@ -58,6 +58,7 @@ class GoogleAuthController extends Controller
             $user->touch('last_login');
         } catch (\Exception $exception) {
             Log::error($exception);
+            dd($exception);
         }
 
         // finally

@@ -7,12 +7,16 @@ import { Briefcase, Clock, MapPin } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { ucFirst } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
+import JobCardV1 from '@/components/jobs/JobCardV1.vue';
 
 type Props = {
-    job: JobI
+    job: JobI,
+    relatedJobs: JobI[]
 }
 
 const props = defineProps<Props>()
+
+console.log(props.relatedJobs)
 
 </script>
 
@@ -99,6 +103,16 @@ const props = defineProps<Props>()
                             </a>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="mt-10 max-w-[1200px] mx-auto">
+                <div class="text-xl mb-5 font-semibold">Related Jobs</div>
+                <div class="grid items-stretch gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3">
+                    <JobCardV1
+                        v-for="relatedJob in relatedJobs"
+                        :job="relatedJob"
+                        :key="`related-job-${relatedJob.id}`"
+                    />
                 </div>
             </div>
         </div>

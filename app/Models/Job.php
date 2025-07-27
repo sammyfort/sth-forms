@@ -6,6 +6,7 @@ use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
@@ -26,6 +27,7 @@ use Spatie\Sluggable\SlugOptions;
 * @property string $created_at
 * @property string $updated_at
  * @property string $company_logo
+ * @property Collection<JobCategory> $categories
  */
 
 
