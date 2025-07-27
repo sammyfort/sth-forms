@@ -46,7 +46,7 @@ onMounted(() => {
             </div>
             <div class="relative grid grid-cols-5 w-full gap-15">
                 <div class=" lg:block col-span-5 lg:col-span-1">
-                    <div class="sticky top-0">
+                    <div class="sticky top-40">
                         <ServicesFilter
                             :categories="categories"
                             :regions="regions"
@@ -76,12 +76,12 @@ onMounted(() => {
                     </div>
                 </div>
                 <div class="hidden lg:block lg:col-span-1">
-                    <div class="sticky top-0">
+                    <div class="sticky top-40">
                         <div class="mb-4 text-lg font-semibold text-fade flex gap-2 items-center">
                             Trending Artisans
                             <Hammer :size="22" class="text-primary"/>
                         </div>
-                        <AdvertisedServicesV items-class="h-screen" />
+                        <AdvertisedServicesV items-class="h-screen" class=""/>
                     </div>
                 </div>
             </div>

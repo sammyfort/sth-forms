@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/home/search-directory', [HomeController::class, 'searchDirectory'])->name('home.search');
 
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');

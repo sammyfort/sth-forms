@@ -8,6 +8,7 @@ import { useScrollPagination } from '@/lib/useScrollPagination';
 import { onMounted } from 'vue';
 import JobCardV1Skeleton from '@/components/skeletons/JobCardV1Skeleton.vue';
 import JobFilter from '@/components/jobs/JobFilter.vue';
+import BackToTop from '@/components/BackToTop.vue';
 
 type Props = {
     jobsData: PaginatedDataI<JobI>,
@@ -74,6 +75,7 @@ onMounted(() => {
 <!--                </div>-->
             </div>
         </div>
+        <BackToTop />
     </Layout>
 </template>
 
