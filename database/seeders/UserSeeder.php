@@ -25,6 +25,7 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'uuid' => Str::uuid(),
+                'referral_code' => Str::random(10),
                 'firstname' => 'Admin',
                 'lastname' => 'User',
                 'email' => 'thesamuelfort@gmail.com',
@@ -35,6 +36,7 @@ class UserSeeder extends Seeder
 
             [
                 'uuid' => Str::uuid(),
+                'referral_code' => Str::random(10),
                 'firstname' => 'Emmanuel',
                 'lastname' => 'Arhinful',
                 'email' => 'fii@gmail.com',
@@ -46,6 +48,7 @@ class UserSeeder extends Seeder
 
         $admin = User::query()->create([
             'uuid' => Str::uuid(),
+            'referral_code' => Str::random(10),
             'firstname' => 'Super',
             'lastname' => 'Admin',
             'email' => 'admin@app.com',

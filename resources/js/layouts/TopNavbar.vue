@@ -130,7 +130,7 @@ const user = computed(() => page.props.auth.user)
                                     <div class="lex flex items-center cursor-pointer gap-3">
                                         <Avatar class="h-12 w-12 border">
                                             <AvatarImage :src="user.avatar?.original_url ?? ''" />
-                                            <AvatarFallback class="bg-gray-300">{{ user.initials }}</AvatarFallback>
+                                            <AvatarFallback class="bg-gray-300 uppercase">{{ user.initials }}</AvatarFallback>
                                         </Avatar>
                                     </div>
                                 </PopoverTrigger>

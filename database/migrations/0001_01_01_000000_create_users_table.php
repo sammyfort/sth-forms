@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreignId('created_by_id')->nullable();
             $table->timestamp('last_login')->nullable();
             $table->integer('points')->default(0);
+            $table->foreignId('referrer_id')->nullable();
             $table->string('referral_code');
             $table->rememberToken();
             $table->timestamps();
