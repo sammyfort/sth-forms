@@ -9,7 +9,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\{JobPublicController, SignboardController, JobController};
+use App\Http\Controllers\{JobPublicController,
+    ProductPublicController,
+    RatingController,
+    SignboardController,
+    JobController};
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -75,6 +79,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/destroy', [JobController::class, 'destroy'])->name('destroy');
     });
 
+    Route::post('rate', [RatingController::class, 'rate'])->name('ratings.rate');
+
 });
 
 Route::get('api/{path}', ApiController::class)->name('api');
@@ -99,6 +105,12 @@ Route::prefix('jobs')->as('jobs.')->group(callback: function () {
     Route::get('/', [JobPublicController::class, 'index'])->name('index');
     Route::get('/promoted', [JobPublicController::class, 'getPromotedJobs'])->name('promoted');
     Route::get('/details/{job:slug}', [JobPublicController::class, 'show'])->name('show');
+});
+
+Route::prefix('products')->as('products.')->group(callback: function () {
+    Route::get('/', [ProductPublicController::class, 'index'])->name('index');
+    Route::get('/promoted', [ProductPublicController::class, 'getPromotedProducts'])->name('promoted');
+    Route::get('/details/{product:slug}', [ProductPublicController::class, 'show'])->name('show');
 });
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');

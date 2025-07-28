@@ -49,6 +49,30 @@ export interface User extends ModelI {
     points: number
 }
 
+export interface ProductI extends ModelI {
+    user_id: number
+    user: User
+    name: string
+    slug: string
+    short_description: string
+    description: string
+    website: string
+    price: number
+    views_count: number
+    is_negotiable: boolean
+    first_mobile: string
+    second_mobile: string|null
+    region_id: number
+    region: RegionI
+    town: string
+    featured: string | MediaI
+    gallery: string[] | MediaI[]
+    reviews: ReviewI[];
+    promotions: PromotionI[]
+    active_promotion: PromotionI | null,
+    total_average_rating: number
+}
+
 export interface ServiceI extends ModelI{
     title: string;
     slug: string;
@@ -136,6 +160,12 @@ export interface SignboardCategoryI extends ModelI {
 }
 
 export interface ServiceCategoryI extends ModelI {
+    slug: string;
+    name: string;
+    description: string;
+}
+
+export interface ProductCategoryI extends ModelI {
     slug: string;
     name: string;
     description: string;
@@ -270,3 +300,4 @@ export type InputSelectOption = {
     value: number|string
 }
 
+export type RatableItemsI = SignboardI | ProductI

@@ -116,3 +116,7 @@ export function copyContent(code: string, message? = 'Content copied to clipboar
         document.body.removeChild(textarea);
     }
 }
+
+export function cediSign(): string{
+    return "₵"
+}

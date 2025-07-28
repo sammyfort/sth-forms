@@ -5,17 +5,17 @@ namespace App\Services;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 
-class SignboardService
+class RatingService
 {
-    public static function getDistributions($signboard): array
+    public static function getDistributions($ratable): array
     {
         // find ratings distributions
-        $totalReviews = $signboard->totalReviews();
+        $totalReviews = $ratable->totalReviews();
         $distributions = [
             5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0,
         ];
 
-        $reviews = $signboard->reviews;
+        $reviews = $ratable->reviews;
         $reviewers = User::query()->whereIn('id', $reviews->pluck('user_id')->toArray())->get(['id', 'firstname', 'lastname']);
         $reviews->map(function ($review) use (&$distributions, $reviewers) {
             $ar = $review->ratings->avg('value');

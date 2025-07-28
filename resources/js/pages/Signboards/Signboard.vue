@@ -8,14 +8,13 @@ import ContactDetails from '@/components/signboard/Details/ContactDetails.vue';
 import SocialsDetails from '@/components/signboard/Details/SocialsDetails.vue';
 import LocationDetails from '@/components/signboard/Details/LocationDetails.vue';
 import { Badge } from '@/components/ui/badge';
-import ReviewsDetails from '@/components/signboard/Details/ReviewsDetails.vue';
-import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
 import SignboardGallery from '@/components/signboard/Details/SignboardGallery.vue';
 import AdvertisedSignboardV from '@/components/businesses/AdvertisedSignboardV.vue';
 import AdvertisedSignboardsH from '@/components/businesses/AdvertisedSignboardsH.vue';
 import { Eye } from 'lucide-vue-next';
 import TextLink from '@/components/TextLink.vue';
 import { computed } from 'vue';
+import ReviewsDetails from '@/components/ReviewsDetails.vue';
 
 type Props = {
     signboard: SignboardI;
@@ -96,10 +95,7 @@ const reviews = computed(()=> props.signboard.reviews);
                                 </div>
                             </div>
                         </div>
-                        <ReviewsDetails :signboard="signboard" :ratings="ratings" :distributions="distributions" />
-                        <div class="p-4">
-                            <ReviewsList :signboard="signboard" :reviews="reviews" />
-                        </div>
+                        <ReviewsDetails :ratable="signboard" :ratings="ratings" :distributions="distributions" :reviews="reviews"/>
                     </div>
                 </div>
                 <div class="order-2 p-3 lg:order-1 lg:col-span-2">

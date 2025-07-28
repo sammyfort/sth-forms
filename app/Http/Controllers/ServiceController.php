@@ -44,6 +44,7 @@ class ServiceController extends Controller
             ->with('media', function ($builder){
                 $builder->where('collection_name', 'featured');
             })
+            ->withCount('views')
             ->with(['region', 'user', 'category'])
 //            ->inRandomOrder()
             ->paginate(8)
@@ -89,7 +90,8 @@ class ServiceController extends Controller
 
     public function show(Service $service): Response
     {
-        $service->loadMissing(['user', 'category', 'region'])->loadCount('views');
+        $service->loadMissing(['user', 'category', 'region'])
+            ->loadCount('views');
 
         if (!auth() || auth()->id() != $service->user_id){
             $viewCooldown = now()->addHours(3);
