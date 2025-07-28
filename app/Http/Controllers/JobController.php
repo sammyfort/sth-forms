@@ -22,7 +22,7 @@ class JobController extends Controller
         $status = request('status', 'all');
         $search = request('search');
 
-        $query = auth()->user()->jobs()->with('user')->orderBy('created_at', $sort);
+        $query = auth()->user()->jobs()->orderBy('created_at', $sort);
 
         if ($status && $status !== 'all') {
             $query->where('status', $status);

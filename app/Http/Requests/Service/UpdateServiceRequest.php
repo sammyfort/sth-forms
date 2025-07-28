@@ -33,7 +33,7 @@ class UpdateServiceRequest extends FormRequest
             'region_id' => ['required', 'exists:regions,id'],
             'town' => ['required'],
             'gps' => ['nullable', new GPSRule()],
-            'categories' => ['required', 'array'],
+            'category_id' => ['required'],
 
             'featured' => ['nullable', 'image', 'max:2048'],
             'gallery' => ['nullable', 'array'],

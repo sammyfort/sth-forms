@@ -31,7 +31,7 @@ const form = useForm({
     town: '',
     gps: '',
     region_id: '',
-    categories: [],
+    category_id: '',
     featured: null,
     gallery: []
 });
@@ -90,7 +90,7 @@ const createService = () => {
                             <InputText :form="form" label="GPS Address" model="gps" required />
                             <InputText :form="form" label="Description" model="description"  textarea />
                             <div class="md:col-span-2">
-                                <InputSelect label="Fields Of Service" :form="form" model="categories" :options="props.categories" taggable required searchable />
+                                <InputSelect label="Field Of Service" :form="form" model="category_id" :options="props.categories" required searchable />
                             </div>
 
                         </div>

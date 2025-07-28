@@ -11,7 +11,7 @@ import {
     MapPin,
     Star,
     Clock,
-    DollarSign,
+    Building2,
     Users,
     MessageCircle,
     Share2,
@@ -21,26 +21,38 @@ import {
     PlusIcon
 } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { ServiceI } from '@/types'
+import { PromotionPlanI, ServiceI } from '@/types';
 import { ref, onMounted } from 'vue'
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
-import { toastSuccess } from '@/lib/helpers';
+import { toastError, toastSuccess } from '@/lib/helpers';
+
+import PaymentHistory from '@/components/promotions/PaymentHistory.vue';
+import PromoteNow from '@/components/promotions/PromoteNow.vue';
+import { PromotableE } from '@/lib/enums';
+import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
 
 const props = defineProps<{
     service: ServiceI
+    plans: PromotionPlanI[];
 }>()
 
 onMounted(()=> {
-    console.log(props.service.categories)
+    console.log(props.service)
 })
 
 const isDeleting = ref(false)
 
 const handleDelete = () => {
-
-        isDeleting.value = true
+    isDeleting.value = true
         router.delete(route('my-services.destroy', props.service.id), {
+            onSuccess: (res) => {
+                if (res.props.success) {
+                    toastSuccess(res.props.message);
+                } else {
+                    toastError(res.props.message);
+                }
+            },
             onFinish: () => {
                 isDeleting.value = false
             }
@@ -132,23 +144,17 @@ const handleShare = () => {
                                 </div>
 
 
-
-
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                                        <Star class="w-6 h-6 text-yellow-400 fill-current mx-auto mb-2" />
-                                        <div class="text-white font-bold text-lg">{{ service.rating || '4.8' }}</div>
-                                        <div class="text-slate-300 text-sm">Rating</div>
+                                        <Building2 class="w-6 h-6 text-yellow-300 fill-current mx-auto mb-2" />
+                                        <div class="text-white font-meduium text-lg">Category</div>
+                                        <div class="text-slate-300 text-sm">{{ service.category.name }}</div>
                                     </div>
-                                    <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
-                                        <MessageCircle class="w-6 h-6 text-blue-400 mx-auto mb-2" />
-                                        <div class="text-white font-bold text-lg">{{ service.reviews_count || '12' }}</div>
-                                        <div class="text-slate-300 text-sm">Reviews</div>
-                                    </div>
+
 
                                     <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                                         <Eye class="w-6 h-6 text-purple-400 mx-auto mb-2" />
-                                        <div class="text-white font-bold text-lg">{{ service.views_count || '245' }}</div>
+                                        <div class="text-white font-bold text-lg">{{ service.views_count }}</div>
                                         <div class="text-slate-300 text-sm">Views</div>
                                     </div>
                                 </div>
@@ -192,70 +198,17 @@ const handleShare = () => {
                                 </div>
                             </div>
 
-
-                            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
-                                <h2 class="text-2xl font-bold text-slate-900 mb-6">Field of Service</h2>
-                                <div class="flex flex-wrap gap-3">
-                                    <span v-for="category in service.categories"
-                                          :key="category?.id"
-                                          class="bg-gradient-to-r from-primary/10 to-primary/5
-                                           text-primary text-sm font-semibold px-4 py-2 rounded-full border border-primary/20">
-                                        {{ category?.name }}
-                                    </span>
-                                </div>
-                            </div>
-
                             <div  >
                                 <h2 class="text-2xl font-bold text-slate-900 mb-6">Gallery</h2>
 
                                      <ImagePreview :featured-url="service.featured" :gallery-urls="service.gallery"/>
 
                             </div>
-
-
-<!--                            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">-->
-<!--                                <h2 class="text-2xl font-bold text-slate-900 mb-6">Performance Overview</h2>-->
-<!--                                <div class="grid md:grid-cols-2 gap-6">-->
-<!--                                    <div class="space-y-4">-->
-<!--                                        <div class="flex items-center justify-between p-4 bg-green-50 rounded-xl">-->
-<!--                                            <div class="flex items-center gap-3">-->
-<!--                                                <CheckCircle class="w-6 h-6 text-green-600" />-->
-<!--                                                <span class="font-semibold text-slate-900">Orders Completed</span>-->
-<!--                                            </div>-->
-<!--                                            <span class="font-bold text-green-600 text-lg">{{ service.orders_completed || '24' }}</span>-->
-<!--                                        </div>-->
-<!--                                        <div class="flex items-center justify-between p-4 bg-blue-50 rounded-xl">-->
-<!--                                            <div class="flex items-center gap-3">-->
-<!--                                                <Users class="w-6 h-6 text-blue-600" />-->
-<!--                                                <span class="font-semibold text-slate-900">Active Orders</span>-->
-<!--                                            </div>-->
-<!--                                            <span class="font-bold text-blue-600 text-lg">{{ service.active_orders || '3' }}</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                    <div class="space-y-4">-->
-<!--                                        <div class="flex items-center justify-between p-4 bg-yellow-50 rounded-xl">-->
-<!--                                            <div class="flex items-center gap-3">-->
-<!--                                                <DollarSign class="w-6 h-6 text-yellow-600" />-->
-<!--                                                <span class="font-semibold text-slate-900">Total Earnings</span>-->
-<!--                                            </div>-->
-<!--                                            <span class="font-bold text-yellow-600 text-lg">${{ service.total_earnings || '2,400' }}</span>-->
-<!--                                        </div>-->
-<!--                                        <div class="flex items-center justify-between p-4 bg-purple-50 rounded-xl">-->
-<!--                                            <div class="flex items-center gap-3">-->
-<!--                                                <Heart class="w-6 h-6 text-purple-600" />-->
-<!--                                                <span class="font-semibold text-slate-900">Favorites</span>-->
-<!--                                            </div>-->
-<!--                                            <span class="font-bold text-purple-600 text-lg">{{ service.favorites_count || '18' }}</span>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
+                            <PaymentHistory :promotions="service.promotions" />
                         </div>
 
 
                         <div class="space-y-6">
-
-
                             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-6">
                                 <h3 class="text-xl font-bold text-slate-900 mb-6">Service Details</h3>
 
@@ -309,10 +262,16 @@ const handleShare = () => {
                                     </ConfirmDialogue>
 
                                 </div>
+
+                                <div class="lg:col-span-1">
+
+                                    <PromoteNow :promotable="service" :plans="plans" :promotable-type="PromotableE.SERVICE"/>
+
+                                </div>
                             </div>
-
-
                         </div>
+
+
                     </div>
                 </div>
             </div>

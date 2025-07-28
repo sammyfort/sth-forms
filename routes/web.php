@@ -57,7 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [ServiceController::class, 'getMyServices'])->name('index');
         Route::get('/create', [ServiceController::class, 'create'])->name('create');
         Route::post('/store', [ServiceController::class, 'store'])->name('store');
-        Route::get('/show/{service}', [ServiceController::class, 'showMyServices'])->name('show');
+        Route::get('/show/{service}', [ServiceController::class, 'showMyService'])->name('show');
 
         Route::get('/edit/{service}', [ServiceController::class, 'edit'])->name('edit');
         Route::post('/update/{service}', [ServiceController::class, 'update'])->name('update');
