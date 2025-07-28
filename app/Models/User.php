@@ -123,6 +123,11 @@ use Illuminate\Notifications\Notifiable;
         return $this->hasMany(Job::class);
     }
 
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
+    }
+
      public function signboards(): HasManyThrough
      {
          return $this->hasManyThrough(

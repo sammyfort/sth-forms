@@ -53,8 +53,8 @@ const user = computed(() => page.props.auth.user)
                                 class="hover:text-primary py-4 text-center"
                             >Jobs</Link>
                             <Link
-                                :class="{ 'active-nav': $page.component === 'Shops/Shop' }"
-                                :href="route('signboards.index')"
+                                :class="{ 'active-nav': $page.component === 'Products/Products' }"
+                                :href="route('products.index')"
                                 class="hover:text-primary py-4 text-center"
                             >Shop</Link>
 

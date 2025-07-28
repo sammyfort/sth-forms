@@ -12,6 +12,7 @@ use App\Models\Region;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 use App\Services\HelperService;
+use App\Services\RatingService;
 use App\Services\SignboardService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -65,7 +66,7 @@ class SignboardController extends Controller
                     ->with(['ratings']);
             })
             ->with(['business', 'region'])
-//            ->inRandomOrder()
+            // ->inRandomOrder()
             ->paginate(8)
             ->appends(request()->query());
 
@@ -85,7 +86,7 @@ class SignboardController extends Controller
     {
         $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories', 'media']);
         $averageRatings = $signboard->averageRatings();
-        $distributions = SignboardService::getDistributions($signboard);
+        $distributions = RatingService::getDistributions($signboard);
 
         if (!auth() || auth()->id() != $signboard->created_by_id){
             $viewCooldown = now()->addHours(3);
@@ -130,6 +131,7 @@ class SignboardController extends Controller
         $signboards->map(function (Signboard $signboard) {
             $signboard->featured_url = $signboard->getFirstMediaUrl('featured');
         });
+
         return response()->success([
             'signboards' => $signboards
         ]);

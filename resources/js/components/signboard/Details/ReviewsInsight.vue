@@ -1,25 +1,26 @@
 <script setup lang="ts">
-import { AverageRatingsI, RatingsDistributionI, SignboardI } from '@/types';
+import { AverageRatingsI, RatableItemsI, RatingsDistributionI } from '@/types';
 import StarRating from 'vue-star-rating'
 import { number_format } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
-import SignboardRating from '@/components/businesses/SignboardRating.vue';
-import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
 import { usePage } from '@inertiajs/vue3';
-import { computed, HTMLAttributes } from 'vue';
+import { computed, HTMLAttributes, ref } from 'vue';
 import { cn } from '@/lib/utils';
-
+import RatePopover from '@/components/RatePopover.vue';
+import RateDialog from '@/components/RateDialog.vue';
 
 const page = usePage()
 const user = computed(()=> page.props.auth.user)
 
 type Props = {
-    signboard: SignboardI,
+    signboard: RatableItemsI,
     ratings: AverageRatingsI,
     distributions: RatingsDistributionI,
     class?: HTMLAttributes['class']
 }
 const props = defineProps<Props>()
+
+const totalAverageRating = ref<number>(props.signboard.total_average_rating)
 
 </script>
 
@@ -28,14 +29,14 @@ const props = defineProps<Props>()
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
             <div v-if="user?.id !== signboard.business.user_id" class="ms-auto md:block hidden">
-                <SignboardRating :signboard="signboard">
+                <RatePopover :ratable="signboard" ratable_type="signboard" @rated="(value)=>{totalAverageRating = value}">
                     <Button size="sm">Add Review</Button>
-                </SignboardRating>
+                </RatePopover>
             </div>
             <div class="ms-auto md:hidden" v-if="user?.id !== signboard.business.user_id">
-                <SignboardRatingModal :signboard="signboard">
+                <RateDialog :ratable="signboard" ratable_type="signboard" @rated="(value)=>{totalAverageRating = value}">
                     <Button size="sm">Add Review</Button>
-                </SignboardRatingModal>
+                </RateDialog>
             </div>
         </div>
         <div class="my-5 flex flex-col items-start gap-4">
@@ -44,7 +45,7 @@ const props = defineProps<Props>()
                 <StarRating
                     :star-size="37"
                     :show-rating="false"
-                    :rating="signboard.total_average_rating"
+                    :rating="totalAverageRating"
                     read-only
                     active-color="#009689"
                     :padding="3"

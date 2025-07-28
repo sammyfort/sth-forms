@@ -6,25 +6,23 @@ use App\Observers\SignboardObserver;
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
 use App\Traits\HasPromotion;
+use App\Traits\RatingsAttributesTrait;
 use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 use Spatie\Tags\HasTags;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\Translatable\HasTranslations;
 
 /**
  * @property string $id
@@ -45,7 +43,7 @@ class Signboard extends Model implements HasMedia, Viewable
 {
     use BootModelTrait, HasTags, HasFactory, ReviewRateable,
         InteractsWithMedia, InteractsWithViews, HasMediaUploads,
-        HasSlug, HasPromotion;
+        HasSlug, HasPromotion, RatingsAttributesTrait;
 
 
     public function getSlugOptions() : SlugOptions
@@ -96,19 +94,4 @@ class Signboard extends Model implements HasMedia, Viewable
             'category_id'
         );
     }
-
-    public function totalAverageRating(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => ratingFormat($this->overallAverageRating())
-        );
-    }
-
-    public function reviewsCount(): Attribute
-    {
-        return Attribute::make(
-            get: fn() => $this->totalReviews() ?? 0
-        );
-    }
-
 }

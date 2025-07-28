@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Business;
 use App\Models\Job;
 use App\Models\JobCategory;
+use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\Region;
 use App\Models\Service;
 use App\Models\Signboard;
@@ -58,33 +60,35 @@ class UserSeeder extends Seeder
         ]);
         $admin->assignRole('admin');
 
-        $signboardCategory = SignboardCategory::query()->pluck('id');
-        $jobCategory = JobCategory::query()->pluck('id');
+        $signboardCategories = SignboardCategory::query()->pluck('id');
+        $jobCategories = JobCategory::query()->pluck('id');
+        $productCategories = ProductCategory::query()->pluck('id');
         $regions = Region::query()->pluck('id');
 
         foreach ($users as $userData) {
             $user = User::query()->create($userData);
-            Business::factory(2)
+
+            Business::factory(1)
                 ->for($user)
                 ->create([
                     'created_by_id' => $user->id
                 ])
-                ->each(function ($business) use ($user, $signboardCategory, $regions) {
+                ->each(function ($business) use ($user, $signboardCategories, $regions) {
                     Signboard::factory(3)
                         ->for($business)
                         ->create([
                             'region_id' => $regions->random(),
                             'created_by_id' => $user->id
                         ])
-                        ->each(function (Signboard $signboard) use ($signboardCategory) {
+                        ->each(function (Signboard $signboard) use ($signboardCategories) {
                             $signboard->categories()
-                                ->attach($signboardCategory->take(rand(3, 10))->toArray());
+                                ->attach($signboardCategories->take(rand(3, 10))->toArray());
                             $signboard->addMediaFromUrl('https://picsum.photos/200/300')
                                 ->toMediaCollection('featured');
                         });
                 });
 
-            Service::factory(5)
+            Service::factory(3)
                 ->for($user)
                 ->create()
                 ->each(function ($service){
@@ -92,13 +96,32 @@ class UserSeeder extends Seeder
                         ->toMediaCollection('featured');
                 });
 
-            Job::factory(20)
+            Job::factory(3)
                 ->for($user)
-                ->create()
-                ->each(function (Job $job) use($jobCategory){
-                    $job->categories()->attach($jobCategory->take(rand(4, 10))->toArray());
+                ->create([
+                    'region_id' => $regions->random(),
+                ])
+                ->each(function (Job $job) use($jobCategories){
+                    $job->categories()->attach($jobCategories->take(rand(4, 10))->toArray());
                     $job->addMediaFromUrl('https://picsum.photos/200/300')
                         ->toMediaCollection('company_logo');
+                });
+
+            Product::factory(10)
+                ->for($user)
+                ->create([
+                    'region_id' => $regions->random(),
+                ])
+                ->each(function (Product $product) use ($productCategories){
+                    $product->categories()->attach($productCategories->take(rand(4, 10))->toArray());
+                    $product->addMediaFromUrl('https://picsum.photos/200/300')
+                        ->toMediaCollection('featured');
+                    $product->addMediaFromUrl('https://picsum.photos/200/300')
+                        ->toMediaCollection('gallery');
+                    $product->addMediaFromUrl('https://picsum.photos/200/300')
+                        ->toMediaCollection('gallery');
+                    $product->addMediaFromUrl('https://picsum.photos/200/300')
+                        ->toMediaCollection('gallery');
                 });
         }
     }

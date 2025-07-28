@@ -68,9 +68,8 @@ const props = defineProps<{
                             <div class="text-xs text-fade truncate">{{ service.town }}</div>
                         </div>
                     </div>
-                    <div class="flex ms-auto gap-1 text-sm items-center">
-                        <Eye :size="15"/>
-                        5
+                    <div class="flex ms-auto gap-1 text-xs items-center">
+                        <Eye :size="13"/> {{ service.views_count }}
                     </div>
                 </div>
             </div>

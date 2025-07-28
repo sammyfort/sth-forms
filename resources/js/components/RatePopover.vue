@@ -1,32 +1,34 @@
 <script setup lang="ts">
-import {
-    Dialog, DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import InputText from '@/components/InputText.vue';
-import { RatingI, ReviewI, SignboardI } from '@/types';
-import { AutoplayType } from 'embla-carousel-autoplay';
-import { useForm } from '@inertiajs/vue3';
-import { onMounted, ref } from 'vue';
-import { rateSignboard } from '@/lib/api';
-import { Errors, Page, PageProps } from '@inertiajs/core';
-import { toastError, toastSuccess } from '@/lib/helpers';
 import StarRating from 'vue-star-rating'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import InputText from '@/components/InputText.vue';
+import { Button } from '@/components/ui/button';
+import { useForm } from '@inertiajs/vue3';
+import { RatableItemsI, RatingI, ReviewI } from '@/types';
+import { toastError, toastSuccess } from '@/lib/helpers';
+import { onMounted, ref } from 'vue';
+import { PopoverClose } from 'reka-ui';
+import { AutoplayType } from 'embla-carousel-autoplay';
+import { rateRatable } from '@/lib/api';
+import { Errors, Page } from '@inertiajs/core';
 
 type Props = {
-    signboard: SignboardI,
+    ratable: RatableItemsI
+    ratable_type: "signboard" | "product"
     carouselPlugin?: AutoplayType
 }
 const props = defineProps<Props>()
 
 type Form = {
-    overall: number,
-    customer_service: number,
-    quality: number,
-    price: number,
-    communication: number,
-    speed: number,
+    overall: number
+    customer_service: number
+    quality: number
+    price: number
+    communication: number
+    speed: number
     review: string|null
+    ratable_id: number
+    ratable_type: Props['ratable_type']
 }
 
 const form = useForm<Form>({
@@ -36,22 +38,25 @@ const form = useForm<Form>({
     price: 0,
     communication: 0,
     speed: 0,
-    review: ""
+    review: "",
+    ratable_id: props.ratable.id,
+    ratable_type: props.ratable_type,
 })
-
 const review = ref<RatingI|unknown>(null)
 const closeBtn = ref(null)
 
 const emit = defineEmits<{
     (e: 'popoverOpen', value: boolean): void,
-    (e: 'rated', value: SignboardI): void,
+    (e: 'rated', value: number): void,
 }>()
 
 const submit = async ()=> {
-    await rateSignboard(form, props.signboard.id, (response: Page<PageProps>)=>{
-        toastSuccess(response.props.message)
+    await rateRatable(form, props.ratable.id, (response: Page)=>{
+        if (response.props.message){
+            toastSuccess(response.props.message)
+            emit('rated', response.props.data.ratable.total_average_rating )
+        }
         closeBtn?.value?.$el?.click()
-        emit('rated', response.props.data.signboard as SignboardI)
     }, null, (errors: Errors)=>{
         for (const error in errors){
             toastError(errors[error])
@@ -61,7 +66,7 @@ const submit = async ()=> {
 }
 
 onMounted(()=>{
-    review.value = props.signboard.reviews?.length ? props.signboard.reviews[0] as unknown as ReviewI : null
+    review.value = props.ratable.reviews?.length ? props.ratable.reviews[0] as unknown as ReviewI : null
     if (review.value){
         const ratings = review.value.ratings
         form.review = review.value.review
@@ -78,21 +83,19 @@ onMounted(()=>{
 const handleCarousel = (isOpen: boolean) =>{
     emit('popoverOpen', isOpen)
 }
+
 </script>
 
 <template>
-    <Dialog
-        @update:open="handleCarousel"
-    >
-        <DialogTrigger>
-            <slot />
-        </DialogTrigger>
-        <DialogContent>
-            <DialogHeader>
-                <DialogTitle>Write Review</DialogTitle>
-            </DialogHeader>
-            <div>
-                <form @submit.prevent="submit" class="grid grid-cols-1" id="form">
+    <div>
+        <Popover
+            @update:open="handleCarousel"
+        >
+            <PopoverTrigger>
+                <slot />
+            </PopoverTrigger>
+            <PopoverContent class="w-[20rem]">
+                <form @submit.prevent="submit" class="grid grid-cols-1">
                     <div class="flex flex-wrap items-center border-b py-1.5 text-sm font-medium text-fade">
                         <div class="w-1/2">Overall</div>
                         <div class="w-1/2 flex items-center">
@@ -183,7 +186,7 @@ const handleCarousel = (isOpen: boolean) =>{
                             />
                         </div>
                     </div>
-                    <div class="flex items-center py-1.5 text-sm font-medium text-fade">
+                    <div class="flex items-center border-b py-1.5 text-sm font-medium text-fade">
                         <InputText
                             textarea
                             container-class="w-full"
@@ -193,18 +196,16 @@ const handleCarousel = (isOpen: boolean) =>{
                             model="review"
                         />
                     </div>
+                    <div class="pt-3 flex justify-between">
+                        <PopoverClose as-child ref="closeBtn">
+                            <Button type="button" size="sm" variant="secondary">Close</Button>
+                        </PopoverClose>
+                        <Button type="submit" size="sm" :processing="form.processing">Submit Review</Button>
+                    </div>
                 </form>
-            </div>
-            <DialogFooter class="flex">
-                <div class="flex gap-3 justify-between w-full">
-                    <DialogClose as-child ref="closeBtn">
-                        <Button type="button" size="sm" variant="destructive">Close</Button>
-                    </DialogClose>
-                    <Button type="submit" form="form" size="sm" :processing="form.processing">Submit Review</Button>
-                </div>
-            </DialogFooter>
-        </DialogContent>
-    </Dialog>
+            </PopoverContent>
+        </Popover>
+    </div>
 </template>
 
 <style scoped>

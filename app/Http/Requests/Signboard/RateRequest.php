@@ -25,6 +25,8 @@ class RateRequest extends FormRequest
             'communication' => ['required', 'numeric', 'min:1', 'max:5'],
             'speed' => ['required', 'numeric', 'min:1', 'max:5'],
             'review' => ['required', 'string', 'max:400'],
+            'ratable_id' => ['required', 'numeric'],
+            'ratable_type' => ['required', 'string', Rule::in(['signboard', 'product'])],
         ];
     }
 
@@ -36,6 +38,12 @@ class RateRequest extends FormRequest
             'price.min' => 'the :attribute rating must be filled',
             'communication.min' => 'the :attribute rating must be filled',
             'speed.min' => 'the :attribute rating must be filled',
+
+            'ratable_id.required' => 'something went wrongssss rid1',
+            'ratable_id.numeric' => 'something went wrongssss rid2',
+
+            'ratable_type.required' => 'something went wrongsssss r1',
+            'ratable_type.string' => 'something went wrongsssss r2',
         ];
     }
 }

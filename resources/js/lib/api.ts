@@ -26,6 +26,18 @@ export const getPromotedServices = async ()=>{
     return data
 }
 
+export const getPromotedProducts = async ()=>{
+    const data = {
+        products: []
+    }
+    const request = await fetch(route('products.promoted'))
+    const response = await request.json()
+    if (response.success){
+        data.products = response.data.products
+    }
+    return data
+}
+
 export const getPromotedJobs = async ()=>{
     const data = {
         jobs: []
@@ -38,21 +50,21 @@ export const getPromotedJobs = async ()=>{
     return data
 }
 
-export const rateSignboard = async (
+export const rateRatable = async (
     form: InertiaForm<any>,
     signboardId: number,
     successCb?: CallableFunction|null,
     errCb?: CallableFunction|null,
     onErr?: CallableFunction|null)=>
 {
-    form.post(route('signboards.ratings', signboardId), {
+    form.post(route('ratings.rate', signboardId), {
         onSuccess: (response: Page) => {
             if (response.props.success){
                 if (successCb){
                     successCb(response)
                 }
             }
-            else {
+            else if (response.props.message.length){
                 toastError(response.props.message)
                 if (errCb){
                     errCb(response)

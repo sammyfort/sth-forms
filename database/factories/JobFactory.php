@@ -20,7 +20,6 @@ class JobFactory extends Factory
             'job_type' => $this->faker->randomElement(JobType::toArray()),
             'work_mode' => $this->faker->randomElement(JobMode::toArray()),
             'town' => $this->faker->optional()->city(),
-            'region_id' => Region::query()->inRandomOrder()->first()->id,
             'salary' => $this->faker->optional()->randomElement([
                 'GH₵1,200 - GH₵1,800',
                 'Negotiable',

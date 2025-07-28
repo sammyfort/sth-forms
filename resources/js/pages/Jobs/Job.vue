@@ -16,8 +16,6 @@ type Props = {
 
 const props = defineProps<Props>()
 
-console.log(props.relatedJobs)
-
 </script>
 
 <template>
