@@ -36,6 +36,7 @@ use Spatie\Tags\HasTags;
 * @property string $address
 * @property string $region_id
 * @property string $town
+ * @property int|null $views_count
 * @property Collection<ServiceCategory> $categories
  * @property \Spatie\MediaLibrary\MediaCollections\Models\Media|null $featured
  * @property string $gps
@@ -46,7 +47,7 @@ use Spatie\Tags\HasTags;
 #[ObservedBy(ServiceObserver::class)]
 class Service extends Model implements HasMedia, Viewable
 {
-    use BootModelTrait, HasFactory, InteractsWithMedia,
+    use BootModelTrait, HasFactory, InteractsWithMedia, ReviewRateable,
         InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;
 
     protected $appends = ['featured', 'gallery'];

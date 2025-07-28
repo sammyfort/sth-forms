@@ -2,7 +2,7 @@
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Briefcase, Building, Clock, Edit, Loader2, MapPin, PlusIcon, Trash2, XCircle } from 'lucide-vue-next';
+import { Briefcase, Building, Clock, Edit, Loader2, MapPin, PlusIcon, Trash2, XCircle, Eye } from 'lucide-vue-next';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { computed, ref } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
@@ -105,6 +105,10 @@ const deleteSignboard = () => {
                                             <span class="flex items-center gap-2">
                                                 <Building class="h-4 w-4" />
                                                 {{ props.signboard.region.name }}
+                                            </span>
+                                            <span class="flex items-center gap-2">
+                                                <Eye class="h-4 w-4" />
+                                                {{ props.signboard.views_count}}
                                             </span>
                                         </div>
                                     </div>

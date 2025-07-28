@@ -34,7 +34,7 @@ class StoreServiceRequest extends FormRequest
             'region_id' => ['required', 'exists:regions,id'],
             'town' => ['required'],
             'gps' => ['nullable', new GPSRule()],
-            'categories' => ['required', 'array'],
+            'category_id' => ['required'],
             'featured' => ['required', 'image', 'max:2048'],
             'gallery' => ['required', 'array'],
             'gallery.*' => ['image', 'max:2048'],

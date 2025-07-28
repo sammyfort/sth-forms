@@ -24,12 +24,12 @@ class ServiceObserver
 
     public function updated(Service $service): void
     {
-        if ($service->isDirty('gps') && $service->gps){
-            $location = GhanaPostService::getLocationByGPS($service->gps);
-            $service->gps_lat = $location->centerLongitude;
-            $service->gps_lon = $location->centerLatitude;
-            $service->save();
-        }
+//        if ($service->isDirty('gps') && $service->gps){
+//            $location = GhanaPostService::getLocationByGPS($service->gps);
+//            $service->gps_lat = $location->centerLongitude;
+//            $service->gps_lon = $location->centerLatitude;
+//            $service->save();
+//        }
     }
 
     public function deleted(Service $service): void
