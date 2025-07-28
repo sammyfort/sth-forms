@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PromotionPlan;
 use App\Models\Region;
 use App\Models\Service;
 use App\Models\ServiceCategory;
@@ -12,7 +13,6 @@ use App\Http\Requests\Service\UpdateServiceRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -132,10 +132,14 @@ class ServiceController extends Controller
         ]);
     }
 
-    public function showMyServices(Service $service): Response
+    public function showMyService(Service $service): Response
     {
+        $service->views_count = views($service)->count();
+
         return Inertia::render('Services/ServiceShow',[
-            'service' => $service->loadMissing(['user','category', 'region'])
+            'service' => $service->loadMissing(['user','category', 'region', 'promotions']),
+
+            'plans' =>  PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price'])
         ]);
     }
 
@@ -144,20 +148,10 @@ class ServiceController extends Controller
         $data = $request->validated();
 
         DB::transaction(function () use ($data, $request) {
-            $categoryIds = collect($data['categories'])->map(function ($name) {
-                $normalized = Str::lower(trim($name));
-                return ServiceCategory::firstOrCreate(
-                    ['name' => $normalized],
-                    ['name' => $normalized]
-                )->id;
-            });
-
             $service = auth()->user()->services()->create(
-                Arr::except($data, ['featured', 'gallery', 'categories'])
+                Arr::except($data, ['featured', 'gallery'])
             );
-            $service->categories()->sync(
-                collect($categoryIds)->mapWithKeys(fn ($id) => [$id => ['uuid' => Str::uuid()]])->toArray()
-            );
+
             $service->handleUploads($request, [
                 'featured' => 'featured',
                 'gallery' => 'gallery',
@@ -187,18 +181,7 @@ class ServiceController extends Controller
         $data = $request->validated();
 
         DB::transaction(function () use ($service, $data, $request) {
-            $service->update(Arr::except($data, ['featured', 'gallery', 'removed_gallery_urls', 'categories']));
-
-            $categoryIds = collect($data['categories'])->map(function ($name) {
-                $normalized = Str::lower(trim($name));
-                return ServiceCategory::firstOrCreate(['name' => $normalized])->id;
-            });
-
-            $syncPayload = [];
-            foreach ($categoryIds as $id) {
-                $syncPayload[$id] = ['uuid' => Str::uuid()];
-            }
-            $service->categories()->sync($syncPayload);
+            $service->update(Arr::except($data, ['featured', 'gallery', 'removed_gallery_urls']));
 
 
             if ($request->hasFile('featured')) {

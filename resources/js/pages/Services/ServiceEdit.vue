@@ -33,7 +33,7 @@ const form = useForm({
     town: '',
     gps: '',
     region_id: '',
-    categories: [],
+    category_id: '',
     featured: null,
     gallery: [] as File[],
     removed_gallery_urls: [] as string[],
@@ -51,7 +51,7 @@ onMounted(() => {
     form.town = s.town;
     form.gps = s.gps;
     form.region_id = s.region_id;
-    form.categories = s.categories?.map(cat => cat.id) || [];
+    form.category_id = s.category_id;
 });
 
 const galleryItems = computed(() => {
@@ -97,8 +97,8 @@ const updateService = () => {
     <Layout>
         <div class="w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
             <PageHeader
-                title="Add New Service"
-                subtitle="Create a new service listing for your business"
+                title="Edit Service"
+                subtitle="Update service listing for your business"
                 :icon="Building2"
             />
 
@@ -129,8 +129,8 @@ const updateService = () => {
                             <InputText :form="form" label="Description" model="description"  textarea />
 
                             <div class="md:col-span-2">
-                                <InputSelect label="Fields Of Service" :form="form" model="categories"
-                                             :options="props.categories" taggable required searchable />
+                                <InputSelect label="Field Of Service" :form="form" model="category_id"
+                                             :options="props.categories" required searchable />
                             </div>
 
                         </div>

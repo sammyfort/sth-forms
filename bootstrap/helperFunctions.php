@@ -69,3 +69,22 @@ if (!function_exists('cediSign')){
         return "₵";
     }
 }
+
+if (! function_exists('toLabelValue')) {
+    function toLabelValue(iterable $values, string $labelKey = null, string $valueKey = null): array
+    {
+        return collect($values)->map(function ($item) use ($labelKey, $valueKey) {
+            if ($labelKey && $valueKey) {
+                return [
+                    'label' => str(data_get($item, $labelKey))->headline(),
+                    'value' => data_get($item, $valueKey),
+                ];
+            }
+            return [
+                'label' => str($item)->headline(),
+                'value' => $item,
+            ];
+        })->values()->all();
+    }
+}
+

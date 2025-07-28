@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Job;
 
-use App\Enums\{JobStatus, JobType};
+use App\Enums\{JobMode, JobStatus, JobType};
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -26,17 +26,23 @@ class StoreJobRequest extends FormRequest
     public function rules(): array
     {
         return [
-
+            'company_name' => ['required'],
             'title' => ['required', 'string', 'max:255'],
-            'type' => ['required', Rule::in(JobType::toArray())],
+            'job_type' => ['required', Rule::in(JobType::toArray())],
+            'work_mode' => ['required', Rule::in(JobMode::toArray())],
             'status' => ['required', Rule::in(JobStatus::toArray())],
+            'categories' => ['required', 'array'],
             'summary' => ['nullable', 'string'],
             'description' => ['required'],
-            'contact_name' => ['required', 'string'],
-            'contact_phone' => ['required', 'digits:10'],
-            'contact_email' => ['nullable', 'string'],
-            'contact_website' => ['nullable', 'string'],
-            'expires_at' => ['required', 'date', 'after:today'],
+
+            'region_id' => ['required'],
+            'town' => ['required'],
+            'salary' => ['nullable'],
+            'how_to_apply' => ['nullable'],
+            'application_link' => ['required'],
+
+            'deadline' => ['required', 'date', 'after:today'],
+            'featured' => ['required','image', 'max:2048']
 
         ];
     }
