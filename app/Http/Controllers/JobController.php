@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JobMode;
 use App\Enums\JobStatus;
 use App\Enums\JobType;
 use App\Http\Requests\Job\StoreJobRequest;
 use App\Http\Requests\Job\UpdateJobRequest;
+use App\Models\JobCategory;
+use App\Models\PromotionPlan;
 use App\Models\Region;
 use App\Models\Job;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -37,23 +41,29 @@ class JobController extends Controller
     }
 
 
-    public function show(Job $job): Response
+    public function showMyJob(\App\Models\Job $job): Response
     {
-        return Inertia::render('Jobs/JobShow');
+        //  $job->views_count = views($job)->count();
+        $job->loadMissing(['region', 'categories', 'promotions']);
+
+        //dd($job->toArray());
+        return Inertia::render('Jobs/JobShow', [
+            'job' => $job,
+            'plans' => PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price'])
+        ]);
     }
 
 
     public function create(): Response
     {
+        $regions = Region::select('id', 'name')->get();
+        $categories = JobCategory::select('id', 'name')->get();
         return Inertia::render('Jobs/JobCreate', [
-            'statuses' => collect(JobStatus::toArray())->map(fn($type) => [
-                'label' => str($type)->headline(),
-                'value' => $type,
-            ])->values(),
-            'types' => collect(JobType::toArray())->map(fn($type) => [
-                'label' => str($type)->headline(),
-                'value' => $type,
-            ])->values()
+            'categories' => toLabelValue($categories, 'name', 'id'),
+            'statuses' => toLabelValue(JobStatus::toArray()),
+            'types' => toLabelValue(JobType::toArray()),
+            'modes' => toLabelValue(JobMode::toArray()),
+            'regions' => toLabelValue($regions, 'name', 'id'),
         ]);
     }
 
@@ -63,28 +73,53 @@ class JobController extends Controller
         $data = $request->validated();
 
         DB::transaction(function () use ($data, $request) {
-            $job = $request->user()->jobs()->create(Arr::except($data, ['featured', 'gallery']));
+            $job = $request->user()->jobs()->create(Arr::except($data, ['featured', 'categories']));
+
             $job->handleUploads($request, [
                 'featured' => 'featured',
-                'gallery' => 'gallery',
             ]);
+
+            $job->categories()->sync($data['categories']);
         });
 
         return back()->with(successRes("Job created successfully."));
     }
 
+
     public function edit(Job $job): Response
     {
-        return Inertia::render('Jobs/JobEdit');
+        $regions = Region::select('id', 'name')->get();
+        $categories = JobCategory::select('id', 'name')->get();
+
+        return Inertia::render('Jobs/JobEdit', [
+            'job' => $job->loadMissing(['categories'])->toArrayWithMedia(),
+            'categories' => toLabelValue($categories, 'name', 'id'),
+            'statuses' => toLabelValue(JobStatus::toArray()),
+            'types' => toLabelValue(JobType::toArray()),
+            'modes' => toLabelValue(JobMode::toArray()),
+            'regions' => toLabelValue($regions, 'name', 'id'),
+        ]);
     }
 
     public function update(UpdateJobRequest $request, Job $job): RedirectResponse
     {
         $data = $request->validated();
 
-        return back()->with(successRes("Job updated successfully."));
+        //dd($data);
+        DB::transaction(function () use ($request, $data, $job) {
+            $job->refresh();
+            $job->update(Arr::except($data, ['featured', 'categories']));
 
+            $job->categories()->sync($data['categories']);
+
+            $job->handleUploads($request, [
+                'featured' => 'featured',
+            ]);
+        });
+
+        return back()->with(successRes("Job updated successfully."));
     }
+
 
     public function destroy(Job $job): RedirectResponse
     {

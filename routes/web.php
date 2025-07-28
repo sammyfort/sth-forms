@@ -68,10 +68,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/', [JobController::class, 'getMyJobs'])->name('index');
         Route::get('/create', [JobController::class, 'create'])->name('create');
         Route::post('/store', [JobController::class, 'store'])->name('store');
-        Route::get('/show/{service}', [JobController::class, 'show'])->name('show');
+        Route::get('/show/{job}', [JobController::class, 'showMyJob'])->name('show');
 
-        Route::get('/edit/{service}', [JobController::class, 'edit'])->name('edit');
-        Route::post('/update/{service}', [JobController::class, 'update'])->name('update');
+        Route::get('/edit/{job}', [JobController::class, 'edit'])->name('edit');
+        Route::post('/update/{job}', [JobController::class, 'update'])->name('update');
         Route::delete('/destroy', [JobController::class, 'destroy'])->name('destroy');
     });
 

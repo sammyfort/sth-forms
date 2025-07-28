@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\JobMode;
+use App\Enums\JobType;
 use App\Models\Region;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -14,9 +16,9 @@ class JobFactory extends Factory
             'title' => $this->faker->jobTitle(),
             'company_name' => $this->faker->company(),
             'description' => $this->faker->paragraphs(10, true),
-            'short_description' => $this->faker->sentence(20),
-            'job_type' => $this->faker->randomElement(['Full time', 'Part time', 'Contract', 'Internship']),
-            'work_mode' => $this->faker->randomElement(['onsite', 'remote', 'hybrid']),
+            'summary' => $this->faker->sentence(20),
+            'job_type' => $this->faker->randomElement(JobType::toArray()),
+            'work_mode' => $this->faker->randomElement(JobMode::toArray()),
             'town' => $this->faker->optional()->city(),
             'region_id' => Region::query()->inRandomOrder()->first()->id,
             'salary' => $this->faker->optional()->randomElement([

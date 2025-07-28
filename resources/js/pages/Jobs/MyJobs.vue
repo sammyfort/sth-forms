@@ -235,19 +235,15 @@ const getExpiryStatus = (dateString: string) => {
                                                 </h3>
                                                 <Star   class="w-4 h-4 text-yellow-500 fill-current flex-shrink-0" />
                                             </div>
-                                            <p class="text-sm text-slate-600 truncate">{{ job.contact_name }}</p>
+                                            <p class="text-sm text-slate-600 truncate capitalize">{{ job.work_mode }}</p>
                                         </div>
                                     </div>
 
                                 </div>
 
                                 <div class="flex items-center gap-2 mb-4">
-                                    <span :class="`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusColor(job.status)}`">
-                                        <component :is="getStatusIcon(job.status)" class="w-3 h-3" />
-                                        {{ job.status.charAt(0).toUpperCase() + job.status.slice(1) }}
-                                    </span>
                                     <span class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-                                        {{ job.type }}
+                                        {{ job.job_type }}
                                     </span>
                                 </div>
                             </div>
@@ -256,12 +252,14 @@ const getExpiryStatus = (dateString: string) => {
 
                                 <div class="flex items-center justify-between text-sm">
                                     <div class="flex items-center gap-1 text-slate-500">
-                                        <Calendar class="w-4 h-4" />
-                                        <span>Posted {{ formatDate(job.created_at) }}</span>
+                                        <span :class="`px-3 py-1 rounded-full text-xs font-semibold border flex items-center gap-1 ${getStatusColor(job.status)}`">
+                                        <component :is="getStatusIcon(job.status)" class="w-3 h-3" />
+                                        {{ job.status.charAt(0).toUpperCase() + job.status.slice(1) }}
+                                    </span>
                                     </div>
-                                    <div :class="`flex items-center gap-1 ${getExpiryStatus(job.expires_at).urgent ? 'text-red-600' : 'text-slate-500'}`">
+                                    <div :class="`flex items-center gap-1 ${getExpiryStatus(job.deadline).urgent ? 'text-red-600' : 'text-slate-500'}`">
                                         <Clock class="w-4 h-4" />
-                                        <span class="font-medium">{{ getExpiryStatus(job.expires_at).text }}</span>
+                                        <span class="font-medium">{{ getExpiryStatus(job.deadline).text }}</span>
                                     </div>
                                 </div>
                             </div>

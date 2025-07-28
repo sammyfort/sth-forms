@@ -6,6 +6,7 @@ interface Props {
     form: any;
     featuredPreview?: string | null;
     modelName?: string
+    title?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -89,7 +90,7 @@ onMounted(() => {
             <div class="p-2 bg-primary rounded-lg">
                 <Image class="h-5 w-5 text-white" />
             </div>
-            <h3 class="text-lg font-semibold text-gray-900">Featured Image</h3>
+            <h3 class="text-lg font-semibold text-gray-900">{{props.title || 'Featured Image' }}</h3>
         </div>
 
         <div class="relative">

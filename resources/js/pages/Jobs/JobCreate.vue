@@ -11,30 +11,35 @@ import TextEditor from '@/components/forms/TextEditor.vue'
 import FormComponent from '@/components/FormComponent.vue';
 import InputText from '@/components/InputText.vue';
 import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
-import GalleryFilesUpload from '@/components/GalleryFilesUpload.vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputError from '@/components/InputError.vue';
 
 const props = defineProps<{
     types: Array<{ label: string; value: string }>
     statuses: Array<{ label: string; value: string }>
+    modes: Array<{ label: string; value: string }>
+    regions: Array<{ label: string; value: string }>
+    categories: Array<{ label: string; value: string }>
 }>();
-const galleryUploadRef = ref();
 const featureUploadRef = ref();
 const form = useForm({
+    company_name: '',
     title: '',
-    type: '',
+    categories: [],
+    job_type: '',
+    work_mode: '',
     status: '',
-    category_id: '',
+    deadline: '',
+    region_id: '',
+    town: '',
+    salary: '',
     summary: '',
     description: '',
-    contact_name: '',
-    contact_phone: '',
-    contact_email: '',
-    contact_website: '',
-    expires_at: '',
+    how_to_apply: '',
+    application_link: '',
+
     featured: null,
-    gallery: []
+
 });
 
 const createJob = () => {
@@ -66,24 +71,29 @@ const createJob = () => {
             />
 
             <FormComponent :form="form" submit-text="Create Job"
-                           processing-text="Creating Service..." @submit="createJob">
+                           processing-text="Creating Service..."
+                           @submit="createJob"
+                           container-width="max-w-6xl"
+            >
 
                 <template #form-sections>
-
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">Job Information</h2>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+                            <InputText :form="form" label="Company Name" model="company_name" required />
+                            <InputSelect :form="form" label="Job Sector"  model="categories" :options="props.categories" taggable required searchable />
                             <InputText :form="form" label="Title" model="title" required />
-                            <InputSelect label="Job Type" :form="form" model="type" :options="props.types" required searchable />
-                            <InputSelect label="Job Status" :form="form" model="status" :options="props.statuses" required searchable />
-                            <InputText :form="form" label="Ends At" type="date" model="expires_at" required />
-                            <InputText :form="form" label="Contact Name" type=tel model="contact_name" required />
-                            <InputText :form="form" label="Contact No" type="tel" model="contact_phone"  required />
-                            <InputText :form="form" label="Contact Email" type="email" model="contact_email" required />
-                            <InputText :form="form" label="Website" model="contact_website"  />
+                            <InputSelect :form="form" label="Job Type"  model="job_type" :options="props.types" required />
+                            <InputSelect :form="form" label="Work Mode"  model="work_mode" :options="props.modes" required />
+                            <InputSelect :form="form" label="Region"  model="region_id" :options="props.regions" required searchable />
+                            <InputText  :form="form" label="Town" model="town" required />
+                            <InputSelect label="Job Status" :form="form" model="status" :options="props.statuses" required />
+                            <InputText :form="form" label="Salary" model="salary"  />
+                            <InputText :form="form" label="How to apply" model="how_to_apply" required />
+                            <InputText :form="form" label="Application Link" model="application_link" required />
 
-                            <InputText :form="form" label="Category" model="category"   />
                             <InputText :form="form" label="Summary" model="summary" required textarea />
+                            <InputText :form="form" label="Deadline" model="deadline" type="date" required  />
                         </div>
                     </div>
 
@@ -91,9 +101,7 @@ const createJob = () => {
                         <label class="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
                         <TextEditor v-model="form.description" />
                         <InputError v-if="form.errors.description" :message="form.errors.description " />
-
                     </div>
-
                 </template>
 
                 <template #media-section>
@@ -102,12 +110,7 @@ const createJob = () => {
                         :form="form"
                         v-model:file="form.featured"
                         model-name="featured"
-                    />
-
-                    <GalleryFilesUpload
-                        ref="galleryUploadRef"
-                        :form="form"
-                        v-model:files="form.gallery"
+                        title="Company Logo"
                     />
                 </template>
             </FormComponent>

@@ -12,6 +12,7 @@ interface Props {
     galleryErrors?: string[];
     submitText: string;
     processingText: string;
+    containerWidth?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -29,7 +30,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div  :class="[containerWidth ?? 'max-w-5xl', 'mx-auto px-4 sm:px-6 lg:px-8 py-8']">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div class="order-1 lg:order-2 space-y-6">
                 <slot name="media-section" />
