@@ -14,9 +14,9 @@ import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
 import LocationDetails from '@/pages/Signboards/blocks/LocationDetails.vue';
 import SignboardActions from '@/pages/Signboards/blocks/SignboardActions.vue';
 import OperationFields from '@/pages/Signboards/blocks/OperationFields.vue';
-import ReviewsDetails from '@/components/signboard/Details/ReviewsDetails.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { PromotableE } from '@/lib/enums';
+import ReviewsDetails from '@/components/ReviewsDetails.vue';
 
 const props = defineProps<{
     signboard: SignboardI;
@@ -180,14 +180,15 @@ const deleteSignboard = () => {
                 </div>
                 <div class="mt-15 flex w-full flex-wrap">
                     <div class="w-full">
-                        <h2 class="mb-4 text-2xl font-bold text-gray-900">Reviews And Comments</h2>
+                        <h2 class="mb-4 text-2xl font-bold text-gray-900 text-center">Reviews And Comments</h2>
                     </div>
-                    <div class="w-full lg:w-1/2">
-                        <ReviewsDetails class="border-t-0" :signboard="signboard" :ratings="ratings" :distributions="distributions" />
-                    </div>
-                    <div v-if="reviews.length" class="w-full lg:w-1/2 lg:border-s lg:ps-15">
-                        <h2 class="text-fade mb-4 pt-5 text-lg font-bold">Comments</h2>
-                        <ReviewsList :signboard="signboard" :reviews="reviews" />
+                    <div class="w-full lg:w-1/2 mx-auto">
+                        <ReviewsDetails
+                            :ratable="signboard"
+                            :ratings="ratings"
+                            :distributions="distributions"
+                            :reviews="reviews"
+                        />
                     </div>
                 </div>
                 <PaymentHistory :promotions="signboard.promotions" />

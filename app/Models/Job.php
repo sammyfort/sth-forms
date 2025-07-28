@@ -31,16 +31,16 @@ use Spatie\Sluggable\SlugOptions;
  * @property Collection<JobCategory> $categories
  */
 
-
 class Job extends Model implements  HasMedia
 {
-
     use BootModelTrait, HasFactory, InteractsWithMedia,
         InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;
 
     protected $table = 'user_jobs';
 
-    protected $appends = ['featured'];
+    protected $appends = [
+        'company_logo'
+    ];
 
     public function getSlugOptions() : SlugOptions
     {
@@ -51,7 +51,7 @@ class Job extends Model implements  HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('featured')->singleFile();
+        $this->addMediaCollection('company_logo')->singleFile();
     }
 
     public function user(): BelongsTo
@@ -74,7 +74,10 @@ class Job extends Model implements  HasMedia
         return $this->belongsTo(Region::class);
     }
 
-
+    public function companyLogo(): Attribute
+    {
+        return Attribute::get(fn() => $this->getFirstMediaUrl('company_logo'));
+    }
 
     public function createdAt(): Attribute
     {

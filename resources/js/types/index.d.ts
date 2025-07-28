@@ -114,7 +114,7 @@ export interface JobI extends ModelI{
     application_link: string|null
     deadline: string
     status: string
-    featured: string
+    company_logo: string|MediaI
     categories: JobCategoryI[]
     promotions: PromotionI
 }
