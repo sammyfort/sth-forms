@@ -2,7 +2,12 @@
 
 namespace App\Http\Requests\Job;
 
+use App\Enums\JobMode;
+use App\Enums\JobStatus;
+use App\Enums\JobType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Mews\Purifier\Facades\Purifier;
 
 class UpdateJobRequest extends FormRequest
 {
@@ -22,7 +27,33 @@ class UpdateJobRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'company_name' => ['required'],
+            'title' => ['required', 'string', 'max:255'],
+            'job_type' => ['required', Rule::in(JobType::toArray())],
+            'work_mode' => ['required', Rule::in(JobMode::toArray())],
+            'status' => ['required', Rule::in(JobStatus::toArray())],
+            'categories' => ['required', 'array'],
+            'summary' => ['nullable', 'string'],
+            'description' => ['required'],
+
+            'region_id' => ['required'],
+            'town' => ['required'],
+            'salary' => ['nullable'],
+            'how_to_apply' => ['nullable'],
+            'application_link' => ['required'],
+
+            'deadline' => ['required', 'date', 'after:today'],
+            'featured' => ['nullable','image', 'max:2048']
+
         ];
+    }
+
+    public function prepareForValidation(): void
+    {
+        if ($this->has('description')) {
+            $this->merge([
+                'description' => Purifier::clean($this->input('description')),
+            ]);
+        }
     }
 }

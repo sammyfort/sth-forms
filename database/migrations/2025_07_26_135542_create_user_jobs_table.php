@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string('company_name');
             $table->string('title');
             $table->string('slug')->unique();
-            $table->tinyText('short_description');
+            $table->tinyText('summary');
             $table->longText('description');
             $table->string('job_type'); // "Full-time", "Part-time", "Contract", "Internship"
             $table->string('work_mode'); // onsite, remote, hybrid

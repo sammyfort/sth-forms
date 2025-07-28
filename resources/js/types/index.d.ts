@@ -79,7 +79,7 @@ export interface JobI extends ModelI{
     title: string
     slug: string
     description: string
-    short_description: string
+    summary: string
     job_type: string
     work_mode: string
     region_id: number
@@ -90,8 +90,9 @@ export interface JobI extends ModelI{
     application_link: string|null
     deadline: string
     status: string
-    company_logo: string
+    featured: string
     categories: JobCategoryI[]
+    promotions: PromotionI
 }
 
 export interface MediaI {

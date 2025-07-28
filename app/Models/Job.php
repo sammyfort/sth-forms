@@ -24,6 +24,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property string $id
  * @property string $uuid
 * @property int $created_by_id
+ * @property int $views_count
 * @property string $created_at
 * @property string $updated_at
  * @property string $company_logo
@@ -39,9 +40,7 @@ class Job extends Model implements  HasMedia
 
     protected $table = 'user_jobs';
 
-    protected $appends = [
-        'company_logo'
-    ];
+    protected $appends = ['featured'];
 
     public function getSlugOptions() : SlugOptions
     {
@@ -52,7 +51,7 @@ class Job extends Model implements  HasMedia
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('company_logo')->singleFile();
+        $this->addMediaCollection('featured')->singleFile();
     }
 
     public function user(): BelongsTo
@@ -75,10 +74,7 @@ class Job extends Model implements  HasMedia
         return $this->belongsTo(Region::class);
     }
 
-    public function companyLogo(): Attribute
-    {
-        return Attribute::get(fn() => $this->getFirstMediaUrl('company_logo'));
-    }
+
 
     public function createdAt(): Attribute
     {
