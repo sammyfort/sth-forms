@@ -226,7 +226,7 @@ class SignboardController extends Controller
         // check if it has payment
         $paymentStatus = Promotion::routeCallback();
 
-        $distributions = SignboardService::getDistributions($signboard);
+        $distributions = RatingService::getDistributions($signboard);
 
         return Inertia::render('Signboards/SignboardShow', [
             'signboard' => $signboard->toArrayWithMedia(),
