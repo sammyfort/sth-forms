@@ -180,7 +180,7 @@ const deleteSignboard = () => {
                 </div>
                 <div class="mt-15 flex w-full flex-wrap">
                     <div class="w-full">
-                        <h2 class="mb-4 text-2xl font-bold text-gray-900 text-center">Reviews And Comments</h2>
+                        <h2 class="mb-4 text-2xl font-bold text-gray-900 text-center">Reviews And Ratings</h2>
                     </div>
                     <div class="w-full lg:w-1/2 mx-auto">
                         <ReviewsDetails

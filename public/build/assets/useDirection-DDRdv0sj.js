@@ -1,1 +1,0 @@
-import{r as e}from"./InputText.vue_vue_type_script_setup_true_lang-BxxVjmeK.js";import{r as n,p as u}from"./app-CgxblWlw.js";function i(t){const r=e({dir:n("ltr")});return u(()=>{var o;return(t==null?void 0:t.value)||((o=r.dir)==null?void 0:o.value)||"ltr"})}export{i as u};
