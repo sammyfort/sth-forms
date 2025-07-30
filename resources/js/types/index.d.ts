@@ -71,6 +71,7 @@ export interface ProductI extends ModelI {
     promotions: PromotionI[]
     active_promotion: PromotionI | null,
     total_average_rating: number
+    reviews_count: number
 }
 
 export interface ServiceI extends ModelI{

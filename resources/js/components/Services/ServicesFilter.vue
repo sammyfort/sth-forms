@@ -58,7 +58,7 @@ onBeforeMount(() => {
     <div class="mb-3 text-lg font-semibold">Filter</div>
     <div class="grid grid-cols-2 gap-4">
         <InputText
-            placeholder="Search artisan..."
+            placeholder="Search artisans..."
             container-class="gap-0 col-span-2 md:col-span-1 lg:col-span-2"
             type="text"
             model="q"

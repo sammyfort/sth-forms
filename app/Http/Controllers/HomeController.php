@@ -25,8 +25,8 @@ class HomeController extends Controller
                 return redirect(route('signboards.index')."?filter[q]=".$query);
             case 'jobs':
                 return redirect(route('jobs.index')."?filter[q]=".$query);
-            case 'shops':
-                return redirect(route('shops.index')."?filter[q]=".$query);
+            case 'products':
+                return redirect(route('products.index')."?filter[q]=".$query);
             default:
                 return back();
         }

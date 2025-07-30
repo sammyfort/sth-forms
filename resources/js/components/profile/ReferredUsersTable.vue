@@ -19,7 +19,7 @@ defineProps<{
                         <TableRow>
                             <TableHead class="text-left">Name</TableHead>
                             <TableHead class="text-left">Mobile</TableHead>
-                            <TableHead class="text-left">Join On</TableHead>
+                            <TableHead class="text-left">Joined On</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>

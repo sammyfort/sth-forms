@@ -10,6 +10,7 @@ import AdvertisedServicesH from '@/components/Services/AdvertisedServicesH.vue';
 import { router } from '@inertiajs/vue3';
 import AdvertisedJobsH from '@/components/jobs/AdvertisedJobsH.vue';
 import { Button } from '@/components/ui/button';
+import AdvertisedProductsH from '@/components/products/AdvertisedProductsH.vue';
 
 const searchForm = useForm({
     directory: '',
@@ -20,13 +21,11 @@ const searchOptions: InputSelectOption[] = [
     {label: 'Artisans', value: 'services'},
     {label: 'Signboards', value: 'signboards'},
     {label: 'Jobs', value: 'jobs'},
-    {label: 'Shops', value: 'shops'},
+    {label: 'Products', value: 'products'},
 ]
 
 function performSearch(){
-    searchForm.get(route('home.search'), {
-
-    })
+    searchForm.get(route('home.search'))
 }
 
 </script>
@@ -87,13 +86,17 @@ function performSearch(){
             <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700">
                 <TrustedBusinessesSection />
             </div>
-            <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-20 mb-20">
+            <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-10 mb-10">
                 <h1 class="text-center mb-3 text-gray-400 text-2xl font-medium ">Top Artisans</h1>
                 <AdvertisedServicesH />
             </div>
-            <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-20 mb-20">
+            <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-10 mb-10">
                 <h1 class="text-center mb-3 text-gray-400 text-2xl font-medium ">Newly Posted Jobs</h1>
                 <AdvertisedJobsH />
+            </div>
+            <div class="container px-4 lg:px-0 mx-auto max-w-screen-xl text-gray-700 mt-10 mb-10">
+                <h1 class="text-center mb-3 text-gray-400 text-2xl font-medium ">Popular Sellers</h1>
+                <AdvertisedProductsH />
             </div>
         </div>
   </Layout>

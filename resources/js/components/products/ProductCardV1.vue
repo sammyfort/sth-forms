@@ -85,7 +85,7 @@ const plugin = Autoplay({
                         </CarouselContent>
                     </Carousel>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex items-center gap-4">
                     <StarRating
                         :star-size="15"
                         :show-rating="false"
@@ -97,7 +97,7 @@ const plugin = Autoplay({
                         :key="`rating-card-${product.id}`"
                         :increment="0.01"
                     />
-                    <span class="text-fade text-xs">5</span>
+                    <span class="text-fade text-xs" v-if="product.reviews_count">{{ product.reviews_count }}</span>
                 </div>
                 <div v-if="product.active_promotion">
                     <Badge class="bg-[#633780] text-white rounded-sm text-xs">
