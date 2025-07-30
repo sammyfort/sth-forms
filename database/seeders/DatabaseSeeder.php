@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             PromotionPlanSeeder::class,
             ServiceCategorySeeder::class,
             JobCategorySeeder::class,
+            ProductCategorySeeder::class,
             UserSeeder::class,
         ]);
     }

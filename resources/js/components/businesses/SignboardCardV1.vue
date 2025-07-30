@@ -2,16 +2,12 @@
 import { cn } from '@/lib/utils';
 import { HTMLAttributes, ref } from 'vue';
 import { SignboardI } from '@/types';
-import { MapPin, MapPinned, Pin, Dot, Handshake } from 'lucide-vue-next';
-import { Button } from '@/components/ui/button';
+import { MapPin, MapPinned, Dot, Handshake } from 'lucide-vue-next';
 import { Link } from '@inertiajs/vue3';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui/tooltip'
-import SignboardRating from '@/components/businesses/SignboardRating.vue';
 import StarRating from 'vue-star-rating'
 import { AutoplayType } from 'embla-carousel-autoplay';
 import { router } from '@inertiajs/vue3';
-import SignboardRatingModal from '@/components/signboard/SignboardRatingModal.vue';
-
 
 const emit = defineEmits<{
     (e: 'popoverOpen', value: boolean): void

@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->boolean('is_negotiable')->default(false);
             $table->string('first_mobile');
             $table->string('second_mobile')->nullable();
+            $table->string('whatsapp_mobile')->nullable();
             $table->foreignId('region_id')->constrained();
             $table->string('town');
 
