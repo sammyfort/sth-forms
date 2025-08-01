@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { AverageRatingsI, RatableItemsI, RatingsDistributionI } from '@/types';
+import { AverageRatingsI, RatableI, RatableTypesI, RatingsDistributionI } from '@/types';
 import StarRating from 'vue-star-rating'
 import { number_format } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
@@ -13,14 +13,15 @@ const page = usePage()
 const user = computed(()=> page.props.auth.user)
 
 type Props = {
-    signboard: RatableItemsI,
+    ratable: RatableI,
     ratings: AverageRatingsI,
     distributions: RatingsDistributionI,
-    class?: HTMLAttributes['class']
+    class?: HTMLAttributes['class'],
+    ratable_type: RatableTypesI
 }
-const props = defineProps<Props>()
 
-const totalAverageRating = ref<number>(props.signboard.total_average_rating)
+const props = defineProps<Props>()
+const totalAverageRating = ref<number>(props.ratable.total_average_rating)
 
 </script>
 
@@ -28,20 +29,20 @@ const totalAverageRating = ref<number>(props.signboard.total_average_rating)
     <div :class="cn('p-4 border-t text-fade', props.class)">
         <div class="flex items-center">
             <div class="font-medium text-lg">Reviews</div>
-            <div v-if="user?.id !== signboard.business.user_id" class="ms-auto md:block hidden">
-                <RatePopover :ratable="signboard" ratable_type="signboard" @rated="(value)=>{totalAverageRating = value}">
-                    <Button size="sm">Add Review</Button>
+            <div v-if="user?.id !== ratable.created_by_id" class="ms-auto md:block hidden">
+                <RatePopover :ratable="ratable" :ratable_type="ratable_type" @rated="(value)=>{totalAverageRating = value}">
+                    <Button size="sm">Write review</Button>
                 </RatePopover>
             </div>
-            <div class="ms-auto md:hidden" v-if="user?.id !== signboard.business.user_id">
-                <RateDialog :ratable="signboard" ratable_type="signboard" @rated="(value)=>{totalAverageRating = value}">
-                    <Button size="sm">Add Review</Button>
+            <div class="ms-auto md:hidden" v-if="user?.id !== ratable.created_by_id">
+                <RateDialog :ratable="ratable" :ratable_type="ratable_type" @rated="(value)=>{totalAverageRating = value}">
+                    <Button size="sm">Write review</Button>
                 </RateDialog>
             </div>
         </div>
         <div class="my-5 flex flex-col items-start gap-4">
             <div class="flex items-start gap-2 lg:gap-4">
-                <div class="text-5xl">{{ number_format(signboard.total_average_rating, 1) }}</div>
+                <div class="text-5xl">{{ number_format(ratable.total_average_rating, 1) }}</div>
                 <StarRating
                     :star-size="37"
                     :show-rating="false"
@@ -50,12 +51,12 @@ const totalAverageRating = ref<number>(props.signboard.total_average_rating)
                     active-color="#009689"
                     :padding="3"
                     class="md:w-1/3 w-full"
-                    :key="`rating-card-${signboard.id}`"
+                    :key="`rating-card-${ratable.id}`"
                     :increment="0.01"
                 />
             </div>
             <div class="">
-                ({{ signboard.reviews_count }} total reviews)
+                ({{ ratable.reviews_count }} total reviews)
             </div>
             <div class="w-full">
                 <div class="text-xl mb-3 font-medium text-secondary">Insights</div>

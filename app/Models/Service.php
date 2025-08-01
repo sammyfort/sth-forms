@@ -50,7 +50,11 @@ class Service extends Model implements HasMedia, Viewable
     use BootModelTrait, HasFactory, InteractsWithMedia, ReviewRateable,
         InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;
 
-    protected $appends = ['featured', 'gallery'];
+    protected $appends = [
+        'featured',
+        'gallery',
+        'active_promotion'
+    ];
 
 
     public function getSlugOptions() : SlugOptions

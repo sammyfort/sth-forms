@@ -1,40 +1,23 @@
 <script setup lang="ts">
 import { Head, Link, router } from '@inertiajs/vue3'
 import Layout from '@/layouts/Layout.vue'
-
-import {
-    ArrowLeft,
-    Edit,
-    Trash2,
-    Eye,
-    Hammer,
-    MapPin,
-    Star,
-    Clock,
-    Building2,
-    Users,
-    MessageCircle,
-    Share2,
-    Heart,
-    Award,
-    CheckCircle,
-    PlusIcon
-} from 'lucide-vue-next'
+import { ArrowLeft, Edit, Trash2, Eye, MapPin, Star, Building2, Share2, Award, PlusIcon } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { PromotionPlanI, ServiceI } from '@/types';
+import { PaymentStatusI, PromotionPlanI, ServiceI } from '@/types';
 import { ref, onMounted } from 'vue'
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { toastError, toastSuccess } from '@/lib/helpers';
-
 import PaymentHistory from '@/components/promotions/PaymentHistory.vue';
 import PromoteNow from '@/components/promotions/PromoteNow.vue';
 import { PromotableE } from '@/lib/enums';
-import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
+import PromotionPaymentAlert from '@/components/promotions/PromotionPaymentAlert.vue';
+import ActivePromotionInfo from '@/pages/Products/ActivePromotionInfo.vue';
 
 const props = defineProps<{
     service: ServiceI
-    plans: PromotionPlanI[];
+    plans: PromotionPlanI[]
+    payment_status: PaymentStatusI
 }>()
 
 onMounted(()=> {
@@ -93,8 +76,7 @@ const handleShare = () => {
         </div>
 
         <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 via-white to-blue-50">
-
-
+            <PromotionPaymentAlert :payment_status="payment_status"/>
             <div class="relative overflow-hidden bg-secondary">
                 <div class="absolute inset-0 bg-black opacity-20"></div>
                 <div class="relative px-6 py-8">
@@ -143,7 +125,6 @@ const handleShare = () => {
                                     </div>
                                 </div>
 
-
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                                         <Building2 class="w-6 h-6 text-yellow-300 fill-current mx-auto mb-2" />
@@ -163,8 +144,6 @@ const handleShare = () => {
                     </div>
                 </div>
             </div>
-
-
             <div class="md:hidden px-6 py-6 bg-white border-b border-slate-200">
                 <div class="flex gap-3">
                     <Link :href="route('my-services.edit', service.id)" class="flex-1">
@@ -179,8 +158,6 @@ const handleShare = () => {
                     </Button>
                 </div>
             </div>
-
-
             <div class="px-6 py-12">
                 <div class="max-w-6xl mx-auto">
                     <div class="grid lg:grid-cols-3 gap-8">
@@ -200,9 +177,7 @@ const handleShare = () => {
 
                             <div  >
                                 <h2 class="text-2xl font-bold text-slate-900 mb-6">Gallery</h2>
-
-                                     <ImagePreview :featured-url="service.featured" :gallery-urls="service.gallery"/>
-
+                                 <ImagePreview :featured-url="service.featured" :gallery-urls="service.gallery"/>
                             </div>
                             <PaymentHistory :promotions="service.promotions" />
                         </div>
@@ -213,8 +188,6 @@ const handleShare = () => {
                                 <h3 class="text-xl font-bold text-slate-900 mb-6">Service Details</h3>
 
                                 <div class="space-y-4">
-
-
                                     <div class="flex items-center justify-between py-3 border-b border-slate-100">
                                         <span class="text-slate-600">Status</span>
                                         <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
@@ -262,11 +235,11 @@ const handleShare = () => {
                                     </ConfirmDialogue>
 
                                 </div>
-
+                                <div class="lg:col-span-1 mt-5 border-t pt-3">
+                                    <ActivePromotionInfo :promotable="service" />
+                                </div>
                                 <div class="lg:col-span-1">
-
                                     <PromoteNow :promotable="service" :plans="plans" :promotable-type="PromotableE.SERVICE"/>
-
                                 </div>
                             </div>
                         </div>

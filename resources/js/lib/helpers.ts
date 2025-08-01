@@ -120,3 +120,14 @@ export function copyContent(code: string, message? = 'Content copied to clipboar
 export function cediSign(): string{
     return "₵"
 }
+
+export function generateShareLinks(url = null, text = "Check this out!") {
+    const shareUrl = encodeURIComponent(url || window.location.href);
+    const shareText = encodeURIComponent(text);
+
+    return {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+        whatsapp: `https://wa.me/?text=${shareText}%20${shareUrl}`,
+        x: `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`,
+    };
+}

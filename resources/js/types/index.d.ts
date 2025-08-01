@@ -47,6 +47,8 @@ export interface User extends ModelI {
     referral_code: string
     referral_link: string
     points: number
+    is_referrer_points_settled: boolean
+    points_in_cedis: number
 }
 
 export interface ProductI extends ModelI {
@@ -62,6 +64,7 @@ export interface ProductI extends ModelI {
     is_negotiable: boolean
     first_mobile: string
     second_mobile: string|null
+    whatsapp_mobile: string|null
     region_id: number
     region: RegionI
     town: string
@@ -303,4 +306,6 @@ export type InputSelectOption = {
     value: number|string
 }
 
-export type RatableItemsI = SignboardI | ProductI
+export type RatableI = SignboardI | ProductI
+export type RatableTypesI = "signboard" | "product"
+export type PaymentStatusI = null | 'success' | 'failed' | 'cancelled' | 'pending';

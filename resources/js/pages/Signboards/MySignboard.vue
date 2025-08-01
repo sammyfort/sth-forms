@@ -1,15 +1,12 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Briefcase, Building, Clock, Edit, Loader2, MapPin, PlusIcon, Trash2, XCircle, Eye } from 'lucide-vue-next';
+import { Briefcase, Building, Edit, Loader2, MapPin, PlusIcon, Trash2, Eye } from 'lucide-vue-next';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { computed, ref } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
-
-import { AverageRatingsI, PromotionPlanI, RatingsDistributionI, SignboardI } from '@/types';
+import { AverageRatingsI, PaymentStatusI, PromotionPlanI, RatingsDistributionI, SignboardI } from '@/types';
 import PaymentHistory from '@/components/promotions/PaymentHistory.vue';
-import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
 import PromoteSignboard from '@/pages/Signboards/blocks/PromoteSignboard.vue';
 import LocationDetails from '@/pages/Signboards/blocks/LocationDetails.vue';
 import SignboardActions from '@/pages/Signboards/blocks/SignboardActions.vue';
@@ -17,14 +14,16 @@ import OperationFields from '@/pages/Signboards/blocks/OperationFields.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { PromotableE } from '@/lib/enums';
 import ReviewsDetails from '@/components/ReviewsDetails.vue';
+import PromotionPaymentAlert from '@/components/promotions/PromotionPaymentAlert.vue';
 
 const props = defineProps<{
     signboard: SignboardI;
     plans: PromotionPlanI[];
     ratings: AverageRatingsI;
     distributions: RatingsDistributionI;
-    payment_status: null | 'success' | 'failed' | 'cancelled' | 'pending';
+    payment_status: PaymentStatusI
 }>();
+
 const reviews = computed(() => props.signboard.reviews);
 
 const showDialog = ref(false);
@@ -51,22 +50,7 @@ const deleteSignboard = () => {
     <Head :title="props.signboard.landmark" />
     <Layout>
         <div class="min-h-screen w-full bg-gradient-to-br from-slate-50 to-blue-50">
-            <Alert v-if="payment_status == 'pending'" class="mb-5" variant="success">
-                <Clock />
-                <AlertTitle>Payment in Progress</AlertTitle>
-                <AlertDescription>
-                    We've received your request and are currently verifying your payment. <br />
-                    This may take a few moments. Once confirmed, your signboard promotion will be activated automatically.
-                </AlertDescription>
-            </Alert>
-            <Alert v-if="payment_status == 'cancelled'" class="mb-5" variant="destructive">
-                <XCircle />
-                <AlertTitle>Transaction Cancelled</AlertTitle>
-                <AlertDescription>
-                    You cancelled the payment process. <br />
-                    If this was unintentional, please try again to complete your signboard promotion.
-                </AlertDescription>
-            </Alert>
+            <PromotionPaymentAlert :payment_status="payment_status"/>
             <div class="relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-r from-primary via-primary to-primary">
                     <div class="absolute inset-0 bg-black/20"></div>
@@ -188,6 +172,7 @@ const deleteSignboard = () => {
                             :ratings="ratings"
                             :distributions="distributions"
                             :reviews="reviews"
+                            ratable_type="signboard"
                         />
                     </div>
                 </div>

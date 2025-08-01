@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import ReviewsList from '@/components/signboard/Details/ReviewsList.vue';
-import ReviewsInsight from '@/components/signboard/Details/ReviewsInsight.vue';
-import { AverageRatingsI, RatableItemsI, RatingsDistributionI, ReviewI } from '@/types';
+import ReviewsList from '@/components/review/ReviewsList.vue';
+import ReviewsInsight from '@/components/review/ReviewsInsight.vue';
+import { AverageRatingsI, RatableI, RatableTypesI, RatingsDistributionI, ReviewI } from '@/types';
 
 type Props = {
-    ratable: RatableItemsI,
+    ratable: RatableI,
     ratings: AverageRatingsI
     distributions: RatingsDistributionI
-    reviews: ReviewI[]
+    reviews: ReviewI[],
+    ratable_type: RatableTypesI
 }
 
 const props = defineProps<Props>()
@@ -16,9 +17,9 @@ const props = defineProps<Props>()
 
 <template>
     <div>
-        <ReviewsInsight :signboard="ratable" :ratings="ratings" :distributions="distributions" />
+        <ReviewsInsight :ratable="ratable" :ratings="ratings" :distributions="distributions" :ratable_type="ratable_type"/>
         <div class="p-4">
-            <ReviewsList :signboard="ratable" :reviews="reviews" />
+            <ReviewsList :ratable="ratable" :reviews="reviews" />
         </div>
     </div>
 </template>

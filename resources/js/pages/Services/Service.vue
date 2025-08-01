@@ -39,7 +39,7 @@ const handleShare = () => {
                               class="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors"
                         >
                             <ArrowLeft class="w-5 h-5" />
-                            <span>Back to Artisans</span>
+                            <span>Back to Service Providers</span>
                         </Link>
 
                         <div class="flex flex-col lg:flex-row gap-8 items-start">
@@ -110,7 +110,7 @@ const handleShare = () => {
 
             <div class="mt-10">
                 <div class="text-xl font-semibold text-fade">
-                    Top Trending Artisans
+                    Top Trending Service Providers
                 </div>
                 <AdvertisedServicesH />
             </div>

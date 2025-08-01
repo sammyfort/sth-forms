@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentPlatform;
 use App\Enums\PaymentStatus;
 use App\Traits\BootModelTrait;
 use Carbon\Carbon;
@@ -34,6 +35,7 @@ class Promotion extends Model
 
     public $casts = [
         'payment_status' => PaymentStatus::class,
+        'payment_platform' => PaymentPlatform::class,
     ];
 
     public function promotable(): MorphTo
@@ -91,14 +93,19 @@ class Promotion extends Model
         if ($paymentStatus && $paymentReference) {
             $promotion = Promotion::query()
                 ->where('payment_reference', $paymentReference)
-                ->where('payment_status', PaymentStatus::PENDING->value)
+                ->where('payment_status', PaymentStatus::PENDING)
+                ->orWhere(function (Builder $builder){
+                    $builder->where('payment_status', PaymentStatus::PAID)
+                        ->where('payment_platform', PaymentPlatform::SYSTEM_POINTS);
+                })
                 ->first();
             if ($promotion) {
                 if ($paymentStatus == 'cancelled') {
                     $promotion->payment_status = PaymentStatus::CANCELED;
                 }
                 $promotion->save();
-            } else {
+            }
+            else {
                 $paymentStatus = null;
             }
         }

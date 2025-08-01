@@ -63,8 +63,8 @@ const resumeCarouselPlay = ()=>{
         <div class="mb-5">
             <slot />
         </div>
-        <CarouselContent class="mb-5 shadow-none">
-            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="signboard in signboards" :key="signboard.id">
+        <CarouselContent class="mb-5 shadow-none max-w-sm md:max-w-md lg:max-w-[100%]">
+            <CarouselItem class="md:basis-1/2 lg:basis-1/4" v-for="signboard in signboards" :key="signboard.id">
                 <template v-if="processing">
                     <SignboardCardV1Skeleton
                         v-for="x in [1,2,3]"

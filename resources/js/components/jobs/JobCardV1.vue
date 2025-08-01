@@ -47,7 +47,7 @@ const props = defineProps<Props>()
                             <div class="text-xs">{{ job.created_at }}</div>
                         </div>
                     </div>
-                    <div class="text-fade text-sm">{{ job.short_description }}</div>
+                    <div class="text-fade text-sm">{{ job.summary }}</div>
                 </div>
 
                 <div class="mt-auto">

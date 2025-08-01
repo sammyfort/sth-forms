@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ReviewI, SignboardI } from '@/types';
+import { RatableI, ReviewI } from '@/types';
 import StarRating from 'vue-star-rating';
 
 type Props = {
-    signboard: SignboardI
+    ratable: RatableI
     reviews: ReviewI[]
 }
 defineProps<Props>()
@@ -36,7 +36,7 @@ defineProps<Props>()
                         active-color="#009689"
                         :padding="3"
                         class="w-full md:w-1/3"
-                        :key="`rating-card-${signboard.id}`"
+                        :key="`rating-card-${review.id}`"
                         :increment="0.01"
                     />
                 </div>

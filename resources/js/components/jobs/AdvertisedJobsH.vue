@@ -2,11 +2,8 @@
 import Autoplay from 'embla-carousel-autoplay'
 import { Carousel, CarouselItem, CarouselContent } from '@/components/ui/carousel';
 import { HTMLAttributes, onMounted, ref } from 'vue';
-
 import { cn } from '@/lib/utils';
-import ServiceCardV1 from '@/components/Services/ServiceCardV1.vue';
 import { getPromotedJobs } from '@/lib/api';
-import ServiceCardV1Skeleton from '@/components/skeletons/ServiceCardV1Skeleton.vue';
 import JobCardV1Skeleton from '@/components/skeletons/JobCardV1Skeleton.vue';
 import JobCardV1 from '@/components/jobs/JobCardV1.vue';
 
@@ -64,8 +61,8 @@ const resumeCarouselPlay = ()=>{
         <div class="mb-5">
             <slot />
         </div>
-        <CarouselContent class="mb-5 shadow-none">
-            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="job in jobs" :key="`accordion-item-${job.id}`">
+        <CarouselContent class="mb-5 shadow-none max-w-sm md:max-w-md lg:max-w-[100%]">
+            <CarouselItem class="md:basis-1/2 lg:basis-1/4" v-for="job in jobs" :key="`accordion-item-${job.id}`">
                 <template v-if="processing">
                     <JobCardV1Skeleton
                         v-for="x in [1,2,3]"

@@ -43,7 +43,7 @@ const user = computed(() => page.props.auth.user)
                             class="font-bold py-1.5 no-underline w-full ps-2"
                             :class="{ 'mobile-active-nav': $page.component === 'Services/Services' || $page.component === 'Services/Service' }"
                             :href="route('services.index')"
-                        >Browse Artisans</TextLink>
+                        >Browse Service Providers</TextLink>
                     </div>
                     <div class="flex items-center">
                         <TextLink

@@ -57,10 +57,10 @@ const props = defineProps<Props>()
             </div>
             <div class="max-w-[1200px] mx-auto mt-10 flex flex-col md:flex-row gap-10 relative">
                 <div class="w-full md:w-3/4 flex flex-col gap-10">
-                    <div>{{ job.description }}</div>
+                    <div v-html="job.description"></div>
                     <div v-if="job.how_to_apply">
                         <div class="font-bold">How to apply: </div>
-                        <div>{{ job.how_to_apply }}</div>
+                        <div v-html="job.how_to_apply"></div>
                     </div>
                 </div>
                 <div class="w-full md:w-1/4">

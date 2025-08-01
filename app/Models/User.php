@@ -46,6 +46,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $referral_code
  * @property string $referral_link
  * @property int $points
+ * @property bool $is_referrer_points_settled
  */
 
  #[ObservedBy(UserObserver::class)]
@@ -61,9 +62,10 @@ use Illuminate\Notifications\Notifiable;
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'is_referrer_points_settled' => 'boolean'
     ];
     protected $appends = [
-        'initials', 'fullname', 'avatar', 'created_at_str', 'referral_link'
+        'initials', 'fullname', 'avatar', 'created_at_str', 'referral_link', 'points_in_cedis'
     ];
 
      public function registerMediaCollections(): void
@@ -92,6 +94,12 @@ use Illuminate\Notifications\Notifiable;
         return Attribute::make(fn () => $this->lastname[0] . $this->firstname[0]);
     }
 
+     public function pointsInCedis(): Attribute
+     {
+         return Attribute::make(
+             get: fn () => $this->points * config('app.point_cedi_rate')
+         );
+     }
 
     public function lastLogin(): Attribute
     {
