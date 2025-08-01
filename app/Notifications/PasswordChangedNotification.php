@@ -25,7 +25,9 @@ class PasswordChangedNotification extends Notification
     {
         return (new MailMessage)
             ->subject('🔐 Your Password Has Been Changed')
-            ->markdown('mails.password-changed', ['user' => $notifiable]);
+            ->view('mails.password-changed', [
+                'user' => $notifiable
+            ]);
     }
 
     /**

@@ -26,7 +26,9 @@ class WelcomeNotification extends Notification
     {
         return (new MailMessage)
             ->subject("Welcome" . env('APP_NAME'))
-            ->markdown('mails.welcome', ['user' => $notifiable]);
+            ->view('mails.welcome', [
+                'user' => $notifiable
+            ]);
     }
 
     public function toArray(object $notifiable): array

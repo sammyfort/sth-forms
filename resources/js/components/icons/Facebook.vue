@@ -1,0 +1,18 @@
+<script setup lang="ts">
+import { HTMLAttributes } from 'vue';
+import { cn } from '@/lib/utils';
+
+const props = defineProps<{
+    class?: HTMLAttributes['class']
+}>()
+</script>
+
+<template>
+    <svg :class="cn('transition-transform transform hover:scale-110', props.class)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Facebook-Logo-2--Streamline-Logos" height="24" width="24">
+        <path fill="#000000" d="M13.5 1A4.5 4.5 0 0 0 9 5.5V9H6.5a0.5 0.5 0 0 0 -0.5 0.5v4a0.5 0.5 0 0 0 0.5 0.5H9v8.5a0.5 0.5 0 0 0 0.5 0.5h4a0.5 0.5 0 0 0 0.5 -0.5V14h2.5a0.5 0.5 0 0 0 0.485 -0.379l1 -4A0.5 0.5 0 0 0 17.5 9H14V7.5A1.5 1.5 0 0 1 15.5 6h2a0.5 0.5 0 0 0 0.5 -0.5v-4a0.5 0.5 0 0 0 -0.5 -0.5h-4Z" stroke-width="1"></path>
+    </svg>
+</template>
+
+<style scoped>
+
+</style>

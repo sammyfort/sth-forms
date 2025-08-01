@@ -37,8 +37,9 @@ class RegisteredUserController extends Controller
             if ($referrer){
                 $validated['referrer_id'] = $referrer->id;
             }
-            unset($validated['rfc']);
         }
+
+        unset($validated['rfc']);
 
         $user = User::query()
             ->create($validated);

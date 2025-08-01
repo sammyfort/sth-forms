@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\PaymentPlatform;
 use App\Enums\PaymentStatus;
 use App\Enums\Promotable;
 use App\Http\Requests\PromotionRequest;
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
+use App\Notifications\PromotionSuccessNotification;
 use App\Services\HubtelService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,6 +25,78 @@ class PromotionController extends Controller
     public function __construct()
     {
         $this->hubtelService = new HubtelService();
+    }
+
+    public function payUsingPoints(PromotionRequest $request)
+    {
+        $validatedData = $request->validated();
+        $user = auth()->user();
+        $plan = PromotionPlan::query()->find($validatedData['plan_id']);
+
+        if ($plan->price > $user->points_in_cedis){
+            return back()->with(errorRes());
+        }
+
+        $reference = Str::uuid()->toString();
+        $promotableEnum = Promotable::from($validatedData['promotable_type']);
+        $promotableModel = Promotable::getModel($promotableEnum);
+        $promotable = $promotableModel::query()->find($validatedData['promotable_id']);
+
+        if (! $promotable) {
+            return back()->with(errorRes());
+        }
+
+        DB::beginTransaction();
+        try {
+            $now = now();
+
+            // Check for overlapping active promotions
+            $activePromotions = $promotable->promotions()
+                ->running()
+                ->get();
+
+            $arrearsDays = 0;
+            if ($activePromotions->count()) {
+                $latest = $activePromotions->first();
+                $arrearsDays = max((int) $now->diffInDays(Carbon::parse($latest->ends_at)), 0);
+                foreach ($activePromotions as $old) {
+                    $old->update(['ends_at' => $now]);
+                }
+            }
+
+            $totalDays = $plan->number_of_days + $arrearsDays;
+            $endsAt = $now->copy()->addDays($totalDays);
+
+            $promotable->promotions()->create([
+                'plan_id' => $plan->id,
+                'payment_reference' => $reference,
+                'payment_status' => PaymentStatus::PAID,
+                'amount' => $plan->price,
+                'payment_platform' => PaymentPlatform::SYSTEM_POINTS,
+                'starts_at'       => $now,
+                'ends_at'         => $endsAt,
+            ]);
+
+            $newUserPoints = $user->points - ( $plan->price / config('app.point_cedi_rate'));
+
+            // charge user's points
+            $user->update([
+                'points' => $newUserPoints
+            ]);
+
+            DB::commit();
+
+            $promotableName = $promotable->name ?? $promotable->title;
+            $user->notify(new PromotionSuccessNotification($promotableName, $plan));
+
+            return redirect()->to(
+                url()->previous() . (str_contains(url()->previous(), '?') ? '&' : '?') . "reference=$reference&payment_status=success"
+            );
+        }
+        catch (\Exception $exception){
+            DB::rollBack();
+            return back()->with(errorRes());
+        }
     }
 
     public function initializeHubtel(PromotionRequest $request): RedirectResponse
@@ -62,7 +136,7 @@ class PromotionController extends Controller
                 'checkout_id' => $payment['checkoutId'],
                 'payment_status' => PaymentStatus::PENDING,
                 'amount' => $plan->price,
-                'payment_platform' => 'Hubtel',
+                'payment_platform' => PaymentPlatform::HUBTEL,
             ]);
         }
 

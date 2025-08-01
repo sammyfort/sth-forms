@@ -6,10 +6,12 @@ use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
 use App\Traits\HasPromotion;
 use App\Traits\RatingsAttributesTrait;
+use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,6 +29,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property string $updated_at
  * @property int|null $views_count
  * @property int $user_id
+ * @property Collection<Review> $reviews
  */
 class Product extends Model implements HasMedia, Viewable
 {

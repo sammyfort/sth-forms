@@ -3,7 +3,7 @@ import StarRating from 'vue-star-rating'
 import InputText from '@/components/InputText.vue';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/vue3';
-import { ProductI, RatableItemsI, RatingI, ReviewI, SignboardI } from '@/types';
+import { RatableI, RatableTypesI, RatingI, ReviewI } from '@/types';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
 import { AutoplayType } from 'embla-carousel-autoplay';
@@ -21,8 +21,8 @@ import {
 } from '@/components/ui/dialog';
 
 type Props = {
-    ratable: RatableItemsI
-    ratable_type: "signboard" | "product"
+    ratable: RatableI
+    ratable_type: RatableTypesI
     carouselPlugin?: AutoplayType
 }
 

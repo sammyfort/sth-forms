@@ -72,7 +72,6 @@ class ProductPublicController extends Controller
     public function show(Product $product): Response
     {
         $product->loadMissing(['reviews.ratings', 'user', 'region', 'categories', 'media']);
-        $averageRatings = $product->averageRatings();
         $distributions = RatingService::getDistributions($product);
 
         if (!auth() || auth()->id() != $product->user_id){
@@ -82,10 +81,13 @@ class ProductPublicController extends Controller
 
         $product->views_count = views($product)->count();
 
+        $media = $product->media->toArray();
+
         return Inertia::render('Products/Product', [
             'product' => $product->toArrayWithMedia(),
-            'ratings' => $averageRatings,
+            'reviews' => $product->reviews,
             'distributions' => $distributions,
+            'media' => $media,
         ]);
     }
 

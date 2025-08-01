@@ -95,7 +95,7 @@ const reviews = computed(()=> props.signboard.reviews);
                                 </div>
                             </div>
                         </div>
-                        <ReviewsDetails :ratable="signboard" :ratings="ratings" :distributions="distributions" :reviews="reviews"/>
+                        <ReviewsDetails ratable_type="signboard" :ratable="signboard" :ratings="ratings" :distributions="distributions" :reviews="reviews"/>
                     </div>
                 </div>
                 <div class="order-2 p-3 lg:order-1 lg:col-span-2">

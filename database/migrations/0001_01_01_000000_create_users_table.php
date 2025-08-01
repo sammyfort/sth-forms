@@ -28,8 +28,9 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->foreignId('created_by_id')->nullable();
             $table->timestamp('last_login')->nullable();
-            $table->integer('points')->default(0);
+            $table->float('points', 2)->default(0);
             $table->foreignId('referrer_id')->nullable();
+            $table->boolean('is_referrer_points_settled')->default(false);
             $table->string('referral_code');
             $table->rememberToken();
             $table->timestamps();

@@ -12,8 +12,10 @@ use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\{JobPublicController,
     ProductPublicController,
     RatingController,
+    ServicePublicController,
     SignboardController,
-    JobController};
+    JobController,
+    SignboardPublicController};
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -52,9 +54,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{signboard}', [SignboardController::class, 'update'])->name('update');
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
     });
-    Route::prefix('signboards')->as('signboards.')->group(function () {
-        Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
-    });
+
+//    Route::prefix('signboards')->as('signboards.')->group(function () {
+//        Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
+//    });
 
 
     Route::prefix('my-services')->as('my-services.')->group( function (){
@@ -89,16 +92,18 @@ Route::prefix('businesses')->name('businesses.')->group(function () {
     Route::get('/', [BusinessController::class, 'index'])->name('index');
 });
 
+
+
 Route::prefix('signboards')->as('signboards.')->group(function () {
-    Route::get('/', [SignboardController::class, 'index'])->name('index');
-    Route::get('/{signboard:slug}/details', [SignboardController::class, 'show'])->name('show');
-    Route::get('/promoted', [SignboardController::class, 'getPromotedSignboards'])->name('promoted');
+    Route::get('/', [SignboardPublicController::class, 'index'])->name('index');
+    Route::get('/{signboard:slug}/details', [SignboardPublicController::class, 'show'])->name('show');
+    Route::get('/promoted', [SignboardPublicController::class, 'getPromotedSignboards'])->name('promoted');
 });
 
-Route::prefix('artisans')->as('services.')->group(callback: function () {
-    Route::get('/', [ServiceController::class, 'index'])->name('index');
-    Route::get('/promoted', [ServiceController::class, 'getPromotedSignboards'])->name('promoted');
-    Route::get('/details/{service:slug}', [ServiceController::class, 'show'])->name('show');
+Route::prefix('service-providers')->as('services.')->group(callback: function () {
+    Route::get('/', [ServicePublicController::class, 'index'])->name('index');
+    Route::get('/promoted', [ServicePublicController::class, 'getPromotedSignboards'])->name('promoted');
+    Route::get('/details/{service:slug}', [ServicePublicController::class, 'show'])->name('show');
 });
 
 Route::prefix('jobs')->as('jobs.')->group(callback: function () {
@@ -118,8 +123,13 @@ Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
 Route::get('about-us', fn()=> Inertia::render('AboutUs'))->name('about-us');
 Route::get('privacy-policy', fn()=> Inertia::render('PrivacyPolicy'))->name('privacy-policy');
 
-Route::post('promotions/payment', [PromotionController::class, 'initializeHubtel'])
+
+Route::post('promotions/payment/fiat', [PromotionController::class, 'initializeHubtel'])
     ->middleware(['auth', 'verified'])
     ->name('promotions.payment.initialize');
+Route::post('promotions/payment/points', [PromotionController::class, 'payUsingPoints'])
+    ->middleware(['auth', 'verified'])
+    ->name('promotions.payment.points');
+
 
 require __DIR__.'/auth.php';

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Signboard\RateRequest;
 use App\Models\Product;
 use App\Models\Signboard;
+use App\Models\User;
+use App\Notifications\NewReviewNotification;
 use Illuminate\Support\Facades\DB;
 
 class RatingController extends Controller
@@ -43,6 +45,13 @@ class RatingController extends Controller
                 DB::commit();
                 $ratable->refresh();
 
+                // notify owner
+                $creator = User::query()->find($ratable->created_by_id);
+
+                if ($creator){
+                    $creator->notify(new NewReviewNotification(auth()->user(), $review, ucfirst($validatedData['ratable_type'])));
+                }
+
                 $data['ratable'] = $ratable;
                 return back()->with(successRes('Your Ratings was recorded successfully', $data));
             }
@@ -51,6 +60,7 @@ class RatingController extends Controller
 
         } catch (\Exception $exception) {
             DB::rollBack();
+            dd($exception);
             return back()->with(errorRes());
         }
     }

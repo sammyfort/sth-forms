@@ -14,22 +14,22 @@ class RegionSeeder extends Seeder
     public function run(): void
     {
         $regions = [
-            "Ahafo",
-            "Ashanti",
-            "Bono",
-            "Bono East",
-            "Central",
-            "Eastern",
-            "Greater Accra",
-            "North East",
-            "Northern",
-            "Oti",
-            "Savannah",
-            "Upper East",
-            "Upper West",
-            "Volta",
-            "Western",
-            "Western North"
+            "Ahafo Region",
+            "Ashanti Region",
+            "Bono Region",
+            "Bono East Region",
+            "Central Region",
+            "Eastern Region",
+            "Greater Accra Region",
+            "North East Region",
+            "Northern Region",
+            "Oti Region",
+            "Savannah Region",
+            "Upper East Region",
+            "Upper West Region",
+            "Volta Region",
+            "Western Region",
+            "Western North Region"
         ];
         foreach ($regions as $region) {
             Region::query()

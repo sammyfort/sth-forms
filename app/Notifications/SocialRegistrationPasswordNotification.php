@@ -26,7 +26,7 @@ class SocialRegistrationPasswordNotification extends Notification
     {
         return (new MailMessage)
             ->subject("Your Login Password")
-            ->markdown('mails.social-registration-password', [
+            ->view('mails.social-registration-password', [
                 'user' => $notifiable,
                 'password' => $this->password,
                 'platform' => $this->platform->value,

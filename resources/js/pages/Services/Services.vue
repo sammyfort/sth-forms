@@ -38,11 +38,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head title="Artisans"/>
+    <Head title="Service Providers"/>
     <Layout>
         <div class="w-full">
             <div class="w-full my-10 text-center">
-                <div class="text-fade text-2xl font-semibold">Browse Artisans</div>
+                <div class="text-fade text-2xl font-semibold">Browse Service Providers</div>
             </div>
             <div class="relative grid grid-cols-5 w-full gap-15">
                 <div class=" lg:block col-span-5 lg:col-span-1">
@@ -67,7 +67,7 @@ onMounted(() => {
                             >
                                 <div class="flex items-center gap-2 lg:text-2xl text-lg font-bold">
                                     <Hammer :size="25" class="text-primary"/>
-                                    <span>Trending Artisans</span>
+                                    <span>Trending Service Providers</span>
                                     <Star :size="25" class="text-primary"/>
                                 </div>
                             </AdvertisedServicesH>
@@ -78,7 +78,7 @@ onMounted(() => {
                 <div class="hidden lg:block lg:col-span-1">
                     <div class="sticky top-40">
                         <div class="mb-4 text-lg font-semibold text-fade flex gap-2 items-center">
-                            Trending Artisans
+                            Trending Service Providers
                             <Hammer :size="22" class="text-primary"/>
                         </div>
                         <AdvertisedServicesV items-class="h-screen" class=""/>

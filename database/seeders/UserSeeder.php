@@ -90,7 +90,9 @@ class UserSeeder extends Seeder
 
             Service::factory(3)
                 ->for($user)
-                ->create()
+                ->create([
+                    'created_by_id' => $user->id
+                ])
                 ->each(function ($service){
                     $service->addMediaFromUrl('https://picsum.photos/200/300')
                         ->toMediaCollection('featured');
@@ -100,6 +102,7 @@ class UserSeeder extends Seeder
                 ->for($user)
                 ->create([
                     'region_id' => $regions->random(),
+                    'created_by_id' => $user->id
                 ])
                 ->each(function (Job $job) use($jobCategories){
                     $job->categories()->attach($jobCategories->take(rand(4, 10))->toArray());
@@ -111,17 +114,18 @@ class UserSeeder extends Seeder
                 ->for($user)
                 ->create([
                     'region_id' => $regions->random(),
+                    'created_by_id' => $user->id
                 ])
                 ->each(function (Product $product) use ($productCategories){
                     $product->categories()->attach($productCategories->take(rand(4, 10))->toArray());
                     $product->addMediaFromUrl('https://picsum.photos/200/300')
                         ->toMediaCollection('featured');
-                    $product->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('gallery');
-                    $product->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('gallery');
-                    $product->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('gallery');
+
+                    foreach (range(0, 5) as $i){
+                        $product->addMediaFromUrl('https://picsum.photos/200/300')
+                            ->toMediaCollection('gallery');
+                    }
+
                 });
         }
     }

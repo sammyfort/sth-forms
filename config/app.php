@@ -128,4 +128,6 @@ return [
     'hubtel_secrete_key' => env('HUBTEL_SECRET_KEY'),
     'hubtel_app_id' => env('HUBTEL_APP_ID'),
 
+    'points_per_referral' => 5,
+    'point_cedi_rate' => 1,
 ];

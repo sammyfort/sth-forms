@@ -3,9 +3,9 @@
 import { Rocket } from 'lucide-vue-next';
 import InputSelect from '@/components/InputSelect.vue';
 import { InputSelectOption, ModelI, PromotionPlanI } from '@/types';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, usePage } from '@inertiajs/vue3';
 import { toastError } from '@/lib/helpers';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { PromotableE } from '@/lib/enums';
 import { Button } from '@/components/ui/button';
 
@@ -17,14 +17,23 @@ const props = defineProps<{
 
 const showPlans = ref(false);
 
-const promotionForm = useForm({
+const page = usePage()
+const user = computed(()=> page.props.auth.user)
+
+const form = useForm({
     plan_id: null,
     promotable_id: props.promotable.id,
     promotable_type: props.promotableType
 });
 
-const submitPromotionForm = () => {
-    promotionForm.post(route('promotions.payment.initialize'), {
+const canPromoteWithPoints = computed(()=>{
+    const selectedPlan = props.plans.find(plan => plan.id === form.plan_id)
+    if (!selectedPlan) return false
+    return selectedPlan.price < user.value.points_in_cedis
+})
+
+const promoteUsingFiat = () => {
+    form.post(route('promotions.payment.initialize'), {
         replace: true,
         onSuccess: (response) => {
             const authorizationUrl = response.props.data.authorization_url;
@@ -37,10 +46,20 @@ const submitPromotionForm = () => {
     });
 };
 
+const promoteUsingPoints = () => {
+    if (!canPromoteWithPoints.value) return
+
+    form.post(route('promotions.payment.points'), {
+        onSuccess: (response) => {
+            console.log(response.props)
+        },
+    });
+};
+
 </script>
 
 <template>
-    <div class="mt-6 mb-4 border-t border-gray-100 pt-4">
+    <div class="mb-4 border-t border-gray-100 pt-4">
         <div class="mb-3 flex items-center justify-between">
             <h4 class="font-semibold text-gray-900">Promote Now</h4>
             <button
@@ -62,9 +81,9 @@ const submitPromotionForm = () => {
         <div v-else class="relative">
             <InputSelect
                 label="Select Plan"
-                :form="promotionForm"
+                :form="form"
                 model="plan_id"
-                :options="props.plans.map((plan: PromotionPlanI): InputSelectOption => ({
+                :options="plans.map((plan: PromotionPlanI): InputSelectOption => ({
                          label: `${plan.name} - ${plan.number_of_days} Days - ₵${plan.price}`,
                          value: plan.id,
                       }))"
@@ -74,9 +93,20 @@ const submitPromotionForm = () => {
         </div>
 
         <Button
-            v-if="promotionForm.plan_id"
-            @click="submitPromotionForm"
-            :processing="promotionForm.processing"
+            v-if="form.plan_id"
+            @click="promoteUsingPoints"
+            :processing="form.processing"
+            class="mt-4 w-full"
+            variant="secondary"
+            :disabled="!canPromoteWithPoints"
+        >
+            Use My Points ({{ user.points }} points)
+        </Button>
+
+        <Button
+            v-if="form.plan_id"
+            @click="promoteUsingFiat"
+            :processing="form.processing"
             class="mt-4 w-full"
         >
             <Rocket class="h-4 w-4" /> Promote Now

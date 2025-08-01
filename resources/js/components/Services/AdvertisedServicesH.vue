@@ -61,8 +61,8 @@ const resumeCarouselPlay = ()=>{
         <div class="mb-5">
             <slot />
         </div>
-        <CarouselContent class="mb-5 shadow-none">
-            <CarouselItem class="sm:basis-1/2 md:basis-1/3 lg:basis-1/4" v-for="service in services" :key="service.id">
+        <CarouselContent class="mb-5 shadow-none max-w-sm md:max-w-md lg:max-w-[100%]">
+            <CarouselItem class="md:basis-1/2 lg:basis-1/4" v-for="service in services" :key="service.id">
                 <template v-if="processing">
                     <ServiceCardV1Skeleton
                         v-for="x in [1,2,3]"
