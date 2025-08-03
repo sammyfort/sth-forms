@@ -55,6 +55,7 @@ export interface ProductI extends ModelI {
     user_id: number
     user: User
     name: string
+    status: string
     slug: string
     short_description: string
     description: string

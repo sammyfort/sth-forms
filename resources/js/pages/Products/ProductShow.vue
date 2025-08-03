@@ -226,8 +226,9 @@ const handleShare = () => {
                                 <div class="space-y-4">
                                     <div class="flex items-center justify-between py-3 border-b border-slate-100">
                                         <span class="text-slate-600">Status</span>
-                                        <span class="bg-green-100 text-green-800 text-sm font-semibold px-3 py-1 rounded-full">
-                                            Active
+                                        <span :class="['text-sm font-semibold px-3 py-1 rounded-full capitalize',
+                                        product.status === 'available' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800 ']">
+                                            {{product.status}}
                                         </span>
                                     </div>
 
@@ -277,7 +278,7 @@ const handleShare = () => {
                                     <div class="flex items-center justify-between py-3 border-b border-slate-100">
                                         <span class="text-slate-600">Second Mobile</span>
                                         <span class="font-semibold text-slate-900">
-                                            {{ product.second_mobile }}
+                                            {{ product.second_mobile ?? 'N/A' }}
                                         </span>
                                     </div>
 

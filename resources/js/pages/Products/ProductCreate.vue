@@ -20,11 +20,13 @@ const props = defineProps<{
     regions: Array<{ label: string, value: string }>
     choices: Array<{ label: string, value: string }>
     categories: Array<{ label: string; value: string}>
+    statuses: Array<{ label: string; value: string}>
 }>();
 const galleryUploadRef = ref();
 const featureUploadRef = ref();
 const form = useForm({
     name: '',
+    status: '',
     description: '',
     short_description: '',
     price: '',
@@ -82,6 +84,7 @@ const createService = () => {
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <InputSelect label="Select Region" :form="form" model="region_id" :options="props.regions"   required searchable />
                             <InputText :form="form" label="Name" model="name" required />
+                            <InputSelect :form="form" label="Status"  model="status" :options="props.statuses"  required  />
                             <InputSelect :form="form" label="Category"  model="categories" :options="props.categories" taggable required searchable />
                             <InputText :form="form" label="Price" model="price" type="number" required />
                             <InputSelect label="Is Negotiable?" :form="form" model="is_negotiable" :options="props.choices"  required  />

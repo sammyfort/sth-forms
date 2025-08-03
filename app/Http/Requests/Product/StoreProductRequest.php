@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Product;
 
+use App\Enums\ProductStatus;
 use App\Enums\YesNo;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -27,6 +28,7 @@ class StoreProductRequest extends FormRequest
         return [
             'region_id' => ['required', 'exists:regions,id'],
             'name' => ['required', 'string'],
+            'status' => ['required', Rule::in(ProductStatus::toArray())],
             'price' => ['required', 'numeric'],
             'is_negotiable' => ['required', Rule::in(YesNo::toArray())],
             'short_description' => ['nullable', 'string'],
