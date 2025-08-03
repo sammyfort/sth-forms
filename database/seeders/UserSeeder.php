@@ -83,8 +83,10 @@ class UserSeeder extends Seeder
                         ->each(function (Signboard $signboard) use ($signboardCategories) {
                             $signboard->categories()
                                 ->attach($signboardCategories->take(rand(3, 10))->toArray());
-                            $signboard->addMediaFromUrl('https://picsum.photos/200/300')
-                                ->toMediaCollection('featured');
+                            $this->addMedia($signboard, 'featured');
+                            foreach (range(0, 2) as $i){
+                                $this->addMedia($signboard, 'gallery');
+                            }
                         });
                 });
 
@@ -94,8 +96,10 @@ class UserSeeder extends Seeder
                     'created_by_id' => $user->id
                 ])
                 ->each(function ($service){
-                    $service->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('featured');
+                    $this->addMedia($service, 'featured');
+                    foreach (range(0, 2) as $i){
+                        $this->addMedia($service, 'gallery');
+                    }
                 });
 
             Job::factory(10)
@@ -106,8 +110,7 @@ class UserSeeder extends Seeder
                 ])
                 ->each(function (Job $job) use($jobCategories){
                     $job->categories()->attach($jobCategories->take(rand(4, 10))->toArray());
-                    $job->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('company_logo');
+                    $this->addMedia($job, 'company_logo');
                 });
 
             Product::factory(10)
@@ -118,15 +121,23 @@ class UserSeeder extends Seeder
                 ])
                 ->each(function (Product $product) use ($productCategories){
                     $product->categories()->attach($productCategories->take(rand(4, 10))->toArray());
-                    $product->addMediaFromUrl('https://picsum.photos/200/300')
-                        ->toMediaCollection('featured');
+                    $this->addMedia($product, 'featured');
 
-                    foreach (range(0, 5) as $i){
-                        $product->addMediaFromUrl('https://picsum.photos/200/300')
-                            ->toMediaCollection('gallery');
+                    foreach (range(0, 2) as $i){
+                        $this->addMedia($product, 'gallery');
                     }
-
                 });
+        }
+    }
+
+    private function addMedia($mediable, $collection): void
+    {
+        try {
+            $mediable->addMediaFromUrl('https://picsum.photos/200/300')
+                ->toMediaCollection($collection);
+        } catch (\Exception $e){
+            $mediable->addMediaFromUrl('https://fastly.picsum.photos/id/368/200/300.jpg?hmac=qqvgzPEXwcvVBrpVDtVeofz3jGWFgOVpRiiQU_ddP8Y')
+                ->toMediaCollection($collection);
         }
     }
 }
