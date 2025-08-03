@@ -8,9 +8,9 @@ import {
     PlusIcon,
     Eye,
     Hammer,
-    MapPin,
+    CurrencyIcon,
     Star,
-    Currency
+    DropletOff
 } from 'lucide-vue-next'
 import {
     Select,
@@ -141,7 +141,7 @@ const goToPage = (page) => {
 
                                     <div v-if="product.is_negotiable" class="absolute bottom-4 left-4 z-20">
                                         <span class="bg-yellow-400/90 backdrop-blur-sm text-yellow-900 text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1">
-                                            <Star class="w-3 h-3 fill-current" />
+                                            <DropletOff class="w-3 h-3 fill-current" />
                                             Negotiable
                                         </span>
                                     </div>
@@ -151,13 +151,15 @@ const goToPage = (page) => {
                                 <div class="p-6">
 
                                     <div class="flex items-center gap-3 mb-4">
-                                        <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
-                                            {{ product.name.charAt(0) }}
-                                        </div>
+
                                         <div>
                                             <div class="flex items-center gap-1">
-                                                <Currency class="w-3 h-3 text-slate-400" />
-                                                <p class="text-xs text-slate-500">{{ product.price }}</p>
+<!--                                                <CurrencyIcon class=" text-slate-400" />-->
+                                                GHS
+                                                <h3 class="font-bold text-slate-500 text-lg  line-clamp-2
+                                                    group-hover:text-primary transition-colors duration-200">
+                                                    {{ product.price }}
+                                                </h3>
                                             </div>
                                         </div>
                                     </div>

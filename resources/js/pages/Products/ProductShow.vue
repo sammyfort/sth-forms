@@ -15,8 +15,8 @@ import {
     Briefcase
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button'
-import { PaymentStatusI, PromotionPlanI, ProductI } from '@/types';
-import { ref, onMounted } from 'vue'
+import { PaymentStatusI, PromotionPlanI, ProductI, AverageRatingsI, RatingsDistributionI } from '@/types';
+import { ref, onMounted, computed } from 'vue';
 import ConfirmDialogue from '@/components/helpers/ConfirmDialogue.vue';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { toastError, toastSuccess } from '@/lib/helpers';
@@ -26,13 +26,16 @@ import { PromotableE } from '@/lib/enums';
 import PromotionPaymentAlert from '@/components/promotions/PromotionPaymentAlert.vue';
 import ActivePromotionInfo from '@/pages/Products/ActivePromotionInfo.vue';
 import TextEditor from '@/components/forms/TextEditor.vue';
+import ReviewsDetails from '@/components/ReviewsDetails.vue';
 
 const props = defineProps<{
     product: ProductI
     plans: PromotionPlanI[]
     payment_status: PaymentStatusI
+    ratings: AverageRatingsI;
+    distributions: RatingsDistributionI;
 }>()
-
+const reviews = computed(() => props.product.reviews);
 onMounted(()=> {
    // console.log(props.product)
 })
@@ -203,6 +206,16 @@ const handleShare = () => {
                                  <ImagePreview :featured-url="product.featured" :gallery-urls="product.gallery"/>
                             </div>
                             <PaymentHistory :promotions="product.promotions" />
+
+                            <div class="w-full lg:w-1/2 mx-auto">
+                                <ReviewsDetails
+                                    :ratable="product"
+                                    :ratings="ratings"
+                                    :distributions="distributions"
+                                    :reviews="reviews"
+                                    ratable_type="signboard"
+                                />
+                            </div>
                         </div>
 
 
