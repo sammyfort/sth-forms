@@ -20,7 +20,10 @@ const props = defineProps<{
     modes: Array<{ label: string; value: string }>
     regions: Array<{ label: string; value: string}>
     categories: Array<{ label: string; value: string}>
+    apply_modes: Array<{ label: string; value: string}>
 }>();
+
+
 
 const featureUploadRef = ref();
 const form = useForm({
@@ -36,10 +39,11 @@ const form = useForm({
     salary: '',
     summary: '',
     description: '',
+    apply_mode: 'instruction',
     how_to_apply: '',
     application_link: '',
 
-    featured: null,
+    company_logo: null,
 
 });
 
@@ -72,9 +76,10 @@ const createJob = () => {
             />
 
             <FormComponent :form="form" submit-text="Create Job"
-                           processing-text="Creating Service..."
+                           processing-text="Creating Job..."
                            @submit="createJob"
                            container-width="max-w-6xl"
+                           containerWidth="w-full"
             >
 
                 <template #form-sections>
@@ -90,13 +95,13 @@ const createJob = () => {
                             <InputText  :form="form" label="Town" model="town" required />
                             <InputSelect label="Job Status" :form="form" model="status" :options="props.statuses" required />
                             <InputText :form="form" label="Salary" model="salary"  />
-                            <InputText :form="form" label="How to apply" model="how_to_apply" required />
-                            <InputText :form="form" label="Application Link" model="application_link" required />
-
                             <InputText :form="form" label="Summary" model="summary" required textarea />
                             <InputText :form="form" label="Deadline" model="deadline" type="date" required  />
+
+
                         </div>
                     </div>
+
 
                     <div class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
@@ -109,10 +114,33 @@ const createJob = () => {
                     <FeatureFileUpload
                         ref="featureUploadRef"
                         :form="form"
-                        v-model:file="form.featured"
-                        model-name="featured"
+                        v-model:file="form.company_logo"
+                        model-name="company_logo"
                         title="Company Logo"
                     />
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">How to apply</h2>
+                        <InputSelect :form="form" label="Mode of application"  model="apply_mode" :options="props.apply_modes" required />
+                        <div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+
+                            <div v-if="form.apply_mode === 'instruction' || form.apply_mode === 'both'"
+                                 class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Provide instructions</label>
+                                <TextEditor v-model="form.how_to_apply" />
+                                <InputError v-if="form.errors.how_to_apply" :message="form.errors.how_to_apply " />
+                            </div>
+                        </div>
+                        <InputText
+                            container-class="w-full mt-5"
+                            v-if="form.apply_mode === 'external_link' || form.apply_mode === 'both'"
+                            :form="form"
+                            label="Link to apply"
+                            model="application_link"
+                            textarea
+                            required
+                        />
+                    </div>
                 </template>
             </FormComponent>
         </div>

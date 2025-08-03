@@ -31,7 +31,7 @@ use Spatie\Sluggable\SlugOptions;
  * @property Collection<JobCategory> $categories
  */
 
-class Job extends Model implements  HasMedia
+class Job extends Model implements  HasMedia, Viewable
 {
     use BootModelTrait, HasFactory, InteractsWithMedia,
         InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;

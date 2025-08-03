@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Job;
 
-use App\Enums\{JobMode, JobStatus, JobType};
+use App\Enums\{JobMode, JobModeOfApply, JobStatus, JobType};
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -38,20 +38,39 @@ class StoreJobRequest extends FormRequest
             'region_id' => ['required'],
             'town' => ['required'],
             'salary' => ['nullable'],
-            'how_to_apply' => ['nullable'],
-            'application_link' => ['required'],
+
+            'apply_mode' => ['required',Rule::in(JobModeOfApply::toArray())],
+
+            'how_to_apply' => [
+                'nullable',
+                'required_if:apply_mode,instruction',
+                'required_if:apply_mode,both',
+            ],
+
+            'application_link' => [
+                'nullable',
+                'required_if:apply_mode,external_link',
+                'required_if:apply_mode,both',
+                'url',
+            ],
 
             'deadline' => ['required', 'date', 'after:today'],
-            'featured' => ['required','image', 'max:2048']
+            'company_logo' => ['required','image', 'max:2048']
 
         ];
     }
 
     public function prepareForValidation(): void
     {
-        if ($this->has('description')) {
+        if ($this->filled('description')) {
             $this->merge([
                 'description' => Purifier::clean($this->input('description')),
+            ]);
+        }
+
+        if ($this->filled('how_to_apply')) {
+            $this->merge([
+                'how_to_apply' => Purifier::clean($this->input('how_to_apply')),
             ]);
         }
     }

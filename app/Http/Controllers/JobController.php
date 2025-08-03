@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\JobMode;
+use App\Enums\JobModeOfApply;
 use App\Enums\JobStatus;
 use App\Enums\JobType;
 use App\Http\Requests\Job\StoreJobRequest;
@@ -15,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class JobController extends Controller
 {
@@ -26,6 +28,7 @@ class JobController extends Controller
             'types' => toLabelValue(JobType::toArray()),
             'modes' => toLabelValue(JobMode::toArray()),
             'regions' => toLabelValue(Region::query()->select('id', 'name')->get(), 'name', 'id'),
+            'apply_modes' => toLabelValue(JobModeOfApply::toArray())
         ];
     }
 
@@ -53,7 +56,7 @@ class JobController extends Controller
     public function show(string $job): Response
     {
         $job = auth()->user()->jobs()->findOrFail($job);
-        //  $job->views_count = views($job)->count();
+        $job->views_count = views($job)->count();
         $job->loadMissing(['region', 'categories', 'promotions']);
         return Inertia::render('Jobs/JobShow', [
             'job' => $job,
@@ -68,15 +71,19 @@ class JobController extends Controller
     }
 
 
+    /**
+     * @param StoreJobRequest $request
+     * @return RedirectResponse
+     * @throws Throwable
+     */
     public function store(StoreJobRequest $request): RedirectResponse
     {
         $data = $request->validated();
 
         DB::transaction(function () use ($data, $request) {
-            $job = $request->user()->jobs()->create(Arr::except($data, ['featured', 'categories']));
-
+            $job = $request->user()->jobs()->create(Arr::except($data, ['company_logo', 'categories', 'apply_mode']));
             $job->handleUploads($request, [
-                'featured' => 'featured',
+                'company_logo' => 'company_logo',
             ]);
 
             $job->categories()->sync($data['categories']);
@@ -102,11 +109,11 @@ class JobController extends Controller
         //dd($data);
         DB::transaction(function () use ($request, $data, $job) {
             //$job->refresh();
-            $job->update(Arr::except($data, ['featured', 'categories']));
+            $job->update(Arr::except($data, ['company_logo', 'categories', 'apply_mode']));
 
             $job->categories()->sync($data['categories']);
             $job->handleUploads($request, [
-                'featured' => 'featured',
+                'company_logo' => 'company_logo',
             ]);
         });
 

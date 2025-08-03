@@ -173,8 +173,8 @@ const formatDeadline = (deadline: string) => {
                                 <div class="relative overflow-hidden w-80 h-64 bg-gradient-to-br from-white to-gray-100 rounded-2xl shadow-2xl">
                                     <div class="relative w-full h-full flex items-center justify-center">
                                         <img
-                                            v-if="job.featured"
-                                            :src="job.featured"
+                                            v-if="job.company_logo"
+                                            :src="job.company_logo"
                                             :alt="job.company_name + ' logo'"
                                             class="max-w-full max-h-full object-contain p-6"
                                         />
@@ -220,7 +220,7 @@ const formatDeadline = (deadline: string) => {
                                     <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
                                         <DollarSign class="w-6 h-6 text-green-400 mx-auto mb-2" />
                                         <div class="text-white font-medium text-lg">Salary</div>
-                                        <div class="text-slate-300 text-sm">{{ job.salary || 'Negotiable' }}</div>
+                                        <div class="text-slate-300 text-sm">{{ job.salary }}</div>
                                     </div>
 
                                     <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
