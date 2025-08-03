@@ -68,7 +68,7 @@ class UserSeeder extends Seeder
         foreach ($users as $userData) {
             $user = User::query()->create($userData);
 
-            Business::factory(1)
+            Business::factory(3)
                 ->for($user)
                 ->create([
                     'created_by_id' => $user->id
@@ -88,7 +88,7 @@ class UserSeeder extends Seeder
                         });
                 });
 
-            Service::factory(3)
+            Service::factory(10)
                 ->for($user)
                 ->create([
                     'created_by_id' => $user->id
@@ -98,7 +98,7 @@ class UserSeeder extends Seeder
                         ->toMediaCollection('featured');
                 });
 
-            Job::factory(3)
+            Job::factory(10)
                 ->for($user)
                 ->create([
                     'region_id' => $regions->random(),
