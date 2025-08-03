@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
 use App\Models\Region;
+use App\Services\RatingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -84,15 +85,18 @@ class ProductController extends Controller
         $product = auth()->user()->products()->findOrFail($product);
         $product->views_count = views($product)->count();
         $plans = PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
-        $product = $product->loadMissing(['user', 'region', 'promotions.plan']);
+        $product = $product->loadMissing(['user', 'region', 'promotions.plan', 'reviews']);
 
         // check if it has payment
         $paymentStatus = Promotion::routeCallback();
+        $distributions = RatingService::getDistributions($product);
 
         return Inertia::render('Products/ProductShow', [
             'product' => $product->toArrayWithMedia(),
             'plans' => $plans,
             'payment_status' => $paymentStatus,
+            'ratings' => $product->averageRatings(),
+            'distributions' => $distributions,
         ]);
     }
 
