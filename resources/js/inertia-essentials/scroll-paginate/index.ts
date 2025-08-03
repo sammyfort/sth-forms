@@ -2,7 +2,7 @@ import { router } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref } from 'vue';
 
 type Props<T> = {
-  initialData: T[]|undefined;
+  initialData: T[];
   nextPageUrl: string;
   resourceKey: string;
   preserveKeys?: string[];
@@ -14,7 +14,7 @@ export function useScrollPagination<T>({
   resourceKey,
   preserveKeys = [],
 }: Props<T>) {
-  const items = ref<T[]|undefined>(initialData);
+  const items = ref<T[]>(initialData);
   const loading = ref(false);
   const nextPage = ref<string | null>(nextPageUrl);
 

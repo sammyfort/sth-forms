@@ -17,9 +17,9 @@ import { computed } from 'vue';
 import ReviewsDetails from '@/components/ReviewsDetails.vue';
 
 type Props = {
-    signboard: SignboardI;
-    ratings: AverageRatingsI;
-    distributions: RatingsDistributionI;
+    signboard: SignboardI
+    ratings: AverageRatingsI
+    distributions: RatingsDistributionI
 };
 const props = defineProps<Props>();
 const business = props.signboard.business;

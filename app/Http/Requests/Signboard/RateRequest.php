@@ -26,7 +26,7 @@ class RateRequest extends FormRequest
             'speed' => ['required', 'numeric', 'min:1', 'max:5'],
             'review' => ['required', 'string', 'max:400'],
             'ratable_id' => ['required', 'numeric'],
-            'ratable_type' => ['required', 'string', Rule::in(['signboard', 'product'])],
+            'ratable_type' => ['required', 'string', Rule::in(['signboard', 'product', 'service'])],
         ];
     }
 

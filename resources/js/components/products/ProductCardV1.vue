@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import StarRating from 'vue-star-rating'
+import StarRating from 'vue-star-rating';
 import { Eye, PhoneCall, CheckCheck, MapPin, LocateFixed, HeartHandshake, Ban } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { ProductI } from '@/types';

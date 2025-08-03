@@ -100,6 +100,9 @@ export interface ServiceI extends ModelI{
     gallery: MediaI[];
     is_promoted: boolean
     views_count: number
+    total_average_rating: number
+    reviews_count: number
+    reviews: ReviewI[]
 }
 
 export interface JobI extends ModelI{
@@ -308,6 +311,6 @@ export type InputSelectOption = {
     value: number|string
 }
 
-export type RatableI = SignboardI | ProductI
-export type RatableTypesI = "signboard" | "product"
+export type RatableI = SignboardI | ProductI | ServiceI
+export type RatableTypesI = "signboard" | "product" | "service"
 export type PaymentStatusI = null | 'success' | 'failed' | 'cancelled' | 'pending';

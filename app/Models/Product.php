@@ -39,9 +39,9 @@ class Product extends Model implements HasMedia, Viewable
     protected $appends = [
         'featured',
         'gallery',
+        "active_promotion",
         "total_average_rating",
         "reviews_count",
-        "active_promotion"
     ];
 
     public function getSlugOptions(): SlugOptions

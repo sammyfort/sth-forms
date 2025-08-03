@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { HTMLAttributes } from 'vue';
+import { HTMLAttributes, ref } from 'vue';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { MapPin, Eye } from 'lucide-vue-next';
@@ -7,11 +7,15 @@ import { ServiceI } from '@/types';
 import { Link, router } from '@inertiajs/vue3';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import StarRating from 'vue-star-rating'
 
 const props = defineProps<{
     class?: HTMLAttributes['class'],
     service: ServiceI
 }>()
+
+const totalAverageRating = ref<number>(props.service.total_average_rating)
+
 </script>
 
 <template>
@@ -43,36 +47,57 @@ const props = defineProps<{
             </div>
         </CardHeader>
         <CardContent class="">
-            <div class="relative">
-                <img
-                    class="object-end w-full object-cover max-h-40 object-center"
-                    :src="service.featured as string"
-                    alt="Featured Image"
-                >
-                <div class="absolute bottom-[0px] right-0 px-2 bg-primary/50 text-sm text-white">
-                    {{ service.category.name }}
+            <TooltipProvider>
+                <div class="relative">
+                    <img
+                        class="object-end w-full object-cover max-h-40 object-center"
+                        :src="service.featured as string"
+                        alt="Featured Image"
+                    >
+                    <div class="absolute bottom-[0px] right-0 px-2 bg-primary/50 text-sm text-white truncate max-w-[150px]">
+                    <Tooltip>
+                        <TooltipTrigger>
+                                {{ service.category.name }}
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {{ service.category.name }}
+                        </TooltipContent>
+                    </Tooltip>
+                    </div>
+                    <div class="absolute top-[0px] right-0 p-1">
+                        <Avatar>
+                            <AvatarImage class="border-1 rounded-full" :src="service.user.avatar?.original_url ?? ''"/>
+                            <AvatarFallback class="shadow-lg">{{ service.user.initials }}</AvatarFallback>
+                        </Avatar>
+                    </div>
                 </div>
-                <div class="absolute top-[0px] right-0 p-1">
-                    <Avatar>
-                        <AvatarImage class="border-1 rounded-full" :src="service.user.avatar?.original_url ?? ''"/>
-                        <AvatarFallback class="shadow-lg">{{ service.user.initials }}</AvatarFallback>
-                    </Avatar>
-                </div>
-            </div>
-            <div class="mt-3">
-                <div class="flex gap-2 text-secondary items-center">
-                    <div class="flex items-center">
-                        <MapPin :size="15" class="text-primary"/>
-                        <div>
-                            <div class="text-sm">{{ service.region.name }}</div>
-                            <div class="text-xs text-fade truncate">{{ service.town }}</div>
+                <div class="mt-3">
+                    <div class="flex gap-2 text-secondary items-center">
+                        <div class="flex gap-1 items-center truncate">
+                            <MapPin :size="15" class="text-primary"/>
+                            <div class="truncate">
+                                <div class="text-sm truncate">{{ service.region.name }}</div>
+                                <div class="text-xs text-fade truncate">{{ service.town }}</div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col ms-auto gap-0 text-xs items-end">
+                            <div class="flex gap-1"><Eye :size="13"/> {{ service.views_count }}</div>
+                            <div>
+                                <StarRating
+                                    :star-size="12"
+                                    :show-rating="false"
+                                    :rating="totalAverageRating"
+                                    read-only
+                                    active-color="#009689"
+                                    :padding="0"
+                                    :key="`rating-card-${service.id}`"
+                                    :increment="0.01"
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div class="flex ms-auto gap-1 text-xs items-center">
-                        <Eye :size="13"/> {{ service.views_count }}
-                    </div>
                 </div>
-            </div>
+            </TooltipProvider>
         </CardContent>
     </Card>
 </template>

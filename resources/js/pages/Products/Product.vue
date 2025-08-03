@@ -8,13 +8,8 @@ import { ref } from 'vue'
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Button } from '@/components/ui/button';
 import { cediSign } from '@/lib/helpers';
-import StarRating from 'vue-star-rating'
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from '@/components/ui/tabs'
+import StarRating from 'vue-star-rating';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ReviewsList from '@/components/review/ReviewsList.vue';
 import { Store } from 'lucide-vue-next';

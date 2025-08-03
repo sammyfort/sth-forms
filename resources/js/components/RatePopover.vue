@@ -4,7 +4,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import InputText from '@/components/InputText.vue';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/vue3';
-import { RatableItemsI, RatingI, ReviewI } from '@/types';
+import { RatableI, RatableTypesI, RatingI, ReviewI } from '@/types';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { onMounted, ref } from 'vue';
 import { PopoverClose } from 'reka-ui';
@@ -13,8 +13,8 @@ import { rateRatable } from '@/lib/api';
 import { Errors, Page } from '@inertiajs/core';
 
 type Props = {
-    ratable: RatableItemsI
-    ratable_type: "signboard" | "product"
+    ratable: RatableI
+    ratable_type: RatableTypesI
     carouselPlugin?: AutoplayType
 }
 const props = defineProps<Props>()
