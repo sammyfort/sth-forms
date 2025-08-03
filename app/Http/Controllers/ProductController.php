@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ProductStatus;
 use App\Enums\YesNo;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
@@ -15,6 +16,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
+use Throwable;
 
 class ProductController extends Controller
 {
@@ -24,6 +26,7 @@ class ProductController extends Controller
             'regions'    => toLabelValue(Region::query()->select(['id', 'name'])->get(), 'name', 'id'),
             'categories' => toLabelValue(ProductCategory::query()->select(['id', 'name'])->get(), 'name', 'id'),
             'choices'    => toLabelValue(YesNo::toArray()),
+            'statuses'    => toLabelValue(ProductStatus::toArray()),
         ];
     }
 
@@ -56,6 +59,7 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @throws \Throwable
      */
     public function store(StoreProductRequest $request): RedirectResponse
     {
@@ -113,6 +117,7 @@ class ProductController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @throws Throwable
      */
     public function update(UpdateProductRequest $request, string $product): RedirectResponse
     {
