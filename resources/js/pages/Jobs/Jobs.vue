@@ -23,7 +23,7 @@ const {
     loading: loadingJobs,
     nextPage,
 } = useScrollPagination<JobI>({
-    initialData: props.jobsData.data,
+    initialData: props.jobsData.data as JobI[],
     nextPageUrl: props.jobsData.next_page_url,
     extractResponseData: (page) => page.props.jobsData,
     preserveKeys: ['jobsData'],

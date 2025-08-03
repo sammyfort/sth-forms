@@ -1,7 +1,22 @@
 import { router } from '@inertiajs/vue3';
 import { onMounted, onUnmounted, ref } from 'vue';
 
-export function useScrollPagination<T>({ initialData, nextPageUrl, extractResponseData, preserveKeys = ['signboardsData'] }) {
+
+type Props<T> = {
+    initialData: T[]
+    nextPageUrl: string
+    extractResponseData: CallableFunction
+    preserveKeys: string[]
+}
+
+export function useScrollPagination<T>(
+    {
+        initialData,
+        nextPageUrl,
+        extractResponseData,
+        preserveKeys = []
+    }: Props<T>
+) {
     const items = ref<T[]>(initialData);
     const loading = ref(false);
     const nextPage = ref<string | null>(nextPageUrl);
