@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Region;
 use App\Models\Service;
 use App\Models\ServiceCategory;
+use App\Services\RatingService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
@@ -57,7 +58,7 @@ class ServicePublicController extends Controller
 
     public function show(Service $service): Response
     {
-        $service->loadMissing(['user', 'category', 'region'])
+        $service->loadMissing(['user', 'category', 'region', 'reviews.ratings'])
             ->loadCount('views');
 
         if (!auth() || auth()->id() != $service->user_id){
@@ -66,22 +67,34 @@ class ServicePublicController extends Controller
         }
         $service->views_count = views($service)->count();
 
+        $distributions = RatingService::getDistributions($service);
+        $averageRatings = $service->averageRatings();
+
         return Inertia::render('Services/Service', [
-            'service' => $service
+            'service' => $service,
+            'distributions' => $distributions,
+            'ratings' => $averageRatings,
         ]);
     }
 
     public function getPromotedSignboards(): JsonResponse
     {
         $services = Service::getRandomPromotedQuery()
-            ->with([['user', 'region', 'category']])
-            ->get();
+            ->with(['user', 'region', 'category',])
+            ->with('reviews', function ($reviewsQuery) {
+                $reviewsQuery->where('user_id', auth()->id())
+                    ->with(['ratings']);
+            })->get();
 
         if ($services->count() < 1){
             $services = Service::query()
                 ->with(['user', 'region', 'category'])
                 ->when(auth()->user(), function ($q){
-                    $q->where('user_id', '!=', auth()->id());
+                    $q->where('created_by_id', '!=', auth()->id());
+                })
+                ->with('reviews', function ($reviewsQuery) {
+                    $reviewsQuery->where('user_id', auth()->id())
+                        ->with(['ratings']);
                 })
                 ->inRandomOrder()
                 ->take(10)

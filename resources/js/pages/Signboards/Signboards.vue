@@ -75,6 +75,9 @@ onMounted(() => {
                         </template>
                         <ServiceCardV1Skeleton v-show="loadingSignboards" v-for="sk in [1, 2, 3, 4]" :key="sk" class="shadow-2xl" />
                     </div>
+                    <div v-if="!signboards.length" class="text-center mt-10 text-xl font-bold text-fade">
+                        No results found, broaden your search...
+                    </div>
                 </div>
                 <div class="hidden lg:block lg:col-span-1">
                     <div class="sticky top-0">

@@ -6,6 +6,8 @@ use App\Observers\ServiceObserver;
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
 use App\Traits\HasPromotion;
+use App\Traits\RatingsAttributesTrait;
+use Codebyray\ReviewRateable\Models\Review;
 use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
@@ -42,18 +44,21 @@ use Spatie\Tags\HasTags;
  * @property string $gps
  * @property string $gps_lat
  * @property string $gps_lon
+ * @property Collection<Review> $reviews
  */
 
 #[ObservedBy(ServiceObserver::class)]
 class Service extends Model implements HasMedia, Viewable
 {
     use BootModelTrait, HasFactory, InteractsWithMedia, ReviewRateable,
-        InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion;
+        InteractsWithViews, HasSlug, HasMediaUploads, HasPromotion, RatingsAttributesTrait;
 
     protected $appends = [
         'featured',
         'gallery',
-        'active_promotion'
+        'active_promotion',
+        "total_average_rating",
+        "reviews_count",
     ];
 
 

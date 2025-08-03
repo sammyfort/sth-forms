@@ -87,7 +87,7 @@ onBeforeMount(() => {
             </SelectContent>
         </Select>
         <div class="grid md:grid-cols-2 lg:grid-cols-1 col-span-2 md:col-span-1 lg:col-span-2 gap-3">
-            <Button v-show="filterForm.region || filterForm.categories?.length || filterForm.q?.length" @click="runFilter">Apply Filter </Button>
+            <Button :processing="filterForm.processing" v-show="filterForm.region || filterForm.categories?.length || filterForm.q?.length" @click="runFilter">Apply Filter </Button>
             <Button v-show="filteredQuery" variant="secondary" @click="router.visit(route('services.index'))">Reset </Button>
         </div>
     </div>

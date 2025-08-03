@@ -1,0 +1,1 @@
+import{B as t,f as e}from"./Input.vue_vue_type_script_setup_true_lang-3B1K43zP.js";import{q as m}from"./app-c5OGnRl8.js";function s(o){return m(()=>{var r;return t(o)?!!((r=e(o))!=null&&r.closest("form")):!0})}export{s as u};

@@ -72,6 +72,7 @@ class ProductPublicController extends Controller
     public function show(Product $product): Response
     {
         $product->loadMissing(['reviews.ratings', 'user', 'region', 'categories', 'media']);
+
         $distributions = RatingService::getDistributions($product);
 
         if (!auth() || auth()->id() != $product->user_id){

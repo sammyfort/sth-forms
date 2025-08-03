@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Signboard\RateRequest;
 use App\Models\Product;
+use App\Models\Service;
 use App\Models\Signboard;
 use App\Models\User;
 use App\Notifications\NewReviewNotification;
@@ -31,6 +32,7 @@ class RatingController extends Controller
             $ratable = match ($validatedData['ratable_type']){
                 'signboard' => Signboard::query()->find($validatedData['ratable_id']),
                 'product' => Product::query()->find($validatedData['ratable_id']),
+                'service' => Service::query()->find($validatedData['ratable_id']),
                 default => null,
             };
 

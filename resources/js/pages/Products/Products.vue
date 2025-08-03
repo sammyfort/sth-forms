@@ -53,7 +53,7 @@ onMounted(() => {
                 </div>
                 <div class="col-span-5 lg:col-span-3 text-gray-900 antialiased">
                     <div class="grid items-stretch gap-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                        <template v-for="(productsChunk, chunkIndex) in chunkArray<ProductI>(products, 15)" :key="`chunk-${chunkIndex}`">
+                        <template v-for="(productsChunk, chunkIndex) in chunkArray<ProductI>(products as ProductI[], 15)" :key="`chunk-${chunkIndex}`">
                             <ProductCardV1
                                 v-for="product in productsChunk"
                                 :key="`product-${product.id}`"
@@ -69,6 +69,9 @@ onMounted(() => {
                             </AdvertisedProductsH>
                         </template>
                         <ProductCardSkeleton v-show="loadingProducts" v-for="sk in [1, 2, 3, 4]" :key="sk" class="shadow-2xl" />
+                    </div>
+                    <div v-if="!products.length" class="text-center mt-10 text-xl font-bold text-fade">
+                        No results found, broaden your search...
                     </div>
                 </div>
                 <div class="hidden lg:block lg:col-span-1">

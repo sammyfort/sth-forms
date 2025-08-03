@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use App\Models\Job;
+use App\Models\Product;
 use App\Models\Service;
 use App\Models\Signboard;
 use http\Exception\InvalidArgumentException;
@@ -11,15 +13,15 @@ enum Promotable: string
     case SERVICE = 'service';
     case SIGNBOARD = 'signboard';
     case JOB = 'job';
-    case SHOP = 'shop';
+    case PRODUCT = 'shop';
 
     public static function getModel(self $promotable): string
     {
         return match ($promotable){
             self::SERVICE => Service::class,
             self::SIGNBOARD => Signboard::class,
-//            self::JOB => Service::class,
-//            self::SERVICE => Service::class,
+            self::JOB => Job::class,
+            self::PRODUCT => Product::class,
             default => throw new InvalidArgumentException()
         };
     }

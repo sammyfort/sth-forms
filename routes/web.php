@@ -63,12 +63,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'my-products' => ProductController::class,
     ]);
 
-
-
-//    Route::prefix('signboards')->as('signboards.')->group(function () {
-//        Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
-//    });
-
     Route::post('rate', [RatingController::class, 'rate'])->name('ratings.rate');
 
 });
@@ -76,7 +70,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('businesses')->name('businesses.')->group(function () {
     Route::get('/', [BusinessController::class, 'index'])->name('index');
 });
-
 
 
 Route::prefix('signboards')->as('signboards.')->group(function () {
@@ -98,13 +91,11 @@ Route::prefix('jobs')->as('jobs.')->group(callback: function () {
 });
 
 
-
 Route::prefix('products')->as('products.')->group(callback: function () {
     Route::get('/', [ProductPublicController::class, 'index'])->name('index');
     Route::get('/promoted', [ProductPublicController::class, 'getPromotedProducts'])->name('promoted');
     Route::get('/details/{product:slug}', [ProductPublicController::class, 'show'])->name('show');
 });
-
 
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');

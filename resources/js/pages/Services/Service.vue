@@ -1,17 +1,23 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/layouts/Layout.vue'
-
+import StarRating from 'vue-star-rating';
 import { ArrowLeft, Edit, Eye, MapPin, Star, Share2, Award } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
-import { ServiceI } from '@/types'
+import { AverageRatingsI, RatingsDistributionI, ServiceI } from '@/types';
 import ImagePreview from '@/components/ImagePreview.vue';
 import { Badge } from '@/components/ui/badge';
 import AdvertisedServicesH from '@/components/Services/AdvertisedServicesH.vue';
+import ReviewsDetails from '@/components/ReviewsDetails.vue';
+import { computed } from 'vue';
 
 const props = defineProps<{
-    service: ServiceI
+    service: ServiceI,
+    ratings: AverageRatingsI;
+    distributions: RatingsDistributionI;
 }>()
+
+const reviews = computed(()=> props.service.reviews);
 
 const handleShare = () => {
     if (navigator.share) {
@@ -108,11 +114,11 @@ const handleShare = () => {
                 </div>
             </div>
 
-            <div class="mt-10">
+            <div class="mt-10 max-w-[1200px] mx-auto flex flex-col">
                 <div class="text-xl font-semibold text-fade">
                     Top Trending Service Providers
                 </div>
-                <AdvertisedServicesH />
+                <AdvertisedServicesH/>
             </div>
 
             <div class=" pb-12 pt-5">
@@ -225,8 +231,18 @@ const handleShare = () => {
                             </div>
                         </div>
                     </div>
+
+                    <div class="space-y-6 pt-10">
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-6">Ratings Distribution and Reviews</h3>
+                            <div>
+                                <ReviewsDetails ratable_type="service" :ratable="service" :ratings="ratings" :distributions="distributions" :reviews="reviews"/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </Layout>
 </template>
