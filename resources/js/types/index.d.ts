@@ -48,6 +48,11 @@ export interface User extends ModelI {
     referral_link: string
     points: number
     is_referrer_points_settled: boolean
+    services: ServiceI
+    jobs: JobI
+    businesses: BusinessI
+    signboards: SignboardI
+    products: ProductI
     points_in_cedis: number
 }
 
