@@ -7,7 +7,7 @@ import BackToTop from '@/components/BackToTop.vue';
 import ProductsFilter from '@/components/products/ProductsFilter.vue';
 import ProductCardV1 from '@/components/products/ProductCardV1.vue';
 import { PaginatedDataI, ProductCategoryI, ProductI, RegionI } from '@/types';
-import { useScrollPagination } from '@/lib/useScrollPagination';
+import { useScrollPagination } from '@/inertia-essentials/scroll-paginate';
 import { onMounted } from 'vue';
 import AdvertisedProductsH from '@/components/products/AdvertisedProductsH.vue';
 import AdvertisedProductsV from '@/components/products/AdvertisedProductsV.vue';
@@ -27,7 +27,7 @@ const {
 } = useScrollPagination<ProductI>({
     initialData: props.productsData.data,
     nextPageUrl: props.productsData.next_page_url,
-    extractResponseData: (page) => page.props.productsData,
+    resourceKey: "productsData",
     preserveKeys: ['productsData'],
 });
 
