@@ -54,7 +54,7 @@ class ServiceController extends Controller
         // check if it has payment
         $paymentStatus = Promotion::routeCallback();
 
-        return Inertia::render('Services/MyService',[
+        return Inertia::render('Services/ServiceShow',[
             'service' => $service,
             'plans' => $plans,
             'payment_status' => $paymentStatus,

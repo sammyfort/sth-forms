@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\{JobPublicController,
+    ProductController,
     ProductPublicController,
     RatingController,
     ServicePublicController,
@@ -82,6 +83,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/destroy', [JobController::class, 'destroy'])->name('destroy');
     });
 
+    Route::resource('my-products', ProductController::class);
+
     Route::post('rate', [RatingController::class, 'rate'])->name('ratings.rate');
 
 });
@@ -112,11 +115,15 @@ Route::prefix('jobs')->as('jobs.')->group(callback: function () {
     Route::get('/details/{job:slug}', [JobPublicController::class, 'show'])->name('show');
 });
 
+
+
 Route::prefix('products')->as('products.')->group(callback: function () {
     Route::get('/', [ProductPublicController::class, 'index'])->name('index');
     Route::get('/promoted', [ProductPublicController::class, 'getPromotedProducts'])->name('promoted');
     Route::get('/details/{product:slug}', [ProductPublicController::class, 'show'])->name('show');
 });
+
+
 
 Route::post('contact-us', [ContactUsController::class, 'store'])->name('contact-us');
 Route::get('faq', [FaqController::class, 'index'])->name('faq.index');
