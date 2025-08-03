@@ -11,14 +11,27 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $user = auth()->user();
+        $user = auth()->user()->loadMissing([
+            'signboards.business',
+            'businesses',
+            'products',
+            'services',
+            'jobs',
+        ]);
+
         $promotions = Signboard::getAllPromotionsQuery()
             ->where('created_by_id', $user->id)
             ->get();
-        $signboards = $user->signboards()->with(['business'])->get();
+
         return Inertia::render('Dashboard/Dashboard', [
+            'user' => $user,
             'promotions' => $promotions,
-            'signboards' => $signboards,
+            'signboards' => $user->signboards,
+            'businesses' => $user->businesses,
+            'products' => $user->products,
+            'services' => $user->services,
+            'jobs' => $user->jobs,
         ]);
     }
+
 }

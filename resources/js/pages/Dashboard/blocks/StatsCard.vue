@@ -5,6 +5,9 @@
                 <p class="text-sm font-medium text-gray-600">{{ title }}</p>
                 <p class="text-2xl font-bold text-gray-900">{{ value }}</p>
                 <p v-if="subtext" class="text-sm text-gray-500">{{ subtext }}</p>
+
+<!--                <p :class="`text-sm font-medium   text-black`">{{ subtitle }}</p>-->
+
             </div>
             <div :class="['h-12 w-12 rounded-lg flex items-center justify-center', iconBg]">
                 <component :is="icon" class="h-6 w-6" />
@@ -23,6 +26,7 @@ const props = defineProps<{
     subtext?: string;
     iconBg: string;
     icon: Component;
+    subtitle?: string|number
 }>();
 </script>
 
