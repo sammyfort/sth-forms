@@ -6,6 +6,7 @@ use App\Enums\YesNo;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
 use App\Models\Region;
@@ -40,10 +41,12 @@ class ProductController extends Controller
      */
     public function create(): Response
     {
+        $cats = ProductCategory::select(['id', 'name'])->get();
         $regions = Region::select(['id', 'name'])->get();
         return Inertia::render('Products/ProductCreate', [
             'regions' => toLabelValue($regions, 'name', 'id'),
-            'choices' => toLabelValue(YesNo::toArray())
+            'choices' => toLabelValue(YesNo::toArray()),
+            'categories' => toLabelValue($cats, 'name', 'id'),
         ]);
     }
 
@@ -57,8 +60,9 @@ class ProductController extends Controller
 
         DB::transaction(function () use ($data, $request) {
             $product = auth()->user()->products()->create(
-                Arr::except($data, ['featured', 'gallery'])
+                Arr::except($data, ['featured', 'gallery', 'categories'])
             );
+            $product->categories()->sync($data['categories']);
 
             $product->handleUploads($request, [
                 'featured' => 'featured',
@@ -95,12 +99,13 @@ class ProductController extends Controller
     public function edit(string $product): Response
     {
         $product = auth()->user()->products()->findOrFail($product);
+        $cats = ProductCategory::select(['id', 'name'])->get();
         $regions = Region::select(['id', 'name'])->get();
         return Inertia::render('Products/ProductEdit', [
-            'product' => $product->load(['user', 'region'])->toArrayWithMedia(),
-            'categories' => [],
+            'product' => $product->load(['user', 'region', 'categories'])->toArrayWithMedia(),
             'regions' => toLabelValue($regions, 'name', 'id'),
-            'choices' => toLabelValue(YesNo::toArray())
+            'choices' => toLabelValue(YesNo::toArray()),
+            'categories' => toLabelValue($cats, 'name', 'id'),
         ]);
     }
 
@@ -114,8 +119,9 @@ class ProductController extends Controller
         $data['is_negotiable'] = YesNo::from($data['is_negotiable'])->toBool();
 
         DB::transaction(function () use ($product, $data, $request) {
-            $product->update(Arr::except($data, ['featured', 'gallery', 'removed_gallery_urls']));
+            $product->update(Arr::except($data, ['featured', 'gallery', 'categories', 'removed_gallery_urls']));
 
+            $product->categories()->sync($data['categories']);
             if ($request->hasFile('featured')) {
                 $product->addMediaFromRequest('featured')->toMediaCollection('featured');
             }

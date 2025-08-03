@@ -35,6 +35,7 @@ class UpdateProductRequest extends FormRequest
             'website' => ['nullable', 'string'],
             'town' => ['required', 'string'],
             'description' => ['required'],
+            'categories' => ['required', 'array'],
 
             'featured' => ['nullable', 'image', 'max:2048'],
             'gallery' => ['nullable', 'array'],

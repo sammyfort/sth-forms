@@ -35,7 +35,7 @@ class StoreProductRequest extends FormRequest
             'website' => ['nullable', 'string'],
             'town' => ['required', 'string'],
             'description' => ['required'],
-
+            'categories' => ['required', 'array'],
             'featured' => ['required', 'image', 'max:2048'],
             'gallery' => ['required', 'array'],
             'gallery.*' => ['image', 'max:2048'],
