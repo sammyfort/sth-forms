@@ -5,12 +5,10 @@ namespace App\Http\Controllers;
 use App\Enums\YesNo;
 use App\Http\Requests\Product\StoreProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
-use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
 use App\Models\Region;
-use App\Models\ServiceCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +17,16 @@ use Inertia\Response;
 
 class ProductController extends Controller
 {
+    public function __construct(protected $props = [])
+    {
+        $this->props = [
+            'regions'    => toLabelValue(Region::query()->select(['id', 'name'])->get(), 'name', 'id'),
+            'categories' => toLabelValue(ProductCategory::query()->select(['id', 'name'])->get(), 'name', 'id'),
+            'choices'    => toLabelValue(YesNo::toArray()),
+        ];
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -41,13 +49,8 @@ class ProductController extends Controller
      */
     public function create(): Response
     {
-        $cats = ProductCategory::select(['id', 'name'])->get();
-        $regions = Region::select(['id', 'name'])->get();
-        return Inertia::render('Products/ProductCreate', [
-            'regions' => toLabelValue($regions, 'name', 'id'),
-            'choices' => toLabelValue(YesNo::toArray()),
-            'categories' => toLabelValue($cats, 'name', 'id'),
-        ]);
+
+        return Inertia::render('Products/ProductCreate', $this->props);
     }
 
     /**
@@ -99,14 +102,9 @@ class ProductController extends Controller
     public function edit(string $product): Response
     {
         $product = auth()->user()->products()->findOrFail($product);
-        $cats = ProductCategory::select(['id', 'name'])->get();
-        $regions = Region::select(['id', 'name'])->get();
-        return Inertia::render('Products/ProductEdit', [
+        return Inertia::render('Products/ProductEdit', array_merge($this->props, [
             'product' => $product->load(['user', 'region', 'categories'])->toArrayWithMedia(),
-            'regions' => toLabelValue($regions, 'name', 'id'),
-            'choices' => toLabelValue(YesNo::toArray()),
-            'categories' => toLabelValue($cats, 'name', 'id'),
-        ]);
+        ]));
     }
 
     /**
@@ -122,24 +120,7 @@ class ProductController extends Controller
             $product->update(Arr::except($data, ['featured', 'gallery', 'categories', 'removed_gallery_urls']));
 
             $product->categories()->sync($data['categories']);
-            if ($request->hasFile('featured')) {
-                $product->addMediaFromRequest('featured')->toMediaCollection('featured');
-            }
-
-            $removedUrls = $request->input('removed_gallery_urls', []);
-            if (!empty($removedUrls)) {
-                $galleryMedia = $product->getMedia('gallery');
-                foreach ($galleryMedia as $media) {
-                    if (in_array($media->getUrl(), $removedUrls)) {
-                        $media->delete();
-                    }
-                }
-            }
-            if ($request->hasFile('gallery')) {
-                foreach ($request->file('gallery') as $file) {
-                    $product->addMedia($file)->toMediaCollection('gallery');
-                }
-            }
+            $product->handleMediaUpdate($request);
         });
 
         return back()->with(successRes("Product updated successfully."));
@@ -148,9 +129,9 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product): RedirectResponse
+    public function destroy(string $product): RedirectResponse
     {
-        $product->delete();
+        auth()->user()->products()->findOrFail($product)->delete();
         return redirect()->route('my-products.index')
             ->with(successRes("Product deleted successfully."));
     }

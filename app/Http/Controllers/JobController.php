@@ -10,17 +10,26 @@ use App\Http\Requests\Job\UpdateJobRequest;
 use App\Models\JobCategory;
 use App\Models\PromotionPlan;
 use App\Models\Region;
-use App\Models\Job;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class JobController extends Controller
 {
-    public function getMyJobs(): Response
+    public function __construct(protected $props = [])
+    {
+        $this->props = [
+            'categories' => toLabelValue(JobCategory::query()->select('id', 'name')->get(), 'name', 'id'),
+            'statuses' => toLabelValue(JobStatus::toArray()),
+            'types' => toLabelValue(JobType::toArray()),
+            'modes' => toLabelValue(JobMode::toArray()),
+            'regions' => toLabelValue(Region::query()->select('id', 'name')->get(), 'name', 'id'),
+        ];
+    }
+
+    public function index(): Response
     {
         $sort = request('sort', 'desc');
         $status = request('status', 'all');
@@ -41,12 +50,11 @@ class JobController extends Controller
     }
 
 
-    public function showMyJob(\App\Models\Job $job): Response
+    public function show(string $job): Response
     {
+        $job = auth()->user()->jobs()->findOrFail($job);
         //  $job->views_count = views($job)->count();
         $job->loadMissing(['region', 'categories', 'promotions']);
-
-        //dd($job->toArray());
         return Inertia::render('Jobs/JobShow', [
             'job' => $job,
             'plans' => PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price'])
@@ -56,15 +64,7 @@ class JobController extends Controller
 
     public function create(): Response
     {
-        $regions = Region::select('id', 'name')->get();
-        $categories = JobCategory::select('id', 'name')->get();
-        return Inertia::render('Jobs/JobCreate', [
-            'categories' => toLabelValue($categories, 'name', 'id'),
-            'statuses' => toLabelValue(JobStatus::toArray()),
-            'types' => toLabelValue(JobType::toArray()),
-            'modes' => toLabelValue(JobMode::toArray()),
-            'regions' => toLabelValue($regions, 'name', 'id'),
-        ]);
+        return Inertia::render('Jobs/JobCreate', $this->props);
     }
 
 
@@ -86,32 +86,25 @@ class JobController extends Controller
     }
 
 
-    public function edit(Job $job): Response
+    public function edit(string $job): Response
     {
-        $regions = Region::select('id', 'name')->get();
-        $categories = JobCategory::select('id', 'name')->get();
-
-        return Inertia::render('Jobs/JobEdit', [
+        $job = auth()->user()->jobs()->findOrFail($job);
+        return Inertia::render('Jobs/JobEdit', array_merge($this->props, [
             'job' => $job->loadMissing(['categories'])->toArrayWithMedia(),
-            'categories' => toLabelValue($categories, 'name', 'id'),
-            'statuses' => toLabelValue(JobStatus::toArray()),
-            'types' => toLabelValue(JobType::toArray()),
-            'modes' => toLabelValue(JobMode::toArray()),
-            'regions' => toLabelValue($regions, 'name', 'id'),
-        ]);
+        ]));
     }
 
-    public function update(UpdateJobRequest $request, Job $job): RedirectResponse
+    public function update(UpdateJobRequest $request, string $job): RedirectResponse
     {
+        $job = auth()->user()->jobs()->findOrFail($job);
         $data = $request->validated();
 
         //dd($data);
         DB::transaction(function () use ($request, $data, $job) {
-            $job->refresh();
+            //$job->refresh();
             $job->update(Arr::except($data, ['featured', 'categories']));
 
             $job->categories()->sync($data['categories']);
-
             $job->handleUploads($request, [
                 'featured' => 'featured',
             ]);
@@ -121,9 +114,9 @@ class JobController extends Controller
     }
 
 
-    public function destroy(Job $job): RedirectResponse
+    public function destroy(string $job): RedirectResponse
     {
-        $job->delete();
+        auth()->user()->jobs()->findOrFail($job)->delete();
         return redirect()->route('my-jobs.index')
             ->with(successRes("Job deleted successfully."));
     }

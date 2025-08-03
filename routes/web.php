@@ -5,12 +5,13 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PromotionController;
-use App\Http\Controllers\ServiceController;
+
 use App\Http\Controllers\{JobPublicController,
     ProductController,
+    ServiceController,
+    PromotionController,
+    HomeController,
+    ProfileController,
     ProductPublicController,
     RatingController,
     ServicePublicController,
@@ -56,34 +57,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/{signboard}', [SignboardController::class, 'delete'])->name('delete');
     });
 
+    Route::resources([
+        'my-services' => ServiceController::class,
+        'my-jobs' => JobController::class,
+        'my-products' => ProductController::class,
+    ]);
+
+
+
 //    Route::prefix('signboards')->as('signboards.')->group(function () {
 //        Route::post('/{signboard}/ratings',  [SignboardController::class, 'rate'])->name('ratings');
 //    });
-
-
-    Route::prefix('my-services')->as('my-services.')->group( function (){
-        Route::get('/', [ServiceController::class, 'getMyServices'])->name('index');
-        Route::get('/create', [ServiceController::class, 'create'])->name('create');
-        Route::post('/store', [ServiceController::class, 'store'])->name('store');
-        Route::get('/show/{service}', [ServiceController::class, 'showMyService'])->name('show');
-
-        Route::get('/edit/{service}', [ServiceController::class, 'edit'])->name('edit');
-        Route::post('/update/{service}', [ServiceController::class, 'update'])->name('update');
-        Route::delete('/destroy', [ServiceController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('my-jobs')->as('my-jobs.')->group( function (){
-        Route::get('/', [JobController::class, 'getMyJobs'])->name('index');
-        Route::get('/create', [JobController::class, 'create'])->name('create');
-        Route::post('/store', [JobController::class, 'store'])->name('store');
-        Route::get('/show/{job}', [JobController::class, 'showMyJob'])->name('show');
-
-        Route::get('/edit/{job}', [JobController::class, 'edit'])->name('edit');
-        Route::post('/update/{job}', [JobController::class, 'update'])->name('update');
-        Route::delete('/destroy', [JobController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::resource('my-products', ProductController::class);
 
     Route::post('rate', [RatingController::class, 'rate'])->name('ratings.rate');
 
