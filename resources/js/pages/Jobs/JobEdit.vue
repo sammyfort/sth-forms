@@ -20,6 +20,7 @@ const props = defineProps<{
     modes: Array<{ label: string; value: string }>
     regions: Array<{ label: string; value: string }>
     categories: Array<{ label: string; value: string }>
+    apply_modes: Array<{ label: string; value: string}>
 }>();
 
 const featureUploadRef = ref();
@@ -37,9 +38,10 @@ const form = useForm({
     salary: '',
     summary: '',
     description: '',
+    apply_mode: 'instruction',
     how_to_apply: '',
     application_link: '',
-    featured: null
+    company_logo: null
 });
 
 onMounted(() => {
@@ -91,38 +93,33 @@ const updateJob = () => {
                 :icon="Building2"
             />
 
-            <FormComponent
-                :form="form"
-                submit-text="Update Job"
-                processing-text="Updating..."
-                @submit="updateJob"
-                container-width="max-w-6xl"
+            <FormComponent :form="form" submit-text="Update Job"
+                           processing-text="Creating Job..."
+                           @submit="updateJob"
+                           container-width="max-w-6xl"
+                           containerWidth="w-full"
             >
+
                 <template #form-sections>
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">Job Information</h2>
                         <div class="grid grid-cols-2 md:grid-cols-2 gap-6">
                             <InputText :form="form" label="Company Name" model="company_name" required />
-                            <InputSelect :form="form" label="Job Sector" model="categories" :options="props.categories"
-                                         taggable required searchable />
+                            <InputSelect :form="form" label="Job Sector"  model="categories" :options="props.categories" taggable required searchable />
                             <InputText :form="form" label="Title" model="title" required />
-                            <InputSelect :form="form" label="Job Type" model="job_type" :options="props.types"
-                                         required />
-                            <InputSelect :form="form" label="Work Mode" model="work_mode" :options="props.modes"
-                                         required />
-                            <InputSelect :form="form" label="Region" model="region_id" :options="props.regions" required
-                                         searchable />
-                            <InputText :form="form" label="Town" model="town" required />
-                            <InputSelect label="Job Status" :form="form" model="status" :options="props.statuses"
-                                         required />
-                            <InputText :form="form" label="Salary" model="salary" />
-                            <InputText :form="form" label="How to apply" model="how_to_apply" required />
-                            <InputText :form="form" label="Application Link" model="application_link" required />
-
+                            <InputSelect :form="form" label="Job Type"  model="job_type" :options="props.types" required />
+                            <InputSelect :form="form" label="Work Mode"  model="work_mode" :options="props.modes" required />
+                            <InputSelect :form="form" label="Region"  model="region_id" :options="props.regions" required searchable />
+                            <InputText  :form="form" label="Town" model="town" required />
+                            <InputSelect label="Job Status" :form="form" model="status" :options="props.statuses" required />
+                            <InputText :form="form" label="Salary" model="salary"  />
                             <InputText :form="form" label="Summary" model="summary" required textarea />
-                            <InputText :form="form" label="Deadline" model="deadline" type="date" required />
+                            <InputText :form="form" label="Deadline" model="deadline" type="date" required  />
+
+
                         </div>
                     </div>
+
 
                     <div class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
@@ -135,11 +132,34 @@ const updateJob = () => {
                     <FeatureFileUpload
                         ref="featureUploadRef"
                         :form="form"
-                        v-model:file="form.featured"
-                        model-name="featured"
+                        :featured-preview="props.job.company_logo"
+                        v-model:file="form.company_logo"
+                        model-name="company_logo"
                         title="Company Logo"
-                        :featured-preview="props.job.featured"
                     />
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-6">How to apply</h2>
+                        <InputSelect :form="form" label="Mode of application"  model="apply_mode" :options="props.apply_modes" required />
+                        <div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+
+                            <div v-if="form.apply_mode === 'instruction' || form.apply_mode === 'both'"
+                                 class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Provide instructions</label>
+                                <TextEditor v-model="form.how_to_apply" />
+                                <InputError v-if="form.errors.how_to_apply" :message="form.errors.how_to_apply " />
+                            </div>
+                        </div>
+                        <InputText
+                            container-class="w-full mt-5"
+                            v-if="form.apply_mode === 'external_link' || form.apply_mode === 'both'"
+                            :form="form"
+                            label="Link to apply"
+                            model="application_link"
+                            textarea
+                            required
+                        />
+                    </div>
                 </template>
             </FormComponent>
         </div>

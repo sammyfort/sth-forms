@@ -73,8 +73,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-Route::get('api/{path}', ApiController::class)->name('api');
-
 Route::prefix('businesses')->name('businesses.')->group(function () {
     Route::get('/', [BusinessController::class, 'index'])->name('index');
 });
