@@ -199,7 +199,7 @@ const quickStats = [
                         <div class="p-6 border-b border-gray-200/50">
                             <div class="flex items-center justify-between">
                                 <h2 class="text-lg font-semibold text-gray-900">Top Businesses</h2>
-                                <Link href="#" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
+                                <Link :href="route('my-businesses.index')" class="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-1">
                                     View All <ArrowUpRight class="w-4 h-4" />
                                 </Link>
                             </div>

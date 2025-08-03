@@ -78,7 +78,7 @@ const user = computed(() => page.props.auth.user)
                     <div class="flex items-center gap-4">
                         <div v-if="user" class="hidden items-center gap-5 text-sm font-medium text-muted-foreground lg:flex">
                             <Link
-                                :class="{ 'active-nav': $page.component === 'Dashboard' }"
+                                :class="{ 'active-nav': $page.component === 'Dashboard/Dashboard' }"
                                 :href="route('dashboard')"
                                 class="hover:text-primary flex items-center gap-1 py-4 text-center"
                             >
