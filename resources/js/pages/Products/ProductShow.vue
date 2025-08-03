@@ -277,7 +277,7 @@ const handleShare = () => {
                                     <div class="flex items-center justify-between py-3 border-b border-slate-100">
                                         <span class="text-slate-600">Second Mobile</span>
                                         <span class="font-semibold text-slate-900">
-                                            {{ product.second_mobile }}
+                                            {{ product.second_mobile ?? 'N/A' }}
                                         </span>
                                     </div>
 
