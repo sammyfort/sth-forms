@@ -8,14 +8,9 @@ use App\Http\Requests\Signboard\StoreSignboardRequest;
 use App\Http\Requests\Signboard\UpdateSignboardRequest;
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
-use App\Models\Region;
 use App\Models\Signboard;
-use App\Models\SignboardCategory;
 use App\Services\HelperService;
 use App\Services\RatingService;
-use App\Services\SignboardService;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
@@ -23,8 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
+
 
 class SignboardController extends Controller
 {

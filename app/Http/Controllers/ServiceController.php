@@ -1,11 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
 use App\Models\Region;
-use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Http\Requests\Service\StoreServiceRequest;
 use App\Http\Requests\Service\UpdateServiceRequest;
@@ -17,7 +15,14 @@ use Inertia\Response;
 
 class ServiceController extends Controller
 {
-    public function getMyServices(): Response
+    public function __construct(protected $props = [])
+    {
+        $this->props = [
+            'categories' => toLabelValue(ServiceCategory::query()->select('id', 'name')->get(), 'name', 'id'),
+            'regions' => toLabelValue(Region::query()->select('id', 'name')->get(), 'name', 'id'),
+        ];
+    }
+    public function index(): Response
     {
         $sort = request('sort', 'desc');
 
@@ -33,20 +38,12 @@ class ServiceController extends Controller
 
     public function create(): Response
     {
-        return Inertia::render('Services/ServiceCreate',[
-            'categories' => ServiceCategory::select(['id', 'name'])
-                ->get()
-                ->map(fn($cat) => [
-                    'label' => $cat->name,
-                    'value' => $cat->id,
-                ]),
-             'regions' => Region::select(['id', 'name'])->get()
-                 ->map(fn($reg) => ['label' => $reg->name, 'value' => $reg->id,])
-        ]);
+        return Inertia::render('Services/ServiceCreate',$this->props);
     }
 
-    public function showMyService(Service $service): Response
+    public function show(string $service): Response
     {
+        $service = auth()->user()->services()->findOrFail($service);
         $service->views_count = views($service)->count();
         $plans = PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
         $service = $service->loadMissing(['user','category', 'region', 'promotions.plan']);
@@ -54,7 +51,7 @@ class ServiceController extends Controller
         // check if it has payment
         $paymentStatus = Promotion::routeCallback();
 
-        return Inertia::render('Services/MyService',[
+        return Inertia::render('Services/ServiceShow',[
             'service' => $service,
             'plans' => $plans,
             'payment_status' => $paymentStatus,
@@ -64,73 +61,41 @@ class ServiceController extends Controller
     public function store(StoreServiceRequest $request): RedirectResponse
     {
         $data = $request->validated();
-
         DB::transaction(function () use ($data, $request) {
             $service = auth()->user()->services()->create(
                 Arr::except($data, ['featured', 'gallery'])
             );
-
             $service->handleUploads($request, [
                 'featured' => 'featured',
                 'gallery' => 'gallery',
             ]);
         });
-
         return back()->with(successRes("Service created successfully."));
     }
 
-    public function edit(Service $service): Response
+    public function edit(string $service): Response
     {
-        return Inertia::render('Services/ServiceEdit',[
+        $service = auth()->user()->services()->findOrFail($service);
+        return Inertia::render('Services/ServiceEdit',array_merge($this->props,[
             'service' =>  $service->load(['user', 'region'])->toArrayWithMedia(),
-            'categories' => ServiceCategory::select(['id', 'name'])
-                ->get()
-                ->map(fn($cat) => [
-                    'label' => $cat->name,
-                    'value' => $cat->id,
-                ]),
-            'regions' => Region::select(['id', 'name'])->get()
-                ->map(fn($reg) => ['label' => $reg->name, 'value' => $reg->id,])
-        ]);
+        ]));
     }
 
-    public function update(UpdateServiceRequest $request, Service $service): RedirectResponse
+    public function update(UpdateServiceRequest $request, string $service): RedirectResponse
     {
+        $service = auth()->user()->services()->findOrFail($service);
         $data = $request->validated();
-
         DB::transaction(function () use ($service, $data, $request) {
             $service->update(Arr::except($data, ['featured', 'gallery', 'removed_gallery_urls']));
-
-
-            if ($request->hasFile('featured')) {
-                $service->addMediaFromRequest('featured')->toMediaCollection('featured');
-            }
-
-            $removedUrls = $request->input('removed_gallery_urls', []);
-            if (!empty($removedUrls)) {
-
-                $galleryMedia = $service->getMedia('gallery');
-                foreach ($galleryMedia as $media) {
-                    if (in_array($media->getUrl(), $removedUrls)) {
-                        $media->delete();
-                    }
-                }
-            }
-            if ($request->hasFile('gallery')) {
-                foreach ($request->file('gallery') as $file) {
-                    $service->addMedia($file)->toMediaCollection('gallery');
-                }
-            }
+            $service->handleMediaUpdate($request);
         });
 
         return back()->with(successRes("Service updated successfully."));
-
     }
 
-    public function destroy(Service $service): RedirectResponse
+    public function destroy(string $service): RedirectResponse
     {
-
-        $service->delete();
+      auth()->user()->services()->findOrFail($service)->delete();
         return redirect()->route('my-services.index')
             ->with(successRes("Service deleted successfully."));
     }

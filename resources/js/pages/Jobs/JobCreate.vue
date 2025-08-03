@@ -16,11 +16,12 @@ import InputError from '@/components/InputError.vue';
 
 const props = defineProps<{
     types: Array<{ label: string; value: string }>
-    statuses: Array<{ label: string; value: string }>
+    statuses: Array<{ label: string; value: string}>
     modes: Array<{ label: string; value: string }>
-    regions: Array<{ label: string; value: string }>
-    categories: Array<{ label: string; value: string }>
+    regions: Array<{ label: string; value: string}>
+    categories: Array<{ label: string; value: string}>
 }>();
+
 const featureUploadRef = ref();
 const form = useForm({
     company_name: '',

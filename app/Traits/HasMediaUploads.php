@@ -26,6 +26,31 @@ trait HasMediaUploads
         }
     }
 
+    public function handleMediaUpdate(Request $request, array $options = []): void
+    {
+        $featuredKey = $options['featured'] ?? 'featured';
+        $galleryKey  = $options['gallery'] ?? 'gallery';
+        $removedKey  = $options['removed'] ?? 'removed_gallery_urls';
+
+        if ($request->hasFile($featuredKey)) {
+            $this->addMediaFromRequest($featuredKey)->toMediaCollection('featured');
+        }
+
+        $removedUrls = $request->input($removedKey, []);
+        if (!empty($removedUrls)) {
+            foreach ($this->getMedia($galleryKey) as $media) {
+                if (in_array($media->getUrl(), $removedUrls)) {
+                    $media->delete();
+                }
+            }
+        }
+
+        if ($request->hasFile($galleryKey)) {
+            foreach ((array) $request->file($galleryKey) as $file) {
+                $this->addMedia($file)->toMediaCollection($galleryKey);
+            }
+        }
+    }
     public function toArrayWithMedia(): array
     {
         $data = $this->toArray();

@@ -67,7 +67,7 @@ onMounted(() => {
 
 
 const updateJob = () => {
-    form.post(route('my-jobs.update', props.job.id), {
+    form.put(route('my-jobs.update', props.job.id), {
         preserveScroll: true,
         onSuccess: (res) => {
             if (res.props.success) {
