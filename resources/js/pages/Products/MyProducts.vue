@@ -121,7 +121,7 @@ const goToPage = (page) => {
                     <div class="grid gap-8 w-full md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         <Link v-for="product in products.data"
                               :key="product.id"
-                              :href="route('my-products.show', product.id)"
+                              :href="route('my-products.show', product.slug)"
                               class="group block">
                             <div class="bg-white rounded-2xl shadow-sm hover:shadow-2xl border
                              border-slate-100 overflow-hidden transform hover:-translate-y-2 transition-all duration-300 ease-out">

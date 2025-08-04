@@ -86,7 +86,8 @@ class ProductController extends Controller
      */
     public function show(string $product): Response
     {
-        $product = auth()->user()->products()->findOrFail($product);
+        $product = auth()->user()->products()->whereSlug($product)->firstOrFail();
+
         $product->views_count = views($product)->count();
         $plans = PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
         $product = $product->loadMissing(['user', 'region', 'promotions.plan', 'reviews']);
@@ -109,7 +110,7 @@ class ProductController extends Controller
      */
     public function edit(string $product): Response
     {
-        $product = auth()->user()->products()->findOrFail($product);
+        $product = auth()->user()->products()->whereSlug($product)->firstOrFail();
         return Inertia::render('Products/ProductEdit', array_merge($this->props, [
             'product' => $product->load(['user', 'region', 'categories'])->toArrayWithMedia(),
         ]));

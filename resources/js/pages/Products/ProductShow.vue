@@ -79,7 +79,7 @@ const handleShare = () => {
     <Layout>
 
         <div class="hidden md:block fixed bottom-8 right-8 z-50 space-y-4">
-            <Link :href="route('my-products.edit', product.id)">
+            <Link :href="route('my-products.edit', product.slug)">
                 <Button class="bg-primary hover:bg-primary-700 text-white font-semibold p-4 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 ease-out">
                     <Edit class="w-5 h-5" />
                 </Button>
@@ -160,7 +160,7 @@ const handleShare = () => {
             </div>
             <div class="md:hidden px-6 py-6 bg-white border-b border-slate-200">
                 <div class="flex gap-3">
-                    <Link :href="route('my-products.edit', product.id)" class="flex-1">
+                    <Link :href="route('my-products.edit', product.slug)" class="flex-1">
                         <Button class="w-full bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-3">
                             <Edit class="w-5 h-5" />
                             <span>Edit Product</span>
@@ -299,7 +299,7 @@ const handleShare = () => {
 
                                 <div class="mt-8 space-y-3">
                                     <Link
-                                        :href="route('my-products.edit', product.id)"
+                                        :href="route('my-products.edit', product.slug)"
                                         class="block">
                                         <Button class="w-full bg-primary hover:bg-primary-700 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
                                             <Edit class="w-4 h-4" />

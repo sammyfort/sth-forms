@@ -7,6 +7,7 @@ use App\Models\Region;
 use App\Models\ServiceCategory;
 use App\Http\Requests\Service\StoreServiceRequest;
 use App\Http\Requests\Service\UpdateServiceRequest;
+use App\Services\RatingService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -43,18 +44,21 @@ class ServiceController extends Controller
 
     public function show(string $service): Response
     {
-        $service = auth()->user()->services()->findOrFail($service);
+        $service = auth()->user()->services()->whereSlug($service)->firstOrFail();
         $service->views_count = views($service)->count();
         $plans = PromotionPlan::query()->get(['id', 'name', 'description', 'number_of_days', 'price']);
         $service = $service->loadMissing(['user','category', 'region', 'promotions.plan']);
 
         // check if it has payment
         $paymentStatus = Promotion::routeCallback();
-
+        $distributions = RatingService::getDistributions($service);
         return Inertia::render('Services/ServiceShow',[
             'service' => $service,
             'plans' => $plans,
             'payment_status' => $paymentStatus,
+
+            'ratings' => $service->averageRatings(),
+            'distributions' => $distributions,
         ]);
     }
 
@@ -75,7 +79,7 @@ class ServiceController extends Controller
 
     public function edit(string $service): Response
     {
-        $service = auth()->user()->services()->findOrFail($service);
+        $service = auth()->user()->services()->whereSlug($service)->firstOrFail();
         return Inertia::render('Services/ServiceEdit',array_merge($this->props,[
             'service' =>  $service->load(['user', 'region'])->toArrayWithMedia(),
         ]));
