@@ -264,7 +264,7 @@ const getExpiryStatus = (dateString: string) => {
                                 </div>
                             </div>
                             <div class="p-6">
-                                <Link :href="route('my-jobs.show', job.id)">
+                                <Link :href="route('my-jobs.show', job.slug)">
                                     <Button class="w-full bg-primary hover:from-slate-800
                                      hover:to-slate-900 text-white font-semibold py-3 px-4 rounded-xl transition-all duration-200
                                      transform hover:scale-[1.02] flex items-center justify-center gap-2">

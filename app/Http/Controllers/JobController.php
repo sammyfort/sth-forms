@@ -55,7 +55,7 @@ class JobController extends Controller
 
     public function show(string $job): Response
     {
-        $job = auth()->user()->jobs()->findOrFail($job);
+        $job = auth()->user()->jobs()->whereSlug($job)->firstOrFail();;
         $job->views_count = views($job)->count();
         $job->loadMissing(['region', 'categories', 'promotions']);
         return Inertia::render('Jobs/JobShow', [
@@ -95,7 +95,7 @@ class JobController extends Controller
 
     public function edit(string $job): Response
     {
-        $job = auth()->user()->jobs()->findOrFail($job);
+        $job = auth()->user()->jobs()->whereSlug($job)->firstOrFail();
         return Inertia::render('Jobs/JobEdit', array_merge($this->props, [
             'job' => $job->loadMissing(['categories'])->toArrayWithMedia(),
         ]));

@@ -78,7 +78,6 @@ const createService = () => {
                            processing-text="Creating Product..." @submit="createService">
 
                 <template #form-sections>
-
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">Product Information</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
