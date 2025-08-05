@@ -157,7 +157,8 @@ function whatsappLink(){
                                 </Button>
                             </a>
                         </div>
-                        <div class="flex space-x-4 my-4">
+                        <div class="flex items-center space-x-4 my-4">
+                            <span class="me-5 font-bold">Share: </span>
                             <a href="#" class="w-4 h-4 flex items-center justify-center">
                                 <Whatsapp />
                             </a>
@@ -170,7 +171,7 @@ function whatsappLink(){
                         </div>
                         <div>
                             <h3 class="text-lg font-semibold mb-2">Product Description</h3>
-                            <p>{{ product.description }}</p>
+                            <p v-html="product.short_description"></p>
                         </div>
                     </div>
                 </div>
@@ -202,9 +203,7 @@ function whatsappLink(){
                         </div>
 
                         <TabsContent class="border-s border-secondary/20 ps-3" value="description">
-                            <div class="py-6">
-                                {{ product.description }}
-                            </div>
+                            <div class="py-6" v-html="product.description"></div>
                         </TabsContent>
                         <TabsContent class="border-s border-secondary/20 ps-3" value="additional-information">
                             <div class="py-6">
@@ -240,7 +239,7 @@ function whatsappLink(){
                     </Tabs>
                 </div>
             </div>
-            <div class="mt-10 hidden lg:block overflow-hidden border">
+            <div class="mt-10 hidden lg:block overflow-hidden">
                 <div class="mb-4 text-lg font-semibold text-fade flex gap-2 items-center">
                     Popular Sellers
                     <Store :size="22" class="text-primary"/>

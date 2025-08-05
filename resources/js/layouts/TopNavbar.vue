@@ -16,6 +16,8 @@ import ServiceNavPopover from '@/components/Nav/ServiceNavPopover.vue';
 
 const page = usePage()
 const user = computed(() => page.props.auth.user)
+
+
 </script>
 
 <template>
@@ -26,7 +28,7 @@ const user = computed(() => page.props.auth.user)
                     <div class="flex items-center gap-12">
                         <Link class="hidden lg:flex items-center gap-2.5" :href="route('home')">
                             <img src="/images/logo.png" class="size-12 rounded-md" alt="Signboard Logo" />
-                            <h2 class="text-md font-bold text-center">Signboard Ghana</h2>
+                            <h2 class="text-md font-bold text-center">{{ page.props.name }}</h2>
                         </Link>
                         <MobileNav>
                             <Menu class="lg:hidden" :size="35"/>

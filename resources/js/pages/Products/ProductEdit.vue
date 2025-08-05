@@ -125,7 +125,7 @@ const updateService = () => {
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">Product Information</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <InputSelect label="Select Region" :form="form" model="region_id" :options="props.regions"   required searchable />
-                            <InputText :form="form" label="Name" model="name" required />
+                            <InputText :form="form" label="Product Name" model="name" required />
                             <InputSelect :form="form" label="Status"  model="status" :options="props.statuses"  required  />
                             <InputSelect :form="form" label="Category"  model="categories" :options="props.categories" taggable required searchable />
                             <InputText :form="form" label="Price" model="price" type="number" required />

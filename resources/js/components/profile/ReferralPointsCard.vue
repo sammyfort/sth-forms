@@ -28,9 +28,13 @@ const user = computed(()=> page.props.auth.user)
                             This points can be used to boost your services to reach more audience
                         </div>
                     </div>
+                    <div class="text-sm">
+                        <span class="font-bold text-fade me-4">Referral link:</span>
+                        <span class="text-primary">{{ user.referral_link }}</span>
+                    </div>
                 </div>
                 <Button @click="copyContent(user.referral_link, 'Your referral code has been copied to clipboard')" class="rounded-full border px-8 h-11 py-3">
-                    <div>Refer Now</div>
+                    <div>Copy Referral Link</div>
                 </Button>
             </div>
         </CardContent>

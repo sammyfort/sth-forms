@@ -122,7 +122,7 @@ const createJob = () => {
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <h2 class="text-lg font-semibold text-gray-900 mb-6">How to apply</h2>
                         <InputSelect :form="form" label="Mode of application"  model="apply_mode" :options="props.apply_modes" required />
-                        <div class="grid grid-cols-2 md:grid-cols-2 gap-6">
+                        <div class="grid grid-cols-2 md:grid-cols-2 gap-6 mt-4">
 
                             <div v-if="form.apply_mode === 'instruction' || form.apply_mode === 'both'"
                                  class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
