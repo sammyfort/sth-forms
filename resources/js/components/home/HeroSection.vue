@@ -8,7 +8,7 @@ import { router } from '@inertiajs/vue3';
             class="flex flex-col max-w-screen-xl px-8 mx-auto md:items-center md:justify-between md:flex-row">
             <div class="flex flex-row items-center justify-between py-6">
                 <div class="relative md:mt-8">
-                    <a href="#" class="text-lg relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">SignboardGh</a>
+                    <a href="#" class="text-lg relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">{{ $page.props.name }}</a>
                     <svg viewBox="0 0 79 79" fill="none" xmlns="http://www.w3.org/2000/svg"
                          class="h-11 z-40 absolute -top-2 -left-3">
                         <path
@@ -30,22 +30,22 @@ import { router } from '@inertiajs/vue3';
     <div class="bg-cream">
         <div class="max-w-screen-xl px-8 mx-auto flex flex-col lg:flex-row items-start">
             <div
-                class="flex flex-col w-full lg:w-6/12 justify-center lg:pt-24 items-start text-center lg:text-left mb-5 md:mb-0">
+                class="flex flex-col w-full lg:w-8/12 justify-center lg:pt-24 items-start text-center lg:text-left mb-5 md:mb-0">
                 <h1 data-aos="fade-right" data-aos-once="true"
                     class="my-4 text-5xl font-bold leading-tight text-secondary aos-init aos-animate">
-                    <span class="text-primary">Showcase</span> your Signboard online
+                    <span class="text-primary">Showcase</span> your business, service, product, or job listing online
                 </h1>
                 <p data-aos="fade-down" data-aos-once="true" data-aos-delay="300"
                    class="leading-normal text-2xl mb-8 aos-init aos-animate">
-                    Signboard Ghana helps you put your business on the map — literally and digitally.
+                    Alexoa helps you put what you offer on the map — from businesses and services to products and jobs.
                 </p>
                 <div data-aos="fade-up" data-aos-once="true" data-aos-delay="700"
                      class="w-full md:flex items-center justify-center lg:justify-start md:gap-x-5 aos-init aos-animate">
-                    <button
-                        @click="router.visit(route('my-signboards.create'))"
-                        class="lg:mx-0 bg-primary text-white text-xl font-bold rounded-full py-4 px-9 btn-zoom">
-                        List your business
-                    </button>
+<!--                    <button-->
+<!--                        @click="router.visit(route('my-signboards.create'))"-->
+<!--                        class="lg:mx-0 bg-primary text-white text-xl font-bold rounded-full py-4 px-9 btn-zoom">-->
+<!--                        List what you pro-->
+<!--                    </button>-->
                     <div class="flex items-center justify-center gap-x-3 mt-5 md:mt-0 btn-zoom">
                         <button class="bg-white w-14 h-14 rounded-full flex items-center justify-center">
                             <svg viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg"

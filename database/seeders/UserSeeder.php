@@ -66,6 +66,7 @@ class UserSeeder extends Seeder
         $regions = Region::query()->pluck('id');
 
         foreach ($users as $userData) {
+            return;
             $user = User::query()->create($userData);
 
             Business::factory(3)
@@ -74,7 +75,7 @@ class UserSeeder extends Seeder
                     'created_by_id' => $user->id
                 ])
                 ->each(function ($business) use ($user, $signboardCategories, $regions) {
-                    Signboard::factory(3)
+                    Signboard::factory(2)
                         ->for($business)
                         ->create([
                             'region_id' => $regions->random(),
@@ -90,7 +91,7 @@ class UserSeeder extends Seeder
                         });
                 });
 
-            Service::factory(10)
+            Service::factory(3)
                 ->for($user)
                 ->create([
                     'created_by_id' => $user->id
@@ -102,7 +103,7 @@ class UserSeeder extends Seeder
                     }
                 });
 
-            Job::factory(10)
+            Job::factory(3)
                 ->for($user)
                 ->create([
                     'region_id' => $regions->random(),
@@ -113,7 +114,7 @@ class UserSeeder extends Seeder
                     $this->addMedia($job, 'company_logo');
                 });
 
-            Product::factory(10)
+            Product::factory(3)
                 ->for($user)
                 ->create([
                     'region_id' => $regions->random(),

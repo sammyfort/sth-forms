@@ -92,8 +92,9 @@ class SignboardController extends Controller
     {
         $data = $request->validated();
         $business = $request->user()->businesses()->findOrFail($data['business_id']);
+        $signboard = null;
 
-        DB::transaction(function () use ($business, $data, $request) {
+        DB::transaction(function () use ($business, $data, $request, &$signboard) {
             $signboard = $business->signboards()->create(Arr::except($data, ['featured_image', 'gallery_images', 'categories']));
             $signboard->categories()->sync($data['categories']);
 
@@ -101,10 +102,13 @@ class SignboardController extends Controller
                 'featured' => 'featured_image',
                 'gallery' => 'gallery_images',
             ]);
-
         });
 
-        return back()->with(successRes("Signboard created successfully."));
+        if ($signboard){
+            return to_route('my-signboards.show', $signboard->slug);
+        }
+
+        return back()->with(errorRes("An error occurred, please try again later."));
     }
 
 

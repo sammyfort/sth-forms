@@ -183,7 +183,7 @@ const handleShare = () => {
                                  <ImagePreview :featured-url="service.featured" :gallery-urls="service.gallery"/>
                             </div>
                             <PaymentHistory :promotions="service.promotions" />
-                            <div class="w-full lg:w-1/2 mx-auto">
+                            <div class="w-full mx-auto">
                                 <ReviewsDetails
                                     :ratable="service"
                                     :ratings="ratings"
