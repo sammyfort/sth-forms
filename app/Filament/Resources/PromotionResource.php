@@ -3,9 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Enums\PaymentStatus;
-use App\Filament\Resources\SignboardSubscriptionResource\Pages;
-use App\Filament\Resources\SignboardSubscriptionResource\RelationManagers;
-use App\Models\SignboardSubscription;
+use App\Filament\Resources\PromotionResource\Pages;
+use App\Filament\Resources\PromotionResource\RelationManagers;
+use App\Models\Promotion;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SignboardSubscriptionResource extends Resource
+class PromotionResource extends Resource
 {
-    protected static ?string $model = SignboardSubscription::class;
+    protected static ?string $model = Promotion::class;
 
     protected static ?string $navigationIcon = 'govicon-money';
 
@@ -95,8 +95,8 @@ class SignboardSubscriptionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageSignboardSubscriptions::route('/'),
-            'view' => Pages\ViewSignboardSubscription::route('/{record}'),
+            'index' => Pages\ManagePromotion::route('/'),
+            'view' => Pages\ViewPromotion::route('/{record}'),
         ];
     }
 }

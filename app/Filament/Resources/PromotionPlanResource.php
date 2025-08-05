@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SignboardSubscriptionPlanResource\Pages;
-use App\Filament\Resources\SignboardSubscriptionPlanResource\RelationManagers;
-use App\Models\SignboardSubscriptionPlan;
+use App\Filament\Resources\PromotionPlanResource\Pages;
+use App\Filament\Resources\PromotionPlanResource\RelationManagers;
+use App\Models\Promotion;
+use App\Models\PromotionPlan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SignboardSubscriptionPlanResource extends Resource
+class PromotionPlanResource extends Resource
 {
-    protected static ?string $model = SignboardSubscriptionPlan::class;
+    protected static ?string $model = Promotion::class;
 
     protected static ?string $navigationIcon = 'majestic-money-plus-line';
 
@@ -73,8 +74,8 @@ class SignboardSubscriptionPlanResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageSignboardSubscriptionPlans::route('/'),
-            'view' => Pages\ViewSignboardSubscriptionPlan::route('/{record}'),
+            'index' => Pages\ManagePromotionPlans::route('/'),
+            'view' => Pages\ViewPromotionPlan::route('/{record}'),
         ];
     }
 }

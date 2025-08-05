@@ -4,9 +4,9 @@ namespace App\Filament\Widgets;
 
 use App\Enums\PaymentStatus;
 use App\Models\Business;
+use App\Models\Promotion;
+use App\Models\PromotionPlan;
 use App\Models\Signboard;
-use App\Models\SignboardSubscription;
-use App\Models\SignboardSubscriptionPlan;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
@@ -28,13 +28,13 @@ class StatsOverview extends BaseWidget
 
             Stat::make(
                 'Signboard Subscriptions',
-                SignboardSubscription::query()
+                Promotion::query()
                     ->where('payment_status', PaymentStatus::PAID)
                     ->whereDate('ends_at', '>=', now())
                     ->count()
             ),
 
-            Stat::make('Signboard Subscription Plans', SignboardSubscriptionPlan::query()->count()),
+            Stat::make('Signboard Subscription Plans', PromotionPlan::query()->count()),
         ];
     }
 }
