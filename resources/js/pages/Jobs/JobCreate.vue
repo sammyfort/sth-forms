@@ -13,6 +13,7 @@ import InputText from '@/components/InputText.vue';
 import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputError from '@/components/InputError.vue';
+import JobTemplate from '@/pages/Jobs/JobTemplate.vue';
 
 const props = defineProps<{
     types: Array<{ label: string; value: string }>
@@ -62,6 +63,11 @@ const createJob = () => {
     });
 };
 
+const jobEditor = ref<InstanceType<typeof TextEditor> | null>(null)
+
+const focusJobEditor = () => {
+    jobEditor.value?.focus()
+}
 
 </script>
 
@@ -105,9 +111,19 @@ const createJob = () => {
 
                     <div class="col-span-1 md:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
-                        <TextEditor v-model="form.description" />
+
+                        <TextEditor v-model="form.description" ref="jobEditor"/>
                         <InputError v-if="form.errors.description" :message="form.errors.description " />
+
+                        <div class="mt-3">
+                            <JobTemplate
+                                v-model="form.description"
+                                @focusEditor="focusJobEditor"
+                            />
+                        </div>
                     </div>
+
+
                 </template>
 
                 <template #media-section>
