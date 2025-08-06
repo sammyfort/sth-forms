@@ -39,8 +39,8 @@ const initEditor = async () => {
         placeholder: props.placeholder || '',
     })
 
-    const html = props.modelValue || '<p><br></p>'
-    quill.root.innerHTML = html
+    insertHTML(props.modelValue || '')
+
     quill.enable(!props.readonly)
 
     quill.on('text-change', () => {
@@ -49,13 +49,26 @@ const initEditor = async () => {
             emit('update:modelValue', newHtml === '<p><br></p>' ? '' : newHtml)
         }
     })
+
+    editorRef.value.addEventListener('click', () => {
+        if (!props.readonly) quill?.focus()
+    })
+}
+
+const insertHTML = (html: string) => {
+    if (!quill) return
+    if (!html || html === '<p><br></p>') {
+        quill.setText('')
+        return
+    }
+    quill.clipboard.dangerouslyPasteHTML(html, 'silent')
 }
 
 watch(
     () => props.modelValue,
     (newVal) => {
         if (quill && newVal !== quill.root.innerHTML) {
-            quill.root.innerHTML = newVal || '<p><br></p>'
+            insertHTML(newVal || '')
         }
     }
 )
@@ -77,10 +90,10 @@ defineExpose({
 
 <template>
     <div class="quill-editor-wrapper" :class="{ 'readonly': readonly }">
-        <div ref="editorRef" class="min-h-[200px]"></div>
+        <div
+            ref="editorRef"
+            class="min-h-[200px] w-full border rounded-md overflow-hidden cursor-text
+                   [&_.ql-editor]:min-h-[200px] [&_.ql-editor]:cursor-text [&_.ql-container]:min-h-[200px]"
+        ></div>
     </div>
 </template>
-
-<style scoped>
-
-</style>
