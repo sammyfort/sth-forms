@@ -60,6 +60,7 @@ onMounted(() => {
     form.first_mobile = p.first_mobile;
     form.second_mobile = p.second_mobile;
     form.town = p.town;
+    form.video_link = p.video_link
 
     form.website = p.website
 

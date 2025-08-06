@@ -12,7 +12,7 @@ import {
     Share2,
     Award,
     PlusIcon,
-    Briefcase
+    Briefcase, VideoIcon
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button'
 import { PaymentStatusI, PromotionPlanI, ProductI, AverageRatingsI, RatingsDistributionI } from '@/types';
@@ -153,6 +153,19 @@ const handleShare = () => {
                                         <div class="text-slate-300 text-sm">Reviews</div>
                                     </div>
                                 </div>
+
+
+                            </div>
+                            <div v-if="product.video_link" class="flex gap-3">
+                                <a
+                                    target="_blank"
+                                    :href="product.video_link"
+                                    class="flex items-center gap-x-2 rounded-xl border border-white/30 bg-primary px-6 py-3
+                                    text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 "
+                                >
+                                    <VideoIcon class="h-5 w-5" />
+                                    <span>Watch Video</span>
+                                </a>
                             </div>
                         </div>
                     </div>
