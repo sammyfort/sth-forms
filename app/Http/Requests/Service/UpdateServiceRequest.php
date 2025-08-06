@@ -34,7 +34,8 @@ class UpdateServiceRequest extends FormRequest
             'town' => ['required'],
             'gps' => ['nullable', new GPSRule()],
             'category_id' => ['required'],
-
+            'years_experience' => ['required', 'integer'],
+            'video_link'=> ['nullable', 'url'],
             'featured' => ['nullable', 'image', 'max:2048'],
             'gallery' => ['nullable', 'array'],
             'gallery.*' => ['image', 'max:2048'],

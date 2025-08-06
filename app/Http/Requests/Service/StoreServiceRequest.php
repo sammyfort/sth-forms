@@ -5,6 +5,7 @@ namespace App\Http\Requests\Service;
 use App\Rules\GPSRule;
 use App\Rules\MobileNumber;
 use Illuminate\Foundation\Http\FormRequest;
+use Mews\Purifier\Facades\Purifier;
 
 class StoreServiceRequest extends FormRequest
 {
@@ -38,6 +39,17 @@ class StoreServiceRequest extends FormRequest
             'featured' => ['required', 'image', 'max:2048'],
             'gallery' => ['required', 'array'],
             'gallery.*' => ['image', 'max:2048'],
+            'years_experience' => ['required', 'integer'],
+            'video_link'=> ['nullable', 'url']
         ];
+    }
+
+    public function prepareForValidation(): void
+    {
+        if ($this->filled('description')) {
+            $this->merge([
+                'description' => Purifier::clean($this->input('description')),
+            ]);
+        }
     }
 }

@@ -71,6 +71,7 @@ export interface ProductI extends ModelI {
     first_mobile: string
     second_mobile: string|null
     whatsapp_mobile: string|null
+    video_link: string
     region_id: number
     region: RegionI
     town: string
@@ -90,10 +91,12 @@ export interface ServiceI extends ModelI{
     description: string;
     first_mobile: string;
     second_mobile: string;
+    video_link: string;
     email: string;
     address: string;
     business_name?: string;
     region_id: number;
+    years_experience: string;
     region: RegionI;
     category: ServiceCategoryI
     town: string;

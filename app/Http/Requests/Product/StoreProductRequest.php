@@ -4,6 +4,7 @@ namespace App\Http\Requests\Product;
 
 use App\Enums\ProductStatus;
 use App\Enums\YesNo;
+use App\Rules\MobileNumber;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Mews\Purifier\Facades\Purifier;
@@ -32,8 +33,9 @@ class StoreProductRequest extends FormRequest
             'price' => ['required', 'numeric'],
             'is_negotiable' => ['required', Rule::in(YesNo::toArray())],
             'short_description' => ['nullable', 'string'],
-            'first_mobile' => ['required', 'string'],
-            'second_mobile' => ['nullable', 'string'],
+            'first_mobile' => ['required', new MobileNumber()],
+            'second_mobile' => ['nullable', new MobileNumber()],
+            'whatsapp_mobile' => ['nullable', new MobileNumber()],
             'website' => ['nullable', 'string'],
             'town' => ['required', 'string'],
             'description' => ['required'],
@@ -41,6 +43,7 @@ class StoreProductRequest extends FormRequest
             'featured' => ['required', 'image', 'max:2048'],
             'gallery' => ['required', 'array'],
             'gallery.*' => ['image', 'max:2048'],
+            'video_link'=> ['nullable', 'url']
         ];
     }
 

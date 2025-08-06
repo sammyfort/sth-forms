@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->string('whatsapp_mobile')->nullable();
             $table->foreignId('region_id')->constrained();
             $table->string('town');
-
+            $table->string('video_link')->nullable();
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
         });

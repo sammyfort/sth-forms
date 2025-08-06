@@ -179,7 +179,7 @@ const handleShare = () => {
                             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
                                 <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
                                     <Award class="w-6 h-6 text-primary" />
-                                    Product Description
+                                     Summary
                                 </h2>
                                 <div class="prose prose-slate max-w-none">
                                     <p class="text-slate-700 leading-relaxed text-lg">
@@ -196,7 +196,8 @@ const handleShare = () => {
                                     Product Description
                                 </h2>
                                 <div class="prose prose-slate max-w-none">
-                                    <TextEditor :model-value="product.description" readonly/>
+                                    <p v-html="product.description"  class="text-slate-700 leading-relaxed text-lg"></p>
+<!--                                    <TextEditor :model-value="product.description" readonly/>-->
 
                                 </div>
                             </div>
@@ -207,7 +208,7 @@ const handleShare = () => {
                             </div>
                             <PaymentHistory :promotions="product.promotions" />
 
-                            <div class="w-full lg:w-1/2 mx-auto">
+                            <div class="w-full mx-auto">
                                 <ReviewsDetails
                                     :ratable="product"
                                     :ratings="ratings"

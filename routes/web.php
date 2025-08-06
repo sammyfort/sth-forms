@@ -64,7 +64,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     ]);
 
     Route::post('rate', [RatingController::class, 'rate'])->name('ratings.rate');
-
 });
 
 Route::prefix('businesses')->name('businesses.')->group(function () {
