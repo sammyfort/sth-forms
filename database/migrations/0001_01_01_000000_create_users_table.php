@@ -32,6 +32,7 @@ return new class extends Migration
             $table->foreignId('referrer_id')->nullable();
             $table->boolean('is_referrer_points_settled')->default(false);
             $table->string('referral_code');
+            $table->bigInteger('old_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
