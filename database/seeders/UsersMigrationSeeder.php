@@ -33,12 +33,12 @@ class UsersMigrationSeeder extends Seeder
                 }
 
                 User::create([
-                    'old_id'      => $user['j_id'],
-                    'firstname'         => $user['j_firstname'],
-                    'lastname'          => $user['j_lastname'],
-                    'email'             => $email,
-                    'mobile'            => $mobile,
-                    'password'          => Hash::make('123456'),
+                    'old_id' => $user['j_id'],
+                    'firstname' => $user['j_firstname'],
+                    'lastname' => $user['j_lastname'],
+                    'email' => $email,
+                    'mobile' => $mobile,
+                    'password' => Hash::make('123456'),
                     'email_verified_at' => now(),
                 ]);
             }
