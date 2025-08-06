@@ -12,7 +12,7 @@ import {
     Share2,
     Award,
     PlusIcon,
-    Briefcase
+    Briefcase, VideoIcon
 } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button'
 import { PaymentStatusI, PromotionPlanI, ProductI, AverageRatingsI, RatingsDistributionI } from '@/types';
@@ -153,6 +153,19 @@ const handleShare = () => {
                                         <div class="text-slate-300 text-sm">Reviews</div>
                                     </div>
                                 </div>
+
+
+                            </div>
+                            <div v-if="product.video_link" class="flex gap-3">
+                                <a
+                                    target="_blank"
+                                    :href="product.video_link"
+                                    class="flex items-center gap-x-2 rounded-xl border border-white/30 bg-primary px-6 py-3
+                                    text-white backdrop-blur-sm transition-all duration-200 hover:scale-105 "
+                                >
+                                    <VideoIcon class="h-5 w-5" />
+                                    <span>Watch Video</span>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -179,7 +192,7 @@ const handleShare = () => {
                             <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
                                 <h2 class="text-2xl font-bold text-slate-900 mb-6 flex items-center gap-3">
                                     <Award class="w-6 h-6 text-primary" />
-                                    Product Description
+                                     Summary
                                 </h2>
                                 <div class="prose prose-slate max-w-none">
                                     <p class="text-slate-700 leading-relaxed text-lg">
@@ -196,7 +209,8 @@ const handleShare = () => {
                                     Product Description
                                 </h2>
                                 <div class="prose prose-slate max-w-none">
-                                    <TextEditor :model-value="product.description" readonly/>
+                                    <p v-html="product.description"  class="text-slate-700 leading-relaxed text-lg"></p>
+<!--                                    <TextEditor :model-value="product.description" readonly/>-->
 
                                 </div>
                             </div>
@@ -207,7 +221,7 @@ const handleShare = () => {
                             </div>
                             <PaymentHistory :promotions="product.promotions" />
 
-                            <div class="w-full lg:w-1/2 mx-auto">
+                            <div class="w-full mx-auto">
                                 <ReviewsDetails
                                     :ratable="product"
                                     :ratings="ratings"

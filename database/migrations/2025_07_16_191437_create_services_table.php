@@ -29,9 +29,8 @@ return new class extends Migration {
             $table->string('gps')->nullable();
             $table->string('gps_lat')->nullable();
             $table->string('gps_lon')->nullable();
-
-           // $table->decimal('charge_amount')->nullable();
-           // $table->string('estimated_days')->nullable();
+            $table->tinyInteger('years_experience')->default(1);
+            $table->string('video_link')->nullable();
 
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();

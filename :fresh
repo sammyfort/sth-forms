@@ -1,0 +1,43 @@
+
+   INFO  Nothing to migrate.  
+
+   INFO  Seeding database.  
+
+  Database\Seeders\RegionSeeder ............................................................................................................ RUNNING  
+  Database\Seeders\RegionSeeder ...................................................................................................... 3,538 ms DONE  
+
+  Database\Seeders\SignboardCategorySeeder ................................................................................................. RUNNING  
+  Database\Seeders\SignboardCategorySeeder ........................................................................................... 5,268 ms DONE  
+
+  Database\Seeders\PromotionPlanSeeder ..................................................................................................... RUNNING  
+  Database\Seeders\PromotionPlanSeeder ............................................................................................... 1,105 ms DONE  
+
+  Database\Seeders\ServiceCategorySeeder ................................................................................................... RUNNING  
+  Database\Seeders\ServiceCategorySeeder ............................................................................................. 4,272 ms DONE  
+
+  Database\Seeders\JobCategorySeeder ....................................................................................................... RUNNING  
+
+   Illuminate\Database\UniqueConstraintViolationException 
+
+  SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'information-technology' for key 'job_categories.job_categories_slug_unique' (Connection: mysql, SQL: insert into `job_categories` (`created_at`, `name`, `slug`, `updated_at`, `uuid`) values (2025-08-06 10:24:19, Information Technology, information-technology, 2025-08-06 10:24:19, 2a6c6769-4deb-4338-a049-6da0c800bc16))
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:817
+    813▕         // message to include the bindings with SQL, which will make this exception a
+    814▕         // lot more helpful to the developer instead of just the database's errors.
+    815▕         catch (Exception $e) {
+    816▕             if ($this->isUniqueConstraintError($e)) {
+  ➜ 817▕                 throw new UniqueConstraintViolationException(
+    818▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
+    819▕                 );
+    820▕             }
+    821▕
+
+      [2m+8 vendor frames [22m
+
+  9   database/seeders/JobCategorySeeder.php:38
+      Illuminate\Database\Eloquent\Builder::fillAndInsert()
+      [2m+8 vendor frames [22m
+
+  18  database/seeders/DatabaseSeeder.php:18
+      Illuminate\Database\Seeder::call()
+

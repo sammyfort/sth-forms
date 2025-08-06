@@ -13,6 +13,8 @@ import InputSelect from '@/components/InputSelect.vue';
 import InputText from '@/components/InputText.vue';
 import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
 import GalleryFilesUpload from '@/components/GalleryFilesUpload.vue';
+import TextEditor from '@/components/forms/TextEditor.vue';
+import InputError from '@/components/InputError.vue';
 
 const props = defineProps<{
     categories: Array<{ label: string, value: string }>,
@@ -26,6 +28,8 @@ const form = useForm({
     first_mobile: '',
     business_name: '',
     second_mobile: '',
+    years_experience: '',
+    video_link: '',
     email: '',
     address: '',
     town: '',
@@ -80,7 +84,8 @@ const createService = () => {
                             <InputSelect
                                 label="Select Region" :form="form" model="region_id" :options="props.regions"   required searchable
                             />
-                            <InputText :form="form" label="Name/Title" model="title" required />
+                            <InputText :form="form" label="Service Name/Title" model="title" required />
+                            <InputText :form="form" label="Years of Experience" model="years_experience" type="number" required />
                             <InputText :form="form" label="Town" model="town" required />
                             <InputText :form="form" label="Address" model="address" required />
                             <InputText :form="form" label="First Mobile No" type=tel model="first_mobile" required />
@@ -88,9 +93,13 @@ const createService = () => {
                             <InputText :form="form" label="Email address" type="email" model="email" required />
                             <InputText :form="form" label="Business Name" model="business_name"  />
                             <InputText :form="form" label="GPS Address" model="gps" required />
-                            <InputText :form="form" label="Description" model="description"  textarea />
+                            <InputText :form="form" label="Video Link" model="video_link" />
+                            <InputSelect label="Field Of Service" :form="form" model="category_id" :options="props.categories" required searchable />
+
                             <div class="md:col-span-2">
-                                <InputSelect label="Field Of Service" :form="form" model="category_id" :options="props.categories" required searchable />
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Service Description</label>
+                                <TextEditor v-model="form.description" />
+                                <InputError v-if="form.errors.description" :message="form.errors.description " />
                             </div>
 
                         </div>

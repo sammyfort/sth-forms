@@ -36,6 +36,8 @@ const form = useForm({
     is_negotiable: '',
     first_mobile: '',
     second_mobile: '',
+    whatsapp_mobile: '',
+    video_link: '',
     website: '',
     town: '',
     region_id: '',
@@ -58,6 +60,7 @@ onMounted(() => {
     form.first_mobile = p.first_mobile;
     form.second_mobile = p.second_mobile;
     form.town = p.town;
+    form.video_link = p.video_link
 
     form.website = p.website
 
@@ -132,8 +135,10 @@ const updateService = () => {
                             <InputSelect label="Is Negotiable?" :form="form" model="is_negotiable" :options="props.choices"  required  />
                             <InputText :form="form" label="First Mobile No" type=tel model="first_mobile" required />
                             <InputText :form="form" label="Second Mobile No" type="tel" model="second_mobile"  />
+                            <InputText :form="form" label="WhatsApp No" type="tel" model="whatsapp_mobile"  />
                             <InputText :form="form" label="Website" model="website"  />
                             <InputText :form="form" label="Town" model="town" required />
+                            <InputText :form="form" label="Video Link" model="video_link" />
                             <InputText :form="form" label="Short Description" model="short_description"  textarea />
                         </div>
                     </div>
