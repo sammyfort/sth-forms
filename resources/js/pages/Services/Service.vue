@@ -2,7 +2,7 @@
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/layouts/Layout.vue'
 import StarRating from 'vue-star-rating';
-import { ArrowLeft, Edit, Eye, MapPin, Star, Share2, Award } from 'lucide-vue-next'
+import { ArrowLeft, Edit, Eye, MapPin, Star, Share2, Award, Map } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button'
 import { AverageRatingsI, RatingsDistributionI, ServiceI } from '@/types';
 import ImagePreview from '@/components/ImagePreview.vue';
@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import AdvertisedServicesH from '@/components/Services/AdvertisedServicesH.vue';
 import ReviewsDetails from '@/components/ReviewsDetails.vue';
 import { computed } from 'vue';
+import ShareToSocials from '@/components/ShareToSocials.vue';
 
 const props = defineProps<{
     service: ServiceI,
@@ -203,12 +204,6 @@ const handleShare = () => {
                                             {{ service.town }}
                                         </span>
                                     </div>
-                                    <div v-if="service.gps" class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
-                                        <span class="text-slate-600">GPS</span>
-                                        <span class="font-semibold text-slate-900">
-                                            {{ service.gps }}
-                                        </span>
-                                    </div>
                                     <div class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
                                         <span class="text-slate-600">Status</span>
                                         <Badge variant="primary">Active</Badge>
@@ -218,6 +213,20 @@ const handleShare = () => {
                                         <span class="font-semibold text-slate-900">
                                             {{ new Date(service.created_at).toLocaleDateString() }}
                                         </span>
+                                    </div>
+                                    <div v-if="service.gps_lat && service.gps_lon" class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
+                                        <span class="text-slate-600">GPS</span>
+                                        <a
+                                            :href="`https://maps.google.com/?q=${service.gps_lat},${service.gps_lon}`"
+                                            target="_blank"
+                                            class="flex items-center gap-1 text-primary underline"
+                                        >
+                                            <Map :size="15" />
+                                            <span class="font-medium text-sm">View on Google Maps</span>
+                                        </a>
+                                    </div>
+                                    <div class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
+                                        <ShareToSocials />
                                     </div>
                                 </div>
 

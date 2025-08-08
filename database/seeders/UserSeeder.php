@@ -68,65 +68,65 @@ class UserSeeder extends Seeder
         foreach ($users as $userData) {
             $user = User::query()->create($userData);
 
-//            Business::factory(3)
-//                ->for($user)
-//                ->create([
-//                    'created_by_id' => $user->id
-//                ])
-//                ->each(function ($business) use ($user, $signboardCategories, $regions) {
-//                    Signboard::factory(2)
-//                        ->for($business)
-//                        ->create([
-//                            'region_id' => $regions->random(),
-//                            'created_by_id' => $user->id
-//                        ])
-//                        ->each(function (Signboard $signboard) use ($signboardCategories) {
-//                            $signboard->categories()
-//                                ->attach($signboardCategories->take(rand(3, 10))->toArray());
-//                            $this->addMedia($signboard, 'featured');
-//                            foreach (range(0, 2) as $i){
-//                                $this->addMedia($signboard, 'gallery');
-//                            }
-//                        });
-//                });
-//
-//            Service::factory(3)
-//                ->for($user)
-//                ->create([
-//                    'created_by_id' => $user->id
-//                ])
-//                ->each(function ($service){
-//                    $this->addMedia($service, 'featured');
-//                    foreach (range(0, 2) as $i){
-//                        $this->addMedia($service, 'gallery');
-//                    }
-//                });
-//
-//            Job::factory(3)
-//                ->for($user)
-//                ->create([
-//                    'region_id' => $regions->random(),
-//                    'created_by_id' => $user->id
-//                ])
-//                ->each(function (Job $job) use($jobCategories){
-//                    $job->categories()->attach($jobCategories->take(rand(4, 10))->toArray());
-//                    $this->addMedia($job, 'company_logo');
-//                });
-//
-//            Product::factory(3)
-//                ->for($user)
-//                ->create([
-//                    'region_id' => $regions->random(),
-//                    'created_by_id' => $user->id
-//                ])
-//                ->each(function (Product $product) use ($productCategories){
-//                    $product->categories()->attach($productCategories->take(rand(4, 10))->toArray());
-//                    $this->addMedia($product, 'featured');
-//
-//                    foreach (range(0, 2) as $i){
-//                        $this->addMedia($product, 'gallery');
-//                    }
-//                });
+            Business::factory(3)
+                ->for($user)
+                ->create([
+                    'created_by_id' => $user->id
+                ])
+                ->each(function ($business) use ($user, $signboardCategories, $regions) {
+                    Signboard::factory(2)
+                        ->for($business)
+                        ->create([
+                            'region_id' => $regions->random(),
+                            'created_by_id' => $user->id
+                        ])
+                        ->each(function (Signboard $signboard) use ($signboardCategories) {
+                            $signboard->categories()
+                                ->attach($signboardCategories->take(rand(3, 10))->toArray());
+                            $this->addMedia($signboard, 'featured');
+                            foreach (range(0, 2) as $i){
+                                $this->addMedia($signboard, 'gallery');
+                            }
+                        });
+                });
+
+            Service::factory(3)
+                ->for($user)
+                ->create([
+                    'created_by_id' => $user->id
+                ])
+                ->each(function ($service){
+                    $this->addMedia($service, 'featured');
+                    foreach (range(0, 2) as $i){
+                        $this->addMedia($service, 'gallery');
+                    }
+                });
+
+            Job::factory(3)
+                ->for($user)
+                ->create([
+                    'region_id' => $regions->random(),
+                    'created_by_id' => $user->id
+                ])
+                ->each(function (Job $job) use($jobCategories){
+                    $job->categories()->attach($jobCategories->take(rand(4, 10))->toArray());
+                    $this->addMedia($job, 'company_logo');
+                });
+
+            Product::factory(3)
+                ->for($user)
+                ->create([
+                    'region_id' => $regions->random(),
+                    'created_by_id' => $user->id
+                ])
+                ->each(function (Product $product) use ($productCategories){
+                    $product->categories()->attach($productCategories->take(rand(4, 10))->toArray());
+                    $this->addMedia($product, 'featured');
+
+                    foreach (range(0, 2) as $i){
+                        $this->addMedia($product, 'gallery');
+                    }
+                });
         }
     }
 

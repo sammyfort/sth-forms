@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ucFirst } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import JobCardV1 from '@/components/jobs/JobCardV1.vue';
+import ShareToSocials from '@/components/ShareToSocials.vue';
 
 type Props = {
     job: JobI,
@@ -92,6 +93,9 @@ const props = defineProps<Props>()
                         <div class="flex flex-col gap-2">
                             <div class="border-s-primary border-s-4 px-2 font-semibold animate-pulse">Deadline</div>
                             <Badge class="p-1.5" variant="destructive">{{ job.deadline }}</Badge>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <ShareToSocials class="my-0"/>
                         </div>
                         <div >
                             <a v-if="job.application_link" :href="job.application_link ?? ''" target="_blank">
