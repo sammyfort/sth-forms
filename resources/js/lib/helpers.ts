@@ -121,7 +121,7 @@ export function cediSign(): string{
     return "₵"
 }
 
-export function generateShareLinks(url = null, text = "Check this out!") {
+export function generateShareLinks(url: string|null = null, text = "Check this out!") {
     const shareUrl = encodeURIComponent(url || window.location.href);
     const shareText = encodeURIComponent(text);
 

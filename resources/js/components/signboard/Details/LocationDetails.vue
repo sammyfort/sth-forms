@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { MapPin, MapPinned, Pin, MapPinHouse, Landmark, LocateFixed } from 'lucide-vue-next';
+import { MapPin, MapPinned, Pin, MapPinHouse, Landmark, LocateFixed, Map } from 'lucide-vue-next';
 import { SignboardI } from '@/types';
+import ShareToSocials from '@/components/ShareToSocials.vue';
 
 
 type Props = {
@@ -51,12 +52,22 @@ defineProps<Props>()
                 </div>
                 <span class="break-all">{{ signboard.blk_number }}</span>
             </div>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2" v-if="signboard.gps_lat && signboard.gps_lon">
                 <div class="flex gap-1 items-center">
                     <LocateFixed :size="17" class="text-secondary"/>
                     <span class="font-medium">GPS:</span>
                 </div>
-                <span class="break-all">{{ signboard.gps }}</span>
+                <a
+                    :href="`https://maps.google.com/?q=${signboard.gps_lat},${signboard.gps_lon}`"
+                    target="_blank"
+                    class="flex items-center gap-1 text-primary underline"
+                >
+                    <Map :size="15" />
+                    <span class="font-medium text-sm">View on Google Maps</span>
+                </a>
+            </div>
+            <div class="flex flex-wrap gap-2">
+                <ShareToSocials />
             </div>
         </div>
     </div>

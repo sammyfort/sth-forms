@@ -101,6 +101,8 @@ export interface ServiceI extends ModelI{
     category: ServiceCategoryI
     town: string;
     gps: string;
+    gps_lat: string;
+    gps_lon: string;
     user: User;
     user_id: number;
     promotions: PromotionI[]

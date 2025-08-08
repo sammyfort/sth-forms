@@ -4,10 +4,10 @@ import { Head } from '@inertiajs/vue3';
 import { MediaI, ProductI } from '@/types';
 import RateDialog from '@/components/RateDialog.vue';
 import { watchOnce } from '@vueuse/core'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Button } from '@/components/ui/button';
-import { cediSign } from '@/lib/helpers';
+import { cediSign, generateShareLinks } from '@/lib/helpers';
 import StarRating from 'vue-star-rating';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,6 +17,7 @@ import AdvertisedProductsH from '@/components/products/AdvertisedProductsH.vue';
 import X from '@/components/icons/X.vue';
 import Facebook from '@/components/icons/Facebook.vue';
 import Whatsapp from '@/components/icons/Whatsapp.vue';
+import ShareToSocials from '@/components/ShareToSocials.vue';
 
 type Props = {
     product: ProductI
@@ -70,7 +71,7 @@ function whatsappLink(){
                 Home > Products > {{ product.name }}
             </div>
             <div class="py-6">
-                <div class="flex flex-col lg:flex-row gap-6">
+                <div class="flex flex-col lg:flex-row gap-6 md:gap-12">
                     <!-- Image Section -->
                     <div class="w-full lg:w-1/2">
                         <div class="grid gap-4">
@@ -114,7 +115,7 @@ function whatsappLink(){
                             </Carousel>
                         </div>
                     </div>
-                    <div class="w-full lg:w-1/2 flex flex-col justify-between">
+                    <div class="w-full lg:w-1/2 flex flex-col gap-2">
                         <div class="border-b border-gray-line">
                             <h1 class="text-3xl font-bold mb-4">{{ product.name }}</h1>
                             <div class="flex items-center">
@@ -157,18 +158,7 @@ function whatsappLink(){
                                 </Button>
                             </a>
                         </div>
-                        <div class="flex items-center space-x-4 my-4">
-                            <span class="me-5 font-bold">Share: </span>
-                            <a href="#" class="w-4 h-4 flex items-center justify-center">
-                                <Whatsapp />
-                            </a>
-                            <a href="#" class="w-4 h-4 flex items-center justify-center">
-                                <Facebook />
-                            </a>
-                            <a href="#" class="w-4 h-4 flex items-center justify-center">
-                                <X />
-                            </a>
-                        </div>
+                        <ShareToSocials />
                         <div>
                             <h3 class="text-lg font-semibold mb-2">Product Description</h3>
                             <p v-html="product.short_description"></p>
