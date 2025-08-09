@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3'
 import Layout from '@/layouts/Layout.vue'
-import StarRating from 'vue-star-rating';
-import { ArrowLeft, Edit, Eye, MapPin, Star, Share2, Award, Map } from 'lucide-vue-next';
+import { ArrowLeft, Eye, MapPin, Star, Award, Map } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button'
 import { AverageRatingsI, RatingsDistributionI, ServiceI } from '@/types';
 import ImagePreview from '@/components/ImagePreview.vue';
@@ -11,6 +10,7 @@ import AdvertisedServicesH from '@/components/Services/AdvertisedServicesH.vue';
 import ReviewsDetails from '@/components/ReviewsDetails.vue';
 import { computed } from 'vue';
 import ShareToSocials from '@/components/ShareToSocials.vue';
+import VideoEmbed from '@/components/VideoEmbed.vue';
 
 const props = defineProps<{
     service: ServiceI,
@@ -20,17 +20,6 @@ const props = defineProps<{
 
 const reviews = computed(()=> props.service.reviews);
 
-const handleShare = () => {
-    if (navigator.share) {
-        navigator.share({
-            title: props.service.title,
-            text: props.service.description,
-            url: window.location.href
-        })
-    } else {
-        navigator.clipboard.writeText(window.location.href)
-    }
-}
 </script>
 
 <template>
@@ -101,20 +90,6 @@ const handleShare = () => {
                 </div>
             </div>
 
-            <div class="md:hidden px-6 py-6 bg-white border-b border-slate-200">
-                <div class="flex gap-3">
-                    <Link :href="route('my-services.edit', service.id)" class="flex-1">
-                        <Button class="w-full bg-primary hover:bg-primary-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg flex items-center justify-center gap-3">
-                            <Edit class="w-5 h-5" />
-                            <span>Edit Service</span>
-                        </Button>
-                    </Link>
-                    <Button @click="handleShare" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-4 rounded-xl shadow-lg">
-                        <Share2 class="w-5 h-5" />
-                    </Button>
-                </div>
-            </div>
-
             <div class="mt-10 max-w-[1200px] mx-auto flex flex-col">
                 <div class="text-xl font-semibold text-fade">
                     Top Trending Service Providers
@@ -132,8 +107,7 @@ const handleShare = () => {
                                     Service Description
                                 </h2>
                                 <div class="prose prose-slate max-w-none">
-                                    <p class="text-slate-700 leading-relaxed text-lg">
-                                        {{ service.description }}
+                                    <p v-html="service.description" class="text-slate-700 leading-relaxed text-lg">
                                     </p>
                                 </div>
                             </div>
@@ -149,6 +123,10 @@ const handleShare = () => {
                             <div>
                                 <h2 class="text-xl font-bold text-slate-900 mb-6">Gallery</h2>
                                 <ImagePreview :featured-url="service.featured" :gallery-urls="service.gallery"/>
+                            </div>
+                            <div v-if="service.video_link">
+                                <div class="mb-3 text-lg font-semibold">Video Portfolio</div>
+                                <VideoEmbed :url="service.video_link" />
                             </div>
                         </div>
 
@@ -192,7 +170,7 @@ const handleShare = () => {
                                             {{ service.address }}
                                         </span>
                                     </div>
-                                    <div class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
+                                    <div v-if="service.region" class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
                                         <span class="text-slate-600">Region</span>
                                         <span class="font-semibold text-slate-900">
                                             {{ service.region.name }}
@@ -245,7 +223,13 @@ const handleShare = () => {
                         <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-6">
                             <h3 class="text-xl font-bold text-slate-900 mb-6">Ratings Distribution and Reviews</h3>
                             <div>
-                                <ReviewsDetails ratable_type="service" :ratable="service" :ratings="ratings" :distributions="distributions" :reviews="reviews"/>
+                                <ReviewsDetails
+                                    ratable_type="service"
+                                    :ratable="service"
+                                    :ratings="ratings"
+                                    :distributions="distributions"
+                                    :reviews="reviews"
+                                />
                             </div>
                         </div>
                     </div>

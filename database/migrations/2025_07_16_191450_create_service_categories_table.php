@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('description')->nullable();
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
+
+            $table->bigInteger('old_id')->nullable();
         });
     }
 

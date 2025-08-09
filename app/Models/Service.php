@@ -27,26 +27,25 @@ use Spatie\Tags\HasTags;
  * @property string $id
  * @property string $uuid
  * @property int $user_id
-* @property int $created_by_id
-* @property string $created_at
-* @property string $updated_at
-* @property string $title
-* @property string $description
-* @property string $first_mobile
-* @property string $second_mobile
-* @property string $email
-* @property string $address
-* @property string $region_id
-* @property string $town
+ * @property int $created_by_id
+ * @property string $created_at
+ * @property string $updated_at
+ * @property string $title
+ * @property string $description
+ * @property string $first_mobile
+ * @property string $second_mobile
+ * @property string $email
+ * @property string $address
+ * @property string $region_id
+ * @property string $town
  * @property int|null $views_count
-* @property Collection<ServiceCategory> $categories
+ * @property Collection<ServiceCategory> $categories
  * @property \Spatie\MediaLibrary\MediaCollections\Models\Media|null $featured
  * @property string $gps
  * @property string $gps_lat
  * @property string $gps_lon
  * @property Collection<Review> $reviews
  */
-
 #[ObservedBy(ServiceObserver::class)]
 class Service extends Model implements HasMedia, Viewable
 {
@@ -62,7 +61,7 @@ class Service extends Model implements HasMedia, Viewable
     ];
 
 
-    public function getSlugOptions() : SlugOptions
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('title')
@@ -71,7 +70,9 @@ class Service extends Model implements HasMedia, Viewable
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('featured')->singleFile();
+        $this->addMediaCollection('featured')
+            ->singleFile()
+            ->useFallbackUrl(asset('images/logo.png'));
         $this->addMediaCollection('gallery');
     }
 

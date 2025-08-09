@@ -21,10 +21,11 @@ return new class extends Migration {
             $table->longText('description');
             $table->string('first_mobile');
             $table->string('second_mobile')->nullable();
+            $table->string('whatsapp_mobile')->nullable();
             $table->string('business_name')->nullable();
             $table->string('email')->nullable();
             $table->tinyText('address')->nullable();
-            $table->foreignId('region_id')->constrained();
+            $table->foreignId('region_id')->nullable()->constrained();
             $table->string('town');
             $table->string('gps')->nullable();
             $table->string('gps_lat')->nullable();

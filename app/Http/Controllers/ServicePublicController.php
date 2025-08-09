@@ -41,8 +41,11 @@ class ServicePublicController extends Controller
             })
             ->withCount('views')
             ->with(['region', 'user', 'category'])
-//            ->inRandomOrder()
-            ->paginate(8)
+            ->when(auth()->user(), function ($q){
+                $q->where('user_id', '!=', auth()->id());
+            })
+            ->inRandomOrder()
+            ->paginate(12)
             ->appends(request()->query());
 
         $services->map(function (Service $service){
@@ -89,12 +92,12 @@ class ServicePublicController extends Controller
         if ($services->count() < 1){
             $services = Service::query()
                 ->with(['user', 'region', 'category'])
-                ->when(auth()->user(), function ($q){
-                    $q->where('created_by_id', '!=', auth()->id());
-                })
                 ->with('reviews', function ($reviewsQuery) {
                     $reviewsQuery->where('user_id', auth()->id())
                         ->with(['ratings']);
+                })
+                ->when(auth()->user(), function ($q){
+                    $q->where('created_by_id', '!=', auth()->id());
                 })
                 ->inRandomOrder()
                 ->take(10)
