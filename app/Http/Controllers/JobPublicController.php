@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\JobStatus;
 use App\Models\Job;
 use App\Models\JobCategory;
 use App\Models\Region;
@@ -50,6 +51,7 @@ class JobPublicController extends Controller
             ->with(['media' => function ($mediaQuery) {
                 $mediaQuery->where('collection_name', 'company_logo');
             }])
+            ->where('status', JobStatus::ACTIVE)
             ->paginate(12)
             ->appends(request()->query());
 
@@ -88,6 +90,7 @@ class JobPublicController extends Controller
             ->with(['media' => function ($mediaQuery) {
                 $mediaQuery->where('collection_name', 'company_logo');
             }])
+            ->where('status', JobStatus::ACTIVE)
             ->latest()
             ->take(10)
             ->get();
