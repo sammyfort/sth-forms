@@ -46,10 +46,6 @@ class UserResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('linkedin')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required()
-                    ->maxLength(255),
                 Forms\Components\Toggle::make('is_active')
                     ->required(),
             ]);
@@ -71,14 +67,6 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('facebook')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('x')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('instagram')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('linkedin')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
                     ->sortable(),
@@ -97,9 +85,8 @@ class UserResource extends Resource
                 //
             ])
             ->actions([
-//                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -112,7 +99,7 @@ class UserResource extends Resource
     {
         return [
             'index' => Pages\ManageUsers::route('/'),
-            'view' => Pages\ViewUser::route('/{record}'),
+            'view' => Pages\ViewUser::route('/view/{record}'),
         ];
     }
 }

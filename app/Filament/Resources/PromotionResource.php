@@ -24,9 +24,6 @@ class PromotionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('signboard_id')
-                    ->relationship('signboard', 'id')
-                    ->hiddenOn('edit'),
                 Forms\Components\Select::make('plan_id')
                     ->relationship('plan', 'name'),
                 Forms\Components\TextInput::make('amount')
