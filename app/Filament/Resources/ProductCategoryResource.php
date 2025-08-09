@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\SignboardCategoryResource\Pages;
-use App\Filament\Resources\SignboardCategoryResource\RelationManagers;
-use App\Models\SignboardCategory;
+use App\Filament\Resources\ProductCategoryResource\Pages;
+use App\Filament\Resources\ProductCategoryResource\RelationManagers;
+use App\Models\ProductCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,11 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SignboardCategoryResource extends Resource
+class ProductCategoryResource extends Resource
 {
-    protected static ?string $model = SignboardCategory::class;
+    protected static ?string $model = ProductCategory::class;
 
-    protected static ?string $navigationIcon = 'fontisto-direction-sign';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     public static function form(Form $form): Form
     {
@@ -37,14 +37,12 @@ class SignboardCategoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_by_id')
-                    ->label('Added By')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Added On')
                     ->dateTime()
                     ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -53,8 +51,8 @@ class SignboardCategoryResource extends Resource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                    ->visible(function (SignboardCategory $category){
-                        return !$category->signboards()->exists();
+                    ->visible(function (ProductCategory $category){
+                        return !$category->products()->exists();
                     }),
             ])
             ->bulkActions([
@@ -67,8 +65,13 @@ class SignboardCategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageSignboardCategories::route('/'),
-            'view' => Pages\ViewSignboardCategory::route('/{record}'),
+            'index' => Pages\ManageProductCategories::route('/'),
+            'view' => Pages\ViewCategoryProduct::route('/view/{record}'),
         ];
+    }
+
+    public static function can(string $action, \Illuminate\Database\Eloquent\Model|null $record = null): bool
+    {
+        return true;
     }
 }

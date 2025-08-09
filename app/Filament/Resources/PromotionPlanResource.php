@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PromotionPlanResource extends Resource
 {
-    protected static ?string $model = Promotion::class;
+    protected static ?string $model = PromotionPlan::class;
 
     protected static ?string $navigationIcon = 'majestic-money-plus-line';
 
@@ -62,7 +62,10 @@ class PromotionPlanResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(function (PromotionPlan $plan){
+                        return !$plan->promotions()->exists();
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -77,5 +80,10 @@ class PromotionPlanResource extends Resource
             'index' => Pages\ManagePromotionPlans::route('/'),
             'view' => Pages\ViewPromotionPlan::route('/{record}'),
         ];
+    }
+
+    public static function can(string $action, \Illuminate\Database\Eloquent\Model|null $record = null): bool
+    {
+        return true;
     }
 }

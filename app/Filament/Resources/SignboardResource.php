@@ -42,6 +42,9 @@ class SignboardResource extends Resource
                 Forms\Components\TextInput::make('gps')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('Categories')
+                    ->relationship('categories', 'name')
+                    ->required(),
             ]);
     }
 
@@ -62,14 +65,7 @@ class SignboardResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('blk_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('gps')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('gps_lat')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('gps_lon')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('created On')
                     ->dateTime()
                     ->sortable()
             ])
@@ -77,7 +73,6 @@ class SignboardResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -91,7 +86,7 @@ class SignboardResource extends Resource
     {
         return [
             'index' => Pages\ManageSignboards::route('/'),
-            'view' => Pages\ViewSignboard::route('/{record}'),
+            'view' => Pages\ViewSignboard::route('/view/{record}'),
         ];
     }
 
