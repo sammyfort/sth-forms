@@ -42,15 +42,17 @@ class ProductPublicController extends Controller
                 }),
                 AllowedFilter::exact('region', 'region_id'),
             ])
-
             ->withCount('views')
             ->with(['region', 'user'])
             ->with('reviews', function ($reviewsQuery) {
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
             })
-            // ->inRandomOrder()
-            ->paginate()
+            ->when(auth()->user(), function ($q){
+                $q->where('user_id', '!=', auth()->id());
+            })
+             ->inRandomOrder()
+            ->paginate(12)
             ->appends(request()->query());
 
         // get product with the highest price to set price filter slider
@@ -113,6 +115,9 @@ class ProductPublicController extends Controller
                 ->with('reviews', function ($reviewsQuery) {
                     $reviewsQuery->where('user_id', auth()->id())
                         ->with(['ratings']);
+                })
+                ->when(auth()->user(), function ($q){
+                    $q->where('created_by_id', '!=', auth()->id());
                 })
                 ->inRandomOrder()
                 ->take(10)

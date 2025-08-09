@@ -8,13 +8,11 @@ use App\Models\JobCategory;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Region;
-use App\Models\Service;
 use App\Models\Signboard;
 use App\Models\SignboardCategory;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserSeeder extends Seeder
@@ -88,18 +86,6 @@ class UserSeeder extends Seeder
                                 $this->addMedia($signboard, 'gallery');
                             }
                         });
-                });
-
-            Service::factory(3)
-                ->for($user)
-                ->create([
-                    'created_by_id' => $user->id
-                ])
-                ->each(function ($service){
-                    $this->addMedia($service, 'featured');
-                    foreach (range(0, 2) as $i){
-                        $this->addMedia($service, 'gallery');
-                    }
                 });
 
             Job::factory(3)

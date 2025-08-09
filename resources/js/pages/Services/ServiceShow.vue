@@ -23,9 +23,6 @@ const props = defineProps<{
     distributions: RatingsDistributionI;
 }>();
 const reviews = computed(() => props.service.reviews);
-onMounted(() => {
-    console.log(props.service);
-});
 
 const isDeleting = ref(false);
 
@@ -248,12 +245,13 @@ const handleShare = () => {
                                         </span>
                                     </div>
 
-                                    <div class="flex items-center justify-between py-3">
+                                    <div v-if="service.region" class="flex items-center justify-between py-3">
                                         <span class="text-slate-600">Region</span>
                                         <span class="font-semibold text-slate-900">
                                             {{ service.region.name }}
                                         </span>
                                     </div>
+
                                     <div class="flex items-center justify-between py-3">
                                         <span class="text-slate-600">Town</span>
                                         <span class="font-semibold text-slate-900">

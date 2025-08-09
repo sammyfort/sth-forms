@@ -76,7 +76,7 @@ const totalAverageRating = ref<number>(props.service.total_average_rating)
                         <div class="flex gap-1 items-center truncate">
                             <MapPin :size="15" class="text-primary"/>
                             <div class="truncate">
-                                <div class="text-sm truncate">{{ service.region.name }}</div>
+                                <div v-if="service.region" class="text-sm truncate">{{ service.region.name }}</div>
                                 <div class="text-xs text-fade truncate">{{ service.town }}</div>
                             </div>
                         </div>

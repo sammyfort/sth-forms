@@ -1,11 +1,9 @@
 <?php
 
-use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
-
 use App\Http\Controllers\{JobPublicController,
     ProductController,
     ServiceController,
@@ -20,6 +18,7 @@ use App\Http\Controllers\{JobPublicController,
     SignboardPublicController};
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home/search-directory', [HomeController::class, 'searchDirectory'])->name('home.search');

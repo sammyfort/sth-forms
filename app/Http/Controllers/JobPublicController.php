@@ -43,12 +43,14 @@ class JobPublicController extends Controller
                 }),
                 AllowedFilter::exact('region', 'region_id'),
             ])
-
+            ->when(auth()->user(), function ($q){
+                $q->where('user_id', '!=', auth()->id());
+            })
             ->with(['categories', 'region'])
             ->with(['media' => function ($mediaQuery) {
                 $mediaQuery->where('collection_name', 'company_logo');
             }])
-            ->paginate(15)
+            ->paginate(12)
             ->appends(request()->query());
 
         return Inertia::render('Jobs/Jobs', [

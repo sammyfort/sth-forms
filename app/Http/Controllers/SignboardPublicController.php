@@ -47,8 +47,11 @@ class SignboardPublicController extends Controller
                     ->with(['ratings']);
             })
             ->with(['business', 'region'])
-            // ->inRandomOrder()
-            ->paginate(8)
+            ->when(auth()->user(), function ($q){
+                $q->where('created_by_id', '!=', auth()->id());
+            })
+             ->inRandomOrder()
+            ->paginate(12)
             ->appends(request()->query());
 
         $signboards->map(function (Signboard $signboard) {
@@ -103,6 +106,9 @@ class SignboardPublicController extends Controller
                 ->with('reviews', function ($reviewsQuery) {
                     $reviewsQuery->where('user_id', auth()->id())
                         ->with(['ratings']);
+                })
+                ->when(auth()->user(), function ($q){
+                    $q->where('created_by_id', '!=', auth()->id());
                 })
                 ->inRandomOrder()
                 ->take(10)
