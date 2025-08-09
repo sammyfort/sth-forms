@@ -2,10 +2,13 @@
 
 namespace App\Filament\Widgets;
 
+use App\Enums\JobStatus;
 use App\Enums\PaymentStatus;
 use App\Models\Business;
+use App\Models\Job;
 use App\Models\Promotion;
 use App\Models\PromotionPlan;
+use App\Models\Service;
 use App\Models\Signboard;
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
@@ -22,19 +25,30 @@ class StatsOverview extends BaseWidget
                 ->chart([7, 2, 10, 3, 15, 4, 17])
                 ->descriptionIcon('heroicon-m-arrow-trending-up'),
 
+            Stat::make('Service Providers', Service::query()->count()),
+
             Stat::make('Businesses', Business::query()->count()),
 
             Stat::make('Signboards', Signboard::query()->count())->color('blue'),
 
+            Stat::make('Products', Signboard::query()->count())->descriptionColor('green'),
+
             Stat::make(
-                'Signboard Subscriptions',
+                'Active Jobs',
+                Job::query()
+                    ->where('status', JobStatus::ACTIVE)
+                    ->count()
+            )->color('blue'),
+
+            Stat::make(
+                'Active Promotions',
                 Promotion::query()
                     ->where('payment_status', PaymentStatus::PAID)
-                    ->whereDate('ends_at', '>=', now())
+                    ->whereTodayOrAfter('ends_at')
                     ->count()
             ),
 
-            Stat::make('Signboard Subscription Plans', PromotionPlan::query()->count()),
+            Stat::make('Promotion Plans', PromotionPlan::query()->count()),
         ];
     }
 }

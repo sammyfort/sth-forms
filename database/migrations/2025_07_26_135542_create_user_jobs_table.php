@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\JobStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -28,7 +29,7 @@ return new class extends Migration {
             $table->mediumText('how_to_apply')->nullable();
             $table->string('application_link')->nullable();
             $table->timestamp('deadline');
-            $table->string('status')->default('active');
+            $table->string('status')->default(JobStatus::ACTIVE);
 
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JobStatus;
 use App\Traits\BootModelTrait;
 use App\Traits\HasMediaUploads;
 use Carbon\Carbon;
@@ -40,6 +41,10 @@ class Job extends Model implements  HasMedia, Viewable
 
     protected $appends = [
         'company_logo'
+    ];
+
+    protected $casts = [
+        'status' => JobStatus::class,
     ];
 
     public function getSlugOptions() : SlugOptions
