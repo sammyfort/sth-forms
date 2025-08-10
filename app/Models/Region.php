@@ -35,8 +35,23 @@ class Region extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function services(): HasMany
+    {
+        return $this->hasMany(Service::class);
+    }
+
     public function signboards(): HasMany
     {
         return $this->hasMany(Signboard::class);
+    }
+
+    public function jobs(): HasMany
+    {
+        return $this->hasMany(Job::class);
+    }
+
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class);
     }
 }
