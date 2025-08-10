@@ -15,7 +15,7 @@ return new class extends Migration
              $table->id();
              $table->uuid();
              $table->string('slug')->unique();
-             $table->string('name');
+             $table->string('name')->unique();
              $table->string('description')->nullable();
              $table->foreignId('created_by_id')->nullable();
             $table->timestamps();

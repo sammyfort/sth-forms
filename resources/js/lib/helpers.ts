@@ -131,3 +131,12 @@ export function generateShareLinks(url: string|null = null, text = "Check this o
         x: `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`,
     };
 }
+
+export function randomString(length: number = 8) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+}

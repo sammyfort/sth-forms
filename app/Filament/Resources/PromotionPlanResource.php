@@ -26,6 +26,7 @@ class PromotionPlanResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
+                    ->unique()
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->maxLength(255),

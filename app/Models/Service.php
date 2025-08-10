@@ -72,7 +72,7 @@ class Service extends Model implements HasMedia, Viewable
     {
         $this->addMediaCollection('featured')
             ->singleFile()
-            ->useFallbackUrl(asset('images/logo.png'));
+            ->useFallbackUrl(asset('images/logo-blur.png'));
         $this->addMediaCollection('gallery');
     }
 

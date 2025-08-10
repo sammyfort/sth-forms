@@ -38,10 +38,7 @@ class ProductCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            ProductCategory::query()->create([
-                'name' => $category,
-                'slug' => Str::slug($category),
-            ]);
+            ProductCategory::query()->create(['name' => $category]);
         }
     }
 }

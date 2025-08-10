@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputText from '@/components/InputText.vue';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { JobCategoryI, RegionI } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { useFilterQuery } from '@/lib/useFilterQuery';
@@ -110,23 +110,17 @@ onBeforeMount(() => {
             <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
                 <SelectValue placeholder="Job category" />
             </SelectTrigger>
-            <SelectContent>
-                <SelectItem v-for="category in categories" :key="category.id" :value="category.id">
-                    {{ category.name }}
-                </SelectItem>
-            </SelectContent>
+            <SelectContent
+                :options="categories.map( (cat)=>{return {label: cat.name, value: cat.id as unknown as string}})"
+            />
         </Select>
         <Select v-model="filterForm.region" :default-value="filterForm.region">
             <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
                 <SelectValue placeholder="Region" />
             </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    <SelectItem v-for="region in regions" :key="region.id" :value="region.id">
-                        {{ region.name }}
-                    </SelectItem>
-                </SelectGroup>
-            </SelectContent>
+            <SelectContent
+                :options="regions.map( (reg)=>{return {label: reg.name, value: reg.id as unknown as string}})"
+            />
         </Select>
         <div class="grid md:grid-cols-2 lg:grid-cols-1 col-span-2 md:col-span-1 lg:col-span-2 gap-3">
             <Button v-show="filterForm.region || filterForm.categories?.length || filterForm.q?.length || filterForm.work_mode?.length || filterForm.job_type?.length" @click="runFilter">Apply Filter </Button>

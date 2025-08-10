@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('promotion_plans', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->string('name');
-            $table->string('slug');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
             $table->text('description')->nullable();
             $table->float('price', 2);
             $table->integer('number_of_days');

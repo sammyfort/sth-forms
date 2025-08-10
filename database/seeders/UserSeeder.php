@@ -66,6 +66,8 @@ class UserSeeder extends Seeder
         foreach ($users as $userData) {
             $user = User::query()->create($userData);
 
+            if (app()->environment('production')) continue;
+
             Business::factory(3)
                 ->for($user)
                 ->create([

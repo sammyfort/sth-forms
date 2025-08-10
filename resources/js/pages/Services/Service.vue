@@ -147,6 +147,12 @@ const reviews = computed(()=> props.service.reviews);
                                         </span>
                                     </div>
                                     <div class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
+                                        <span class="text-slate-600">Years of exp.</span>
+                                        <span class="font-semibold text-slate-900">
+                                            {{ service.years_experience }} Year(s)
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center text-sm py-2 justify-between border-b border-slate-100">
                                         <span class="text-slate-600">Mobile</span>
                                         <span class="font-semibold text-slate-900">
                                             {{ service.first_mobile }}
