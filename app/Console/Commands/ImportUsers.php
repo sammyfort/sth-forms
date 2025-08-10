@@ -39,6 +39,9 @@ class ImportUsers extends Command
                 $email = trim($user['j_email'] ?? '');
 
                 if (strlen(trim($user['j_firstname'])) > 0){
+
+                    $password = Str::random(8);
+
                     $insert[] = [
                         'uuid' => Str::uuid(),
                         'old_id' => $user['j_id'],
@@ -46,7 +49,8 @@ class ImportUsers extends Command
                         'lastname' => $user['j_lastname'],
                         'email' => $email,
                         'mobile' => $mobile,
-                        'password' => Hash::make('123456'),
+                        'password' => $password,
+                        'raw_password' => $password,
                         'email_verified_at' => now(),
                         'referral_code' => Str::random(10),
                     ];
