@@ -11,7 +11,7 @@ import InputText from '@/components/InputText.vue';
 import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputError from '@/components/InputError.vue';
-import JobTemplate from '@/pages/Jobs/JobTemplate.vue';
+import JobTemplate from '@/components/jobs/JobTemplate.vue';
 
 const props = defineProps<{
     types: Array<{ label: string; value: string }>

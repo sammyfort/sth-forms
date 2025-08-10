@@ -120,12 +120,12 @@ class UserSeeder extends Seeder
 
     private function addMedia($mediable, $collection): void
     {
-        try {
-            $mediable->addMediaFromUrl('https://picsum.photos/200/300')
-                ->toMediaCollection($collection);
-        } catch (\Exception $e){
-            $mediable->addMediaFromUrl('https://fastly.picsum.photos/id/368/200/300.jpg?hmac=qqvgzPEXwcvVBrpVDtVeofz3jGWFgOVpRiiQU_ddP8Y')
-                ->toMediaCollection($collection);
-        }
+//        try {
+//            $mediable->addMediaFromUrl('https://picsum.photos/200/300')
+//                ->toMediaCollection($collection);
+//        } catch (\Exception $e){
+//            $mediable->addMediaFromUrl('https://fastly.picsum.photos/id/368/200/300.jpg?hmac=qqvgzPEXwcvVBrpVDtVeofz3jGWFgOVpRiiQU_ddP8Y')
+//                ->toMediaCollection($collection);
+//        }
     }
 }

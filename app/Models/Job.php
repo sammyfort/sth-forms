@@ -56,7 +56,9 @@ class Job extends Model implements  HasMedia, Viewable
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('company_logo')->singleFile();
+        $this->addMediaCollection('company_logo')
+            ->singleFile()
+            ->useFallbackUrl(asset('images/logo-blur.png'));
     }
 
     public function user(): BelongsTo

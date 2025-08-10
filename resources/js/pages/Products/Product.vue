@@ -4,20 +4,18 @@ import { Head } from '@inertiajs/vue3';
 import { MediaI, ProductI } from '@/types';
 import RateDialog from '@/components/RateDialog.vue';
 import { watchOnce } from '@vueuse/core'
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { Carousel, type CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Button } from '@/components/ui/button';
-import { cediSign, generateShareLinks } from '@/lib/helpers';
+import { cediSign } from '@/lib/helpers';
 import StarRating from 'vue-star-rating';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import ReviewsList from '@/components/review/ReviewsList.vue';
 import { Store } from 'lucide-vue-next';
 import AdvertisedProductsH from '@/components/products/AdvertisedProductsH.vue';
-import X from '@/components/icons/X.vue';
-import Facebook from '@/components/icons/Facebook.vue';
-import Whatsapp from '@/components/icons/Whatsapp.vue';
 import ShareToSocials from '@/components/ShareToSocials.vue';
+import VideoEmbed from '@/components/VideoEmbed.vue';
 
 type Props = {
     product: ProductI
@@ -205,6 +203,10 @@ function whatsappLink(){
                                 <p class="mb-2" v-if="product.website">
                                     Company website: <a :href="product.website" target="_blank" class="underline hover:text-primary"><strong>visit website</strong></a>
                                 </p>
+                                <div v-if="product.video_link" class="w-full my-5">
+                                    <div class="mb-3 text-lg font-semibold">Video Portfolio</div>
+                                    <VideoEmbed :url="product.video_link" />
+                                </div>
                                 <p class="flex gap-4 items-center">
                                     <Avatar class="h-13 w-13 border">
                                         <AvatarImage :src="product.user.avatar?.original_url ?? ''" />

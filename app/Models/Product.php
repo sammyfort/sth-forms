@@ -53,7 +53,9 @@ class Product extends Model implements HasMedia, Viewable
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection('featured')->singleFile();
+        $this->addMediaCollection('featured')
+            ->singleFile()
+            ->useFallbackUrl(asset('images/logo-blur.png'));
         $this->addMediaCollection('gallery');
     }
 

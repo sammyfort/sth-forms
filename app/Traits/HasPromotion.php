@@ -24,6 +24,14 @@ trait HasPromotion
         );
     }
 
+    public function videoLink(): Attribute
+    {
+        return Attribute::get(function ($videoLink){
+            if ($this->active_promotion) return $videoLink;
+            return null;
+        });
+    }
+
     public static function getAllPromotions(): Collection
     {
         return self::getAllPromotionsQuery()->get();

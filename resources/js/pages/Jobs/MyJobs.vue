@@ -7,12 +7,10 @@ import {
     Eye,
     Star,
     Clock,
-    Calendar,
     Briefcase,
     CheckCircle,
     Pause,
     AlertCircle,
-    Search,
 } from 'lucide-vue-next'
 import {
     Select,
@@ -23,9 +21,8 @@ import {
     SelectValue,
 } from '@/components/ui/select'
 
-import { ref, onMounted, computed } from 'vue'
+import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { PaginatedDataI, JobI } from '@/types'
 
 const props = defineProps<{
@@ -34,10 +31,6 @@ const props = defineProps<{
     status?: string
     search?: string
 }>()
-
-onMounted(() => {
-    console.log(props.jobs)
-})
 
 const sortOrder = ref(props.sort || 'desc')
 const statusFilter = ref(props.status || 'all')

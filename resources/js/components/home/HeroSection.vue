@@ -99,7 +99,7 @@ import { router } from '@inertiajs/vue3';
                     </svg>
                 </div>
                 <div @click="router.get(route('login'))" data-aos="fade-up" data-aos-delay="500" data-aos-once="true"
-                     class="absolute z-50 bottom-14 -left-4 sm:left-2 sm:bottom-20 lg:bottom-24 lg:-left-4 floating aos-init aos-animate">
+                     class="absolute z-10 bottom-14 -left-4 sm:left-2 sm:bottom-20 lg:bottom-24 lg:-left-4 floating aos-init aos-animate">
                     <img src="/images/tmp/ux-class.png" alt="" class="bg-white bg-opacity-80 rounded-lg h-20 sm:h-28 cursor-pointer">
                 </div>
                 <div data-aos="fade-up" data-aos-delay="600" data-aos-once="true"

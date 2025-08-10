@@ -12,6 +12,7 @@ use Codebyray\ReviewRateable\Traits\ReviewRateable;
 use CyrildeWit\EloquentViewable\Contracts\Viewable;
 use CyrildeWit\EloquentViewable\InteractsWithViews;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -89,5 +90,13 @@ class Service extends Model implements HasMedia, Viewable
     public function category(): BelongsTo
     {
         return $this->belongsTo(ServiceCategory::class, 'category_id');
+    }
+
+    public function videoLink(): Attribute
+    {
+        return Attribute::get(function ($videoLink){
+            if ($this->active_promotion) return $videoLink;
+            return null;
+        });
     }
 }
