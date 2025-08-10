@@ -1,5 +1,3 @@
-
-
 <script setup lang="ts">
 import {ref} from 'vue'
 import { Head, useForm } from '@inertiajs/vue3';
@@ -13,7 +11,7 @@ import InputText from '@/components/InputText.vue';
 import FeatureFileUpload from '@/components/FeatureFileUpload.vue';
 import InputSelect from '@/components/InputSelect.vue';
 import InputError from '@/components/InputError.vue';
-import JobTemplate from '@/pages/Jobs/JobTemplate.vue';
+import JobTemplate from '@/components/jobs/JobTemplate.vue';
 
 const props = defineProps<{
     types: Array<{ label: string; value: string }>
@@ -43,9 +41,7 @@ const form = useForm({
     apply_mode: 'instruction',
     how_to_apply: '',
     application_link: '',
-
     company_logo: null,
-
 });
 
 const createJob = () => {
@@ -81,11 +77,12 @@ const focusJobEditor = () => {
                 :icon="Building2"
             />
 
-            <FormComponent :form="form" submit-text="Create Job"
-                           processing-text="Creating Job..."
-                           @submit="createJob"
-                           container-width="max-w-6xl"
-                           containerWidth="w-full"
+            <FormComponent
+                :form="form" submit-text="Create Job"
+               processing-text="Creating Job..."
+               @submit="createJob"
+               container-width="max-w-6xl"
+               containerWidth="w-full"
             >
 
                 <template #form-sections>
@@ -103,8 +100,6 @@ const focusJobEditor = () => {
                             <InputText :form="form" label="Salary" model="salary"  />
                             <InputText :form="form" label="Summary" model="summary" required textarea />
                             <InputText :form="form" label="Deadline" model="deadline" type="date" required  />
-
-
                         </div>
                     </div>
 

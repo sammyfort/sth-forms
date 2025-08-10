@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputText from '@/components/InputText.vue';
 import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ProductCategoryI, RegionI } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { useFilterQuery } from '@/lib/useFilterQuery';
@@ -78,23 +78,17 @@ onBeforeMount(() => {
             <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
                 <SelectValue placeholder="Category" />
             </SelectTrigger>
-            <SelectContent>
-                <SelectItem v-for="category in categories" :key="category.id" :value="category.id">
-                    {{ category.name }}
-                </SelectItem>
-            </SelectContent>
+            <SelectContent
+                :options="categories.map( (cat)=>{return {label: cat.name, value: cat.id as unknown as string}})"
+            />
         </Select>
         <Select v-model="filterForm.region" :default-value="filterForm.region">
             <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
                 <SelectValue placeholder="Region" />
             </SelectTrigger>
-            <SelectContent>
-                <SelectGroup>
-                    <SelectItem v-for="region in regions" :key="region.id" :value="region.id">
-                        {{ region.name }}
-                    </SelectItem>
-                </SelectGroup>
-            </SelectContent>
+            <SelectContent
+                :options="regions.map( (reg)=>{return {label: reg.name, value: reg.id as unknown as string}})"
+            />
         </Select>
         <div class="flex flex-col gap-3 w-full col-span-2 md:col-span-1 lg:col-span-2">
             <div class="w-full">Price</div>

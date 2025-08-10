@@ -35,11 +35,7 @@ class JobCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $name) {
-            JobCategory::query()->fillAndInsert([
-                'uuid' => Str::uuid()->toString(),
-                'name' => $name,
-                'slug' => Str::slug($name),
-            ]);
+            JobCategory::query()->create(['name' => $name]);
         }
     }
 }

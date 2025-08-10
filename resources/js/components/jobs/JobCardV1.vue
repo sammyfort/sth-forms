@@ -22,7 +22,7 @@ const props = defineProps<Props>()
 
                 <div class="flex items-center gap-3">
                     <div class="">
-                        <img :src="job.company_logo" alt="" class="w-[60px] h-[60px] rounded-xl">
+                        <img :src="job.company_logo" alt="" class="min-w-[60px] min-[60px] h-[60px] min-h-[60px] rounded-xl">
                     </div>
                     <div class="flex flex-col">
                         <div class="font-semibold">{{ job.company_name }}</div>

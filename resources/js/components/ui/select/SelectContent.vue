@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from 'vue'
+import  { computed, HTMLAttributes, onMounted, ref } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import {
   SelectContent,
@@ -10,14 +10,22 @@ import {
   useForwardPropsEmits,
 } from 'reka-ui'
 import { cn } from '@/lib/utils'
-import { SelectScrollDownButton, SelectScrollUpButton } from '.'
+import { SelectItem, SelectScrollDownButton, SelectScrollUpButton } from '.'
+import { InputSelectOption } from '@/types';
+import { Input } from '@/components/ui/input';
+import { randomString } from '@/lib/helpers';
 
 defineOptions({
   inheritAttrs: false,
 })
 
+type Props = {
+    class?: HTMLAttributes['class'],
+    options?: InputSelectOption[]
+}
+
 const props = withDefaults(
-  defineProps<SelectContentProps & { class?: HTMLAttributes['class'] }>(),
+  defineProps<SelectContentProps & Props>(),
   {
     position: 'popper',
   },
@@ -27,6 +35,21 @@ const emits = defineEmits<SelectContentEmits>()
 const delegatedProps = reactiveOmit(props, 'class')
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits)
+
+const searchQuery = ref('')
+
+const filteredOptions = computed(() => {
+    if (!props.options) {
+        return []
+    }
+    if (!searchQuery.value.length){
+        return props.options.slice(0, 20)
+    }
+    return props.options.filter(o =>
+        o.label.toLowerCase().includes(searchQuery.value.toLowerCase())
+    ).slice(0,20)
+})
+
 </script>
 
 <template>
@@ -42,11 +65,30 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits)
       )
       "
     >
-      <SelectScrollUpButton />
+      <SelectScrollUpButton v-if="!options"/>
+
       <SelectViewport :class="cn('p-1', position === 'popper' && 'h-[var(--reka-select-trigger-height)] w-full min-w-[var(--reka-select-trigger-width)] scroll-my-1')">
-        <slot />
+          <template v-if="options">
+              <div class="p-2 border-b border-border">
+                  <div class="relative">
+                      <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                      </svg>
+                      <Input
+                          placeholder="Search..."
+                          class="pl-10"
+                          @keydown.stop
+                          v-model="searchQuery"
+                      />
+                  </div>
+              </div>
+              <SelectItem  v-for="option in filteredOptions" :key="`${randomString()}-${option.value}`" :value="option.value">
+                  {{ option.label }}
+              </SelectItem>
+          </template>
+          <slot v-else/>
       </SelectViewport>
-      <SelectScrollDownButton />
+      <SelectScrollDownButton v-if="!options"/>
     </SelectContent>
   </SelectPortal>
 </template>

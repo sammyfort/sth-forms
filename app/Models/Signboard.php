@@ -64,7 +64,8 @@ class Signboard extends Model implements HasMedia, Viewable
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('featured')
-            ->singleFile();
+            ->singleFile()
+            ->useFallbackUrl(asset('images/logo-blur.png'));
         $this->addMediaCollection('gallery');
     }
 

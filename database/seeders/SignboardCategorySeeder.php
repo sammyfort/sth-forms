@@ -37,9 +37,7 @@ class SignboardCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            SignboardCategory::query()->create([
-                'name' => $category,
-            ]);
+            SignboardCategory::query()->create(['name' => $category]);
         }
 
     }
