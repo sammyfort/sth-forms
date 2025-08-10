@@ -96,4 +96,9 @@ class PromotionResource extends Resource
             'view' => Pages\ViewPromotion::route('/{record}'),
         ];
     }
+
+    public static function can(string $action, \Illuminate\Database\Eloquent\Model|null $record = null): bool
+    {
+        return true;
+    }
 }
