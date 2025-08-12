@@ -304,9 +304,9 @@ const handleShare = () => {
                                     </div>
 
                                     <div class="flex items-center justify-between py-3 border-b border-slate-100">
-                                        <span class="text-slate-600">Website</span>
-                                        <span class="font-semibold text-slate-900">
-                                            {{ product.website ?? 'N/A' }}
+                                        <span class="text-slate-600 me-3">Website</span>
+                                        <span class="font-semibold text-slate-900 truncate hover:text-blue-600">
+                                           <a :href="product.website?? '#'" target="_blank"> {{ product.website ?? 'N/A' }}</a>
                                         </span>
                                     </div>
                                 </div>

@@ -92,8 +92,13 @@ const createService = () => {
                             <InputText :form="form" label="Second Mobile No" type="tel" model="second_mobile"  />
                             <InputText :form="form" label="Email address" type="email" model="email" required />
                             <InputText :form="form" label="Business Name" model="business_name"  />
-                            <InputText :form="form" label="GPS Address" model="gps" required />
-                            <InputText :form="form" label="Video Link" model="video_link" />
+                            <InputText :form="form" label="GPS Address" model="gps"  />
+                           <div>
+                               <InputText :form="form" label="Video Link" model="video_link" />
+                               <span class="text-sm text-gray-500 font-small">
+                                   Your video will only be shown to visitors if you have a running promotion</span>
+                           </div>
+
                             <InputSelect label="Field Of Service" :form="form" model="category_id" :options="props.categories" required searchable />
 
                             <div class="md:col-span-2">
