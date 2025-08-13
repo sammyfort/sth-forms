@@ -32,7 +32,7 @@ class StoreJobRequest extends FormRequest
             'work_mode' => ['required', Rule::in(JobMode::toArray())],
             'status' => ['required', Rule::in(JobStatus::toArray())],
             'categories' => ['required', 'array'],
-            'summary' => ['nullable', 'string'],
+            'summary' => ['required', 'string', 'max:255'],
             'description' => ['required'],
 
             'region_id' => ['required'],
