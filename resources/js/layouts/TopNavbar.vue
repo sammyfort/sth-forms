@@ -21,14 +21,14 @@ const user = computed(() => page.props.auth.user)
 </script>
 
 <template>
-    <nav class="sticky top-0 z-50 w-full flex justify-center">
+    <nav class="sticky top-4 md:top-0 z-50 w-full flex justify-center">
         <div class="w-full">
             <div class="flex items-center justify-between gap-2 bg-background/50 lg:py-4 backdrop-blur-md lg:mt-4 lg:rounded-2xl lg:border lg:px-4 px-3">
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-12">
                         <Link class="hidden lg:flex items-center gap-2.5" :href="route('home')">
-                            <img src="/images/logo.png" class="size-12 rounded-md" alt="Signboard Logo" />
-                            <h2 class="text-md font-bold text-center">{{ page.props.name }}</h2>
+                            <img src="/images/logo.png" class="size-15 rounded-md" alt="Signboard Logo" />
+                            <h2 class="text-2xl font-bold text-center">{{ page.props.name }}</h2>
                         </Link>
                         <MobileNav>
                             <Menu class="lg:hidden" :size="35"/>
@@ -72,9 +72,9 @@ const user = computed(() => page.props.auth.user)
                         </div>
                     </div>
                 </div>
-                <Link class="flex lg:hidden items-center gap-1 mx-auto" :href="route('home')">
-                    <img src="/images/logo.png" class="size-7 rounded-md" alt="Signboard Logo" />
-                    <h2 class="text-md font-bold">Signboard GH</h2>
+                <Link class="flex lg:hidden items-center gap-3 mx-auto py-2" :href="route('home')">
+                    <img src="/images/logo.png" class="size-14 rounded-md" alt="Signboard Logo" />
+                    <h2 class="text-lg font-bold">{{ page.props.name }}</h2>
                 </Link>
                 <div class="flex items-center gap-3">
                     <div class="flex items-center gap-4">

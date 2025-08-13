@@ -8,7 +8,7 @@ import { router } from '@inertiajs/vue3';
             class="flex flex-col max-w-screen-xl px-8 mx-auto md:items-center md:justify-between md:flex-row">
             <div class="flex flex-row items-center justify-between py-6">
                 <div class="relative md:mt-8">
-                    <a href="#" class="text-lg relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">{{ $page.props.name }}</a>
+                    <a href="#" class="text-xl relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">{{ $page.props.name }}</a>
                     <svg viewBox="0 0 79 79" fill="none" xmlns="http://www.w3.org/2000/svg"
                          class="h-11 z-40 absolute -top-2 -left-3">
                         <path
