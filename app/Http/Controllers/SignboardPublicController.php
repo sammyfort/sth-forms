@@ -37,6 +37,7 @@ class SignboardPublicController extends Controller
                         $q->whereIn('signboard_categories.id', $ids);
                     });
                 }),
+                AllowedFilter::exact('country', 'region.country_id'),
                 AllowedFilter::exact('region', 'region_id'),
             ])
             ->with('categories', function ($categoriesQuery) {
@@ -46,7 +47,7 @@ class SignboardPublicController extends Controller
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
             })
-            ->with(['business', 'region'])
+            ->with(['business', 'region.country'])
             ->when(auth()->user(), function ($q){
                 $q->where('created_by_id', '!=', auth()->id());
             })
@@ -68,7 +69,7 @@ class SignboardPublicController extends Controller
 
     public function show(Signboard $signboard): Response
     {
-        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region', 'categories', 'media']);
+        $signboard->loadMissing(['reviews.ratings', 'business.user', 'region.country', 'categories', 'media']);
         $averageRatings = $signboard->averageRatings();
         $distributions = RatingService::getDistributions($signboard);
 
@@ -88,7 +89,7 @@ class SignboardPublicController extends Controller
     public function getPromotedSignboards(): JsonResponse
     {
         $signboards = Signboard::getRandomPromotedQuery()
-            ->with(['business', 'region'])
+            ->with(['business', 'region.country'])
             ->with('categories', function ($categoriesQuery) {
                 $categoriesQuery->take(3);
             })
@@ -99,7 +100,7 @@ class SignboardPublicController extends Controller
 
         if ($signboards->count() < 1) {
             $signboards = Signboard::query()
-                ->with(['business', 'region'])
+                ->with(['business', 'region.country'])
                 ->with('categories', function ($categoriesQuery) {
                     $categoriesQuery->take(3);
                 })

@@ -13,6 +13,7 @@ import AdvertisedServicesV from '@/components/Services/AdvertisedServicesV.vue';
 import BackToTop from '@/components/BackToTop.vue';
 import ServiceCardV1Skeleton from '@/components/skeletons/ServiceCardV1Skeleton.vue';
 
+
 const props = defineProps<{
     servicesData: PaginatedDataI<ServiceI>,
     categories: ServiceCategoryI[],

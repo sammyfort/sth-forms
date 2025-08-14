@@ -33,6 +33,7 @@ class ServicePublicController extends Controller
                     $ids = is_array($value) ? $value : explode(',', $value);
                     $query->whereIn('category_id', $ids);
                 }),
+                AllowedFilter::exact('country', 'region.country_id'),
                 AllowedFilter::exact('region', 'region_id'),
             ])
             ->where('user_id', '!=', auth()->id())

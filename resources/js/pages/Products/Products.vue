@@ -13,6 +13,7 @@ import AdvertisedProductsH from '@/components/products/AdvertisedProductsH.vue';
 import AdvertisedProductsV from '@/components/products/AdvertisedProductsV.vue';
 import ProductCardSkeleton from '@/components/skeletons/ProductCardSkeleton.vue';
 
+
 const props = defineProps<{
     productsData: PaginatedDataI<ProductI>
     categories: ProductCategoryI[]
@@ -48,7 +49,11 @@ onMounted(() => {
             <div class="relative grid grid-cols-5 w-full gap-15">
                 <div class=" lg:block col-span-5 lg:col-span-1">
                     <div class="sticky top-40">
-                        <ProductsFilter :regions="regions" :categories="categories" :highestPrice="highestPrice" />
+                        <ProductsFilter
+                            :regions="regions"
+                            :categories="categories"
+                            :highestPrice="highestPrice"
+                        />
                     </div>
                 </div>
                 <div class="col-span-5 lg:col-span-3 text-gray-900 antialiased">

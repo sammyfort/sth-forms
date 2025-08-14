@@ -79,3 +79,27 @@ export const rateRatable = async (
         preserveScroll: true,
     })
 }
+
+export async function getCountries() {
+    const data = {
+        countries: []
+    }
+    const request = await fetch(route('countries.index'))
+    const response = await request.json()
+    if (response.success){
+        data.countries = response.data.countries
+    }
+    return data
+}
+
+export async function getRegions(countryId: number|string = '') {
+    const data = {
+        regions: []
+    }
+    const request = await fetch(route('countries.regions')+`?cid=${countryId}`)
+    const response = await request.json()
+    if (response.success){
+        data.regions = response.data.regions
+    }
+    return data
+}

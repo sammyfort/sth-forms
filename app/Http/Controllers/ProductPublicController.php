@@ -40,10 +40,11 @@ class ProductPublicController extends Controller
                     $prices = is_array($value) ? $value : explode(',', $value);
                     $query->whereBetween('price', $prices);
                 }),
+                AllowedFilter::exact('country', 'region.country_id'),
                 AllowedFilter::exact('region', 'region_id'),
             ])
             ->withCount('views')
-            ->with(['region', 'user'])
+            ->with(['region.country', 'user'])
             ->with('reviews', function ($reviewsQuery) {
                 $reviewsQuery->where('user_id', auth()->id())
                     ->with(['ratings']);
@@ -73,7 +74,7 @@ class ProductPublicController extends Controller
 
     public function show(Product $product): Response
     {
-        $product->loadMissing(['reviews.ratings', 'user', 'region', 'categories', 'media']);
+        $product->loadMissing(['reviews.ratings', 'user', 'region.country', 'categories', 'media']);
 
         $distributions = RatingService::getDistributions($product);
 
@@ -97,7 +98,7 @@ class ProductPublicController extends Controller
     public function getPromotedProducts(): JsonResponse
     {
         $products = Product::getRandomPromotedQuery()
-            ->with(['user', 'region'])
+            ->with(['user', 'region.country'])
             ->with('categories', function ($categoriesQuery) {
                 $categoriesQuery->take(3);
             })
@@ -108,7 +109,7 @@ class ProductPublicController extends Controller
 
         if ($products->count() < 1) {
             $products = Product::query()
-                ->with(['user', 'region'])
+                ->with(['user', 'region.country'])
                 ->with('categories', function ($categoriesQuery) {
                     $categoriesQuery->take(3);
                 })

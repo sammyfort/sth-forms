@@ -9,6 +9,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import StarRating from 'vue-star-rating'
 
+
 const props = defineProps<{
     class?: HTMLAttributes['class'],
     service: ServiceI
@@ -73,11 +74,11 @@ const totalAverageRating = ref<number>(props.service.total_average_rating)
                 </div>
                 <div class="mt-3">
                     <div class="flex gap-2 text-secondary items-center">
-                        <div class="flex gap-1 items-center truncate">
+                        <div v-if="service.region" class="flex gap-1 items-center truncate">
                             <MapPin :size="15" class="text-primary"/>
                             <div class="truncate">
+                                <div v-if="service.region.country" class="text-xs text-fade truncate">{{ service.region.country.name }}</div>
                                 <div v-if="service.region" class="text-sm truncate">{{ service.region.name }}</div>
-                                <div class="text-xs text-fade truncate">{{ service.town }}</div>
                             </div>
                         </div>
                         <div class="flex flex-col ms-auto gap-0 text-xs items-end">

@@ -2,7 +2,7 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import StarRating from 'vue-star-rating';
-import { Eye, PhoneCall, CheckCheck, MapPin, LocateFixed, HeartHandshake, Ban } from 'lucide-vue-next';
+import { Eye, PhoneCall, CheckCheck, MapPin, LocateFixed, HeartHandshake, Ban, Flag } from 'lucide-vue-next';
 import { Badge } from '@/components/ui/badge';
 import { ProductI } from '@/types';
 import { cediSign, ucFirst } from '@/lib/helpers';
@@ -10,6 +10,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import Autoplay from 'embla-carousel-autoplay'
 import { ref } from 'vue';
 import { router } from '@inertiajs/vue3';
+
 
 type Props = {
     product: ProductI
@@ -60,6 +61,12 @@ const plugin = Autoplay({
                         orientation="vertical"
                     >
                         <CarouselContent class="h-10 text-[#633780] text-sm">
+                            <CarouselItem v-if="product.region.country.name" key="d" class="basis-1" >
+                                <div class="flex gap-1.5 items-center">
+                                    <Flag :size="15"/>
+                                    <span>{{ product.region.country.name }}</span>
+                                </div>
+                            </CarouselItem>
                             <CarouselItem key="d" class="basis-1" >
                                 <div class="flex gap-1.5 items-center">
                                     <MapPin :size="15"/>

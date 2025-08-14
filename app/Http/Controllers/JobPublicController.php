@@ -42,12 +42,13 @@ class JobPublicController extends Controller
                         $q->whereIn('job_categories.id', $ids);
                     });
                 }),
+                AllowedFilter::exact('country', 'region.country_id'),
                 AllowedFilter::exact('region', 'region_id'),
             ])
             ->when(auth()->user(), function ($q){
                 $q->where('user_id', '!=', auth()->id());
             })
-            ->with(['categories', 'region'])
+            ->with(['categories', 'region.country'])
             ->with(['media' => function ($mediaQuery) {
                 $mediaQuery->where('collection_name', 'company_logo');
             }])
@@ -64,12 +65,12 @@ class JobPublicController extends Controller
 
     public function show(Job $job): Response
     {
-        $job->loadMissing(['categories', 'region']);
+        $job->loadMissing(['categories', 'region.country']);
         $relatedJobs = Job::query()
             ->whereRelation('categories', function ($catQuery) use ($job){
                 $catQuery->whereIn('category_id', $job->categories->pluck('id')->toArray());
             })
-            ->with(['categories', 'region'])
+            ->with(['categories', 'region.country'])
             ->with(['media' => function ($mediaQuery) {
                 $mediaQuery->where('collection_name', 'company_logo');
             }])
@@ -86,7 +87,7 @@ class JobPublicController extends Controller
     public function getPromotedJobs(): JsonResponse
     {
         $jobs = Job::query()
-            ->with(['user', 'region', 'categories'])
+            ->with(['user', 'region.country', 'categories'])
             ->with(['media' => function ($mediaQuery) {
                 $mediaQuery->where('collection_name', 'company_logo');
             }])

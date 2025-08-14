@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import  { computed, HTMLAttributes, onMounted, ref } from 'vue'
+import  { computed, HTMLAttributes, ref } from 'vue'
 import { reactiveOmit } from '@vueuse/core'
 import {
   SelectContent,
@@ -21,7 +21,8 @@ defineOptions({
 
 type Props = {
     class?: HTMLAttributes['class'],
-    options?: InputSelectOption[]
+    options?: InputSelectOption[],
+    slice? : number|'all'
 }
 
 const props = withDefaults(
@@ -43,7 +44,10 @@ const filteredOptions = computed(() => {
         return []
     }
     if (!searchQuery.value.length){
-        return props.options.slice(0, 20)
+        if (props.slice == 'all'){
+            return props.options
+        }
+        return props.options.slice(0, props.slice as number ?? 20)
     }
     return props.options.filter(o =>
         o.label.toLowerCase().includes(searchQuery.value.toLowerCase())
@@ -62,8 +66,7 @@ const filteredOptions = computed(() => {
         position === 'popper'
           && 'data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1',
         props.class,
-      )
-      "
+      )"
     >
       <SelectScrollUpButton v-if="!options"/>
 

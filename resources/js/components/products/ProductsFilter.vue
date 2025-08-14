@@ -8,6 +8,7 @@ import { useFilterQuery } from '@/lib/useFilterQuery';
 import { onBeforeMount } from 'vue';
 import { Slider } from '@/components/ui/slider';
 import { cediSign } from '@/lib/helpers';
+import CountryRegionSelector from '@/components/CountryRegionSelector.vue';
 
 type Props = {
     categories: ProductCategoryI[]
@@ -21,11 +22,13 @@ const props = defineProps<Props>();
 const filterForm = useForm<{
     q: string | null
     categories: Array<number> | null
+    country: number | null
     region: number | null
     price: string
 }>({
     q: '',
     categories: null,
+    country: null,
     region: null,
     price: `0,${props.highestPrice}`,
 });
@@ -36,6 +39,7 @@ const { filteredQuery, runFilter } = useFilterQuery({
     preserveKeys: ['productsData'],
     buildQuery: (qBuilder) => {
         if (filterForm.q) qBuilder.filter('q', filterForm.q);
+        if (filterForm.country) qBuilder.filter('country', filterForm.country.toString());
         if (filterForm.region) qBuilder.filter('region', filterForm.region.toString());
         if (filterForm.price) qBuilder.filter('price', filterForm.price);
         if (filterForm.categories?.length) {
@@ -50,10 +54,12 @@ onBeforeMount(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const qParam = urlParams.get('filter[q]');
     const categoryParam = urlParams.get('filter[categories]');
+    const countryParam = urlParams.get('filter[country]');
     const regionParam = urlParams.get('filter[region]');
     const priceParam = urlParams.get('filter[price]');
 
     filterForm.categories = categoryParam ? categoryParam.split(',').map((cat) => Number(cat)) : [];
+    filterForm.country = countryParam ? Number(countryParam) : null;
     filterForm.region = regionParam ? Number(regionParam) : null;
     filterForm.q = qParam ? (qParam as string) : '';
     filterForm.price = priceParam ? (priceParam as string) : filterForm.price;
@@ -82,14 +88,11 @@ onBeforeMount(() => {
                 :options="categories.map( (cat)=>{return {label: cat.name, value: cat.id as unknown as string}})"
             />
         </Select>
-        <Select v-model="filterForm.region" :default-value="filterForm.region">
-            <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
-                <SelectValue placeholder="Region" />
-            </SelectTrigger>
-            <SelectContent
-                :options="regions.map( (reg)=>{return {label: reg.name, value: reg.id as unknown as string}})"
-            />
-        </Select>
+        <CountryRegionSelector
+            :form="filterForm"
+            region-model="region"
+            country-model="country"
+        />
         <div class="flex flex-col gap-3 w-full col-span-2 md:col-span-1 lg:col-span-2">
             <div class="w-full">Price</div>
             <Slider
