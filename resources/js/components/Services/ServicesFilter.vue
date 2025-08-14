@@ -6,6 +6,7 @@ import { RegionI, ServiceCategoryI } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { useFilterQuery } from '@/lib/useFilterQuery';
 import { onBeforeMount } from 'vue';
+import CountryRegionSelector from '@/components/CountryRegionSelector.vue';
 
 type Props = {
     categories: ServiceCategoryI[];
@@ -17,10 +18,12 @@ const props = defineProps<Props>();
 const filterForm = useForm<{
     q: string | null;
     categories: Array<number> | null;
+    country: number | null;
     region: number | null;
 }>({
     q: '',
     categories: null,
+    country: null,
     region: null,
 });
 
@@ -31,6 +34,7 @@ const { filteredQuery, runFilter } = useFilterQuery({
     buildQuery: (qBuilder) => {
         if (filterForm.q) qBuilder.filter('q', filterForm.q);
         if (filterForm.region) qBuilder.filter('region', filterForm.region.toString());
+        if (filterForm.country) qBuilder.filter('country', filterForm.country.toString());
         if (filterForm.categories?.length) {
             filterForm.categories.forEach((cat) => {
                 qBuilder.filter('categories', cat.toString());
@@ -43,8 +47,11 @@ onBeforeMount(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const qParam = urlParams.get('filter[q]');
     const categoryParam = urlParams.get('filter[categories]');
+    const countryParam = urlParams.get('filter[country]');
     const regionParam = urlParams.get('filter[region]');
+
     filterForm.categories = categoryParam ? categoryParam.split(',').map((cat) => Number(cat)) : [];
+    filterForm.country = countryParam ? Number(countryParam) : null;
     filterForm.region = regionParam ? Number(regionParam) : null;
     filterForm.q = qParam ? (qParam as string) : '';
 
@@ -74,16 +81,14 @@ onBeforeMount(() => {
             />
         </Select>
 
-        <Select v-model="filterForm.region" :default-value="filterForm.region">
-            <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
-                <SelectValue placeholder="Region" />
-            </SelectTrigger>
-            <SelectContent
-                :options="props.regions.map( (reg)=>{return {label: reg.name, value: reg.id as unknown as string}})"
-            />
-        </Select>
+        <CountryRegionSelector
+            :form="filterForm"
+            region-model="region"
+            country-model="country"
+        />
+
         <div class="grid md:grid-cols-2 lg:grid-cols-1 col-span-2 md:col-span-1 lg:col-span-2 gap-3">
-            <Button :processing="filterForm.processing" v-show="filterForm.region || filterForm.categories?.length || filterForm.q?.length" @click="runFilter">Apply Filter </Button>
+            <Button :processing="filterForm.processing" v-show="filterForm.country || filterForm.region || filterForm.categories?.length || filterForm.q?.length" @click="runFilter">Apply Filter </Button>
             <Button v-show="filteredQuery" variant="secondary" @click="router.visit(route('services.index'))">Reset </Button>
         </div>
     </div>

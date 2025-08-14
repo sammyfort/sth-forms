@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Card, CardContent } from '@/components/ui/card';
-import { MapPin, Clock, Briefcase } from 'lucide-vue-next';
+import { MapPin, Clock, Briefcase, Flag } from 'lucide-vue-next';
 import VerifiedBadge from '@/components/icons/VerifiedBadge.vue';
 import { Button } from '@/components/ui/button';
 import { JobI } from '@/types';
 import { ucFirst } from '@/lib/helpers';
 import { Link, router } from '@inertiajs/vue3';
+
 
 type Props = {
     job: JobI
@@ -27,7 +28,7 @@ const props = defineProps<Props>()
                     <div class="flex flex-col">
                         <div class="font-semibold">{{ job.company_name }}</div>
                         <div class="flex gap-1 items-center text-fade">
-                            <MapPin :size="10"/> <span class="text-xs">{{ job.region.name }}</span>
+                            <MapPin :size="13"/> <span class="text-xs">{{ job.region.name }}</span>
                         </div>
                     </div>
                     <div class="ms-auto">
@@ -37,6 +38,9 @@ const props = defineProps<Props>()
 
                 <div class="flex flex-col gap-2">
                     <div class="font-semibold">{{ job.title }}</div>
+                    <div class="flex gap-1 items-center">
+                        <Flag :size="13" class="text-primary"/> <span class="text-xs">{{ job.region.country.name }}</span>
+                    </div>
                     <div class="flex gap-4 text-fade items-center">
                         <div class="flex gap-1 items-center text-primary">
                             <Briefcase :size="15"/>

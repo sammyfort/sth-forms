@@ -6,6 +6,7 @@ import { JobCategoryI, RegionI } from '@/types';
 import { router, useForm } from '@inertiajs/vue3';
 import { useFilterQuery } from '@/lib/useFilterQuery';
 import { onBeforeMount } from 'vue';
+import CountryRegionSelector from '@/components/CountryRegionSelector.vue';
 
 type Props = {
     categories: JobCategoryI[];
@@ -18,12 +19,14 @@ const filterForm = useForm<{
     q: string | null;
     categories: number[] | null;
     region: number | null;
+    country: number | null;
     work_mode: string[] | null
     job_type: string[] | null
 }>({
     q: '',
     categories: null,
     region: null,
+    country: null,
     work_mode: null,
     job_type: null,
 });
@@ -38,6 +41,7 @@ const { filteredQuery, runFilter } = useFilterQuery({
     buildQuery: (qBuilder) => {
         if (filterForm.q) qBuilder.filter('q', filterForm.q);
         if (filterForm.region) qBuilder.filter('region', filterForm.region.toString());
+        if (filterForm.country) qBuilder.filter('country', filterForm.country.toString());
         if (filterForm.categories?.length) {
             filterForm.categories.forEach((cat) => {
                 qBuilder.filter('categories', cat.toString());
@@ -63,11 +67,13 @@ onBeforeMount(() => {
     const workModeParam = urlParams.get('filter[work_mode]');
     const jobTypeParam = urlParams.get('filter[job_type]');
     const regionParam = urlParams.get('filter[region]');
+    const countryParam = urlParams.get('filter[country]');
 
     filterForm.categories = categoryParam ? categoryParam.split(',').map((cat) => Number(cat)) : [];
     filterForm.work_mode = workModeParam ? workModeParam.split(',').map((wm) => wm) : [];
     filterForm.job_type = jobTypeParam ? jobTypeParam.split(',').map((wm) => wm) : [];
     filterForm.region = regionParam ? Number(regionParam) : null;
+    filterForm.country = countryParam ? Number(countryParam) : null;
     filterForm.q = qParam ? (qParam as string) : '';
 
     if (urlParams.size > 0) {
@@ -114,16 +120,17 @@ onBeforeMount(() => {
                 :options="categories.map( (cat)=>{return {label: cat.name, value: cat.id as unknown as string}})"
             />
         </Select>
-        <Select v-model="filterForm.region" :default-value="filterForm.region">
-            <SelectTrigger class="w-full col-span-2 md:col-span-1 lg:col-span-2">
-                <SelectValue placeholder="Region" />
-            </SelectTrigger>
-            <SelectContent
-                :options="regions.map( (reg)=>{return {label: reg.name, value: reg.id as unknown as string}})"
-            />
-        </Select>
+        <CountryRegionSelector
+            :form="filterForm"
+            region-model="region"
+            country-model="country"
+        />
         <div class="grid md:grid-cols-2 lg:grid-cols-1 col-span-2 md:col-span-1 lg:col-span-2 gap-3">
-            <Button v-show="filterForm.region || filterForm.categories?.length || filterForm.q?.length || filterForm.work_mode?.length || filterForm.job_type?.length" @click="runFilter">Apply Filter </Button>
+            <Button
+                v-show="filterForm.region || filterForm.country || filterForm.categories?.length || filterForm.q?.length || filterForm.work_mode?.length || filterForm.job_type?.length"
+                @click="runFilter"
+                :processing="filterForm.processing"
+            >Apply Filter</Button>
             <Button v-show="filteredQuery" variant="secondary" @click="router.visit(route('jobs.index'))">Reset </Button>
         </div>
     </div>

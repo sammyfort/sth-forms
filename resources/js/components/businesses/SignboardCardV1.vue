@@ -2,12 +2,13 @@
 import { cn } from '@/lib/utils';
 import { HTMLAttributes, ref } from 'vue';
 import { SignboardI } from '@/types';
-import { MapPin, MapPinned, Dot, Handshake } from 'lucide-vue-next';
+import { MapPin, MapPinned, Dot, Handshake, Flag } from 'lucide-vue-next';
 import { Link } from '@inertiajs/vue3';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui/tooltip'
 import StarRating from 'vue-star-rating'
 import { AutoplayType } from 'embla-carousel-autoplay';
 import { router } from '@inertiajs/vue3';
+
 
 const emit = defineEmits<{
     (e: 'popoverOpen', value: boolean): void
@@ -75,9 +76,13 @@ const ratedHandler = (sb: SignboardI)=>{
                         >{{ signboard.name }}</Link>
                     </h4>
                 </div>
+                <div v-if="signboard.region.country" class="mt-1 flex gap-2 items-center text-sm">
+                    <Flag :size="15" class="text-primary"/>
+                    <div>{{ signboard.region.country.name }}</div>
+                </div>
                 <div class="mt-1 flex gap-2 items-center text-sm">
                     <MapPin :size="15" class="text-primary"/>
-                    <div>{{ signboard.region.name }} Region</div>
+                    <div>{{ signboard.region.name }}</div>
                 </div>
                 <div class="mt-1 flex gap-2 items-center text-sm">
                     <MapPinned :size="15" class="text-primary"/>

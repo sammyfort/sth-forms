@@ -56,6 +56,16 @@ export interface User extends ModelI {
     points_in_cedis: number
 }
 
+export interface CountryI extends ModelI{
+    name: string
+    iso2: string
+    iso3: string
+    phonecode: string
+    currency: string
+    currency_symbol: string
+    regions: RegionI[]
+}
+
 export interface ProductI extends ModelI {
     user_id: number
     user: User
@@ -202,6 +212,7 @@ export interface JobCategoryI extends ModelI {
 export interface RegionI extends ModelI {
     name: string;
     slug: string;
+    country: CountryI,
 }
 
 export interface PromotionPlanI extends ModelI {

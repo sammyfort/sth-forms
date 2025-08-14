@@ -4,15 +4,18 @@ import { cn } from '@/lib/utils';
 import { Primitive, type PrimitiveProps } from 'reka-ui';
 import { type ButtonVariants, buttonVariants } from '.';
 import { LoaderCircle } from 'lucide-vue-next';
+
 interface Props extends PrimitiveProps {
     variant?: ButtonVariants['variant'];
     size?: ButtonVariants['size'];
     class?: HTMLAttributes['class'];
     processing?: boolean
 }
+
 const props = withDefaults(defineProps<Props>(), {
     as: 'button'
 });
+
 </script>
 
 <template>

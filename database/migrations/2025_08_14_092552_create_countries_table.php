@@ -10,14 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('regions', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
             $table->uuid();
-            $table->foreignId('country_id');
             $table->string('name');
-            $table->string('slug')->unique();
-            $table->string('latitude')->nullable();
-            $table->string('longitude')->nullable();
+            $table->string('iso2');
+            $table->string('iso3');
+            $table->string('phonecode');
+            $table->string('currency');
+            $table->string('currency_symbol');
             $table->foreignId('created_by_id')->nullable();
             $table->timestamps();
         });
@@ -28,6 +29,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('regions');
+        Schema::dropIfExists('countries');
     }
 };

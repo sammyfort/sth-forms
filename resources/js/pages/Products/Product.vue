@@ -17,6 +17,7 @@ import AdvertisedProductsH from '@/components/products/AdvertisedProductsH.vue';
 import ShareToSocials from '@/components/ShareToSocials.vue';
 import VideoEmbed from '@/components/VideoEmbed.vue';
 
+
 type Props = {
     product: ProductI
     media: MediaI[]

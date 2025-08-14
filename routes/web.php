@@ -4,7 +4,8 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\ContactUsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FAQController;
-use App\Http\Controllers\{JobPublicController,
+use App\Http\Controllers\{CountryController,
+    JobPublicController,
     ProductController,
     ServiceController,
     PromotionController,
@@ -108,6 +109,11 @@ Route::post('promotions/payment/fiat', [PromotionController::class, 'initializeH
 Route::post('promotions/payment/points', [PromotionController::class, 'payUsingPoints'])
     ->middleware(['auth', 'verified'])
     ->name('promotions.payment.points');
+
+Route::prefix('countries')->as('countries.')->group(callback: function () {
+    Route::get('/', [CountryController::class, 'index'])->name('index');
+    Route::get('/regions', [CountryController::class, 'regions'])->name('regions');
+});
 
 
 require __DIR__.'/auth.php';
