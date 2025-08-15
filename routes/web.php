@@ -71,17 +71,19 @@ Route::prefix('businesses')->name('businesses.')->group(function () {
 });
 
 
+Route::prefix('service-providers')->as('services.')->group(callback: function () {
+    Route::get('/', [ServicePublicController::class, 'index'])->name('index');
+    Route::get('/promoted', [ServicePublicController::class, 'getPromotedSignboards'])->name('promoted');
+    Route::get('/details/{service:slug}', [ServicePublicController::class, 'show'])->name('show');
+});
+
+
 Route::prefix('signboards')->as('signboards.')->group(function () {
     Route::get('/', [SignboardPublicController::class, 'index'])->name('index');
     Route::get('/{signboard:slug}/details', [SignboardPublicController::class, 'show'])->name('show');
     Route::get('/promoted', [SignboardPublicController::class, 'getPromotedSignboards'])->name('promoted');
 });
 
-Route::prefix('service-providers')->as('services.')->group(callback: function () {
-    Route::get('/', [ServicePublicController::class, 'index'])->name('index');
-    Route::get('/promoted', [ServicePublicController::class, 'getPromotedSignboards'])->name('promoted');
-    Route::get('/details/{service:slug}', [ServicePublicController::class, 'show'])->name('show');
-});
 
 Route::prefix('jobs')->as('jobs.')->group(callback: function () {
     Route::get('/', [JobPublicController::class, 'index'])->name('index');

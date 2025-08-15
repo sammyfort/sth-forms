@@ -32,6 +32,7 @@ class UserSeeder extends Seeder
                 'mobile' => '0248297302',
                 'password' => "123",
                 'email_verified_at' => now(),
+                'country_id' => 83,
             ],
 
             [
@@ -43,6 +44,7 @@ class UserSeeder extends Seeder
                 'mobile' => '0507455860',
                 'password' => "123",
                 'email_verified_at' => now(),
+                'country_id' => 83,
             ]
         ];
 
@@ -55,6 +57,7 @@ class UserSeeder extends Seeder
             'mobile' => '0257906340',
             'password' => "123",
             'email_verified_at' => now(),
+            'country_id' => 83,
         ]);
         $admin->assignRole('admin');
 

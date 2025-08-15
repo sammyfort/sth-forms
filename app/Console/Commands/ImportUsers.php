@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Country;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class ImportUsers extends Command
@@ -30,13 +30,33 @@ class ImportUsers extends Command
     public function handle()
     {
         $users = include database_path('import/j_users.php');
+        $countries = Country::query()->get();
 
-        DB::transaction(function () use ($users) {
+        DB::transaction(function () use ($users, $countries) {
             $insert = [];
             foreach ($users as $user) {
 
                 $mobile = trim($user['j_phone'] ?? '');
                 $email = trim($user['j_email'] ?? '');
+                $country_id = null;
+
+                foreach ($countries as $country) {
+                    $dbCountryName = str($country->name)->replace('-', '')
+                        ->replace(' ', '')
+                        ->trim()
+                        ->upper();
+                    $uCountry = str($user['j_country'])->replace('-', '')
+                        ->replace(' ', '')
+                        ->trim()
+                        ->upper();
+
+                    similar_text($dbCountryName, $uCountry, $percent);
+
+                    if ($percent > 69) {
+                        $country_id = $country->id;
+                        break;
+                    }
+                }
 
                 if (strlen(trim($user['j_firstname'])) > 0){
 
@@ -52,6 +72,7 @@ class ImportUsers extends Command
                         'password' => $password,
                         'raw_password' => $password,
                         'email_verified_at' => now(),
+                        'country_id' => $country_id,
                         'referral_code' => Str::random(10),
                     ];
                 }

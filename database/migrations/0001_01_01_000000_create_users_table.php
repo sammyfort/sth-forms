@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('lastname')->nullable();
             $table->string('mobile')->unique()->nullable();
             $table->string('email')->unique();
+            $table->foreignId('country_id')->nullable();
             $table->string('facebook')->nullable();
             $table->string('x')->nullable();
             $table->string('instagram')->nullable();

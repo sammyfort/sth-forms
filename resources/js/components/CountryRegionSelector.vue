@@ -4,6 +4,7 @@ import { getCountries, getRegions } from '@/lib/api';
 import { Select, SelectContent, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CountryI, RegionI } from '@/types';
 import { LoaderCircle } from 'lucide-vue-next';
+import InputError from '@/components/InputError.vue';
 
 
 const props = defineProps<{
@@ -20,6 +21,7 @@ const loadingCountries = ref(false);
 const loadingRegions = ref(false);
 
 async function handleCountryChange(countryId: number) {
+    if (!props.regionModel) return;
     regions.value = []
     props.form[props.regionModel] = null
     loadingRegions.value = true
@@ -60,7 +62,9 @@ onMounted(async () => {
             slice="all"
         />
     </Select>
-    <div v-if="loadingRegions" class="flex w-100 text-sm items-center gap-2 text-fade">
+    <InputError v-if="countryModel" :message="form.errors[countryModel]" />
+
+    <div v-if="loadingRegions && regionModel" class="flex w-100 text-sm items-center gap-2 text-fade">
         <span>Loading regions ...</span>
         <LoaderCircle :size="12" class="animate-spin" />
     </div>
@@ -79,6 +83,7 @@ onMounted(async () => {
             slice="all"
         />
     </Select>
+    <InputError v-if="regionModel" :message="form.errors[regionModel]" />
 </template>
 
 <style scoped></style>

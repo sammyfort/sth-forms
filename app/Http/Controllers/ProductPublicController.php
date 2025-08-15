@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\Region;
+use App\Services\ProductService;
 use App\Services\RatingService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -17,44 +18,7 @@ class ProductPublicController extends Controller
 {
     public function index(): Response
     {
-        $products = QueryBuilder::for(Product::class)
-            ->allowedFilters([
-                AllowedFilter::callback('q', function (Builder $query, $input) {
-                    if (is_array($input)){
-                        $input = implode(',', $input);
-                    }
-                    $query->where("name", "LIKE", "%$input%")
-                        ->orWhere("town", "LIKE", "%$input%")
-                        ->orWhere("first_mobile", "LIKE", "%$input%")
-                        ->orWhere("second_mobile", "LIKE", "%$input%")
-                        ->orWhereRelation('user', 'firstname', "LIKE", "%$input%")
-                        ->orWhereRelation('user', 'lastname', "LIKE", "%$input%");
-                }),
-                AllowedFilter::callback('categories', function ($query, $value) {
-                    $ids = is_array($value) ? $value : explode(',', $value);
-                    $query->whereHas('categories', function ($q) use ($ids) {
-                        $q->whereIn('product_categories.id', $ids);
-                    });
-                }),
-                AllowedFilter::callback('price', function ($query, $value) {
-                    $prices = is_array($value) ? $value : explode(',', $value);
-                    $query->whereBetween('price', $prices);
-                }),
-                AllowedFilter::exact('country', 'region.country_id'),
-                AllowedFilter::exact('region', 'region_id'),
-            ])
-            ->withCount('views')
-            ->with(['region.country', 'user'])
-            ->with('reviews', function ($reviewsQuery) {
-                $reviewsQuery->where('user_id', auth()->id())
-                    ->with(['ratings']);
-            })
-            ->when(auth()->user(), function ($q){
-                $q->where('user_id', '!=', auth()->id());
-            })
-             ->inRandomOrder()
-            ->paginate(12)
-            ->appends(request()->query());
+        $products = ProductService::getProducts();
 
         // get product with the highest price to set price filter slider
         $highestPrice = Product::query()
@@ -97,33 +61,7 @@ class ProductPublicController extends Controller
 
     public function getPromotedProducts(): JsonResponse
     {
-        $products = Product::getRandomPromotedQuery()
-            ->with(['user', 'region.country'])
-            ->with('categories', function ($categoriesQuery) {
-                $categoriesQuery->take(3);
-            })
-            ->with('reviews', function ($reviewsQuery) {
-                $reviewsQuery->where('user_id', auth()->id())
-                    ->with(['ratings']);
-            })->get();
-
-        if ($products->count() < 1) {
-            $products = Product::query()
-                ->with(['user', 'region.country'])
-                ->with('categories', function ($categoriesQuery) {
-                    $categoriesQuery->take(3);
-                })
-                ->with('reviews', function ($reviewsQuery) {
-                    $reviewsQuery->where('user_id', auth()->id())
-                        ->with(['ratings']);
-                })
-                ->when(auth()->user(), function ($q){
-                    $q->where('created_by_id', '!=', auth()->id());
-                })
-                ->inRandomOrder()
-                ->take(10)
-                ->get();
-        }
+        $products = ProductService::getPromoted();
 
         return response()->success([
             'products' => $products

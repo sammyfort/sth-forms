@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils'
 import { SelectItem, SelectScrollDownButton, SelectScrollUpButton } from '.'
 import { InputSelectOption } from '@/types';
 import { Input } from '@/components/ui/input';
-import { randomString } from '@/lib/helpers';
+
 
 defineOptions({
   inheritAttrs: false,
@@ -85,7 +85,7 @@ const filteredOptions = computed(() => {
                       />
                   </div>
               </div>
-              <SelectItem  v-for="option in filteredOptions" :key="`${randomString()}-${option.value}`" :value="option.value">
+              <SelectItem  v-for="option in filteredOptions" :key="`opt-${option.value}`" :value="option.value">
                   {{ option.label }}
               </SelectItem>
           </template>

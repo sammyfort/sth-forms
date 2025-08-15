@@ -22,8 +22,16 @@ class UpdatePersonalDetailsRequest extends FormRequest
         return [
             'firstname' => ['required', 'string', 'max:100'],
             'lastname' => ['required', 'string', 'max:100'],
+            'country_id' => ['required', 'exists:countries,id'],
             'mobile' => ['required', 'string', 'max:100', new MobileNumber(), Rule::unique('users')->ignore(request()->user())],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:100', Rule::unique('users')->ignore(request()->user())],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'country_id' => 'Country',
         ];
     }
 }

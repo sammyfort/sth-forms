@@ -79,6 +79,11 @@ use Illuminate\Notifications\Notifiable;
          return $this->belongsTo(self::class, 'referrer_id');
      }
 
+     public function country(): BelongsTo
+     {
+         return $this->belongsTo(Country::class, 'country_id');
+     }
+
      public function referrals(): HasMany
      {
          return $this->hasMany(self::class, 'referrer_id');

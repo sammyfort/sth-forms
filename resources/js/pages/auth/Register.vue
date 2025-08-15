@@ -8,6 +8,8 @@ import InputText from '@/components/InputText.vue';
 import { onMounted, ref } from 'vue';
 import TypeIt from 'typeit';
 import { getRandomAuthImage } from '@/lib/helpers';
+import CountryRegionSelector from '@/components/CountryRegionSelector.vue';
+import { Label } from '@/components/ui/label';
 
 const props = defineProps<{
     rfc: string|null,
@@ -16,6 +18,7 @@ const props = defineProps<{
 const form = useForm({
     firstname: '',
     lastname: '',
+    country_id: '',
     mobile: '',
     email: '',
     password: '',
@@ -66,7 +69,7 @@ const googleLogin = () => {
             <form @submit.prevent="submit" class="flex flex-col gap-6 w-full justify-center md:w-1/3">
                 <div>
                     <div class="text-3xl font-bold text-fade">Join Signboard</div>
-                    <div class="text-fade" ref="descriptionRef"></div>
+                    <div class="text-fade min-h-[75px]" ref="descriptionRef"></div>
                 </div>
                 <div class="grid gap-6">
                     <InputText
@@ -88,6 +91,13 @@ const googleLogin = () => {
                         autofocus
                         placeholder="Doe"
                     />
+                    <div class="flex flex-col gap-2">
+                        <Label>Your Country <span class="text-destructive">*</span></Label>
+                        <CountryRegionSelector
+                            :form="form"
+                            country-model="country_id"
+                        />
+                    </div>
                     <InputText
                         :form="form"
                         model="mobile"
