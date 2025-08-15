@@ -26,10 +26,18 @@ class RegisterRequest extends FormRequest
         return [
             'firstname' => ['required', 'string', 'max:100'],
             'lastname' => ['required', 'string', 'max:100'],
+            'country_id' => ['required', 'exists:countries,id'],
             'mobile' => ['required', 'string', 'max:100', new MobileNumber(), 'unique:'.User::class],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:100', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Password::defaults()],
             'rfc' => ['nullable', 'string'],
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'country_id' => 'Country',
         ];
     }
 }

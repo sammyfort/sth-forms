@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {
     Dialog,
     DialogContent,
@@ -13,6 +12,9 @@ import InputText from '@/components/InputText.vue';
 import { useForm, usePage } from '@inertiajs/vue3';
 import { toastError, toastSuccess } from '@/lib/helpers';
 import { computed, onMounted, ref } from 'vue';
+import CountryRegionSelector from '@/components/CountryRegionSelector.vue';
+import { Label } from '@/components/ui/label';
+
 
 const page = usePage()
 const user = computed(()=> page.props.auth.user)
@@ -21,6 +23,7 @@ const isOpen = ref(false)
 const form = useForm({
     firstname: "",
     lastname: "",
+    country_id: "",
     mobile: "",
     email: "",
 })
@@ -28,6 +31,7 @@ const form = useForm({
 onMounted(()=>{
     form.firstname = user.value.firstname
     form.lastname = user.value.lastname
+    form.country_id = user.value.country.id
     form.mobile = user.value.mobile
     form.email = user.value.email
 })
@@ -60,6 +64,13 @@ const updateDetails = ()=>{
             <form @submit.prevent="updateDetails" id="update-form" class="grid gap-4 py-4 overflow-y-auto px-6">
                 <InputText :form="form" label="First Name" model="firstname" required/>
                 <InputText :form="form" label="Last Name" model="lastname" required/>
+                <div class="flex flex-col gap-2">
+                    <Label>Country</Label>
+                    <CountryRegionSelector
+                        :form="form"
+                        country-model="country_id"
+                    />
+                </div>
                 <InputText :form="form" label="Mobile Number" model="mobile" required/>
                 <InputText :form="form" label="Email" model="email" required/>
             </form>

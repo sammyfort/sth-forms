@@ -42,6 +42,14 @@ const user = computed(()=> page.props.auth.user)
                                 {{ user.email }}
                             </p>
                         </div>
+                        <div v-if="user.country">
+                            <p class="mb-2 text-xs leading-normal text-gray-500">
+                                Country
+                            </p>
+                            <p class="text-sm font-medium text-gray-800">
+                                {{ user.country.name }}
+                            </p>
+                        </div>
                         <div>
                             <p class="mb-2 text-xs leading-normal text-gray-500">
                                 Mobile Number

@@ -54,6 +54,7 @@ export interface User extends ModelI {
     signboards: SignboardI
     products: ProductI
     points_in_cedis: number
+    country: CountryI
 }
 
 export interface CountryI extends ModelI{
