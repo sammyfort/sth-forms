@@ -27,8 +27,8 @@ const user = computed(() => page.props.auth.user)
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-12">
                         <Link class="hidden lg:flex items-center gap-2.5" :href="route('home')">
-                            <img src="/images/logo.png" class="size-15 rounded-md" alt="Signboard Logo" />
-                            <h2 class="text-2xl font-bold text-center">{{ page.props.name }}</h2>
+<!--                            <img src="/images/logo.png" class="size-15 rounded-md" alt="SHT Logo" />-->
+                            <h2 class="text-2xl font-bold text-center">STH R&D</h2>
                         </Link>
                         <MobileNav>
                             <Menu class="lg:hidden" :size="35"/>
@@ -39,42 +39,13 @@ const user = computed(() => page.props.auth.user)
                                 :href="route('home')"
                                 class="hover:text-primary py-4 text-center"
                             >Home</Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Services/Services' }"
-                                :href="route('services.index')"
-                                class="hover:text-primary py-4 text-center"
-                            >Service Providers</Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Signboards/Signboards' }"
-                                :href="route('signboards.index')"
-                                class="hover:text-primary py-4 text-center"
-                            >Signboards</Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Jobs/Jobs' }"
-                                :href="route('jobs.index')"
-                                class="hover:text-primary py-4 text-center"
-                            >Jobs</Link>
-                            <Link
-                                :class="{ 'active-nav': $page.component === 'Products/Products' }"
-                                :href="route('products.index')"
-                                class="hover:text-primary py-4 text-center"
-                            >Shop</Link>
 
-                            <CompanyNavPopover>
-                                <span
-                                    :class="{ 'active-nav': $page.component === 'FAQ' || $page.component === 'AboutUs' }"
-                                    class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
-                                >
-                                    <span>Company</span>
-                                    <ChevronDown :size="22"/>
-                                </span>
-                            </CompanyNavPopover>
                         </div>
                     </div>
                 </div>
                 <Link class="flex lg:hidden items-center gap-3 mx-auto py-2" :href="route('home')">
-                    <img src="/images/logo.png" class="size-14 rounded-md" alt="Signboard Logo" />
-                    <h2 class="text-lg font-bold">{{ page.props.name }}</h2>
+<!--                    <img src="/images/logo.png" class="size-14 rounded-md" alt="STH Logo" />-->
+                    <h2 class="text-lg font-bold">STH RC</h2>
                 </Link>
                 <div class="flex items-center gap-3">
                     <div class="flex items-center gap-4">
@@ -87,43 +58,18 @@ const user = computed(() => page.props.auth.user)
                                 <LayoutDashboard  :size="15" class="text-secondary"/> Dashboard
                             </Link>
 
-                            <SignboardNavPopover>
-                                 <span :class="{ 'active-nav':
-                                 $page.component === 'Signboards/MySignboards'
-                                || $page.component === 'Signboards/SignboardShow'
-                                || $page.component === 'Signboards/SignboardCreate'
-                                || $page.component === 'Signboards/SignboardEdit'
 
-                                || $page.component === 'Businesses/BusinessesShow'
-                                || $page.component === 'Businesses/BusinessesCreate'
-                                || $page.component === 'Businesses/BusinessesEdit'
-                                || $page.component === 'Businesses/MyBusinesses'
-                                 }"
-                                     class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
-                                 ><Milestone :size="15" class="text-secondary"/> My Signboards<ChevronDown :size="22"/></span>
-                            </SignboardNavPopover>
-
-                            <ServiceNavPopover>
-                                 <span :class="{ 'active-nav':
-                                 $page.component === 'Services/MyServices'
-                                || $page.component === 'Services/ServiceShow'
-                                || $page.component === 'Services/ServiceCreate'
-                                || $page.component === 'Services/ServiceEdit'
-                                 }"
-                                       class="hover:text-primary py-4 text-center flex gap-0.5 items-center"
-                                 ><Building2 :size="15" class="text-secondary"/> My Services<ChevronDown :size="22"/></span>
-                            </ServiceNavPopover>
                         </div>
 
                         <div v-if="!user" class="hidden lg:block gap-1">
-                            <Link :href="route('login')" variant="secondary" class="px-[1rem] gap-2 items-center flex font-black text-secondary hover:text-primary">
-                                Login
+                            <Link :href="route('buy-voucher.index')" variant="secondary" class="px-[1rem] gap-2 items-center flex font-black text-secondary hover:text-primary">
+                                Buy Voucher
                             </Link>
                         </div>
                         <div v-if="!user" class="hidden lg:flex flex-col items-center space-x-1">
-                            <Button  @click="router.visit(route('register'))" class="px-[1rem] cursor-pointer hover:bg-secondary">
+                            <Button  @click="router.visit(route('research.apply'))" class="px-[1rem] cursor-pointer hover:bg-secondary">
                                 <div><UserPlus2 /></div>
-                                Join Now
+                                Apply
                             </Button>
                         </div>
                         <div v-else class="ms-4 flex gap-4 items-center space-x-1">
@@ -144,13 +90,7 @@ const user = computed(() => page.props.auth.user)
                                         <div class="text-sm break-all">{{ user.email }}</div>
                                     </div>
                                     <div class="grid">
-                                        <Link
-                                            :href="route('profile.show')"
-                                            class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2"
-                                        >
-                                            <span>Account Settings</span>
-                                            <UserRoundCog class="ms-auto" :size="16"/>
-                                        </Link>
+
                                         <Link href="#" class="p-1.5 hover:bg-secondary items-center hover:text-white flex gap-2">
                                             <span>Help</span>
                                             <HandHelping class="ms-auto" :size="16"/>

@@ -10,7 +10,7 @@ type Props = {
     form?: Record<string, any>
     model?: string
     label?: string
-    options: InputSelectOption[]
+    options: InputSelectOption[] | any
     searchable?: boolean
     taggable?: boolean
 }

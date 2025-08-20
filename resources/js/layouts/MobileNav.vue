@@ -38,64 +38,7 @@ const user = computed(() => page.props.auth.user)
                             :href="route('home')"
                         >Home</TextLink>
                     </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline w-full ps-2"
-                            :class="{ 'mobile-active-nav': $page.component === 'Services/Services' || $page.component === 'Services/Service' }"
-                            :href="route('services.index')"
-                        >Browse Service Providers</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline w-full ps-2"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboards' || $page.component === 'Signboards/Signboard' }"
-                            :href="route('signboards.index')"
-                        >Browse Signboards</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline w-full ps-2"
-                            :class="{ 'mobile-active-nav': $page.component === 'Jobs/Jobs' || $page.component === 'Jobs/Job' }"
-                            :href="route('jobs.index')"
-                        >Find A Job</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'AboutUs' }"
-                            :href="route('about-us')"
-                        >About Us</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'FAQ' }"
-                            :href="route('faq.index')"
-                        >FAQs</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <ContactUsSheet>
-                            <div
-                                class="font-bold py-1.5 no-underline ps-2 w-full cursor-pointer"
-                                :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboard' }"
-                            >Contact Us</div>
-                        </ContactUsSheet>
-                    </div>
-                    <div class="flex items-center">
-                        <ContactUsSheet>
-                            <div
-                                class="font-bold py-1.5 no-underline ps-2 w-full cursor-pointer"
-                                :class="{ 'mobile-active-nav': $page.component === 'Signboards/Signboard' }"
-                            >Career</div>
-                        </ContactUsSheet>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/Help' }"
-                            href="/help"
-                        >Help</TextLink>
-                    </div>
+
                 </div>
                 <div v-if="user" class="mt-3 grid grid-cols-1 border-t pt-3">
                     <div class="flex items-center">
@@ -105,44 +48,9 @@ const user = computed(() => page.props.auth.user)
                             :href="route('dashboard')"
                         >Dashboard</TextLink>
                     </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Businesses/MyBusinesses' }"
-                            :href="route('my-businesses.index')"
-                        >My Businesses</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Signboards/MySignboards'|| $page.component === 'Signboards/SignboardShow'}"
-                            :href="route('my-signboards.index')"
-                        >My Signboards</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Services/MyServices'
-                            || $page.component === 'Services/ServiceShow'}"
-                            :href="route('my-services.index')"
-                        >My Services</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Jobs/MyJobs'
-                            || $page.component === 'Jobs/JobShow'}"
-                            :href="route('my-jobs.index')"
-                        >My Jobs</TextLink>
-                    </div>
-                    <div class="flex items-center">
-                        <TextLink
-                            class="font-bold py-1.5 no-underline ps-2 w-full"
-                            :class="{ 'mobile-active-nav': $page.component === 'Products/MyProducts'
-                            || $page.component === 'Products/ProductShow'}"
-                            :href="route('my-products.index')"
-                        >My Products</TextLink>
-                    </div>
+
+
+
                     <div class="flex items-center">
                         <TextLink
                             class="font-bold py-1.5 no-underline ps-2 w-full"
@@ -166,14 +74,14 @@ const user = computed(() => page.props.auth.user)
                             class="font-bold py-1.5 no-underline ps-2 w-full"
                             :class="{ 'mobile-active-nav': $page.component === 'auth/Login' }"
                             :href="route('login')"
-                        >Login</TextLink>
+                        >Buy Voucher</TextLink>
                     </div>
                     <div class="flex items-center">
                         <TextLink
                             class="font-bold py-1.5 no-underline ps-2 w-full"
                             :class="{ 'mobile-active-nav': $page.component === 'auth/Register' }"
                             :href="route('register')"
-                        >Join Now</TextLink>
+                        >Apply</TextLink>
                     </div>
                 </div>
             </div>

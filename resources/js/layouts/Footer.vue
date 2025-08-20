@@ -8,66 +8,7 @@ import ContactUsSheet from '@/components/ContactUsSheet.vue';
 <template>
     <footer class="bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900  pt-12 pb-6 px-10 font-sans tracking-wide relative">
         <div class="max-w-screen-xl mx-auto">
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-8">
-                <div>
-                    <h2 class="text-primary text-sm uppercase font-medium mb-6">APP</h2>
-                    <ul class="space-y-4">
-                        <li>
-                            <Link :href="route('home')" class="text-gray-400 hover:text-primary text-sm transition-all">Home</Link>
-                        </li>
-                        <li>
-                            <Link :href="route('home')" class="text-gray-400 hover:text-primary text-sm transition-all">Businesses</Link>
-                        </li>
-                        <li>
-                            <Link :href="route('signboards.index')" class="text-gray-400 hover:text-primary text-sm transition-all">Find A Signboard</Link>
-                        </li>
-                        <li>
-                            <Link :href="route('privacy-policy')" class="text-gray-400 hover:text-primary text-sm transition-all">Privacy Policy</Link>
-                        </li>
-                    </ul>
-                </div>
 
-                <div>
-                    <h2 class="text-primary text-sm uppercase font-medium mb-6">COMPANY</h2>
-                    <ul class="space-y-4">
-                        <li>
-                            <Link :href="route('about-us')" class="text-gray-400 hover:text-primary text-sm transition-all">About Us</Link>
-                        </li>
-                        <li>
-                            <Link :href="route('faq.index')" class="text-gray-400 hover:text-primary text-sm transition-all">FAQs</Link>
-                        </li>
-                        <li>
-                            <ContactUsSheet>
-                                <span class="text-gray-400 hover:text-primary text-sm transition-all cursor-pointer">Contact Us</span>
-                            </ContactUsSheet>
-                        </li>
-                        <li>
-                            <ContactUsSheet>
-                                <span class="text-gray-400 hover:text-primary text-sm transition-all cursor-pointer">Career</span>
-                            </ContactUsSheet>
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h2 class="text-primary text-sm uppercase font-medium mb-6">Useful Links</h2>
-                    <ul class="space-y-4">
-                        <li>
-                            <Link :href="route('my-signboards.index')" class="text-gray-400 hover:text-primary text-sm transition-all">Advertise</Link>
-                        </li>
-                        <li>
-                            <Link :href="route('dashboard')" class="text-gray-400 hover:text-primary text-sm transition-all">Dashboard</Link>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="flex items-center lg:justify-center max-sm:-order-1">
-                    <a href='javascript:void(0)'>
-                        <!--                                <img src="https://readymadeui.com/readymadeui-light.svg" alt="logo" class="sm:w-52 w-40" />-->
-                        <img src="/images/logo.png" alt="logo" class="w-30" />
-                    </a>
-                </div>
-            </div>
 
             <hr class="mt-12 mb-6 border-gray-600" />
 

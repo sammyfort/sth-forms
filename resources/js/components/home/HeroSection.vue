@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+import { LayoutDashboard, FormInputIcon } from 'lucide-vue-next';
 </script>
 
 <template>
-    <div class="w-full text-gray-700 bg-cream">
+    <div class="w-full text-gray-700 ">
+        <!-- Header -->
         <div
             class="flex flex-col max-w-screen-xl px-8 mx-auto md:items-center md:justify-between md:flex-row">
             <div class="flex flex-row items-center justify-between py-6">
                 <div class="relative md:mt-8">
-                    <a href="#" class="text-xl relative z-50 font-bold tracking-widest text-gray-900 rounded-lg focus:outline-none focus:shadow-outline">{{ $page.props.name }}</a>
+                    <a href="#"
+                       class="text-xl text-white relative z-50 font-bold tracking-widest rounded-lg focus:outline-none focus:shadow-outline">
+                        STH Research & Development
+                    </a>
                     <svg viewBox="0 0 79 79" fill="none" xmlns="http://www.w3.org/2000/svg"
                          class="h-11 z-40 absolute -top-2 -left-3">
                         <path
@@ -26,96 +31,50 @@ import { router } from '@inertiajs/vue3';
                 </button>
             </div>
         </div>
-    </div>
-    <div class="bg-cream">
-        <div class="max-w-screen-xl px-8 mx-auto flex flex-col lg:flex-row items-start">
-            <div
-                class="flex flex-col w-full lg:w-8/12 justify-center lg:pt-24 items-start text-center lg:text-left mb-5 md:mb-0">
-                <h1 data-aos="fade-right" data-aos-once="true"
-                    class="my-4 text-5xl font-bold leading-tight text-secondary aos-init aos-animate">
-                    <span class="text-primary">Showcase</span> your business, service, product, or job listing online
-                </h1>
-                <p data-aos="fade-down" data-aos-once="true" data-aos-delay="300"
-                   class="leading-normal text-2xl mb-8 aos-init aos-animate">
-                    Alexoa helps you put what you offer on the map — from businesses and services to products and jobs.
-                </p>
-                <div data-aos="fade-up" data-aos-once="true" data-aos-delay="700"
-                     class="w-full md:flex items-center justify-center lg:justify-start md:gap-x-5 aos-init aos-animate">
-<!--                    <button-->
-<!--                        @click="router.visit(route('my-signboards.create'))"-->
-<!--                        class="lg:mx-0 bg-primary text-white text-xl font-bold rounded-full py-4 px-9 btn-zoom">-->
-<!--                        List what you pro-->
-<!--                    </button>-->
-                    <div class="flex items-center justify-center gap-x-3 mt-5 md:mt-0 btn-zoom">
-                        <button class="bg-white w-14 h-14 rounded-full flex items-center justify-center">
-                            <svg viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                 class="w-5 h-5 ml-2">
-                                <path
-                                    d="M22.5751 12.8097C23.2212 13.1983 23.2212 14.135 22.5751 14.5236L1.51538 27.1891C0.848878 27.5899 5.91205e-07 27.1099 6.25202e-07 26.3321L1.73245e-06 1.00123C1.76645e-06 0.223477 0.848877 -0.256572 1.51538 0.14427L22.5751 12.8097Z"
-                                    fill="#23BDEE"></path>
-                            </svg>
-                        </button>
-                        <span class="cursor-pointer">See how it works</span>
+
+        <!-- Hero Section -->
+        <div class="">
+            <div class="max-w-screen-xl px-8 mx-auto flex flex-col lg:flex-row items-start">
+                <div
+                    class="text-white flex flex-col w-full lg:w-8/12 justify-center lg:pt-24 items-start text-center lg:text-left mb-5 md:mb-0">
+                    <h1 data-aos="fade-right" data-aos-once="true"
+                        class="my-4 text-5xl font-bold leading-tight text-secondary aos-init aos-animate">
+                        <span class="text-[#008238]">Apply</span>
+                        <span class="text-[#FFA800]"> to conduct research at STH</span>
+                    </h1>
+                    <p data-aos="fade-down" data-aos-once="true" data-aos-delay="300"
+                       class="leading-normal text-2xl mb-8 aos-init aos-animate">
+                        Join our hospital research center as a guest researcher and contribute to advancing medical knowledge. Submit your application online and get access to our facilities and mentorship programs.
+                    </p>
+                    <div data-aos="fade-up" data-aos-once="true" data-aos-delay="700"
+                         class="w-full md:flex items-center justify-center lg:justify-start md:gap-x-5 aos-init aos-animate">
+
+                        <div class="flex items-center justify-center gap-x-3 mt-5 md:mt-0 btn-zoom mb-5">
+                            <Link
+                                :href="route('buy-voucher.index')"
+                                class=" bg-gray-50 text-[#5e4800] px-3 py-2 border rounded-xl hover:text-primary flex items-center gap-1 text-center"
+                            >
+                                <FormInputIcon  :size="16" class="text-[#5e4800]"/> Apply
+                            </Link>
+
+                        </div>
                     </div>
                 </div>
+
+                <!-- Hero Image -->
+                <div id="hero-image" class="w-full lg:w-6/12 lg:-mt-10 relative">
+                    <!-- Main Image: Researcher in Laboratory -->
+                    <img data-aos="fade-up" data-aos-once="true" src="https://images.pexels.com/photos/4226092/pexels-photo-4226092.jpeg" class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate" alt="Researcher in Laboratory">
+
+                    <!-- Floating Element 1: Laboratory Equipment -->
+                    <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true" class="absolute top-20 -left-6 sm:top-32 sm:left-10 md:top-40 md:left-16 lg:-left-0 lg:top-52 floating-4 aos-init aos-animate">
+                        <img src="https://images.pexels.com/photos/4226093/pexels-photo-4226093.jpeg" class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16" alt="Laboratory Equipment">
+                    </div>
+                </div>
+
             </div>
-            <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative">
-                <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/girl2.png"
-                     class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate">
-                <div data-aos="fade-up" data-aos-delay="300" data-aos-once="true"
-                     class="absolute top-20 -left-6 sm:top-32 sm:left-10 md:top-40 md:left-16 lg:-left-0 lg:top-52 floating-4 aos-init aos-animate">
-                    <img src="/images/tmp/calendar.png" class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16">
-                </div>
-                <div data-aos="fade-up" data-aos-delay="400" data-aos-once="true"
-                     class="absolute top-20 right-10 sm:right-24 sm:top-28 md:top-36 md:right-32 lg:top-32 lg:right-16 floating aos-init aos-animate">
-                    <svg viewBox="0 0 149 149" fill="none" xmlns="http://www.w3.org/2000/svg"
-                         class="h-16 sm:h-24">
-                        <g filter="url(#filter0_d)">
-                            <rect x="40" y="32" width="69" height="69" rx="14" fill="#F3627C"></rect>
-                        </g>
-                        <rect x="51.35" y="44.075" width="47.3" height="44.85" rx="8" fill="white"></rect>
-                        <path d="M74.5 54.425V78.575" stroke="#F25471" stroke-width="4"
-                              stroke-linecap="round"></path>
-                        <path d="M65.875 58.7375L65.875 78.575" stroke="#F25471" stroke-width="4"
-                              stroke-linecap="round"></path>
-                        <path d="M83.125 63.9125V78.575" stroke="#F25471" stroke-width="4"
-                              stroke-linecap="round"></path>
-                        <defs>
-                            <filter id="filter0_d" x="0" y="0" width="149" height="149"
-                                    filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
-                                <feColorMatrix in="SourceAlpha" type="matrix"
-                                               values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"></feColorMatrix>
-                                <feOffset dy="8"></feOffset>
-                                <feGaussianBlur stdDeviation="20"></feGaussianBlur>
-                                <feColorMatrix type="matrix"
-                                               values="0 0 0 0 0.825 0 0 0 0 0.300438 0 0 0 0 0.396718 0 0 0 0.26 0"></feColorMatrix>
-                                <feBlend mode="normal" in2="BackgroundImageFix"
-                                         result="effect1_dropShadow"></feBlend>
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow"
-                                         result="shape"></feBlend>
-                            </filter>
-                        </defs>
-                    </svg>
-                </div>
-                <div @click="router.get(route('login'))" data-aos="fade-up" data-aos-delay="500" data-aos-once="true"
-                     class="absolute z-10 bottom-14 -left-4 sm:left-2 sm:bottom-20 lg:bottom-24 lg:-left-4 floating aos-init aos-animate">
-                    <img src="/images/tmp/ux-class.png" alt="" class="bg-white bg-opacity-80 rounded-lg h-20 sm:h-28 cursor-pointer">
-                </div>
-                <div data-aos="fade-up" data-aos-delay="600" data-aos-once="true"
-                     class="absolute bottom-20 md:bottom-48 lg:bottom-52 -right-6 lg:right-8 floating-4 aos-init aos-animate">
-                    <img src="/images/tmp/congrat.png" alt=""
-                         class="bg-white bg-opacity-80 rounded-lg h-12 sm:h-16"></div>
-            </div>
-        </div>
-        <div class="text-white -mt-14 sm:-mt-24 lg:-mt-36 z-40 relative">
-            <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
-                 preserveAspectRatio="none" class="xl:h-40 xl:w-full">
-                <path
-                    d="M600,112.77C268.63,112.77,0,65.52,0,7.23V120H1200V7.23C1200,65.52,931.37,112.77,600,112.77Z"
-                    fill="currentColor"></path>
-            </svg>
-            <div class="bg-white w-full h-20 -mt-px"></div>
+
+
         </div>
     </div>
 </template>

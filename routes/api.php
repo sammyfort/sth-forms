@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\GitController;
-use App\Http\Controllers\PromotionController;
-use App\Http\Controllers\SignboardSubscriptionPaymentController;
+use App\Http\Controllers\VoucherController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +12,4 @@ Route::get('/user', function (Request $request) {
 
 Route::post('github-webhook', GitController::class);
 
-Route::post('promotions/payment/verify', [PromotionController::class, 'verifyHubtel'])
-//    ->middleware(['verify.payment.ip'])
-    ->name('promotions.payment.verify');
+Route::post('/payment/verify', [VoucherController::class, 'paystackLiveWebhook']);
