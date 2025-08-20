@@ -7,11 +7,13 @@ import { useForm } from '@inertiajs/vue3';
 
 
 </script>
-
 <template>
-  <Layout class="p-0 lg:p-0 md:p-0" style="padding: 0 !important;" :is-full-width="true">
+    <Layout class="p-0 lg:p-0 md:p-0" style="padding: 0 !important;" :is-full-width="true">
         <div class="w-full">
             <HeroSection />
+
+
+
         </div>
-  </Layout>
+    </Layout>
 </template>

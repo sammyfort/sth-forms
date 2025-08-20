@@ -10,7 +10,7 @@ defineProps<{
 </script>
 
 <template>
-    <Alert v-if="payment_status == 'success'" class="mb-5" variant="success">
+    <Alert v-if="payment_status == 'success'" class="mb-5 bg-green-100" variant="success">
         <Check />
         <AlertTitle>Payment Successful</AlertTitle>
         <AlertDescription>
