@@ -11,10 +11,8 @@ import { Button } from '@/components/ui/button';
 import PrincipalInvestigator from '@/pages/Research/Steps/PrincipalInvestigator.vue';
 import StudyCoordinator from '@/pages/Research/Steps/StudyCoordinator.vue';
 import ResearchWork from '@/pages/Research/Steps/ResearchWork.vue';
-import StudyLocationLevel from '@/pages/Research/Steps/StudyLocationLevel.vue';
 import ResearchDetails from '@/pages/Research/Steps/ResearchDetails.vue';
 import InclusionExclusionCriteria from '@/pages/Research/Steps/InclusionExclusionCriteria.vue';
-import ResearchApplicationForm from '@/pages/Research/Steps/ResearchApplicationForm.vue';
 import StudyParticipationDuration from '@/pages/Research/Steps/StudyParticipationDuration.vue';
 import CommunicationPublication from '@/pages/Research/Steps/CommunicationPublication.vue';
 
@@ -76,6 +74,7 @@ const form = useForm({
     research_total_budget: '',
     study_support_from_sth: '',
     equipments_needed: '',
+    physical_financial_support: '',
 
     // communication and publication
     organize_forum: '',
@@ -100,7 +99,7 @@ const stepProps: Record<string, Record<string, any>> = {
     study_coordinator: {staff_categories: props.staff_categories },
     research_work: {yesno: props.yesno },
     research_details: {yesno: props.yesno },
-
+    communication_publication: {yesno: props.yesno },
 };
 const currentStepProps = computed(() => stepProps[currentStep.value] || {});
 
@@ -132,7 +131,7 @@ const prevStep = () => {
 };
 
 const submitApplication = () => {
-    form.post(route('research.apply'), {
+    form.post(route('research.submit'), {
         onSuccess: () => {
             toastSuccess('Application Submitted');
             form.reset();
@@ -148,19 +147,38 @@ const submitApplication = () => {
     <Head title="Research Application" />
     <Layout>
         <div class="w-full bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-            <PageHeader title="Apply For research at STH" subtitle="Submit your details to to apply" :icon="Building2" />
+            <PageHeader title="Apply For research at STH"
+                        subtitle="Submit your details to to apply"
+                        :icon="Building2"
+            />
 
-            <FormComponent :form="form" submit-text="Submit" processing-text="Please wait..." @submit="submitApplication" container-width="max-w-8xl">
+            <FormComponent :form="form" submit-text="Submit"
+                           processing-text="Please wait..."
+                           @submit="submitApplication"
+                           container-width="max-w-8xl"
+                           :ready-for-submit="currentStep === stepKeys[stepKeys.length - 1]"            >
                 <template #form-sections>
                     <component :is="steps[currentStep]" :form="form" v-bind="currentStepProps" />
 
-                    <div class="mt-6 flex w-full justify-between">
-                        <Button v-if="currentStep !== stepKeys[0]" type="button" @click="prevStep"> Back </Button>
+                    <div class="mt-6 flex w-full justify-center space-x-4">
+                        <Button
+                            variant="outline"
+                            v-if="currentStep !== stepKeys[0]"
+                            type="button"
+                            @click="prevStep"
+                        >
+                            Back
+                        </Button>
 
-                        <Button v-if="currentStep !== stepKeys[stepKeys.length - 1]" type="button" class="ml-auto" @click.prevent="nextStep">
+                        <Button
+                            v-if="currentStep !== stepKeys[stepKeys.length - 1]"
+                            type="button"
+                            @click.prevent="nextStep"
+                        >
                             Next
                         </Button>
                     </div>
+
                 </template>
             </FormComponent>
         </div>

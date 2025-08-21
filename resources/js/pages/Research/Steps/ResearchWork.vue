@@ -7,25 +7,55 @@ const props = defineProps<{
     form: ReturnType<typeof useForm>;
     yesno: InputSelectOption[];
 }>();
+
+const documents = [
+    { label: 'FDA Approval', value: 'FDA Approval' },
+    { label: 'MTA', value: 'MTA' },
+    { label: 'Clinical Trial Agreement', value: 'Clinical Trial Agreement' },
+    { label: 'Insurance for potential participant', value: 'Insurance for potential participant' }
+
+]
+
+const locationLevel = [
+    { label: 'Unit Level', value: 'Unit Level' },
+    { label: 'Directorate Level', value: 'Directorate Level' },
+    { label: 'All Directorates and Units at STH', value: 'All Directorates and Units at STH' },
+
+
+]
 </script>
 
 <template>
     <div class="rounded-xl border bg-white p-6 shadow-sm">
         <h2 class="mb-6 text-lg font-semibold">Step 3: About the Research Work</h2>
         <div class="grid grid-cols-2 gap-6">
-            <InputSelect :form="props.form" label="Under which category does your research fall?" model="research_category"
-                         :options="props.yesno" required searchable />
-            <InputSelect :form="props.form" label="Is the work an observational study? " model="observation_study"
-                         :options="props.yesno" required searchable />
-            <InputSelect :form="props.form" label="Is the work an interventional study? " model="interventional_study"
+            <InputSelect :form="props.form"
+                         label="Under which category does your research fall?"
+                         model="research_category"
                          :options="props.yesno" required searchable />
 
-            <InputSelect :form="props.form" label="Where do you intend to conduct the study?" model="study_location_level"
+            <InputSelect :form="props.form"
+                         label="Is the work an observational study? "
+                         model="observation_study"
                          :options="props.yesno" required searchable />
 
-            <InputSelect :form="props.form" label="If the project is a clinical trial, please tick if you have
+            <InputSelect :form="props.form"
+                         label="Is the work an interventional study? "
+                         model="interventional_study"
+                         :options="props.yesno" required searchable />
+
+            <InputSelect :form="props.form"
+                         label="If the project is a clinical trial,
+                         please tick if you have
             the following documents or need one" model="documents"
-                         :options="props.yesno" required  taggable />
+                         :options="documents" required taggable  />
+
+            <InputSelect :form="props.form"
+                         label="Where do you intend to conduct the study?"
+                         model="study_location_level"
+                         :options="locationLevel" required searchable />
+
+
         </div>
     </div>
 </template>

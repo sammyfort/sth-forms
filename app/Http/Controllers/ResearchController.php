@@ -8,6 +8,7 @@ use App\Enums\Title;
 use App\Enums\YesNo;
 use App\Http\Requests\ResearchStepRequest;
 use App\Models\Category;
+use App\Models\ResearchApplication;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -42,6 +43,11 @@ class ResearchController extends Controller
 
     public function submit (ResearchStepRequest $request)
     {
+        $validated = $request->validate(ResearchStepRequest::allRules());
+
+        $submission = ResearchApplication::query()->create($validated);
+
+        return back()->with(successRes("Application submitted successfully."));
 
     }
 
