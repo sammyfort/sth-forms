@@ -27,7 +27,7 @@ const user = computed(() => page.props.auth.user)
                 <div class="flex items-center gap-5">
                     <div class="flex items-center gap-12">
                         <Link class="hidden lg:flex items-center gap-2.5" :href="route('home')">
-<!--                            <img src="/images/logo.png" class="size-15 rounded-md" alt="SHT Logo" />-->
+                            <img src="/images/tmp/logo.png" class="size-15 rounded-md" alt="SHT Logo" />
                             <h2 class="text-2xl font-bold text-center">STH R&D</h2>
                         </Link>
                         <MobileNav>

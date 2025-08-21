@@ -61,7 +61,7 @@ import { LayoutDashboard, FormInputIcon } from 'lucide-vue-next';
                 </div>
             </div>
             <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative">
-                <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/girl1.png"
+                <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/resource_1.png"
                      class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate">
                 <div data-aos="fade-up" data-aos-delay="400" data-aos-once="true"
                      class="absolute top-20 right-10 sm:right-24 sm:top-28 md:top-36 md:right-32 lg:top-32 lg:right-16 floating aos-init aos-animate">
