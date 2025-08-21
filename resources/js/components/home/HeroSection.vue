@@ -47,16 +47,13 @@ import { LayoutDashboard, FormInputIcon } from 'lucide-vue-next';
                     <!--                        class="lg:mx-0 bg-primary text-white text-xl font-bold rounded-full py-4 px-9 btn-zoom">-->
                     <!--                        List what you pro-->
                     <!--                    </button>-->
-                    <div class="flex items-center justify-center gap-x-3 mt-5 md:mt-0 btn-zoom">
-                        <button class="bg-white w-14 h-14 rounded-full flex items-center justify-center">
-                            <svg viewBox="0 0 24 28" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                 class="w-5 h-5 ml-2">
-                                <path
-                                    d="M22.5751 12.8097C23.2212 13.1983 23.2212 14.135 22.5751 14.5236L1.51538 27.1891C0.848878 27.5899 5.91205e-07 27.1099 6.25202e-07 26.3321L1.73245e-06 1.00123C1.76645e-06 0.223477 0.848877 -0.256572 1.51538 0.14427L22.5751 12.8097Z"
-                                    fill="#23BDEE"></path>
-                            </svg>
-                        </button>
-                        <span class="cursor-pointer">Apply for research</span>
+                    <div class="flex items-center justify-center gap-x-3 mt-5 md:mt-0 btn-zoom mb-3">
+
+                        <Link
+
+                            :href="route('research.apply')"
+                            class="hover:text-primary py-4 text-center"
+                        >Apply for research</Link>
                     </div>
                 </div>
             </div>
