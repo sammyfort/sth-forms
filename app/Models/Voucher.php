@@ -15,10 +15,19 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $phone
  * @property string $email
  * @property string $code
+ * @property boolean $is_used
+ * @property $used_at
 */
 
 class Voucher extends Model
 {
     //
     use BootModelTrait;
+
+    protected function casts(): array
+    {
+        return [
+            'is_used'   => 'boolean',
+        ];
+    }
 }

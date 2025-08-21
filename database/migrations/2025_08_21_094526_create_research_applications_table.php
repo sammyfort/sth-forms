@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('research_applications', function (Blueprint $table) {
              $table->id();
              $table->uuid();
+             // voucher
+            $table->foreignId('category_id')->constrained();
+            $table->string('voucher_code');
             // principal_investigator
             $table->string('title');
             $table->string('surname');
@@ -33,7 +36,7 @@ return new class extends Migration
             $table->json('staff_categories');
 
             // research_work
-            $table->string('research_category');
+            //$table->string('research_category');
             $table->string('observation_study');
             $table->string('interventional_study');
             $table->string('study_location_level');

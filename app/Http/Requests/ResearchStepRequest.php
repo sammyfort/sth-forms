@@ -21,6 +21,7 @@ class ResearchStepRequest extends FormRequest
         $step = $this->route('step');
 
         return match ($step) {
+            'voucher_validation' => $this->voucherCodeAndCategory(),
             'principal_investigator' => $this->principalInvestigatorRules(),
             'study_coordinator' => $this->studyCoordinatorRules(),
             'research_work' => $this->researchWorkRules(),
@@ -35,6 +36,7 @@ class ResearchStepRequest extends FormRequest
     public static function allRules(): array
     {
         return array_merge(
+            (new static)->voucherCodeAndCategory(),
             (new static)->principalInvestigatorRules(),
             (new static)->studyCoordinatorRules(),
             (new static)->researchWorkRules(),
@@ -45,6 +47,16 @@ class ResearchStepRequest extends FormRequest
         );
     }
 
+    public function voucherCodeAndCategory(): array
+    {
+        return [
+            'voucher_code' => ['required', Rule::exists('vouchers', 'code')->where(function ($query) {
+                $query->whereNull('used_at')
+                ->where('is_used', false);
+            })],
+            'category_id'  => ['required', 'exists:categories,id'],
+        ];
+    }
     private function principalInvestigatorRules(): array
     {
         return [
@@ -75,7 +87,7 @@ class ResearchStepRequest extends FormRequest
     private function researchWorkRules(): array
     {
         return [
-            'research_category' => ['required', 'string'],
+          //  'research_category' => ['required', 'string'],
             'observation_study' => ['required', 'string'],
             'interventional_study' => ['required', 'string'],
             'study_location_level' => ['required', 'string'],

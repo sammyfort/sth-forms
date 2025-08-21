@@ -9,8 +9,11 @@ use App\Enums\YesNo;
 use App\Http\Requests\ResearchStepRequest;
 use App\Models\Category;
 use App\Models\ResearchApplication;
+use App\Models\Voucher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Throwable;
 
 class ResearchController extends Controller
 {
@@ -25,12 +28,10 @@ class ResearchController extends Controller
                     'price' => $category->price,
                 ];
             }),
-
-             'titles' => toLabelValue(Title::toArray()),
+            'titles' => toLabelValue(Title::toArray()),
             'institution_investigators' => toLabelValue(InstitutionInvestigator::toArray()),
             'staff_categories' => toLabelValue(StaffCategory::toArray()),
             'yesno' => toLabelValue(YesNo::toArray()),
-
         ]);
     }
 
@@ -41,12 +42,27 @@ class ResearchController extends Controller
         return back();
     }
 
-    public function submit (ResearchStepRequest $request)
+    /**
+     * @throws Throwable
+     */
+    public function submit(ResearchStepRequest $request)
     {
         $validated = $request->validate(ResearchStepRequest::allRules());
 
-        $submission = ResearchApplication::query()->create($validated);
-        return to_route('home');
+        DB::beginTransaction();
+        try {
+            $submission = ResearchApplication::query()->create($validated);
+            $voucher = Voucher::query()->where('code', $submission->voucher_code)->firstOrFail();
+            $voucher->update([
+                'used_at' => now(),
+                'is_used' => true,
+            ]);
+
+            DB::commit();
+            return to_route('home');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+        }
 
 
     }

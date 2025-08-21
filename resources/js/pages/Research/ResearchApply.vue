@@ -15,6 +15,7 @@ import ResearchDetails from '@/pages/Research/Steps/ResearchDetails.vue';
 import InclusionExclusionCriteria from '@/pages/Research/Steps/InclusionExclusionCriteria.vue';
 import StudyParticipationDuration from '@/pages/Research/Steps/StudyParticipationDuration.vue';
 import CommunicationPublication from '@/pages/Research/Steps/CommunicationPublication.vue';
+import VoucherValidation from '@/pages/Research/Steps/VoucherValidation.vue';
 
 const props = defineProps<{
     categories: Category[];
@@ -23,9 +24,11 @@ const props = defineProps<{
     staff_categories: InputSelectOption[];
     yesno: InputSelectOption[]
 }>();
+
+
 const form = useForm({
-    voucher_code: null,
-    category_id: null,
+    voucher_code: '',
+    category_id: '',
 
     // principal investigator
     title: '',
@@ -46,7 +49,7 @@ const form = useForm({
     staff_categories: [],
 
     // research work
-    research_category: '',
+   // research_category: '',
     observation_study: '',
     interventional_study: '',
     study_location_level: '',
@@ -83,6 +86,7 @@ const form = useForm({
 
 });
 const steps: Record<string, any> = {
+    voucher_validation: VoucherValidation,
     principal_investigator: PrincipalInvestigator,
     study_coordinator: StudyCoordinator,
     research_work: ResearchWork,
@@ -95,6 +99,7 @@ const stepKeys = Object.keys(steps);
 const currentStep = ref(stepKeys[0]);
 
 const stepProps: Record<string, Record<string, any>> = {
+    voucher_validation: {categories: props.categories},
     principal_investigator: {form: form, titles: props.titles, institution_investigators: props.institution_investigators},
     study_coordinator: {staff_categories: props.staff_categories },
     research_work: {yesno: props.yesno },
