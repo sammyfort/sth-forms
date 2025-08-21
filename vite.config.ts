@@ -26,10 +26,10 @@ export default defineConfig({
             '@': path.resolve(__dirname, './resources/js'),
         },
     },
-    // server: {
-    //     host: '192.168.100.192', // 👈 match your LAN IP
-    //     port: 5173,
-    //     origin: 'http://192.168.100.192:5173', // 👈 set correct origin
-    //     cors: true
-    // }
+    server: {
+        host: '192.168.100.192', // 👈 match your LAN IP
+        port: 5173,
+        origin: 'http://192.168.100.192:5173', // 👈 set correct origin
+        cors: true
+    }
 });

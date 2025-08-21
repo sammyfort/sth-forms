@@ -50,12 +50,18 @@ class ResearchStepRequest extends FormRequest
     public function voucherCodeAndCategory(): array
     {
         return [
-            'voucher_code' => ['required', Rule::exists('vouchers', 'code')->where(function ($query) {
-                $query->whereNull('used_at')
-                ->where('is_used', false);
-            })],
+            'voucher_code' => [
+                'required',
+                Rule::exists('vouchers', 'code')
+                    ->where(function ($query) {
+                        $query->whereNull('used_at')
+                            ->where('is_used', false);
+                    })
+                    ->where('category_id', $this->input('category_id')),
+            ],
             'category_id'  => ['required', 'exists:categories,id'],
         ];
+
     }
     private function principalInvestigatorRules(): array
     {

@@ -41,7 +41,7 @@ import { LayoutDashboard, FormInputIcon } from 'lucide-vue-next';
                     STH is dedicated to connecting medical professionals, researchers, and students with the latest hospital resources and clinical research
                 </p>
                 <div data-aos="fade-up" data-aos-once="true" data-aos-delay="700"
-                     class="w-full md:flex items-center justify-center lg:justify-start md:gap-x-5 aos-init aos-animate">
+                     class="mb-4 w-full md:flex items-center justify-center lg:justify-start md:gap-x-5 aos-init aos-animate">
                     <!--                    <button-->
                     <!--                        @click="router.visit(route('my-signboards.create'))"-->
                     <!--                        class="lg:mx-0 bg-primary text-white text-xl font-bold rounded-full py-4 px-9 btn-zoom">-->
@@ -60,7 +60,7 @@ import { LayoutDashboard, FormInputIcon } from 'lucide-vue-next';
                     </div>
                 </div>
             </div>
-            <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative">
+            <div id="girl" class="w-full lg:w-6/12 lg:-mt-10 relative mt-4">
                 <img data-aos="fade-up" data-aos-once="true" src="/images/tmp/resource_1.png"
                      class="w-10/12 mx-auto 2xl:-mb-20 aos-init aos-animate">
                 <div data-aos="fade-up" data-aos-delay="400" data-aos-once="true"
@@ -99,7 +99,7 @@ import { LayoutDashboard, FormInputIcon } from 'lucide-vue-next';
 
             </div>
         </div>
-        <div class="text-white -mt-14 sm:-mt-24 lg:-mt-36 z-40 relative">
+        <div class="text-white mt-14 sm:-mt-24 lg:-mt-36 z-40 relative ">
             <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
                  preserveAspectRatio="none" class="xl:h-40 xl:w-full">
                 <path
