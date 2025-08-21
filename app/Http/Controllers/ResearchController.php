@@ -7,6 +7,7 @@ use App\Enums\StaffCategory;
 use App\Enums\Title;
 use App\Enums\YesNo;
 use App\Http\Requests\ResearchStepRequest;
+use App\Jobs\ResearchFormSubmitted;
 use App\Models\Category;
 use App\Models\ResearchApplication;
 use App\Models\Voucher;
@@ -58,6 +59,7 @@ class ResearchController extends Controller
                 'is_used' => true,
             ]);
 
+            ResearchFormSubmitted::dispatch($submission);
             DB::commit();
             return to_route('home');
         } catch (\Exception $exception) {

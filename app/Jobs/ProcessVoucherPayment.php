@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Category;
 use App\Models\Voucher;
+use App\Services\Velstack;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Http\Client\ConnectionException;
@@ -50,7 +51,6 @@ class ProcessVoucherPayment
                             'full_name' => $payload['metadata']['full_name'],
                             'email' => $payload['metadata']['email'],
                             'phone' => $payload['metadata']['phone'],
-
                             'code' => rand(000000000000,999999999999),
                         ];
 
@@ -66,7 +66,6 @@ class ProcessVoucherPayment
                     }
                 }
             }
-
         }
     }
 
@@ -77,22 +76,8 @@ class ProcessVoucherPayment
      */
     protected function sendPaymentSMS(Voucher $voucher): void
     {
-
-        $key = config('services.velstack.SENDER_ID');
-        $sender = config('services.velstack.SENDER_ID');
-        $data = [
-            'title' => 'SMS Notifications',
-            'recipient' => $voucher->phone,
-            'sender' => $sender,
-            'message' => "Hello $voucher->full_name, your voucher code to complete your application is $voucher->code. Thank you",
-            'is_scheduled' => false,
-        ];
-        $response = Http::withHeaders([
-            'Authorization' => "Bearer $key",
-            'Accept' => 'application/json',
-        ])->post('https://sms.velstack.com/api/quick/sms', $data);
-
-        $response->throw();
+        $message = "Hello $voucher->full_name, your voucher code to complete your application is $voucher->code. Thank you";
+        (new Velstack())->sendQuickSMS($voucher->phone, $message);
     }
 
     protected function sendPaymentEmail(Voucher $voucher)
