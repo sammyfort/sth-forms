@@ -86,15 +86,16 @@ class VoucherController extends Controller
 
     public function paystackLiveWebhook(Request $request): ?JsonResponse
     {
+        info("Paystack started...");
 
         if ($this->isFromPaystack($request)){
             $payload = json_decode($request->getContent(), true);
             ProcessVoucherPayment::dispatch($payload);
-
+            info("Procssed...");
             http_response_code(200);
             return response()->json(['status' => 'success'], 200);
         }
-
+        info("Invalid started...");
         return null;
     }
 
@@ -103,7 +104,7 @@ class VoucherController extends Controller
         if(!$request->hasHeader("X-Paystack-Signature")){
             return false;
         }
-        $computed = hash_hmac('sha512', $request->getContent(),  config("velstack.PAYSTACK_LIVE_SECRET_KEY"));
+        $computed = hash_hmac('sha512', $request->getContent(),  config("services.paystack.SECRET_KEY"));
 
         if ($request->header("X-Paystack-Signature") !== $computed){
             return false;

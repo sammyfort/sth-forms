@@ -33,6 +33,7 @@ class ProcessVoucherPayment
      */
     public function handle(): void
     {
+        info('processing job...');
         $payload = $this->payload;
         if (isset($payload['status']) && isset($payload['metadata']['user_id'])) {
 

@@ -43,5 +43,12 @@ return [
     'velstack' => [
         'API_KEY' => env('VELSTACK_API_KEY'),
         'SENDER_ID' => env('VELSTACK_SENDER_ID'),
-    ]
+    ],
+
+      'paystack' => [
+    'PUBLIC_KEY' => env('PAYSTACK_PUBLIC_KEY'),
+    'SECRET_KEY' => env('PAYSTACK_SECRET_KEY'),
+]
+
+
 ];
