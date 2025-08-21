@@ -17,4 +17,13 @@ class ResearchApplication extends Model
 {
     //
     use BootModelTrait;
+
+    protected function casts(): array
+    {
+        return [
+            'documents' => 'array',
+            'study_design' => 'array',
+            'staff_categories' => 'array',
+        ];
+    }
 }

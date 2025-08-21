@@ -42,7 +42,7 @@ const form = useForm({
     study_coordinator_name: '',
     coordinator_email: '',
     local_collaborator_name: '',
-    local_coordinator_address: '',
+    local_collaborator_address: '',
     staff_categories: [],
 
     // research work
@@ -55,7 +55,7 @@ const form = useForm({
     // research details
     study_location_in_sth: '',
     study_title: '',
-    study_design: '',
+    study_design: [],
     study_objectives: '',
 
     // inclusion and exclusion
@@ -133,8 +133,9 @@ const prevStep = () => {
 const submitApplication = () => {
     form.post(route('research.submit'), {
         onSuccess: () => {
-            toastSuccess('Application Submitted');
             form.reset();
+            toastSuccess('Application Submitted');
+
         },
         onError: () => {
             toastError('Something went wrong');

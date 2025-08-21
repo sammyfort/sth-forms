@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('study_coordinator_name');
             $table->string('coordinator_email');
             $table->text('local_collaborator_name');
-            $table->text('local_coordinator_address');
+            $table->text('local_collaborator_address');
             $table->json('staff_categories');
 
             // research_work

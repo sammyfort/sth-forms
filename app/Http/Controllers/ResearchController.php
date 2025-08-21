@@ -46,8 +46,8 @@ class ResearchController extends Controller
         $validated = $request->validate(ResearchStepRequest::allRules());
 
         $submission = ResearchApplication::query()->create($validated);
+        return to_route('home');
 
-        return back()->with(successRes("Application submitted successfully."));
 
     }
 

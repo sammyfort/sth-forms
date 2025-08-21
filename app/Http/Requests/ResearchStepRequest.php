@@ -65,8 +65,8 @@ class ResearchStepRequest extends FormRequest
         return [
             'study_coordinator_name' => ['required', 'string'],
             'coordinator_email' => ['required', 'email'],
-            'local_coordinator_name' => ['required', 'string'],
-            'local_coordinator_address' => ['required', 'string'],
+            'local_collaborator_name' => ['required', 'string'],
+            'local_collaborator_address' => ['required', 'string'],
             'staff_categories' => ['required', 'array'],
             'staff_categories.*' => [Rule::in(StaffCategory::toArray())],
         ];

@@ -31,7 +31,7 @@ const studyDesigns = [
 
             <InputSelect :form="props.form" label="Study Design"
                          model="study_design"
-                         :options="studyDesigns" required searchable />
+                         :options="studyDesigns" taggable required searchable />
 
             <InputText :form="props.form"
                        label="Study Objectives"
